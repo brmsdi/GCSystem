@@ -1,73 +1,85 @@
 const FormEmployee = () => {
   return (
+    <div>
     <form>
       <div className="form-row">
         <div className="form-group col-md-6">
-          <label for="inputEmail4">Email</label>
+          <label for="inpturName">Nome</label>
           <input
-            type="email"
+            type="text"
             className="form-control"
-            id="inputEmail4"
-            placeholder="Email"
+            id="inputName"
+            placeholder="Nome completo"
           />
         </div>
-        <div className="form-group col-md-6">
-          <label for="inputPassword4">Password</label>
+        <div className="form-group col-md-3">
+          <label for="inputRG">RG</label>
           <input
-            type="password"
+            type="text"
             className="form-control"
-            id="inputPassword4"
-            placeholder="Password"
+            id="inputRG"
+            placeholder="RG"
           />
+        </div>
+        <div className="form-group col-md-3">
+          <label for="inputCPF">CPF</label>
+          <input
+            type="number"
+            className="form-control"
+            id="inputCPF"
+            placeholder="CPF"
+          />
+        </div>
+        <div className="form-group col-md-3">
+          <label for="inputBirth">Data de Nascimento</label>
+          <input
+            type="date"
+            className="form-control"
+            id="inputBirth"
+          />
+        </div>
       </div>
-      </div>
-      <div className="form-group">
-        <label for="inputAddress">Address</label>
+      <div className="form-group col-md-5">
+        <label for="inputEmail">E-mail</label>
         <input
-          type="text"
+          type="email"
           className="form-control"
-          id="inputAddress"
-          placeholder="1234 Main St"
-        />
-      </div>
-      <div className="form-group">
-        <label for="inputAddress2">Address 2</label>
-        <input
-          type="text"
-          className="form-control"
-          id="inputAddress2"
-          placeholder="Apartment, studio, or floor"
+          id="inputEmail"
+          placeholder="E-mail"
         />
       </div>
       <div className="form-row">
-        <div className="form-group col-md-6">
-          <label for="inputCity">City</label>
-          <input type="text" className="form-control" id="inputCity" />
-        </div>
-        <div className="form-group col-md-4">
-          <label for="inputState">State</label>
-          <select id="inputState" className="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
+        <div className="form-group col-md-3">
+          <label for="inputOffice">Cargo</label>
+          <select id="inputOffice" className="form-control">
+            <option>Adm</option>
+            <option>Adm 2</option>
+            <option>Adm 3</option>
           </select>
         </div>
-        <div className="form-group col-md-2">
-          <label for="inputZip">Zip</label>
-          <input type="text" className="form-control" id="inputZip" />
+        <div className="form-group col-md-3">
+          <label for="inputSpecialtyy">Especialidade</label>
+          <select id="inputSpecialtyy" className="form-control">
+            <option>Eletricista</option>
+          </select>
         </div>
       </div>
-      <div className="form-group">
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" id="gridCheck" />
-          <label className="form-check-label" for="gridCheck">
-            Check me out
-          </label>
+      <div className="form-row">
+        <div className="form-group col-md-3">
+        <label for="inputHiring">Data de contratação</label>
+          <input
+            type="date"
+            className="form-control"
+            id="inputHiring"
+          />
         </div>
       </div>
-      <button type="submit" className="btn btn-primary">
-        Sign in
-      </button>
+      <div className="form-row">
+        <button type="submit" className="btn btn-outline-primary">Salvar</button>
+        <button type="button" className="btn btn-outline-secondary">Cancelar</button>
+      </div>      
     </form>
+    </div>
   );
 };
 
