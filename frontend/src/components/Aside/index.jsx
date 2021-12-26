@@ -6,21 +6,18 @@ const Aside = () => {
     let main = document.querySelector(".content-main");
     asidebar.classList.toggle("active");
     main.classList.toggle("large");
-    
   }
 
   return (
     <aside className="asidebar animate-right">
       <div className="aside-header animate-right">
-        <span className="icon">
+        <span className="icon animate-right">
           <ion-icon name="business-outline"></ion-icon>
         </span>
-        <span className="text">SYSTEM</span>
+        <span className="text animate-right">SYSTEM</span>
         <div className="btn-co">
-          <button className="btn btn-dark btn-menu" onClick={clickColapseMenu}>
-            <span>
+          <button className="btn-menu" onClick={clickColapseMenu}>
               <ion-icon name="menu-outline"></ion-icon>
-            </span>
           </button>
         </div>
       </div>
@@ -42,7 +39,7 @@ const Aside = () => {
               <span className="tooltip-submenu">Gerenciar condomínio</span>
             </Link>
           </div>
-          <div className="sub-menu">
+          <div className="sub-menu active">
           <Link to="">
             <span className="sub-menu-icon">
               <ion-icon name="people-outline"></ion-icon>

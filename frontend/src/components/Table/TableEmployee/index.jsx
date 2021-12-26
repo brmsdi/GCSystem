@@ -5,54 +5,37 @@ const TableEmployee = () => {
             <thead>
                 <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-                <th scope="col">Handle</th>
-                <th scope="col">Handle</th>
+                <th scope="col">Nome</th>
+                <th scope="col">RG</th>
+                <th scope="col">CPF</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Cargo</th>
+                <th scope="col">Especialidade</th>
+                <th scope="col">Contratação</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                 <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Wiseldlkjslkdjflksd</td>
-                <td>Wiseldlkjslkdjflksd</td>
+                <td>Wisley Bruno Marques Franca</td>
+                <td>1235265</td>
+                <td>02356325536</td>
+                <td>srmarquesms@gmail.com</td>
+                <td>Analista de sistemas</td>
+                <td>Desenvolvedor</td>
+                <td>01/01/2022</td>
                 </tr>
                 <tr>
                 <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>Wiseldlkjslkdjflksd</td>
-                <td>Wiseldlkjslkdjflksd</td>
+                <td>Wisley Bruno Marques Franca</td>
+                <td>1235265</td>
+                <td>02356325536</td>
+                <td>srmarquesms@gmail.com</td>
+                <td>Analista de sistemas</td>
+                <td>Desenvolvedor</td>
+                <td>01/01/2022</td>
                 </tr>
-                <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td>Wiseldlkjslkdjflksd</td>
-                <td>Wiseldlkjslkdjflksd</td>
-                </tr>
-                <tr>
-                <th scope="row">4</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td>Wiseldlkjslkdjflksd</td>
-                <td>Wiseldlkjslkdjflksd</td>
-                </tr>
-                <tr>
-                <th scope="row">5</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td>Wiseldlkjslkdjflksd</td>
-                <td>Wiseldlkjslkdjflksd</td>
-                </tr>
+                
             </tbody>
         </table>
         </div>

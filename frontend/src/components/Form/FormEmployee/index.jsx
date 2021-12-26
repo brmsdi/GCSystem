@@ -1,8 +1,7 @@
 const FormEmployee = () => {
   return (
-    <div>
     <form>
-      <div className="form-row">
+      <div className="row">
         <div className="form-group col-md-6">
           <label for="inpturName">Nome</label>
           <input
@@ -12,7 +11,7 @@ const FormEmployee = () => {
             placeholder="Nome completo"
           />
         </div>
-        <div className="form-group col-md-3">
+        <div className="form-group col-md-2">
           <label for="inputRG">RG</label>
           <input
             type="text"
@@ -30,26 +29,22 @@ const FormEmployee = () => {
             placeholder="CPF"
           />
         </div>
-        <div className="form-group col-md-3">
+      </div>
+      <div className="row">
+        <div className="form-group col-md-2">
           <label for="inputBirth">Data de Nascimento</label>
+          <input type="date" className="form-control" id="inputBirth" />
+        </div>
+        <div className="form-group col-md-4">
+          <label for="inputEmail">E-mail</label>
           <input
-            type="date"
+            type="email"
             className="form-control"
-            id="inputBirth"
+            id="inputEmail"
+            placeholder="E-mail"
           />
         </div>
-      </div>
-      <div className="form-group col-md-5">
-        <label for="inputEmail">E-mail</label>
-        <input
-          type="email"
-          className="form-control"
-          id="inputEmail"
-          placeholder="E-mail"
-        />
-      </div>
-      <div className="form-row">
-        <div className="form-group col-md-3">
+        <div className="form-group col-md-2">
           <label for="inputOffice">Cargo</label>
           <select id="inputOffice" className="form-control">
             <option>Adm</option>
@@ -64,22 +59,23 @@ const FormEmployee = () => {
           </select>
         </div>
       </div>
-      <div className="form-row">
-        <div className="form-group col-md-3">
-        <label for="inputHiring">Data de contratação</label>
-          <input
-            type="date"
-            className="form-control"
-            id="inputHiring"
-          />
+      <div className="row">
+        <div className="form-group col-md-2">
+          <label for="inputHiring">Data de contratação</label>
+          <input type="date" className="form-control" id="inputHiring" />
         </div>
       </div>
-      <div className="form-row">
-        <button type="submit" className="btn btn-outline-primary">Salvar</button>
-        <button type="button" className="btn btn-outline-secondary">Cancelar</button>
-      </div>      
+      <div className="row btns">
+        <div className="form-group col-md-6">
+          <button type="submit" className="btn btn-success">
+            Salvar
+          </button>
+          <button type="button" className="btn btn-secondary">
+            Cancelar
+          </button>
+        </div>
+      </div>
     </form>
-    </div>
   );
 };
 

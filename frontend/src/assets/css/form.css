@@ -1,0 +1,26 @@
+.content-form {
+    display: none;
+    padding: 5px;
+}
+
+.content-form.active {
+    display: block;
+}
+
+.content-form .row {
+    margin-top: 5px;
+}
+
+.content-form .btns  {
+    padding: 10px;
+}
+
+.content-form label {
+
+    padding-top: 10px;
+}
+
+.content-form input, .content-form select {
+    border-radius: 8px;
+    padding: 10px;
+}

@@ -1,0 +1,27 @@
+.animate-right {
+    animation-name: right;
+    animation-duration: 400ms;
+}
+
+.animate-down {
+    animation-name: down;
+    animation-duration: 400ms;
+}
+
+@keyframes right {
+    from {
+        transform: translateX(-100%);
+
+    } to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes down {
+    from {
+        transform: translateY(-5%);
+    } to {
+        transform: translateY(0);
+    }
+    
+}
