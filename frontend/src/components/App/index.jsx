@@ -1,5 +1,5 @@
-import RoutesDefault from "../../routes/RoutesDefault";
+import Home from "views/Home";
 
-const App = () => <RoutesDefault />
+const App = () => <Home />
 
 export default App;

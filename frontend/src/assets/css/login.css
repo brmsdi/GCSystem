@@ -1,0 +1,17 @@
+
+
+.box {
+    background-color: #157bad;
+    height:  300px;
+    width: 300px;
+
+    transition-property: height;
+    transition-duration: 2s;
+
+}
+
+.box:hover {
+    height: 400px;
+    background-color: #ac5840;
+    border-radius: 50%;
+}

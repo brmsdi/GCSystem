@@ -1,14 +1,8 @@
-import Aside from "../../components/Aside";
-import FormEmployee from "../../components/Form/FormEmployee";
-import SearchEmployee from "../../components/search/SearchEmployee";
-import TableEmployee from "../../components/Table/TableEmployee";
-
-function toogleClass(id) {
-  let bt = document.getElementById(id);
-  let form = document.querySelector('.content-form');
-  form.classList.toggle('active');
-  console.log(bt)
-}
+import Aside from "components/Aside";
+import BarHome from "components/BarHome";
+import FormEmployee from "components/Form/FormEmployee";
+import MenuRouterActivity from "components/MenuRouterActivity";
+import TableEmployee from "components/Table/TableEmployee";
 
 const Home = () => {
   return (
@@ -16,29 +10,21 @@ const Home = () => {
       <header>
         <Aside />
       </header>
-      <main className="content-main ">
+      <main className="content-main animate-right">
         <div className="home-header">
-          <h1>{"Funcionário"}</h1>
+          <h1>{"Funcionários"}</h1>
           <div>
             <button type="button" className="btn btn-outline-secondary">
               Sair
             </button>
           </div>
         </div>
-        <div className="menu-router-activity">
-          <span>System</span>
-          <span> {">"} </span>
-          <span>Funcionário</span>
-        </div>
-        <div className="bar-home">
-          <button id="bar-home-btn-new" className="btn btn-dark btn-new-employee" onClick={() => toogleClass('bar-home-btn-new')}>Novo</button>
-          <SearchEmployee />
-        </div>
-        <div className="content-form animate-down">
+        <MenuRouterActivity />
+        <BarHome />
+        <div className="content-form">
           <FormEmployee />
         </div>
-
-        <div> 
+        <div className="content-table"> 
           <TableEmployee />
         </div>
       </main>

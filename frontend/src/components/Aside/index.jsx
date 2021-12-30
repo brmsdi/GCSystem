@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import ItemMenu from "./ItemMenu";
+import SubMenu from "./SubMenu";
 
 const Aside = () => {
   function clickColapseMenu() {
@@ -17,67 +18,59 @@ const Aside = () => {
         <span className="text animate-right">SYSTEM</span>
         <div className="btn-co">
           <button className="btn-menu" onClick={clickColapseMenu}>
-              <ion-icon name="menu-outline"></ion-icon>
+            <ion-icon name="menu-outline"></ion-icon>
           </button>
         </div>
       </div>
       <hr />
       <div className="aside-body animate-right">
-        <div className="menu">
-          <div className="menu-title">
-            <span className="menu-icon">
-              <ion-icon name="layers-outline"></ion-icon>
-            </span>
-            <span className="menu-text">Gerenciar</span>
-          </div>
-          <div className="sub-menu">
-            <Link to="">
-              <span className="sub-menu-icon">
-                <ion-icon name="business-outline"></ion-icon>
-              </span>
-              <span className="text-submenu">Condomínio</span>
-              <span className="tooltip-submenu">Gerenciar condomínio</span>
-            </Link>
-          </div>
-          <div className="sub-menu active">
-          <Link to="">
-            <span className="sub-menu-icon">
-              <ion-icon name="people-outline"></ion-icon>
-            </span>
-            <span className="text-submenu">Funcionário</span>
-            <span className="tooltip-submenu">Gerenciar funcionário</span>
-          </Link>
-          </div>
-        </div>
-        <div className="menu">
-          <div className="menu-title">
-            <span className="menu-icon">
-              <ion-icon name="layers-outline"></ion-icon>
-            </span>
-            <span className="menu-text">Gerenciar</span>
-          </div>
-          <div className="sub-menu">
-            <Link to="">
-              <span className="sub-menu-icon">
-                <ion-icon name="business-outline"></ion-icon>
-              </span>
-              <span className="text-submenu">Condomínio</span>
-              <span className="tooltip-submenu">Gerenciar condomínio</span>
-            </Link>
-          </div>
-          <div className="sub-menu">
-          <Link to="">
-            <span className="sub-menu-icon">
-              <ion-icon name="people-outline"></ion-icon>
-            </span>
-            <span className="text-submenu">Funcionário</span>
-            <span className="tooltip-submenu">Gerenciar funcionário</span>
-          </Link>
-          </div>
-        </div>
+        <ItemMenu
+          menuIcon="layers-outline"
+          menuText="Gerenciar"
+          key={1}
+          subMenus={[
+            <SubMenu
+              iconSubMenu="business-outline"
+              subMenuText="Condomínio"
+              subMenuToolTip="Gerenciar condomínio"
+              key={1}
+              id="sub-menu-condominium"
+            />,
+            <SubMenu
+              iconSubMenu="people-outline"
+              subMenuText="Funcionário"
+              subMenuToolTip="Gerenciar funcionário"
+              activated
+              key={2}
+              id="sub-menu-employee"
+            />
+          ]}
+        />
+        <ItemMenu
+          menuIcon="layers-outline"
+          menuText="Gerenciar"
+          key={2}
+          subMenus={[
+            <SubMenu
+              iconSubMenu="business-outline"
+              subMenuText="Condomínio"
+              subMenuToolTip="Gerenciar condomínio"
+              key={3}
+              id="sub-menu-condominium2"
+            />,
+            <SubMenu
+              iconSubMenu="people-outline"
+              subMenuText="Funcionário"
+              subMenuToolTip="Gerenciar funcionário"
+              key={4}
+              id="sub-menu-employe2"
+            />
+          ]}
+        />
       </div>
     </aside>
   );
-};
+}
+
 
 export default Aside;

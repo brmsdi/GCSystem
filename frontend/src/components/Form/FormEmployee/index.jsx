@@ -3,7 +3,7 @@ const FormEmployee = () => {
     <form>
       <div className="row">
         <div className="form-group col-md-6">
-          <label for="inpturName">Nome</label>
+          <label htmlFor="inpturName">Nome</label>
           <input
             type="text"
             className="form-control"
@@ -12,7 +12,7 @@ const FormEmployee = () => {
           />
         </div>
         <div className="form-group col-md-2">
-          <label for="inputRG">RG</label>
+          <label htmlFor="inputRG">RG</label>
           <input
             type="text"
             className="form-control"
@@ -21,7 +21,7 @@ const FormEmployee = () => {
           />
         </div>
         <div className="form-group col-md-3">
-          <label for="inputCPF">CPF</label>
+          <label htmlFor="inputCPF">CPF</label>
           <input
             type="number"
             className="form-control"
@@ -32,11 +32,11 @@ const FormEmployee = () => {
       </div>
       <div className="row">
         <div className="form-group col-md-2">
-          <label for="inputBirth">Data de Nascimento</label>
+          <label htmlFor="inputBirth">Data de Nascimento</label>
           <input type="date" className="form-control" id="inputBirth" />
         </div>
         <div className="form-group col-md-4">
-          <label for="inputEmail">E-mail</label>
+          <label htmlFor="inputEmail">E-mail</label>
           <input
             type="email"
             className="form-control"
@@ -45,24 +45,33 @@ const FormEmployee = () => {
           />
         </div>
         <div className="form-group col-md-2">
-          <label for="inputOffice">Cargo</label>
+          <label htmlFor="inputOffice">Cargo</label>
           <select id="inputOffice" className="form-control">
-            <option>Adm</option>
-            <option>Adm 2</option>
-            <option>Adm 3</option>
+            <option>Administrador</option>
+            <option>Contador</option>
           </select>
         </div>
         <div className="form-group col-md-3">
-          <label for="inputSpecialtyy">Especialidade</label>
-          <select id="inputSpecialtyy" className="form-control">
+          <label htmlFor="inputSpecialty">Especialidade</label>
+          <select id="inputSpecialty" className="form-control">
+            <option></option>
             <option>Eletricista</option>
           </select>
         </div>
       </div>
       <div className="row">
         <div className="form-group col-md-2">
-          <label for="inputHiring">Data de contratação</label>
+          <label htmlFor="inputHiring">Data de contratação</label>
           <input type="date" className="form-control" id="inputHiring" />
+        </div>
+        <div className="form-group col-md-3">
+          <label htmlFor="inputPassword">Senha de acesso</label>
+          <input
+            type="password"
+            className="form-control"
+            id="inputPassword"
+            placeholder="Senha"
+          />
         </div>
       </div>
       <div className="row btns">

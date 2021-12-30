@@ -5,7 +5,7 @@ const SearchEmployee = () => {
         <input
           type="number"
           className="form-control"
-          id="inputCPF"
+          id="inputCPFSearch"
           placeholder="CPF"
         />
         <button type="submit" className="btn btn-secondary btn-lg active">

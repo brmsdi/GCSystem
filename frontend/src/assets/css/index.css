@@ -1,15 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500&family=Poppins:wght@200;300;400;500;600&display=swap');
-
+/*@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500&family=Poppins:wght@200;300;400;500;600&display=swap'); */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
-    
-    
 }
 
 :root {
@@ -23,7 +20,7 @@ body {
 
 ::-webkit-scrollbar {
     width: 0px;
-  }
+}
 
 h1 {
     color:var(--clr);
@@ -43,23 +40,26 @@ label {
     color: var(--clr);
 }
 
-
 .content {
     display: flex;
 }
 
 .content-main {
     position: absolute;
-    display: block;
     left: calc(100% - 84%);
     width: 84%;
-    transition: 0.5s;
-    padding: 10px;
+    height: auto;
+    padding: 11px;
+    transition: left 0.5s;
 }
 
+
 .content-main.large  {
-    left: calc(100% - 95%);
+    /*left: calc(100% - 95%);
+    width: 95%; */
+    left: 57.0312px;
     width: 95%;
+    min-width: 655.953px;
 } 
 
 main button {

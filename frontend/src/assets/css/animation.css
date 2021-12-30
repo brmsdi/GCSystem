@@ -8,6 +8,11 @@
     animation-duration: 400ms;
 }
 
+.animate-opac {
+    animation-name: opac;
+    animation-duration: 2s;
+}
+
 @keyframes right {
     from {
         transform: translateX(-100%);
@@ -19,9 +24,17 @@
 
 @keyframes down {
     from {
-        transform: translateY(-5%);
+        transform: translateY(-100%);
     } to {
         transform: translateY(0);
     }
     
+}
+
+@keyframes opac {
+    from {
+        opacity: 0;
+    } to {
+        opacity: 1;
+    }
 }

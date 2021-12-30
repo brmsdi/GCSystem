@@ -1,0 +1,35 @@
+{ 
+    "employees": [
+        {
+            "id": "1",
+            "name": "Wisley Bruno Marques França",
+            "RG": "1235265",
+            "CPF": "02356325536",
+            "email": "srmarquesms@gmail.com",
+            "role": "Analista de sistemas",
+            "specialty": ["Desenvolvedor"], 
+            "hiringDate": "01/01/2022"
+        },
+        {
+            "id": "2",
+            "name": "Wisley Bruno Marques França",
+            "RG": "1235265",
+            "CPF": "02356325536",
+            "email": "srmarquesms@gmail.com",
+            "role": "Analista de sistemas",
+            "specialty": ["Desenvolvedor"], 
+            "hiringDate": "01/01/2022"
+        },
+        {
+            "id": "3",
+            "name": "Wisley Bruno Marques França",
+            "RG": "1235265",
+            "CPF": "02356325536",
+            "email": "srmarquesms@gmail.com",
+            "role": "Analista de sistemas",
+            "specialty": ["Desenvolvedor"], 
+            "hiringDate": "01/01/2022"
+        }
+    ]  
+
+}

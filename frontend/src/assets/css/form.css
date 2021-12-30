@@ -1,10 +1,17 @@
 .content-form {
-    display: none;
+    position: relative;
+    display: block;
+    height: 0px;
+    opacity: 0;
     padding: 5px;
+    transition-property: height, opacity;
+    transition-duration: 1.2s, 2s;
+    transition-delay: 0s, 200ms;
 }
 
 .content-form.active {
-    display: block;
+    height: 300px;
+    opacity: 1;
 }
 
 .content-form .row {

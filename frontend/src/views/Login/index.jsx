@@ -1,9 +1,8 @@
-
 const Login = () => {
     return(
-        <div>
-            Login!
-        </div>
+        <main className="box">
+            
+        </main>
     )
 }
 export default Login;

@@ -1,12 +1,11 @@
-import { Route, Routes } from "react-router-dom";
-import Login from "../../views/Login";
 
-const isValidToken = () => {
+export default function isValidToken() {
     return true;
 }
 
+
+/*
 const PrivateRoutes = ({ component: Component, ...rest }) => ( 
-    <Routes>
         <Route 
             { ...rest } 
             element = { 
@@ -18,7 +17,7 @@ const PrivateRoutes = ({ component: Component, ...rest }) => (
                 )
             }
         />
-    </Routes>)
-    
-    export default PrivateRoutes;
+    ) 
+ 
+    export default PrivateRoutes; */
 
