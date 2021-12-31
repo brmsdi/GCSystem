@@ -2,6 +2,7 @@ import Aside from "components/Aside";
 import BarHome from "components/BarHome";
 import FormEmployee from "components/Form/FormEmployee";
 import MenuRouterActivity from "components/MenuRouterActivity";
+import PaginationTableEmployee from "components/Pagination/PaginationTableEmployee";
 import TableEmployee from "components/Table/TableEmployee";
 
 const Home = () => {
@@ -24,7 +25,8 @@ const Home = () => {
         <div className="content-form">
           <FormEmployee />
         </div>
-        <div className="content-table"> 
+        <div className="content-table">
+          <PaginationTableEmployee />
           <TableEmployee />
         </div>
       </main>

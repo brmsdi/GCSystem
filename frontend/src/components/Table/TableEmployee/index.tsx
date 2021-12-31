@@ -1,9 +1,16 @@
 import { useSelector } from "react-redux";
 import { selectAllEmployees } from "store/Employees/Employees.selectors";
+import { Employee } from "types/Employee";
 
 const TableEmployee = () => {
-  const employees = useSelector(selectAllEmployees);
-  var data = employees.map(item => {
+/*  const employees = useSelector(selectAllEmployees);
+  var data = employees.map((item) => {
+    return <ItemTable key={item.id} item={item} />;
+  }) */
+
+  var employeesList: Employee[] = useSelector(selectAllEmployees);
+  
+  var data = employeesList.map((item: Employee) => {
     return <ItemTable key={item.id} item={item} />;
   })
   
@@ -23,14 +30,14 @@ const TableEmployee = () => {
           </tr>
         </thead>
         <tbody>
-          {data}
+        {data}
         </tbody>
       </table>
     </div>
   );
 }
-
-const ItemTable = ({ item }) => {
+const ItemTable = (props: {item: Employee }) => {
+  let item = props.item;
   return (
     <tr>
       <th scope="row">{item.id}</th>
@@ -42,7 +49,7 @@ const ItemTable = ({ item }) => {
       <td>{item.specialty}</td>
       <td>{item.hiringDate}</td>
     </tr>
-  );
-};
+  ) 
+} 
 
 export default TableEmployee;

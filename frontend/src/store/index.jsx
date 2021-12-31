@@ -1,8 +1,9 @@
 import { combineReducers, createStore } from 'redux';
-import EmployeesReducer from './Employees/Employees.reducer';
+import EmployeesReducer, { setStateFormReducer } from './Employees/Employees.reducer';
 
 const rootReducer = combineReducers({
-    employees: EmployeesReducer
+    employees: EmployeesReducer,
+    stateForm: setStateFormReducer
 });
 
 const store = createStore(rootReducer);

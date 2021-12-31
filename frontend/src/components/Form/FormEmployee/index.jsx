@@ -1,4 +1,11 @@
+import { useSelector } from "react-redux";
+import { selectStateForm } from "store/Employees/Employees.selectors";
+
 const FormEmployee = () => {
+
+  var stateForm = useSelector(selectStateForm);
+
+  
   return (
     <form>
       <div className="row">
@@ -9,6 +16,7 @@ const FormEmployee = () => {
             className="form-control"
             id="inputName"
             placeholder="Nome completo"
+            disabled={!stateForm.active}
           />
         </div>
         <div className="form-group col-md-2">
@@ -18,6 +26,7 @@ const FormEmployee = () => {
             className="form-control"
             id="inputRG"
             placeholder="RG"
+            disabled={!stateForm.active}
           />
         </div>
         <div className="form-group col-md-3">
@@ -27,13 +36,14 @@ const FormEmployee = () => {
             className="form-control"
             id="inputCPF"
             placeholder="CPF"
+            disabled={!stateForm.active}
           />
         </div>
       </div>
       <div className="row">
         <div className="form-group col-md-2">
           <label htmlFor="inputBirth">Data de Nascimento</label>
-          <input type="date" className="form-control" id="inputBirth" />
+          <input type="date" className="form-control" id="inputBirth" disabled={!stateForm.active}/>
         </div>
         <div className="form-group col-md-4">
           <label htmlFor="inputEmail">E-mail</label>
@@ -42,18 +52,19 @@ const FormEmployee = () => {
             className="form-control"
             id="inputEmail"
             placeholder="E-mail"
+            disabled={!stateForm.active}
           />
         </div>
         <div className="form-group col-md-2">
           <label htmlFor="inputOffice">Cargo</label>
-          <select id="inputOffice" className="form-control">
+          <select id="inputOffice" className="form-control" disabled={!stateForm.active}>
             <option>Administrador</option>
             <option>Contador</option>
           </select>
         </div>
         <div className="form-group col-md-3">
           <label htmlFor="inputSpecialty">Especialidade</label>
-          <select id="inputSpecialty" className="form-control">
+          <select id="inputSpecialty" className="form-control" disabled={!stateForm.active}>
             <option></option>
             <option>Eletricista</option>
           </select>
@@ -62,7 +73,7 @@ const FormEmployee = () => {
       <div className="row">
         <div className="form-group col-md-2">
           <label htmlFor="inputHiring">Data de contratação</label>
-          <input type="date" className="form-control" id="inputHiring" />
+          <input type="date" className="form-control" id="inputHiring" disabled={!stateForm.active} />
         </div>
         <div className="form-group col-md-3">
           <label htmlFor="inputPassword">Senha de acesso</label>
@@ -71,6 +82,7 @@ const FormEmployee = () => {
             className="form-control"
             id="inputPassword"
             placeholder="Senha"
+            disabled={!stateForm.active}
           />
         </div>
       </div>

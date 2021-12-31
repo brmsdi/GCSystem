@@ -2,20 +2,28 @@
     position: relative;
     display: block;
     height: 0px;
+    padding: 10px;
     opacity: 0;
-    padding: 5px;
     transition-property: height, opacity;
     transition-duration: 1.2s, 2s;
     transition-delay: 0s, 200ms;
+    background-color: tomato;
+    
 }
 
 .content-form.active {
-    height: 300px;
+    height: calc(15.5vh + 15.5vw);
     opacity: 1;
 }
 
 .content-form .row {
+    position: relative;
     margin-top: 5px;
+    margin: 6px;
+    background-color: chartreuse;
+}
+.content-form .row .form-group  {
+    background-color: crimson;
 }
 
 .content-form .btns  {

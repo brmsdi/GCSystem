@@ -1,4 +1,8 @@
+
+.content-table nav ul li a {
+    color: var(--clr);
+}
+
 .table-responsive {
     position: relative;
-    margin-top: 10px;
 }

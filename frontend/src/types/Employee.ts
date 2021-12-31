@@ -5,7 +5,7 @@ export type Employee = {
     CPF: string;
     email: string;
     role: string;
-    especialty?: string[];
+    specialty?: string[];
     hiringDate: string;
 
 }
