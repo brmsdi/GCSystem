@@ -11,7 +11,7 @@ const BarHome = () => {
     if (form != null) {
       form.classList.toggle("active");
       form.classList.contains('active') ?
-       dispatch(setStateFormAction(StateFormEnum.EDITING)) 
+       dispatch(setStateFormAction(StateFormEnum.SAVING)) 
        :
        dispatch(setStateFormAction(StateFormEnum.NOACTION));
    

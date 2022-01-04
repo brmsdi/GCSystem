@@ -1,19 +1,17 @@
 aside.asidebar {
+    position: fixed;
     display: flex;
     flex-direction: column;
-    position: fixed;
-    width: calc(100% - 84%);
-    height: 100%;
+    width: calc(100% - 86%);
+    height: 100vh;
     padding: 10px;
     color: #fff;
     background-color: var(--clr);
-    transition: 0.5s;
     z-index: 2;
 }
 
 aside.asidebar.active {
-    width: 60px;
-    min-width: 60px;
+    width: 4%;
 }
 
 aside .aside-header {

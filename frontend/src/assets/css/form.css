@@ -1,29 +1,101 @@
 .content-form {
-    position: relative;
-    display: block;
-    height: 0px;
-    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 0;
     opacity: 0;
+    overflow:hidden;
+    transition-property: max-height, opacity;
+    transition-duration: 1.8s, 2s;
+}
+
+.content-form.active {
+    max-height: 1000px;
+    opacity: 1;
+}
+
+.content-form form {
+    width: 94%;
+}
+
+.content-form .row-form-1 {
+    display: flex;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.form-container {
+    margin: 5px;
+}
+
+.form-container.l2 {
+    width: 20%;
+}
+
+.form-container.l3 {
+    width: 30%;
+}
+
+.form-container.l4 {
+    width: 40%;
+}
+
+@media (max-width: 713px) {
+    .content-form .row-form-1 {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 0px;
+    }
+
+    .form-container.l1,
+    .form-container.l2,
+    .form-container.l3,
+    .form-container.l4,
+    .form-container.l5,
+    .form-container.l6,
+    .form-container.l7,
+    .form-container.l8,
+    .form-container.l9,
+    .form-container.l10
+    {
+        width: 100%;
+    }
+}
+
+/*
+.content-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 0px;
+    opacity: 1;
     transition-property: height, opacity;
     transition-duration: 1.2s, 2s;
     transition-delay: 0s, 200ms;
-    background-color: tomato;
     
 }
 
 .content-form.active {
-    height: calc(15.5vh + 15.5vw);
+    height: calc(19vh + 19vw);
     opacity: 1;
 }
 
 .content-form .row {
-    position: relative;
-    margin-top: 5px;
-    margin: 6px;
     background-color: chartreuse;
+    position: relative;
+    height: 20%;
 }
+
+.content-form form {
+    background-color: darkblue;
+    height: 98%;
+    width: 98%;
+}
+
 .content-form .row .form-group  {
     background-color: crimson;
+    height: 100%;
 }
 
 .content-form .btns  {
@@ -37,5 +109,8 @@
 
 .content-form input, .content-form select {
     border-radius: 8px;
-    padding: 10px;
+    background-color: aquamarine;
+    height: 50%;
+    width: 98%;
 }
+*/

@@ -18,5 +18,8 @@ export type CurrentStateForm = {
 
 export enum StateFormEnum {
     NOACTION = "NOACTION",
-    EDITING = "EDITING"
+    EDITING = "EDITING",
+    SAVING = "SAVING",
+    NEW = "Novo",
+    UPDATE = "Atualizar"
 }

@@ -23,9 +23,9 @@ export function setStateFormReducer(currentStateForm: CurrentStateForm = {activi
                     active: false
                 }
                 return stateCurrent;
-            } else if(action.activity ===  StateFormEnum.EDITING ) {
+            } else if(action.activity ===  StateFormEnum.SAVING ) {
                 let stateCurrent: CurrentStateForm = {
-                    activity: StateFormEnum.EDITING,
+                    activity: StateFormEnum.NEW,
                     active: true
                 }
                 return stateCurrent;

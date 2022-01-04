@@ -4,13 +4,14 @@
 }
 
 .animate-down {
-    animation-name: down;
+    animation: down;
     animation-duration: 400ms;
 }
 
 .animate-opac {
-    animation-name: opac;
-    animation-duration: 2s;
+    animation: opac 2s;
+   /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+    
 }
 
 @keyframes right {

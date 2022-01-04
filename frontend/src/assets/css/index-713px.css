@@ -1,9 +1,40 @@
 /* 713px */
 
-@media (max-width: 713px) {
+@media (max-width: 1315px) {
+    aside.asidebar.active {
+        width: 5%;
+        background-color:blue;
+    }
+
+    .content-main.large {
+        left: 5%;
+        width: 95%;
+       /* min-width: 655.953px; */
+    }
+
+}
+
+@media (max-width: 1000px) {
+    aside.asidebar.active {
+        width: 6%;
+        background-color:brown;
+    }
+
+    .content-main.large {
+        left: 6%;
+        width: 94%;
+       /* min-width: 655.953px; */
+    }
+}
+
+@media (max-width: 930px) {
     aside.asidebar {
-        width: 8%;
-        min-width: 57.0312px;
+        width: 7%;
+        background-color: blueviolet;
+    }
+
+    aside.asidebar.active {
+        width: 7%;
     }
     
     aside.asidebar .aside-header .text, 
@@ -60,11 +91,73 @@
         display: none;
     }
 
-    main.content-main {
-        position: absolute;
-        left: 57.0312px;
-        width: 92%;
-        min-width: 655.953px;
-        transition: 0.5s;
+    .content-main {
+        left: 7%;
+        width: 93%;
     }
+
+    .content-main.large {
+        left: 7%;
+        width: 93%;
+       /* min-width: 655.953px; */
+    }
+
+
   }
+
+  @media (max-width: 740px) {
+    aside.asidebar.active {
+        width: 8%;
+        background-color:brown;
+    }
+
+    .content-main.large {
+        left: 8%;
+        width: 92%;
+       /* min-width: 655.953px; */
+    }
+    
+  } 
+
+  @media (max-width: 640px) {
+    aside.asidebar.active {
+        width: 9%;
+        background-color:brown;
+    }
+
+    .content-main.large {
+        left: 9%;
+        width: 91%;
+       /* min-width: 655.953px; */
+    }
+    
+  } 
+
+  @media (max-width: 550px) {
+    aside.asidebar.active {
+        width: 10%;
+        background-color:brown;
+    }
+
+    .content-main.large {
+        left: 10%;
+        width: 90%;
+       /* min-width: 655.953px; */
+    }
+    
+  } 
+
+  
+  @media (max-width: 510px) {
+    aside.asidebar.active {
+        width: 11%;
+        background-color:cadetblue;
+    }
+
+    .content-main.large {
+        left: 11%;
+        width: 89%;
+       /* min-width: 655.953px; */
+    }
+    
+  } 
