@@ -13,7 +13,12 @@ export function setStateFormAction(state: string ) {
         type: 'SET-STATE-FORM',
         activity: state
     }
-
-
     return stateForm;
 } 
+
+export function setCurrentPaginationAction(state: number) {
+    return { 
+        type: 'SET-CURRENT-PAGINATION-TABLE-EMPLOYEES',
+        currentPage: state
+     }
+}

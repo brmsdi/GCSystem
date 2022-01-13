@@ -10,11 +10,10 @@ const MenuRouterActivity = () => {
 
     return(
         <div className="menu-router-activity">
-          <span>System</span>
-          <span> {">"} </span>
-          <span>Funcionário</span>
-          <span> {">"} </span>
-          <span>{activity}</span>
+          <div>
+            <span>&#x3E;</span>
+            <span id="menu-router-activity">{activity}</span>
+          </div>
         </div>
     )
 }

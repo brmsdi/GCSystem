@@ -1,15 +1,89 @@
 const Login = () => {
     return(
-        <>
-        <main className="box">
-            
-        </main>
-        <div className="div-1">
-            <div className="div-2">
-               
+        <div className="lay">
+        <div className="aside">
+            <div className="avo">
+                <span>Header</span>
+                <div className="pai">
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                        
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                    </div>
+                    <div className="neto">
+                        <span>ola</span>
+                        <span className="dialog">ola1</span>
+                        
+                    </div>
+                    
+                </div>
             </div>
+
         </div>
-        </>
+        </div>
     )
 }
 export default Login;

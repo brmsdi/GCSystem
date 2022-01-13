@@ -1,0 +1,43 @@
+.lay {
+    background-color: lightcoral;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+}
+
+.aside {
+    position: relative;
+    background-color: lightgreen;
+    height: 100%;
+    width: 10%;
+}
+
+.avo {
+    position: relative;
+    background-color: lightslategray;
+}
+
+.pai {
+    height: 90%;
+    width: 90%;
+    max-height: 400px;
+    background-color: red;
+    overflow-y: auto;
+}
+
+.neto {
+    padding: 10px;
+    font-size: 20px;
+}
+
+.neto:hover .dialog {
+    display: block;
+}
+
+
+.dialog {
+
+    position: absolute;
+    display: none;
+    transform: translateX(100px);
+}

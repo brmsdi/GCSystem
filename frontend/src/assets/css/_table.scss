@@ -1,0 +1,53 @@
+.content-table {
+    a {
+        color: $--clr;
+    }
+
+    .pagination-mobile {
+        display: none;
+    }
+}
+
+table {
+    position: relative;
+    .thead-min {
+        display: none;
+    }
+}
+
+//BREAKPOINT
+@media (max-width: 900px) {
+    table {
+        display: flex;
+
+        .thead-max {
+            display: none;
+        }
+
+        .thead-min {
+            display: block;
+        }
+
+        tbody {
+            width: 100%;
+        }
+
+        tbody {
+            tr {
+                display: flex;
+                width: 100%;
+                flex-direction: column;
+            }
+
+            tr + tr {
+                margin: 10px 0;
+            }
+        }
+    }
+    
+    .content-table {
+        .pagination-mobile {
+            display: block;
+        }
+    }
+}

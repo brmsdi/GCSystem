@@ -35,3 +35,13 @@ export function setStateFormReducer(currentStateForm: CurrentStateForm = {activi
             return currentStateForm;
     }
 }
+
+export function setCurrentPagination(state: number = 1, action: { type: string, currentPage: number } ) {
+    switch(action.type) {
+        case 'SET-CURRENT-PAGINATION-TABLE-EMPLOYEES':
+            console.log(action.currentPage)
+            return action.currentPage;
+        default:
+            return state;
+    }
+}

@@ -10,20 +10,17 @@ const BarHome = () => {
     let form = document.querySelector(".content-form");
     if (form != null) {
       form.classList.toggle("active");
-      form.classList.contains('active') ?
-       dispatch(setStateFormAction(StateFormEnum.SAVING)) 
-       :
-       dispatch(setStateFormAction(StateFormEnum.NOACTION));
-   
+      form.classList.contains("active")
+        ? dispatch(setStateFormAction(StateFormEnum.SAVING))
+        : dispatch(setStateFormAction(StateFormEnum.NOACTION));
     }
   }
   return (
     <div className="bar-home">
       <button
         id="bar-home-btn-new"
-        className="btn btn-dark btn-new-employee"
-        onClick={() => toogleClass()}
-      >
+        className="btn btn-success btn-new-employee"
+        onClick={() => toogleClass()}>
         Novo
       </button>
       <SearchEmployee />

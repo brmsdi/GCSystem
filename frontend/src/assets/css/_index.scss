@@ -1,0 +1,725 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  font-size: $font-size;
+}
+
+body {
+  background-color: $background-color;
+  height: 100vh;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+h1 {
+  font-weight: 600;
+  color: $--color-v4;
+  font-size: calc(1.4vh + 1.4vw);
+}
+
+span + span {
+  padding-left: 5px;
+}
+
+label {
+  padding-bottom: 3px;
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.01rem;
+  color: $--clr;
+}
+
+input,
+select {
+  border-radius: 0.25rem;
+  width: 100%;
+  padding: 0.675rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+}
+
+input:focus,
+select:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+hr {
+  color: $--color-v2;
+}
+
+a {
+  text-decoration: none;
+}
+
+.content-main {
+  position: absolute;
+  left: 54.625px;
+  width: calc(100% - 54.625px);
+  padding: 11px;
+  transition: left 400ms;
+}
+/*
+.content-main.large {
+  top: 10px;
+  left: 4%;
+  width: 96%;
+}
+*/
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  color: $--color-v4;
+  font-weight: 400;
+
+  div {
+    button {
+      &:focus {
+        background-color: black;
+      }
+    }
+  }
+}
+
+#info-click {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  z-index: $z-index-info-account-click;
+  background-color: red !important;
+}
+
+#info-click.active {
+  display: block;
+}
+
+.account-info {
+  position: absolute;
+  right: 10px;
+  top: 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 8% 8% 0 0;
+  color: $background-color;
+  font-weight: 400;
+  transform: translateY(-140%);
+  transition: all 0.2s;
+  z-index: $z-index-info-account-click;
+
+  .account-info-user {
+    background-color: #6a5acd;
+    padding: 8px;
+    border-radius: 8% 8% 0 0;
+    .account-info-user-icon {
+      margin: 0 auto;
+      font-size: 2.2rem;
+      text-align: center;
+    }
+    .account-info-role {
+      font-style: italic;
+    }
+  }
+  .account-info-options {
+    padding: 10px;
+    font-weight: 500;
+    a {
+      color: $--color-v2;
+    }
+  }
+}
+
+.account-info.active {
+  transform: translateY(0);
+}
+
+.menu-router-activity {
+  color: #444;
+  padding: 10px;
+}
+
+#menu-router-activity {
+  color: #777777;
+}
+
+.bar-home {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: calc(2vh + 2vw);
+  width: 100%;
+  padding: 2px;
+  
+
+  > button {
+    font-size: calc(0.6vh + 0.6vw);
+    height: 90%;
+  }
+
+  form {
+    height: 100%;
+    .div-search {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      padding: 2px;
+      input {
+        height: 100%;
+        width: 80%;
+        border-radius: 0.25rem 0px 0px 0.25rem;
+        margin: 0;
+        &:focus {
+          box-shadow: none;
+        }
+      }
+  
+      button {
+        height: 100%;
+        width: 20%;
+        border-radius: 0px 0.25rem 0.25rem 0px;
+        margin: 0;
+        font-size: 0.89rem;
+      }
+    }
+  }
+
+ 
+}
+
+@media screen and (min-width: 320px) {
+  header {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: calc(3.5vh + 3.5vw);
+    width: calc(3.5vh + 3.5vw);
+    z-index: $z-index-aside-header;
+    
+    aside {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: $--clr;
+      height: 0;
+      width: 0;
+  
+      .btn-co {
+        position: absolute;
+        height: 3.5rem;
+        width: 3.5rem;
+        top: .35rem;
+        left: .35rem;
+        font-size: 1.5rem;
+        button {
+          height: 100%;
+          width: 100%;
+          background-color: $--clr;
+          color: #fff;
+          border-style: solid;
+          border-radius: .8rem;
+        }
+      }
+  
+      .aside-header {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        height: 4rem;
+        width: 100%;
+        color: #fff;
+        font-size: 1.3rem;
+      }
+      hr {
+        color: #fff;
+        width: 100%;
+      }
+      .aside-body {
+        display: none;
+        height: 70%;
+        width: 100%;
+        flex-direction: column;
+        overflow-y: scroll;
+        
+      }
+    }
+  }
+
+  header.open {
+    height: 100vh;
+    width: 100vw;
+
+    aside {
+      height: 100%;
+      width: 100%;
+      justify-content: flex-start;
+
+      .aside-header {
+        display: flex;
+      }
+      
+      .aside-body {
+        display: flex;
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  .menu {
+    margin: 0 1rem;
+    font-size: 1.3rem;
+    font-weight: 450;
+    letter-spacing: .01rem;
+    color: $--color-v3;
+    .menu-title {
+      padding: .1rem;
+      .menu-icon {
+        font-size: 1.1em;
+      }
+      .menu-text {
+        font-size: 1.4rem;
+      }
+    }
+  }
+
+  .sub-menu {
+    width: 90%;
+    margin: .1rem 2.2rem;
+    display: flex;
+    font-size: 1.3rem;
+    a {
+      width: 100%;
+      color: $--color-v3;
+      padding: 1rem;
+      border-radius: 1rem;
+    }
+
+    .tooltip-submenu {
+      display: none;
+    }
+  }
+
+
+.sub-menu.active {
+  a {
+    background-color: #fff;
+    color: $--clr;
+    font-weight: 600;
+  }
+}
+
+.content-main {
+  width: 100%;
+  left: 0;
+}
+ 
+.home-header {
+  justify-content: center;
+  align-items: center;
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .div-btn-account {
+    display: none;
+  }
+}
+
+.menu-router-activity {
+  margin-top: .5rem;
+}
+
+.bar-home {
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  height: 7.3rem;
+
+  > button {
+    font-size: 1rem;
+    height: 40%;
+    margin: .5rem 0;
+  }
+
+  form {
+    height: 60%;
+    width: 100%;
+    .div-search {
+      width: 100%;
+    }
+  }
+  
+}
+  .pagination {
+    height: 2.7rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .bar-home {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 3.8rem;
+    > button {
+      height: 90%;
+    }
+
+    form {
+      height: 90%;
+      width: 30%;
+      margin: 0;
+    }
+  }
+  
+}
+
+@media screen and (min-width: 800px) {
+  .content-main {
+    left: calc(3.5vh + 3.5vw);
+    width: calc(100% -  calc(3.5vh + 3.5vw));
+  }
+
+  header {
+    height: 100vh;
+    aside {
+      height: 100%;
+      width: calc(3.5vh + 3.5vw);
+      justify-content: flex-start;
+      transition-property: width;
+      transition-duration: 100ms;
+
+      .btn-co {
+        height: 2.8rem;
+        width: 2.8rem;
+        font-size: 1.1rem;
+      }
+
+      .aside-header {
+        font-size: 1.1rem;
+      }
+
+      hr {
+        margin-top: 4rem;
+      }
+
+      .aside-body {
+        display: block;
+        width: 100%;
+      }
+
+    }
+  }
+
+  .menu {
+    margin: 0;
+    .menu-title {
+      padding: 0;
+      text-align: center;
+      .menu-text, .menu-icon {
+        display: none;
+      }
+    }
+  }
+
+  .sub-menu {
+    margin: 0;
+    font-size: 1.45rem;
+    padding: .1rem;
+    a {
+      padding: 0;
+      text-align: center;
+      border-radius: 4%;
+    }
+    .text-submenu {
+      display: none;
+    }
+  }
+
+  header.open {
+    width: 100vw;
+    aside {
+      height: 100%;
+      width: 25%;
+      justify-content: flex-start;
+
+      .aside-header {
+        display: flex;
+      }
+      hr {
+        margin-top: .2rem;
+      }
+      .aside-body {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+    }
+
+    .menu {
+      margin: 0 .5rem;
+      width: 100%;
+      .menu-title {
+        padding: .1rem;
+        text-align: start;
+        .menu-text, .menu-icon {
+          display: inline-block;
+        }
+        .menu-icon {
+          font-size: 1.1em;
+        }
+        .menu-text {
+          font-size: 1.1rem;
+        }
+      }
+    }
+
+    .sub-menu {
+      display: flex;
+      width: 80%;
+      margin: 0 1.3rem;
+      font-size: 1rem;
+
+      a {
+        width: 100%;
+        color: $--color-v3;
+        padding: .6rem;
+        border-radius: 1rem;
+        text-align: start;
+      }
+
+      .text-submenu {
+        display: inline-block;
+      }
+    }
+  
+  
+    .sub-menu.active {
+      a {
+        background-color: #fff;
+        color: $--clr;
+        font-weight: 600;
+      }
+    }
+
+  }
+
+}
+/* Responsive */
+
+/* 425px 
+@media (max-width: 425px) {
+  aside.asidebar {
+    left: 0px;
+    height: 50px;
+    min-height: 50px;
+    width: 50px;
+    transition-property: width, height, background-color;
+    transition-duration: 1s, 1s, 1.4s;
+    transition-timing-function: ease, ease, ease-in;
+    background-color: rgb(240, 248, 255);
+    .btn-co {
+      top: 5px;
+      left: 5px;
+      height: 45px;
+      width: 45px;
+      margin: 0;
+      .btn-menu {
+        font-size: 4vw;
+      }
+    }
+    .tooltip-submenu {
+      display: none;
+    }
+
+    .aside-info-user {
+      height: 100vh;
+      display: none;
+      flex-direction: column;
+      justify-content: flex-end;    
+      
+      .account-info {
+        position: relative;
+        color: $--color-v3;
+        transform: translateY(0);
+        right: 0;
+        top: 0;
+        
+        .account-info-user {
+          background-color:  $--clr;
+          padding: 8px;
+          border-radius: 8% 8% 0 0;
+          .account-info-user-icon {
+            margin: 0 auto;
+            font-size: 2.3rem;
+            text-align: center;
+          }
+          .account-info-role {
+            font-style: italic;
+          }
+        }
+        .account-info-options {
+          text-align: end;
+          a {
+            color: $--color-v2;
+            font-size: 1.3rem;
+            
+          }
+        }
+      
+      }
+  }
+  }
+
+  aside.asidebar.active {
+    height: 100vh;
+    width: 100vw;
+    transition-property: width, height;
+    transition-duration: 1s, 1s;
+    background-color: $--clr;
+    .btn-co {
+      top: 5px;
+      left: 5px;
+      right: 0px;
+      margin: 0;
+      height: 45px;
+      width: 45px;
+      .btn-menu {
+        font-size: 4vw;
+      }
+    }
+    .aside-header {
+      justify-content: center;
+      font-size: calc(1.9vh + 1.9vw);
+      .text {
+        display: block;
+      }
+    }
+    hr {
+      margin-top: 3vh;
+    }
+    .menu-title {
+      width: 100%;
+      margin-bottom: 3px;
+      padding: 5px;
+      font-weight: 600;
+      .menu-text {
+        display: block;
+        font-size: 1.4rem;
+      }
+    }
+  }
+
+  aside .menu {
+    display: none;
+  }
+
+  aside.asidebar.active .menu {
+    display: flex;
+  }
+
+  aside .sub-menu {
+    display: flex;
+  }
+
+  aside.asidebar.active {
+    .sub-menu {
+      display: flex;
+      width: 90%;
+      font-size: 1.2rem;
+      .sub-menu-icon {
+        font-size: 1.7rem;
+        margin-right: 8px;
+      }
+      .text-submenu {
+        display: inline;
+      }
+    }
+    .aside-info-user {
+      display: flex;
+    }
+  }
+
+  .content-main {
+    left: 0;
+    width: 100%;
+    height: auto;
+    padding: 11px;
+  }
+
+  .content-main.large {
+    left: 0;
+    width: 100%;
+    
+  }
+
+  .home-header {
+    justify-content: center;
+    font-size: 1rem;
+    h1 {
+      font-size: 1.6rem;
+    }
+  }
+
+  #btn-account {
+    display: none;
+  }
+
+  .menu-router-activity {
+    display: flex;
+    margin-top: 20px;
+  }
+
+  .bar-home {
+    height: calc(8.5vh + 8.5vw);
+    min-height: 98px;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    form {
+      height: 55%;
+      width: 100%;
+    }
+    > button {
+      height: 45%;
+      width: 16%;
+      font-size: 2.8vw;
+      margin: 6px 0;
+    }
+    .div-search {
+      input {
+        width: 84%;
+      }
+
+      button {
+        width: 16%;
+        font-size: 2.8vw;
+      }
+    }
+  }
+
+  .pagination {
+    li {
+      width: 35px;
+    }
+  }
+}
+*/

@@ -1,3 +1,4 @@
+import AccountInformation from "components/AccountInformation";
 import Aside from "components/Aside";
 import BarHome from "components/BarHome";
 import FormEmployee from "components/Form/FormEmployee";
@@ -6,17 +7,38 @@ import PaginationTableEmployee from "components/Pagination/PaginationTableEmploy
 import TableEmployee from "components/Table/TableEmployee";
 
 const Home = () => {
+  //var windowWidth = window.innerWidth;
+  //var windowHeight = window.innerHeight;
+  function setSelectedAccount() {
+    let accountInfo = document.getElementById("id-account-info");
+    let infoClick = document.getElementById("info-click");
+    accountInfo?.classList.toggle("active");
+    if(accountInfo?.classList.contains("active")) {
+     // accountInfo.focus();
+      infoClick?.classList.add("active");
+    } else {
+      infoClick?.classList.remove("active");
+    }
+  } 
+
+  const pagination =  <PaginationTableEmployee />;
+
   return (
     <div className="content">
-      <header>
+      <div id="info-click" onClick={() => setSelectedAccount()}></div>
+      <AccountInformation />
+      <header id="header-aside">
         <Aside />
       </header>
       <main className="content-main animate-right">
         <div className="home-header">
           <h1>{"Funcionários"}</h1>
-          <div>
-            <button type="button" className="btn btn-outline-secondary">
-              Sair
+          <div className="div-btn-account">
+            <button 
+            id="btn-account" 
+            className="btn btn-outline-secondary"
+            onClick={() => setSelectedAccount()}>
+            <i className="bi bi-person-workspace"></i>
             </button>
           </div>
         </div>
@@ -26,8 +48,11 @@ const Home = () => {
           <FormEmployee />
         </div>
         <div className="content-table">
-          <PaginationTableEmployee />
+          { pagination }
           <TableEmployee />
+          <div className="pagination-mobile">
+          { pagination }
+          </div>
         </div>
       </main>
     </div>

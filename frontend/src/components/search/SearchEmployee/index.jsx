@@ -4,12 +4,11 @@ const SearchEmployee = () => {
       <div className="div-search">
         <input
           type="number"
-          className="form-control"
           id="inputCPFSearch"
           placeholder="CPF"
         />
-        <button type="submit" className="btn btn-secondary btn-lg active">
-          <ion-icon name="search-outline"></ion-icon>
+        <button type="submit" className="btn btn-secondary">
+          <i className="bi bi-search"></i>
         </button>
       </div>
     </form>

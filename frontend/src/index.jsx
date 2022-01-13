@@ -4,13 +4,8 @@ import { BrowserRouter, Route, Routes} from "react-router-dom";
 import { Provider } from 'react-redux'
 import store from 'store';
 import 'bootstrap/dist/css/bootstrap.css'
-import 'assets/css/index.css';
-import 'assets/css/aside.css';
-import 'assets/css/animation.css';
-import 'assets/css/form.css';
-import 'assets/css/table.css';
-import 'assets/css/index-713px.css';
-import 'assets/css/login.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
+import 'assets/css/styles.scss';
 import isValidToken from 'routes/PrivateRoutes';
 import App from 'components/App';
 import Login from 'views/Login';

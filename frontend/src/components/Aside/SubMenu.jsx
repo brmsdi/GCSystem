@@ -11,7 +11,7 @@ const SubMenu = (props) => {
       <div id={props.id} className={`sub-menu${active}animate-right`} onClick={() => changeSelectedMenu(props.id)}>
         <Link to="">
           <span className="sub-menu-icon">
-            <ion-icon name={props.iconSubMenu}></ion-icon>
+            <i className={props.iconSubMenu}></i>
           </span>
           <span className="text-submenu animate-opac">{props.subMenuText}</span>
           <span className="tooltip-submenu">{props.subMenuToolTip}</span>
