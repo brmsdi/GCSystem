@@ -5,16 +5,17 @@ import SubMenu from "./SubMenu";
 const Aside = () => {
   function clickColapseMenu() {
    
-    let headerAside = document.getElementById("header-aside");
+    let headerAside = document.getElementById('header-aside');
     //let main = document.querySelector(".content-main");
-    headerAside.classList.toggle("open");
+    headerAside.classList.toggle('open');
     //main.classList.toggle("large");
+    console.log('chamou2')
   }
 
   return (
     <aside>
       <div className="btn-co">
-          <button onClick={clickColapseMenu}>
+          <button onClick={() => clickColapseMenu()}>
             <i className="bi bi-list"></i>
           </button>
       </div>
@@ -52,7 +53,7 @@ const Aside = () => {
         
         <ItemMenu
           menuIcon="bi bi-stack"
-          menuText="Gerenciar"
+          menuText="Solicitação"
           key={2}
           subMenus={[
             <SubMenu
@@ -73,7 +74,7 @@ const Aside = () => {
         />
         <ItemMenu
           menuIcon="bi bi-stack"
-          menuText="Gerenciar"
+          menuText="Financeiro"
           key={3}
           subMenus={[
             <SubMenu
@@ -136,7 +137,7 @@ const Aside = () => {
         />
         <ItemMenu
           menuIcon="bi bi-stack"
-          menuText="Gerenciar"
+          menuText="Conta"
           key={30}
           subMenus={[
             <SubMenu

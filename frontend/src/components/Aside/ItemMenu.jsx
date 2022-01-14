@@ -8,7 +8,6 @@ const ItemMenu = (props) => {
           <span className="menu-text animate-opac">{props.menuText}</span>
         </div>
         {props.subMenus}
-        
       </div>
     );
   }

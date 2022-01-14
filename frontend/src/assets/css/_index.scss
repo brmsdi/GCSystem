@@ -65,146 +65,9 @@ a {
   text-decoration: none;
 }
 
-.content-main {
-  position: absolute;
-  left: 54.625px;
-  width: calc(100% - 54.625px);
-  padding: 11px;
-  transition: left 400ms;
-}
-/*
-.content-main.large {
-  top: 10px;
-  left: 4%;
-  width: 96%;
-}
-*/
-.home-header {
-  display: flex;
-  justify-content: space-between;
-  color: $--color-v4;
-  font-weight: 400;
 
-  div {
-    button {
-      &:focus {
-        background-color: black;
-      }
-    }
-  }
-}
-
-#info-click {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: none;
-  z-index: $z-index-info-account-click;
-  background-color: red !important;
-}
-
-#info-click.active {
-  display: block;
-}
-
-.account-info {
-  position: absolute;
-  right: 10px;
-  top: 55px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-radius: 8% 8% 0 0;
-  color: $background-color;
-  font-weight: 400;
-  transform: translateY(-140%);
-  transition: all 0.2s;
-  z-index: $z-index-info-account-click;
-
-  .account-info-user {
-    background-color: #6a5acd;
-    padding: 8px;
-    border-radius: 8% 8% 0 0;
-    .account-info-user-icon {
-      margin: 0 auto;
-      font-size: 2.2rem;
-      text-align: center;
-    }
-    .account-info-role {
-      font-style: italic;
-    }
-  }
-  .account-info-options {
-    padding: 10px;
-    font-weight: 500;
-    a {
-      color: $--color-v2;
-    }
-  }
-}
-
-.account-info.active {
-  transform: translateY(0);
-}
-
-.menu-router-activity {
-  color: #444;
-  padding: 10px;
-}
-
-#menu-router-activity {
-  color: #777777;
-}
-
-.bar-home {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: calc(2vh + 2vw);
-  width: 100%;
-  padding: 2px;
+@media screen and (min-width: 20em) { // 320px
   
-
-  > button {
-    font-size: calc(0.6vh + 0.6vw);
-    height: 90%;
-  }
-
-  form {
-    height: 100%;
-    .div-search {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 100%;
-      padding: 2px;
-      input {
-        height: 100%;
-        width: 80%;
-        border-radius: 0.25rem 0px 0px 0.25rem;
-        margin: 0;
-        &:focus {
-          box-shadow: none;
-        }
-      }
-  
-      button {
-        height: 100%;
-        width: 20%;
-        border-radius: 0px 0.25rem 0.25rem 0px;
-        margin: 0;
-        font-size: 0.89rem;
-      }
-    }
-  }
-
- 
-}
-
-@media screen and (min-width: 320px) {
   header {
     position: fixed;
     display: flex;
@@ -214,7 +77,14 @@ a {
     height: calc(3.5vh + 3.5vw);
     width: calc(3.5vh + 3.5vw);
     z-index: $z-index-aside-header;
-    
+
+    #headerEvent {
+      position: absolute;
+      display: none;
+      width: 100vw;
+      height: 100vh;
+    } 
+
     aside {
       display: flex;
       flex-direction: column;
@@ -223,6 +93,7 @@ a {
       background-color: $--clr;
       height: 0;
       width: 0;
+      z-index: $z-index-aside;
   
       .btn-co {
         position: absolute;
@@ -240,7 +111,6 @@ a {
           border-radius: .8rem;
         }
       }
-  
       .aside-header {
         display: none;
         justify-content: center;
@@ -256,14 +126,44 @@ a {
       }
       .aside-body {
         display: none;
-        height: 70%;
+        height: 64%;
         width: 100%;
         flex-direction: column;
         overflow-y: scroll;
-        
+      }
+    } // End aside
+
+    .aside-info-user {
+      display: none;
+      width: 100%;
+      color: #fff;
+    }
+
+    .account-info {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      font-size: 1rem;
+      font-weight: 500;
+      .account-info-user {
+        width: 96%;
+        text-align: center;
+        .account-info-user-icon {
+          font-size: 1.9em;
+        }
+        .account-info-role {
+          font-style: italic;
+        }
+      } // end account-info-user
+      .account-info-options {
+        width: 96%;
+        text-align: center;
+        font-size: 2em;
+        margin: .5rem;
       }
     }
-  }
+
+  } // end header
 
   header.open {
     height: 100vh;
@@ -282,35 +182,42 @@ a {
         display: flex;
         justify-content: flex-start;
       }
+    } // end aside
+
+    .aside-info-user {
+      display: block;
     }
-  }
+
+    .account-info {
+      display: flex;
+    } // end account-info
+  } // end header.open
 
   .menu {
     margin: 0 1rem;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 450;
-    letter-spacing: .01rem;
     color: $--color-v3;
     .menu-title {
       padding: .1rem;
       .menu-icon {
-        font-size: 1.1em;
+        font-size: 1.3em;
       }
       .menu-text {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
       }
     }
   }
 
   .sub-menu {
     width: 90%;
-    margin: .1rem 2.2rem;
+    margin: .1rem 1.2rem;
     display: flex;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     a {
       width: 100%;
       color: $--color-v3;
-      padding: 1rem;
+      padding: .8rem;
       border-radius: 1rem;
     }
 
@@ -318,7 +225,6 @@ a {
       display: none;
     }
   }
-
 
 .sub-menu.active {
   a {
@@ -329,30 +235,36 @@ a {
 }
 
 .content-main {
+  position: absolute;
   width: 100%;
-  left: 0;
+  padding: .6rem;
+  transition-property: left;
+  transition-duration: 100ms;
 }
- 
+
 .home-header {
+  display: flex;
   justify-content: center;
   align-items: center;
+  height: 3.5rem;
   h1 {
     font-size: 1.5rem;
-  }
-  
-  .div-btn-account {
-    display: none;
+    padding: 0 1rem;
   }
 }
 
 .menu-router-activity {
   margin-top: .5rem;
+  color: #444;
+  padding: 0 1rem;
 }
 
 .bar-home {
+  display: flex;
   flex-direction: column-reverse;
   align-items: flex-start;
   height: 7.3rem;
+  padding: 0 1rem;
 
   > button {
     font-size: 1rem;
@@ -364,7 +276,29 @@ a {
     height: 60%;
     width: 100%;
     .div-search {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
       width: 100%;
+      padding: 0.125em;
+      input {
+        height: 100%;
+        width: 80%;
+        border-radius: 0.25rem 0px 0px 0.25rem;
+        margin: 0;
+        &:focus {
+          box-shadow: none;
+        }
+      }
+      button {
+        height: 100%;
+        width: 20%;
+        border-radius: 0px 0.25rem 0.25rem 0px;
+        margin: 0;
+        font-size: 0.89rem;
+      }
     }
   }
   
@@ -372,33 +306,63 @@ a {
   .pagination {
     height: 2.7rem;
   }
-}
+} 
 
-@media screen and (min-width: 768px) {
+
+@media screen and (min-width: 31.25em) { //500
+  
+  header {
+    aside {
+      .btn-co {
+        height: 3.2rem;
+        width: 3.2rem;
+        font-size: 1.4rem;
+      }
+
+      .aside-body {
+        height: 80%;
+      }
+    }
+  }
+
+  .home-header {
+    h1 {
+      font-size: 1.8rem;
+    }
+  }
+
   .bar-home {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 3.8rem;
+    height: 3.5rem;
     > button {
-      height: 90%;
+      height: 75%;
     }
 
     form {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
       height: 90%;
-      width: 30%;
       margin: 0;
+      .div-search {
+        display: block;
+        width: auto;
+        input {
+          width: 10.5rem;
+        }
+
+        button {
+          width: 2.6rem;
+        }
+      }
     }
   }
-  
-}
+} 
 
-@media screen and (min-width: 800px) {
-  .content-main {
-    left: calc(3.5vh + 3.5vw);
-    width: calc(100% -  calc(3.5vh + 3.5vw));
-  }
 
+@media screen and (min-width: 50em) { //800px
   header {
     height: 100vh;
     aside {
@@ -412,6 +376,9 @@ a {
         height: 2.8rem;
         width: 2.8rem;
         font-size: 1.1rem;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
       }
 
       .aside-header {
@@ -428,13 +395,12 @@ a {
       }
 
     }
-  }
+  } // End header
 
+  
   .menu {
     margin: 0;
     .menu-title {
-      padding: 0;
-      text-align: center;
       .menu-text, .menu-icon {
         display: none;
       }
@@ -444,7 +410,7 @@ a {
   .sub-menu {
     margin: 0;
     font-size: 1.45rem;
-    padding: .1rem;
+    padding: .2rem;
     a {
       padding: 0;
       text-align: center;
@@ -453,14 +419,26 @@ a {
     .text-submenu {
       display: none;
     }
-  }
+  } 
 
   header.open {
     width: 100vw;
+    
+    #headerEvent {
+      display: block;
+      left: 16rem;
+    }
+
     aside {
       height: 100%;
-      width: 25%;
+      //width: 25%;
+      width: 16rem;
       justify-content: flex-start;
+
+      .btn-co {
+        left: 1rem;
+        margin: 0;
+      }
 
       .aside-header {
         display: flex;
@@ -473,10 +451,14 @@ a {
         justify-content: flex-start;
         align-items: flex-start;
       }
+
+      .account-info {
+        font-size: .9rem;
+      }
     }
 
     .menu {
-      margin: 0 .5rem;
+      margin: 0 .7rem;
       width: 100%;
       .menu-title {
         padding: .1rem;
@@ -497,8 +479,7 @@ a {
       display: flex;
       width: 80%;
       margin: 0 1.3rem;
-      font-size: 1rem;
-
+      font-size: .96rem;
       a {
         width: 100%;
         color: $--color-v3;
@@ -511,8 +492,6 @@ a {
         display: inline-block;
       }
     }
-  
-  
     .sub-menu.active {
       a {
         background-color: #fff;
@@ -521,9 +500,26 @@ a {
       }
     }
 
+  } // End header.open
+
+  .content-main {
+    left: calc(3.5vh + 3.5vw);
+    width: calc(100% -  calc(3.5vh + 3.5vw));
+    
   }
 
+  .home-header {
+    justify-content: flex-start;
+    h1 {
+      padding: 0 1rem;
+    }
+  }
+} 
+
+@media screen and (max-width: 56.25em) {
+ 
 }
+
 /* Responsive */
 
 /* 425px 
