@@ -94,31 +94,29 @@ a {
       height: 0;
       width: 0;
       z-index: $z-index-aside;
-  
-      .btn-co {
-        position: absolute;
-        height: 3.5rem;
-        width: 3.5rem;
-        top: .35rem;
-        left: .35rem;
-        font-size: 1.5rem;
-        button {
-          height: 100%;
-          width: 100%;
-          background-color: $--clr;
-          color: #fff;
-          border-style: solid;
-          border-radius: .8rem;
-        }
-      }
       .aside-header {
-        display: none;
         justify-content: center;
         align-items: center;
+        font-size: 1.3rem;
         height: 4rem;
         width: 100%;
         color: #fff;
-        font-size: 1.3rem;
+        .btn-co {
+          position: absolute;
+          height: 3.5rem;
+          width: 3.5rem;
+          top: .35rem;
+          left: .35rem;
+          font-size: 1.5rem;
+          button {
+            height: 100%;
+            width: 100%;
+            background-color: $--clr;
+            color: #fff;
+            border-style: solid;
+            border-radius: .8rem;
+          }
+        }
       }
       hr {
         color: #fff;
@@ -350,11 +348,11 @@ a {
         display: block;
         width: auto;
         input {
-          width: 10.5rem;
+          width: 11rem;
         }
 
         button {
-          width: 2.6rem;
+          width: 2.8rem;
         }
       }
     }
@@ -371,23 +369,39 @@ a {
       justify-content: flex-start;
       transition-property: width;
       transition-duration: 100ms;
-
-      .btn-co {
-        height: 2.8rem;
-        width: 2.8rem;
-        font-size: 1.1rem;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
-      }
-
       .aside-header {
-        font-size: 1.1rem;
-      }
+        margin-top: .2rem;
+        width: 90%;
+        height: 3rem;
+        .icon, .text {
+          display: none;
+        }
 
-      hr {
-        margin-top: 4rem;
-      }
+        .icon {
+          width: 10%;
+        }
+
+        .text {
+          width: 30%;
+        }
+        .btn-co {
+          position: inherit;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 98%;
+          font-size: 1.1rem;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+
+          button {
+            height: 2.9rem;
+            width: 2.9rem;
+          }
+        } // end btn-co
+        
+      } // end aside-header
 
       .aside-body {
         display: block;
@@ -396,13 +410,12 @@ a {
 
     }
   } // End header
-
-  
   .menu {
     margin: 0;
     .menu-title {
       .menu-text, .menu-icon {
-        display: none;
+        position: absolute;
+        transform: translateX(-110%);
       }
     }
   }
@@ -419,6 +432,7 @@ a {
     .text-submenu {
       display: none;
     }
+   
   } 
 
   header.open {
@@ -430,22 +444,18 @@ a {
     }
 
     aside {
-      height: 100%;
-      //width: 25%;
       width: 16rem;
-      justify-content: flex-start;
-
-      .btn-co {
-        left: 1rem;
-        margin: 0;
-      }
-
       .aside-header {
-        display: flex;
+        
+        .icon, .text {
+          display: block;
+        }
+        .btn-co {
+          width: 60%;
+          justify-content: flex-end;
+        }      
       }
-      hr {
-        margin-top: .2rem;
-      }
+     
       .aside-body {
         display: flex;
         justify-content: flex-start;
@@ -464,7 +474,9 @@ a {
         padding: .1rem;
         text-align: start;
         .menu-text, .menu-icon {
-          display: inline-block;
+          position: relative;
+          display: inline;
+
         }
         .menu-icon {
           font-size: 1.1em;
@@ -482,7 +494,7 @@ a {
       font-size: .96rem;
       a {
         width: 100%;
-        color: $--color-v3;
+        //color: $--color-v3;
         padding: .6rem;
         border-radius: 1rem;
         text-align: start;
@@ -496,7 +508,6 @@ a {
       a {
         background-color: #fff;
         color: $--clr;
-        font-weight: 600;
       }
     }
 
@@ -505,7 +516,6 @@ a {
   .content-main {
     left: calc(3.5vh + 3.5vw);
     width: calc(100% -  calc(3.5vh + 3.5vw));
-    
   }
 
   .home-header {
@@ -515,10 +525,6 @@ a {
     }
   }
 } 
-
-@media screen and (max-width: 56.25em) {
- 
-}
 
 /* Responsive */
 

@@ -13,7 +13,7 @@ const SubMenu = (props) => {
           <span className="sub-menu-icon">
             <i className={props.iconSubMenu}></i>
           </span>
-          <span className="text-submenu animate-opac">{props.subMenuText}</span>
+          <span className="text-submenu ">{props.subMenuText}</span>
           <span className="tooltip-submenu">{props.subMenuToolTip}</span>
         </Link>
       </div>

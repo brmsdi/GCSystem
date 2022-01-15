@@ -9,21 +9,20 @@ const Aside = () => {
     //let main = document.querySelector(".content-main");
     headerAside.classList.toggle('open');
     //main.classList.toggle("large");
-    console.log('chamou2')
   }
 
   return (
     <aside>
-      <div className="btn-co">
-          <button onClick={() => clickColapseMenu()}>
-            <i className="bi bi-list"></i>
-          </button>
-      </div>
       <div className="aside-header animate-right">
         <span className="icon animate-right">
           <i className="bi bi-building"></i>
         </span>
         <span className="text animate-right">SYSTEM</span>
+        <div className="btn-co">
+          <button onClick={() => clickColapseMenu()}>
+            <i className="bi bi-list"></i>
+          </button>
+        </div>
       </div>
       <hr />
       <div className="aside-body animate-right">
@@ -144,14 +143,14 @@ const Aside = () => {
               iconSubMenu="bi bi-building"
               subMenuText="Condomínio"
               subMenuToolTip="Gerenciar condomínio"
-              key={30}
+              key={31}
               id="sub-menu-condominium2"
             />,
             <SubMenu
               iconSubMenu="bi bi-people"
               subMenuText="Funcionário"
               subMenuToolTip="Gerenciar funcionário"
-              key={30}
+              key={32}
               id="sub-menu-employe2"
             />,
           ]}
