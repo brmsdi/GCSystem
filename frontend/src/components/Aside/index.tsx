@@ -4,16 +4,12 @@ import SubMenu from "./SubMenu";
 
 const Aside = () => {
   function clickColapseMenu() {
-   
-    let headerAside = document.getElementById('header-aside');
-    //let main = document.querySelector(".content-main");
-    headerAside.classList.toggle('open');
-    //main.classList.toggle("large");
+    document.getElementById('header-aside')?.classList.toggle('open');
   }
 
   return (
     <aside>
-      <div className="aside-header animate-right">
+      <div className="aside-header">
         <span className="icon animate-right">
           <i className="bi bi-building"></i>
         </span>
@@ -35,7 +31,7 @@ const Aside = () => {
             <SubMenu
               iconSubMenu="bi bi-building"
               subMenuText="Condomínio"
-              subMenuToolTip="Gerenciar condomínio"
+              subMenuToolTip="condomínio"
               key={1}
               id="sub-menu-condominium"
             />,

@@ -1,13 +1,11 @@
 import { useSelector } from "react-redux";
 import { selectAllEmployees } from "store/Employees/Employees.selectors";
 import { Employee } from "types/Employee";
-
 const TableEmployee = () => {
   var employeesList: Employee[] = useSelector(selectAllEmployees);
   var data = employeesList.map((item: Employee) => {
     return <ItemTable key={item.id} item={item} />;
   })
-  
   return (
     <div className="table-responsive">
       <table className="table table-striped">
@@ -28,7 +26,7 @@ const TableEmployee = () => {
         </tbody>
       </table>
     </div>
-  );
+  )
 }
 const ItemTable = (props: {item: Employee }) => {
   let item = props.item;

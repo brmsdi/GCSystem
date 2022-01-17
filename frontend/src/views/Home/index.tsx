@@ -6,14 +6,10 @@ import PaginationTableEmployee from "components/Pagination/PaginationTableEmploy
 import TableEmployee from "components/Table/TableEmployee";
 
 const Home = () => {
-  //var windowWidth = window.innerWidth;
-  //var windowHeight = window.innerHeight;
   function headerOpenOrClose() {
     document.getElementById('header-aside')?.classList.toggle('open')
-  } 
-
+  }
   const pagination =  <PaginationTableEmployee />;
-
   return (
     <div className="content">
       <header id="header-aside">

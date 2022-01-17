@@ -10,9 +10,7 @@ const PaginationTableEmployee = () => {
   const changeNumberPage = (pageNumber: number) => {
     dispatch(getAllEmployees(pageNumber));
     dispatch(setCurrentPaginationAction(pageNumber))
-    //setActivePage(pageNumber);
   }
-
   return <PaginationItem propsPagination={{ pages, activePage, changeNumberPage }} />
 };
 
