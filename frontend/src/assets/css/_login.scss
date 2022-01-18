@@ -1,43 +1,63 @@
-.lay {
-    background-color: lightcoral;
-    position: relative;
+.content-login {
     height: 100vh;
     width: 100vw;
-}
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    color: #DCDCDC;
+    background-color: $--color-v4;
 
-.aside {
-    position: relative;
-    background-color: lightgreen;
-    height: 100%;
-    width: 10%;
-}
+    form {
+        height: 23rem;
+        width: 31.05rem;
+        border: .21rem  solid  #2ecc71;
+        border-radius: 3rem .6rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 7rem;
+        div {
+            width: 80%;
+            margin: .3rem 0;
+            h2 {
+                text-align: center;
+            }
+            input {
+                background-color: $--color-v4;
+                text-align: center;
+                border: .2rem solid #3498db;
+                border-radius: 1.4rem;
+                color: white;
+            }
+            button, a {
+                width: 100%;
+                padding: .6rem;
+            }
+        } // end div
 
-.avo {
-    position: relative;
-    background-color: lightslategray;
-}
+        #alert {
+            color: $--color-v7;
+        } 
 
-.pai {
-    height: 90%;
-    width: 90%;
-    max-height: 400px;
-    background-color: red;
-    overflow-y: auto;
-}
+        #password-forgot-it {
+            margin: .7rem 0;
+            a {
+                color: #DCDCDC;
+                border: .1rem  solid  #2ecc71;
+                border-radius: 3rem .6rem;
+                padding: .1rem 1.5rem;
+            }
+        }
+    } // end form
 
-.neto {
-    padding: 10px;
-    font-size: 20px;
-}
+    #form-send-email-forgot {
+        height: 20.15rem;
+        width: 42.39rem;
+    }
 
-.neto:hover .dialog {
-    display: block;
-}
-
-
-.dialog {
-
-    position: absolute;
-    display: none;
-    transform: translateX(100px);
-}
+    #form-send-code {
+        height: 17.63rem;
+        width: 31.75rem;
+    }
+} // end content-login

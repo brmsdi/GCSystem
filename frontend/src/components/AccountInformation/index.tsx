@@ -21,7 +21,7 @@ const AccountInformation = () => {
         </div>
       </div>
       <div className="account-info-options animate-opac">
-          <Link to={""}>
+          <Link to={"/login"}>
           <i className="bi bi-box-arrow-right"></i>
           </Link>
       </div>
