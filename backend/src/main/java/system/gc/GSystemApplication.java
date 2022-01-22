@@ -7,9 +7,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @ServletComponentScan
 @SpringBootApplication
 public class GSystemApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(GSystemApplication.class, args);
 	}
-
 }

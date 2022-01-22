@@ -1,60 +1,80 @@
 package system.gc.entities;
 
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Localization {
+@Entity
+public class Localization implements Serializable {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@NotNull
+	@NotBlank
 	private String name;
 
+	@NotNull
+	@NotBlank
 	private String road;
 
-	private int number;
-
+	@NotNull
+	@NotBlank
 	private String zipCode;
 
-	@OneToOne(mappedBy = "localization")
-	private Condominium condominium;
+	@OneToMany(mappedBy = "localization")
+	private Set<LocalizationCondominium> localizationCondominiums = new HashSet<>();
 
-	public void setID(Integer id) {
+	public Localization() {}
 
+	public Localization(String name, String road, String zipCode, Set<LocalizationCondominium> localizationCondominiums) {
+		this.name = name;
+		this.road = road;
+		this.zipCode = zipCode;
+		this.localizationCondominiums = localizationCondominiums;
 	}
 
-	public Integer getID() {
-		return null;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setName(String name) {
-
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {
-		return null;
+		return name;
 	}
 
-	public void setRoad(String road) {
-
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getRoad() {
-		return null;
+		return road;
 	}
 
-	public void setNumber(int number) {
-
-	}
-
-	public int getNumber() {
-		return 0;
-	}
-
-	public void setZipCode(String code) {
-
+	public void setRoad(String road) {
+		this.road = road;
 	}
 
 	public String getZipCode() {
-		return null;
+		return zipCode;
 	}
 
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+
+	public Set<LocalizationCondominium> getLocalizationCondominiums() {
+		return localizationCondominiums;
+	}
+
+	public void setLocalizationCondominiums(Set<LocalizationCondominium> localizationCondominiums) {
+		this.localizationCondominiums = localizationCondominiums;
+	}
 }

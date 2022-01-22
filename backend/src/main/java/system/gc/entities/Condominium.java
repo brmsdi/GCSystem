@@ -25,13 +25,24 @@ public class Condominium implements Serializable {
 	@NotBlank
 	private int numberApartments;
 
-	@OneToOne
-	@JoinColumn(name = "status_id", referencedColumnName = "id")
+	public Condominium() {}
+
+	public Condominium(String name, String description, int numberApartments, Status status, LocalizationCondominium localizationCondominium, Set<Contract> contract) {
+		this.name = name;
+		this.description = description;
+		this.numberApartments = numberApartments;
+		this.status = status;
+		this.localizationCondominium = localizationCondominium;
+		this.contract = contract;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
 	private Status status;
 
-	@OneToOne
-	@JoinColumn(name = "localization_id", referencedColumnName = "id")
-	private Localization localization;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fk_localization_condominium_id", referencedColumnName = "id")
+	private LocalizationCondominium localizationCondominium;
 
 	@OneToMany(mappedBy = "condominium")
 	private Set<Contract> contract;
@@ -76,12 +87,12 @@ public class Condominium implements Serializable {
 		this.status = status;
 	}
 
-	public Localization getLocalization() {
-		return localization;
+	public LocalizationCondominium getLocalizationCondominium() {
+		return localizationCondominium;
 	}
 
-	public void setLocalization(Localization localization) {
-		this.localization = localization;
+	public void setLocalizationCondominium(LocalizationCondominium localizationCondominium) {
+		this.localizationCondominium = localizationCondominium;
 	}
 
 	public Set<Contract> getContract() {

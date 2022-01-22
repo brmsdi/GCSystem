@@ -40,7 +40,7 @@ public class Lessee implements Serializable {
 	private String contactNumber;
 
 	@ManyToOne
-	@JoinColumn(name = "status_id", referencedColumnName = "id")
+	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
 	private Status status;
 
 	@OneToMany(mappedBy = "lessee")
@@ -48,6 +48,20 @@ public class Lessee implements Serializable {
 
 	@OneToMany(mappedBy = "lessee")
 	private Set<Contract> contracts = new HashSet<>();
+
+	public Lessee() {}
+
+	public Lessee(String name, String rg, String cpf, Date birthDate, String email, String contactNumber, Status status, Set<Debt> debts, Set<Contract> contracts) {
+		this.name = name;
+		this.rg = rg;
+		this.cpf = cpf;
+		this.birthDate = birthDate;
+		this.email = email;
+		this.contactNumber = contactNumber;
+		this.status = status;
+		this.debts = debts;
+		this.contracts = contracts;
+	}
 
 	public Integer getId() {
 		return id;

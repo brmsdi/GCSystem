@@ -24,15 +24,25 @@ public class Debt implements Serializable {
 	private double value;
 
 	@ManyToOne
-	@JoinColumn(name = "status_id", referencedColumnName = "id")
+	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
 	private Status status;
 
 	@OneToMany(mappedBy = "debt")
 	private Set<Movement> movements = new HashSet<>();
 
 	@ManyToOne
-	@JoinColumn(name= "lessee_id", referencedColumnName = "id")
+	@JoinColumn(name= "fk_lessee_id", referencedColumnName = "id")
 	private Lessee lessee;
+
+	public Debt() {}
+
+	public Debt(Date dueDate, double value, Status status, Set<Movement> movements, Lessee lessee) {
+		this.dueDate = dueDate;
+		this.value = value;
+		this.status = status;
+		this.movements = movements;
+		this.lessee = lessee;
+	}
 
 	public Integer getId() {
 		return id;

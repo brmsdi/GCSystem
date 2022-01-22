@@ -25,19 +25,34 @@ public class Movement implements Serializable{
 	@NotBlank
 	private double previousValue;
 
-	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "debt_id", referencedColumnName = "id")
+	@JoinColumn(name = "fk_debt_id", referencedColumnName = "id")
 	private Debt debt;
 
-	@OneToOne
-	@JoinColumn(name = "activityType_id", referencedColumnName = "id")
+	@ManyToOne
+	@JoinColumn(name = "fk_activityType_id", referencedColumnName = "id")
 	private ActivityType activityType;
 
 	@ManyToOne
-	@JoinColumn(name = "employee_id", referencedColumnName = "id")
+	@JoinColumn(name = "fk_employee_id", referencedColumnName = "id")
 	private Employee employee;
 
+	public Movement() {}
+
+	public Movement(Date moveDateAndTime, Date dueDate, double previousValue) {
+		this.moveDateAndTime = moveDateAndTime;
+		this.dueDate = dueDate;
+		this.previousValue = previousValue;
+	}
+
+	public Movement(Date moveDateAndTime, Date dueDate, double previousValue, Debt debt, ActivityType activityType, Employee employee) {
+		this.moveDateAndTime = moveDateAndTime;
+		this.dueDate = dueDate;
+		this.previousValue = previousValue;
+		this.debt = debt;
+		this.activityType = activityType;
+		this.employee = employee;
+	}
 	public Integer getId() {
 		return id;
 	}

@@ -20,6 +20,22 @@ public class Role implements Serializable {
 	@OneToMany(mappedBy = "role")
 	private Set<Employee> employees;
 
+	public Role() {}
+
+	public Role(String name) {
+		this.name = name;
+	}
+
+	public Role(Integer id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+	public Role(String name, Set<Employee> employees) {
+		this.name = name;
+		this.employees = employees;
+	}
+
 	public Integer getId() {
 		return id;
 	}

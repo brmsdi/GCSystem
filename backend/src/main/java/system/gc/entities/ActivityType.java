@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class ActivityType implements Serializable {
@@ -16,10 +18,15 @@ public class ActivityType implements Serializable {
 	@NotNull
 	private String name;
 
-	@OneToOne(mappedBy = "activityType")
-	private Movement movement;
+	@OneToMany(mappedBy = "activityType")
+	private Set<Movement> movements = new HashSet<>();
 
 	public ActivityType() {}
+
+	public ActivityType(String name, Set<Movement> movements) {
+		this.name = name;
+		this.movements = movements;
+	}
 
 	public Integer getId() {
 		return id;
@@ -37,11 +44,11 @@ public class ActivityType implements Serializable {
 		this.name = name;
 	}
 
-	public Movement getMovement() {
-		return movement;
+	public Set<Movement> getMovements() {
+		return movements;
 	}
 
-	public void setMovement(Movement movement) {
-		this.movement = movement;
+	public void setMovements(Set<Movement> movements) {
+		this.movements = movements;
 	}
 }

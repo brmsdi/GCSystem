@@ -27,20 +27,16 @@ public class Employee implements Serializable {
 	@NotBlank
 	private String cpf;
 
-	@NotNull
-	@NotBlank
 	private Date birthDate;
 
 	@NotNull
 	@NotBlank
 	private String email;
 
-	@NotNull
-	@NotBlank
 	private Date hiringDate;
 
 	@ManyToOne
-	@JoinColumn(name = "role_id", referencedColumnName = "id")
+	@JoinColumn(name = "fk_role_id", referencedColumnName = "id")
 	private Role role;
 
 	@ManyToMany
@@ -49,14 +45,29 @@ public class Employee implements Serializable {
 			joinColumns = @JoinColumn(name = "employee_id"),
 			inverseJoinColumns = @JoinColumn(name = "specialty_id")
 	)
-	private Set<Specialty> specialties;
+	private Set<Specialty> specialties = new HashSet<>();
 
 	@OneToMany(mappedBy = "employee")
 	private Set<Movement> movements = new HashSet<>();
 
 	@ManyToOne
-	@JoinColumn(name = "status_id", referencedColumnName = "id")
+	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
 	private Status status;
+
+	public Employee() {}
+
+	public Employee(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, Role role, Set<Specialty> specialties, Set<Movement> movements, Status status) {
+		this.name = name;
+		this.rg = rg;
+		this.cpf = cpf;
+		this.birthDate = birthDate;
+		this.email = email;
+		this.hiringDate = hiringDate;
+		this.role = role;
+		this.specialties = specialties;
+		this.movements = movements;
+		this.status = status;
+	}
 
 	public Integer getId() {
 		return id;

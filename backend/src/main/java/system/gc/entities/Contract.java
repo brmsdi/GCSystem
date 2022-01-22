@@ -38,12 +38,25 @@ public class Contract implements Serializable {
 	private int apartmentNumber;
 
 	@ManyToOne
-	@JoinColumn(name = "condominium_id", referencedColumnName = "id")
+	@JoinColumn(name = "fk_condominium_id", referencedColumnName = "id")
 	private Condominium condominium;
 
 	@ManyToOne
-	@JoinColumn(name = "contract_id", referencedColumnName = "id")
+	@JoinColumn(name = "fk_contract_id", referencedColumnName = "id")
 	private Lessee lessee;
+
+	public Contract() {}
+
+	public Contract(Date contractDate, double contractValue, Date monthlyPaymentDate, Date monthlyDueDate, Date contractExpirationDate, int apartmentNumber, Condominium condominium, Lessee lessee) {
+		this.contractDate = contractDate;
+		this.contractValue = contractValue;
+		this.monthlyPaymentDate = monthlyPaymentDate;
+		this.monthlyDueDate = monthlyDueDate;
+		this.contractExpirationDate = contractExpirationDate;
+		this.apartmentNumber = apartmentNumber;
+		this.condominium = condominium;
+		this.lessee = lessee;
+	}
 
 	public Integer getId() {
 		return id;
