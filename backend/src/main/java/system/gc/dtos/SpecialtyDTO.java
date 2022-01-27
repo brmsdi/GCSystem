@@ -1,16 +1,21 @@
 package system.gc.dtos;
 import system.gc.entities.Specialty;
 
-public class SpecialtyDTO implements ConvertEntityAndDTO<SpecialtyDTO, Specialty> {
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+public class SpecialtyDTO implements ConvertEntityAndDTO<SpecialtyDTO, Specialty> {
     private Integer id;
+
+    @NotNull(message = "{required.validation}")
+    @NotBlank(message = "{required.validation}")
     private String name;
 
     public SpecialtyDTO() {}
 
     public SpecialtyDTO(Specialty specialty) {
-        this.id = specialty.getId();
-        this.name = specialty.getName();
+        setId(specialty.getId());
+        setName(specialty.getName());
     }
 
     public Integer getId() {

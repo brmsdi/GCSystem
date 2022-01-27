@@ -4,12 +4,16 @@ import system.gc.entities.ActivityType;
 import system.gc.entities.Debt;
 import system.gc.entities.Employee;
 import system.gc.entities.Movement;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class MovementDTO implements ConvertEntityAndDTO<MovementDTO, Movement> {
     private Integer id;
     private Date moveDateAndTime;
     private Date dueDate;
+
+    @NotNull
     private double previousValue;
    //private Debt debt;
     //private ActivityType activityType;
@@ -18,19 +22,19 @@ public class MovementDTO implements ConvertEntityAndDTO<MovementDTO, Movement> {
     public MovementDTO() {}
 
     public MovementDTO(Date moveDateAndTime, Date dueDate, double previousValue, Debt debt, ActivityType activityType, Employee employee) {
-        this.moveDateAndTime = moveDateAndTime;
-        this.dueDate = dueDate;
-        this.previousValue = previousValue;
+        setMoveDateAndTime(moveDateAndTime);
+        setDueDate(dueDate);
+        setPreviousValue(previousValue);
        // this.debt = debt;
         //this.activityType = activityType;
         //this.employee = employee;
     }
 
     public MovementDTO(Movement movement) {
-        this.id = movement.getId();
-        this.moveDateAndTime = movement.getMoveDateAndTime();
-        this.dueDate = movement.getDueDate();
-        this.previousValue = movement.getPreviousValue();
+        setId(movement.getId());
+        setMoveDateAndTime(movement.getMoveDateAndTime());
+        setDueDate(movement.getDueDate());
+        setPreviousValue(movement.getPreviousValue());
         //this.debt = movement.getDebt();
         //this.activityType = movement.getActivityType();
     }
@@ -82,29 +86,4 @@ public class MovementDTO implements ConvertEntityAndDTO<MovementDTO, Movement> {
         }
         return movement;
     }
-
-    /*
-    public Debt getDebt() {
-        return debt;
-    }
-
-    public void setDebt(Debt debt) {
-        this.debt = debt;
-    }
-
-    public ActivityType getActivityType() {
-        return activityType;
-    }
-
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    } */
 }

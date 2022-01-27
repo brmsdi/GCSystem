@@ -25,6 +25,7 @@ public class Employee implements Serializable {
 
 	@NotNull
 	@NotBlank
+	@Column(unique = true)
 	private String cpf;
 
 	private Date birthDate;

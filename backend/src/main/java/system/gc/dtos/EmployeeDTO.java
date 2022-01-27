@@ -1,8 +1,8 @@
 package system.gc.dtos;
 import lombok.extern.slf4j.Slf4j;
 import system.gc.entities.Employee;
-import system.gc.entities.Movement;
-
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,48 +12,73 @@ import java.util.Set;
  * */
 
 @Slf4j
-public class EmployeeDTO  implements ConvertEntityAndDTO<EmployeeDTO, Employee> {
+public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee> {
     private Integer id;
+
+    @NotNull(message = "{required.validation}")
+    @NotBlank(message = "{required.validation}")
     private String name;
+
+    @NotNull(message = "{required.validation}")
+    @NotBlank(message = "{required.validation}")
     private String rg;
+
+    @NotNull(message = "{required.validation}")
+    @NotBlank(message = "{required.validation}")
     private String cpf;
+
+    @NotNull(message = "{required.validation}")
     private Date birthDate;
+
+    @NotNull(message = "{required.validation}")
+    @NotBlank(message = "{required.validation}")
     private String email;
+
+    @NotNull(message = "{required.validation}")
     private Date hiringDate;
+
+    @NotNull(message = "{required.validation}")
     private RoleDTO role;
+
     private Set<SpecialtyDTO> specialties = new HashSet<>();
     private Set<MovementDTO> movements = new HashSet<>();
+
+    @NotNull(message = "{required.validation}")
     private StatusDTO status;
 
     public EmployeeDTO() {}
 
+    public EmployeeDTO(String cpf) {
+        setCpf(cpf);
+    }
+
     public EmployeeDTO(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, RoleDTO role, Set<SpecialtyDTO> specialties, Set<MovementDTO> movements, StatusDTO status) {
-        this.name = name;
-        this.rg = rg;
-        this.cpf = cpf;
-        this.birthDate = birthDate;
-        this.email = email;
-        this.hiringDate = hiringDate;
-        this.role = role;
-        this.specialties = specialties;
-        this.movements = movements;
-        this.status = status;
+        setName(name);
+        setRg(rg);
+        setCpf(cpf);
+        setBirthDate(birthDate);
+        setEmail(email);
+        setHiringDate(hiringDate);
+        setRole(role);
+        setSpecialties(specialties);
+        setMovements(movements);
+        setStatus(status);
     }
 
     public EmployeeDTO(Employee employee) {
-        this.id = employee.getId();
-        this.name = employee.getName();
-        this.rg = employee.getRg();
-        this.cpf = employee.getCpf();
-        this.birthDate = employee.getBirthDate();
-        this.email = employee.getEmail();
-        this.hiringDate = employee.getHiringDate();
-        this.role = new RoleDTO(employee.getRole());
+        setId(employee.getId());
+        setName(employee.getName());
+        setRg(employee.getRg());
+        setCpf(employee.getCpf());
+        setBirthDate(employee.getBirthDate());
+        setEmail(employee.getEmail());
+        setHiringDate(employee.getHiringDate());
+        setRole(new RoleDTO(employee.getRole()));
         SpecialtyDTO specialtyDTO = new SpecialtyDTO();
-        this.specialties = specialtyDTO.convertSetEntityToSetEntityDTO(employee.getSpecialties());
+        setSpecialties(specialtyDTO.convertSetEntityToSetEntityDTO(employee.getSpecialties()));
         MovementDTO movementDTO = new MovementDTO();
-        this.movements = movementDTO.convertSetEntityToSetEntityDTO(employee.getMovements());
-        this.status = new StatusDTO(employee.getStatus());
+        setMovements(movementDTO.convertSetEntityToSetEntityDTO(employee.getMovements()));
+        setStatus(new StatusDTO(employee.getStatus()));
     }
 
     public Integer getId() {
@@ -68,7 +93,7 @@ public class EmployeeDTO  implements ConvertEntityAndDTO<EmployeeDTO, Employee> 
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws IllegalArgumentException {
         this.name = name;
     }
 
@@ -161,9 +186,10 @@ public class EmployeeDTO  implements ConvertEntityAndDTO<EmployeeDTO, Employee> 
                 new SpecialtyDTO().convertSetEntityDTOFromSetEntity(employeeDTO.getSpecialties()),
                 new MovementDTO().convertSetEntityDTOFromSetEntity(employeeDTO.getMovements()),
                 new StatusDTO().toEntity(employeeDTO.getStatus()));
-        if(employeeDTO.getId() != null) {
+        if (employeeDTO.getId() != null) {
             employee.setId(employeeDTO.getId());
         }
         return employee;
     }
+
 }

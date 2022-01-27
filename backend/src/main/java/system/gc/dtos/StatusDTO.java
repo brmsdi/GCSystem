@@ -1,19 +1,25 @@
 package system.gc.dtos;
 import system.gc.entities.Status;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class StatusDTO implements ConvertEntityAndDTO<StatusDTO, Status> {
     private Integer id;
+
+    @NotNull(message = "{required.validation}")
+    @NotBlank(message = "{required.validation}")
     private String name;
 
     public StatusDTO() {}
 
     public StatusDTO(String name) {
-        this.name = name;
+        setName(name);
     }
 
     public StatusDTO(Status status) {
-        this.id = status.getId();
-        this.name = status.getName();
+        setId(status.getId());
+        setName(status.getName());
     }
 
     public Integer getId() {

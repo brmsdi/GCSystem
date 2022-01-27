@@ -1,18 +1,24 @@
 package system.gc.dtos;
 
 import system.gc.entities.Role;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class RoleDTO implements ConvertEntityAndDTO<RoleDTO, Role> {
     private Integer id;
+
+    @NotNull(message = "{required.validation}")
+    @NotBlank(message = "{required.validation}")
     private String name;
 
     public RoleDTO() {}
 
     public RoleDTO(String name) {
-        this.name = name;
+        setName(name);
     }
     public RoleDTO(Role role) {
-        this.id = role.getId();
-        this.name = role.getName();
+        setId(role.getId());
+        setName(role.getName());
     }
 
     public Integer getId() {
