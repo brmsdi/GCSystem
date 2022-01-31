@@ -26,9 +26,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/h2-console/**")
                 .permitAll()
-                .antMatchers(HttpMethod.GET,"/users")
+                .antMatchers(HttpMethod.GET,"/employee")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/users")
+                .antMatchers(HttpMethod.POST, "/employee")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/role")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/specialty")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/status")
                 .permitAll();
 
     }

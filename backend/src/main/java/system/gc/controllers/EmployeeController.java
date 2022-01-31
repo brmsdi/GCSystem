@@ -16,7 +16,7 @@ import java.io.IOException;
 
 
 @RestController
-@RequestMapping(value="/users")
+@RequestMapping(value="/employee")
 @Slf4j
 public class EmployeeController {
     @Autowired
@@ -27,7 +27,8 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<Page<EmployeeDTO>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(employeeService.findAll(pageable));
+
+        return ResponseEntity.ok(employeeService.findAllPageable(pageable));
     }
 
     @PostMapping
@@ -51,6 +52,7 @@ public class EmployeeController {
     @PutMapping
     public ResponseEntity<String> update(@Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Atualizando registro");
+        employeeService.update(employeeDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));

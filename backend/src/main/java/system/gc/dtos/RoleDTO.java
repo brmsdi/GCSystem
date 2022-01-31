@@ -16,6 +16,7 @@ public class RoleDTO implements ConvertEntityAndDTO<RoleDTO, Role> {
     public RoleDTO(String name) {
         setName(name);
     }
+
     public RoleDTO(Role role) {
         setId(role.getId());
         setName(role.getName());

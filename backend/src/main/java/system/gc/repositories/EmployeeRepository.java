@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
-    @Query("SELECT employees FROM Employee as employees")
-    Page<Employee> findAll(Pageable pageable);
+    //@Query("SELECT employees FROM Employee as employees")
+    //Page<Employee> findAll(Pageable pageable);
 
     @Query("SELECT employee FROM Employee employee JOIN FETCH employee.specialties WHERE employee IN :employees")
     List<Employee> findEmployeesPagination(List<Employee> employees);

@@ -37,7 +37,7 @@ public class EmployeeService {
         return employeeDTO.toDTO(registeredEmployee);
     }
 
-    public Page<EmployeeDTO> findAll(Pageable pageable) {
+    public Page<EmployeeDTO> findAllPageable(Pageable pageable) {
         log.info("Listando funcionários");
         Page<Employee> page = employeeRepository.findAll(pageable);
         employeeRepository.findEmployeesPagination(page.stream().toList());
@@ -68,8 +68,8 @@ public class EmployeeService {
     }
 
     @Transactional
-    public void delete(EmployeeDTO employeeDTO) {
-        log.info("Deletanto registro com o CPF: " + employeeDTO.getCpf());
+    public void delete(EmployeeDTO employeeDTO) throws EntityNotFoundException{
+        log.info("Deletando registro com o CPF: " + employeeDTO.getCpf());
         Optional<Employee> employee = employeeRepository.findByCPF(employeeDTO.getCpf());
         employee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o CPF: " + employeeDTO.getCpf()));
         employeeRepository.delete(employee.get());
