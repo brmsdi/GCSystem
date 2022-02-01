@@ -8,17 +8,17 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
-import system.gc.dtos.EmployeeDTO;
-import system.gc.dtos.RoleDTO;
-import system.gc.dtos.SpecialtyDTO;
-import system.gc.dtos.StatusDTO;
+import system.gc.dtos.*;
 import system.gc.entities.Role;
 import system.gc.entities.Specialty;
 import system.gc.entities.Status;
 import system.gc.repositories.RoleRepository;
 import system.gc.repositories.SpecialtyRepository;
 import system.gc.repositories.StatusRepository;
+import system.gc.services.CondominiumService;
 import system.gc.services.EmployeeService;
+import system.gc.services.LocalizationService;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -37,6 +37,12 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
     @Autowired
     StatusRepository statusRepository;
+
+    @Autowired
+    LocalizationService localizationService;
+
+    @Autowired
+    CondominiumService condominiumService;
 
     @Autowired
     private MessageSource messageSource;
@@ -77,6 +83,16 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     spEmployee,
                     null,
                     new StatusDTO(status.get(0))));
+
+            LocalizationDTO localizationDTO = localizationService.save(new LocalizationDTO("Flores", "920", "69058200"));
+
+            CondominiumDTO condominiumDTO = new CondominiumDTO("Villa Lobos",
+                    "A30",
+                    20,
+                    new StatusDTO(status.get(0)),
+                    new LocalizationCondominiumDTO("500", localizationDTO));
+
+            condominiumService.save(condominiumDTO);
 /*
             employeeService.update(new EmployeeDTO("Amanda2 Silva",
                     "695854",

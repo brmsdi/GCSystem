@@ -31,6 +31,12 @@ public class Localization implements Serializable {
 
 	public Localization() {}
 
+	public Localization(String name, String road, String zipCode) {
+		this.name = name;
+		this.road = road;
+		this.zipCode = zipCode;
+	}
+
 	public Localization(String name, String road, String zipCode, Set<LocalizationCondominium> localizationCondominiums) {
 		this.name = name;
 		this.road = road;

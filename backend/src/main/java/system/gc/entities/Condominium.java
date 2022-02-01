@@ -22,19 +22,7 @@ public class Condominium implements Serializable {
 	private String description;
 
 	@NotNull
-	@NotBlank
 	private int numberApartments;
-
-	public Condominium() {}
-
-	public Condominium(String name, String description, int numberApartments, Status status, LocalizationCondominium localizationCondominium, Set<Contract> contract) {
-		this.name = name;
-		this.description = description;
-		this.numberApartments = numberApartments;
-		this.status = status;
-		this.localizationCondominium = localizationCondominium;
-		this.contract = contract;
-	}
 
 	@ManyToOne
 	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
@@ -46,6 +34,17 @@ public class Condominium implements Serializable {
 
 	@OneToMany(mappedBy = "condominium")
 	private Set<Contract> contract;
+
+	public Condominium() {}
+
+	public Condominium(String name, String description, int numberApartments, Status status, LocalizationCondominium localizationCondominium, Set<Contract> contract) {
+		this.name = name;
+		this.description = description;
+		this.numberApartments = numberApartments;
+		this.status = status;
+		this.localizationCondominium = localizationCondominium;
+		this.contract = contract;
+	}
 
 	public Integer getId() {
 		return id;

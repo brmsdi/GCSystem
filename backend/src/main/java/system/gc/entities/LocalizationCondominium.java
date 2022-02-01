@@ -26,6 +26,11 @@ public class LocalizationCondominium implements Serializable {
 
     public LocalizationCondominium() {}
 
+    public LocalizationCondominium(String number, Localization localization) {
+        this.number = number;
+        this.localization = localization;
+    }
+
     public LocalizationCondominium(String number, Localization localization, Condominium condominium) {
         this.number = number;
         this.localization = localization;
