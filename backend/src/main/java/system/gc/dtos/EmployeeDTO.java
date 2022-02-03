@@ -1,4 +1,6 @@
 package system.gc.dtos;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import system.gc.entities.Employee;
 import javax.validation.constraints.NotBlank;
@@ -10,7 +12,8 @@ import java.util.Set;
 /**
  * @author Wisley Bruno Marques França
  * */
-
+@Getter
+@Setter
 @Slf4j
 public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee> {
     private Integer id;
@@ -76,97 +79,9 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee> {
         setRole(new RoleDTO(employee.getRole()));
         SpecialtyDTO specialtyDTO = new SpecialtyDTO();
         setSpecialties(specialtyDTO.convertSetEntityToSetEntityDTO(employee.getSpecialties()));
-        MovementDTO movementDTO = new MovementDTO();
-        setMovements(movementDTO.convertSetEntityToSetEntityDTO(employee.getMovements()));
+        //MovementDTO movementDTO = new MovementDTO();
+        //setMovements(movementDTO.convertSetEntityToSetEntityDTO(employee.getMovements()));
         setStatus(new StatusDTO(employee.getStatus()));
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) throws IllegalArgumentException {
-        this.name = name;
-    }
-
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Date getHiringDate() {
-        return hiringDate;
-    }
-
-    public void setHiringDate(Date hiringDate) {
-        this.hiringDate = hiringDate;
-    }
-
-    public RoleDTO getRole() {
-        return role;
-    }
-
-    public void setRole(RoleDTO role) {
-        this.role = role;
-    }
-
-    public Set<SpecialtyDTO> getSpecialties() {
-        return specialties;
-    }
-
-    public void setSpecialties(Set<SpecialtyDTO> specialties) {
-        this.specialties = specialties;
-    }
-
-    public Set<MovementDTO> getMovements() {
-        return movements;
-    }
-
-    public void setMovements(Set<MovementDTO> movements) {
-        this.movements = movements;
-    }
-
-    public StatusDTO getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusDTO status) {
-        this.status = status;
     }
 
     @Override

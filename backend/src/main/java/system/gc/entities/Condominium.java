@@ -1,11 +1,16 @@
 package system.gc.entities;
 
+import lombok.Getter;
+import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 public class Condominium implements Serializable {
 
@@ -24,81 +29,25 @@ public class Condominium implements Serializable {
 	@NotNull
 	private int numberApartments;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
 	private Status status;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_localization_condominium_id", referencedColumnName = "id")
 	private LocalizationCondominium localizationCondominium;
 
 	@OneToMany(mappedBy = "condominium")
-	private Set<Contract> contract;
+	private Set<Contract> contract = new HashSet<>();
 
 	public Condominium() {}
 
 	public Condominium(String name, String description, int numberApartments, Status status, LocalizationCondominium localizationCondominium, Set<Contract> contract) {
-		this.name = name;
-		this.description = description;
-		this.numberApartments = numberApartments;
-		this.status = status;
-		this.localizationCondominium = localizationCondominium;
-		this.contract = contract;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public int getNumberApartments() {
-		return numberApartments;
-	}
-
-	public void setNumberApartments(int numberApartments) {
-		this.numberApartments = numberApartments;
-	}
-
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	public LocalizationCondominium getLocalizationCondominium() {
-		return localizationCondominium;
-	}
-
-	public void setLocalizationCondominium(LocalizationCondominium localizationCondominium) {
-		this.localizationCondominium = localizationCondominium;
-	}
-
-	public Set<Contract> getContract() {
-		return contract;
-	}
-
-	public void setContract(Set<Contract> contract) {
-		this.contract = contract;
+		setName(name);
+		setDescription(description);
+		setNumberApartments(numberApartments);
+		setStatus(status);
+		setLocalizationCondominium(localizationCondominium);
+		setContract(contract);
 	}
 }

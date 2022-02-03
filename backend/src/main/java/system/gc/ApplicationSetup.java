@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import system.gc.dtos.*;
 import system.gc.entities.Role;
@@ -47,12 +49,17 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     @Autowired
     private MessageSource messageSource;
 
+    @Autowired
+    Environment environment;
+
     @SneakyThrows
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        if(!Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) return;
         roleRepository.save(new Role("Administrador"));
         specialtyRepository.save(new Specialty("Desenvolvedor de Software"));
         statusRepository.save(new Status("Ativo"));
+        statusRepository.save(new Status("Inativo"));
         List<Role> roles = roleRepository.findAll();
         List<Specialty> specialties = specialtyRepository.findAll();
         List<Status> status = statusRepository.findAll();
@@ -85,6 +92,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     new StatusDTO(status.get(0))));
 
             LocalizationDTO localizationDTO = localizationService.save(new LocalizationDTO("Flores", "920", "69058200"));
+            LocalizationDTO localizationDTO1 = localizationService.save(new LocalizationDTO("Parque 10", "Nov H", "69058223"));
 
             CondominiumDTO condominiumDTO = new CondominiumDTO("Villa Lobos",
                     "A30",
@@ -92,7 +100,14 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     new StatusDTO(status.get(0)),
                     new LocalizationCondominiumDTO("500", localizationDTO));
 
+            CondominiumDTO condominiumDTO1 = new CondominiumDTO("PTU",
+                    "PTU30",
+                    8,
+                    new StatusDTO(status.get(0)),
+                    new LocalizationCondominiumDTO("900", localizationDTO1));
+
             condominiumService.save(condominiumDTO);
+            condominiumService.save(condominiumDTO1);
 /*
             employeeService.update(new EmployeeDTO("Amanda2 Silva",
                     "695854",

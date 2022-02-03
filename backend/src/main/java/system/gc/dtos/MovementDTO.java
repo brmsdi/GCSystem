@@ -1,5 +1,7 @@
 package system.gc.dtos;
 
+import lombok.Getter;
+import lombok.Setter;
 import system.gc.entities.ActivityType;
 import system.gc.entities.Debt;
 import system.gc.entities.Employee;
@@ -8,6 +10,8 @@ import system.gc.entities.Movement;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Getter
+@Setter
 public class MovementDTO implements ConvertEntityAndDTO<MovementDTO, Movement> {
     private Integer id;
     private Date moveDateAndTime;
@@ -37,38 +41,6 @@ public class MovementDTO implements ConvertEntityAndDTO<MovementDTO, Movement> {
         setPreviousValue(movement.getPreviousValue());
         //this.debt = movement.getDebt();
         //this.activityType = movement.getActivityType();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Date getMoveDateAndTime() {
-        return moveDateAndTime;
-    }
-
-    public void setMoveDateAndTime(Date moveDateAndTime) {
-        this.moveDateAndTime = moveDateAndTime;
-    }
-
-    public Date getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public double getPreviousValue() {
-        return previousValue;
-    }
-
-    public void setPreviousValue(double previousValue) {
-        this.previousValue = previousValue;
     }
 
     @Override

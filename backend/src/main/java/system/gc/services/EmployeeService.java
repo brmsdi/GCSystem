@@ -12,6 +12,7 @@ import system.gc.repositories.EmployeeRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -37,10 +38,11 @@ public class EmployeeService {
         return employeeDTO.toDTO(registeredEmployee);
     }
 
+    @Transactional
     public Page<EmployeeDTO> findAllPageable(Pageable pageable) {
         log.info("Listando funcionários");
         Page<Employee> page = employeeRepository.findAll(pageable);
-        employeeRepository.findEmployeesPagination(page.stream().toList());
+        employeeRepository.findEmployeesPagination(page.toList());
         return page.map(EmployeeDTO::new);
     }
 

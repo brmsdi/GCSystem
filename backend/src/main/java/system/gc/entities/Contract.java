@@ -1,11 +1,15 @@
 package system.gc.entities;
 
+import lombok.Getter;
+import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 public class Contract implements Serializable {
 
@@ -48,85 +52,13 @@ public class Contract implements Serializable {
 	public Contract() {}
 
 	public Contract(Date contractDate, double contractValue, Date monthlyPaymentDate, Date monthlyDueDate, Date contractExpirationDate, int apartmentNumber, Condominium condominium, Lessee lessee) {
-		this.contractDate = contractDate;
-		this.contractValue = contractValue;
-		this.monthlyPaymentDate = monthlyPaymentDate;
-		this.monthlyDueDate = monthlyDueDate;
-		this.contractExpirationDate = contractExpirationDate;
-		this.apartmentNumber = apartmentNumber;
-		this.condominium = condominium;
-		this.lessee = lessee;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Date getContractDate() {
-		return contractDate;
-	}
-
-	public void setContractDate(Date contractDate) {
-		this.contractDate = contractDate;
-	}
-
-	public double getContractValue() {
-		return contractValue;
-	}
-
-	public void setContractValue(double contractValue) {
-		this.contractValue = contractValue;
-	}
-
-	public Date getMonthlyPaymentDate() {
-		return monthlyPaymentDate;
-	}
-
-	public void setMonthlyPaymentDate(Date monthlyPaymentDate) {
-		this.monthlyPaymentDate = monthlyPaymentDate;
-	}
-
-	public Date getMonthlyDueDate() {
-		return monthlyDueDate;
-	}
-
-	public void setMonthlyDueDate(Date monthlyDueDate) {
-		this.monthlyDueDate = monthlyDueDate;
-	}
-
-	public Date getContractExpirationDate() {
-		return contractExpirationDate;
-	}
-
-	public void setContractExpirationDate(Date contractExpirationDate) {
-		this.contractExpirationDate = contractExpirationDate;
-	}
-
-	public int getApartmentNumber() {
-		return apartmentNumber;
-	}
-
-	public void setApartmentNumber(int apartmentNumber) {
-		this.apartmentNumber = apartmentNumber;
-	}
-
-	public Condominium getCondominium() {
-		return condominium;
-	}
-
-	public void setCondominium(Condominium condominium) {
-		this.condominium = condominium;
-	}
-
-	public Lessee getLessee() {
-		return lessee;
-	}
-
-	public void setLessee(Lessee lessee) {
-		this.lessee = lessee;
+		setContractDate(contractDate);
+		setContractValue(contractValue);
+		setMonthlyPaymentDate(monthlyPaymentDate);
+		setMonthlyDueDate(monthlyDueDate);
+		setContractExpirationDate(contractExpirationDate);
+		setApartmentNumber(apartmentNumber);
+		setCondominium(condominium);
+		setLessee(lessee);
 	}
 }

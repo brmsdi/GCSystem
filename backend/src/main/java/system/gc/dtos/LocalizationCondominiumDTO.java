@@ -1,56 +1,33 @@
 package system.gc.dtos;
 
+import lombok.Getter;
+import lombok.Setter;
 import system.gc.entities.LocalizationCondominium;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
 public class LocalizationCondominiumDTO implements ConvertEntityAndDTO<LocalizationCondominiumDTO, LocalizationCondominium> {
-    private Integer id;
 
     @NotNull(message = "{required.validation}")
     @NotBlank(message = "{required.validation}")
     private String number;
 
     @NotNull(message = "{required.validation}")
-    @NotBlank(message = "{required.validation}")
-    private LocalizationDTO localizationDTO;
+    private LocalizationDTO localization;
 
     public LocalizationCondominiumDTO() {
     }
 
-    public LocalizationCondominiumDTO(String number, LocalizationDTO localizationDTO) {
+    public LocalizationCondominiumDTO(String number, LocalizationDTO localization) {
         setNumber(number);
-        setLocalizationDTO(localizationDTO);
+        setLocalization(localization);
     }
 
     public LocalizationCondominiumDTO(LocalizationCondominium localizationCondominium) {
-        setId(localizationCondominium.getId());
         setNumber(localizationCondominium.getNumber());
-        setLocalizationDTO(new LocalizationDTO(localizationCondominium.getLocalization()));
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public LocalizationDTO getLocalizationDTO() {
-        return localizationDTO;
-    }
-
-    public void setLocalizationDTO(LocalizationDTO localizationDTO) {
-        this.localizationDTO = localizationDTO;
+        setLocalization(new LocalizationDTO(localizationCondominium.getLocalization()));
     }
 
     @Override
@@ -60,12 +37,8 @@ public class LocalizationCondominiumDTO implements ConvertEntityAndDTO<Localizat
 
     @Override
     public LocalizationCondominium toEntity(LocalizationCondominiumDTO localizationCondominiumDTO) {
-        LocalizationCondominium localizationCondominium = new LocalizationCondominium(
+        return new LocalizationCondominium(
                 localizationCondominiumDTO.getNumber(),
-                new LocalizationDTO().toEntity(localizationCondominiumDTO.getLocalizationDTO()));
-        if(localizationCondominiumDTO.getId() != null) {
-            localizationCondominium.setId(localizationDTO.getId());
-        }
-        return localizationCondominium;
+                new LocalizationDTO().toEntity(localizationCondominiumDTO.getLocalization()));
     }
 }

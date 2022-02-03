@@ -1,10 +1,13 @@
 package system.gc.dtos;
 
+import lombok.Getter;
+import lombok.Setter;
 import system.gc.entities.Localization;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
 public class LocalizationDTO implements ConvertEntityAndDTO<LocalizationDTO, Localization> {
     private Integer id;
 
@@ -34,38 +37,6 @@ public class LocalizationDTO implements ConvertEntityAndDTO<LocalizationDTO, Loc
         setName(localization.getName());
         setRoad(localization.getRoad());
         setZipCode(localization.getZipCode());
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getRoad() {
-        return road;
-    }
-
-    public void setRoad(String road) {
-        this.road = road;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
     }
 
     @Override

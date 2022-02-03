@@ -1,5 +1,8 @@
 package system.gc.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -7,6 +10,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 public class Specialty implements Serializable {
 
@@ -24,7 +29,7 @@ public class Specialty implements Serializable {
 	public Specialty() {}
 
 	public Specialty(String name) {
-		this.name = name;
+		setName(name);
 	}
 
 	public Specialty(Integer id, String name) {
@@ -35,29 +40,5 @@ public class Specialty implements Serializable {
 	public Specialty(String name, Set<Employee> employees) {
 		this.setName(name);
 		this.setEmployees(employees);
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Set<Employee> getEmployees() {
-		return employees;
-	}
-
-	public void setEmployees(Set<Employee> employees) {
-		this.employees = employees;
 	}
 }

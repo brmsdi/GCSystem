@@ -1,9 +1,13 @@
 package system.gc.dtos;
+import lombok.Getter;
+import lombok.Setter;
 import system.gc.entities.Status;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
 public class StatusDTO implements ConvertEntityAndDTO<StatusDTO, Status> {
     private Integer id;
 
@@ -20,22 +24,6 @@ public class StatusDTO implements ConvertEntityAndDTO<StatusDTO, Status> {
     public StatusDTO(Status status) {
         setId(status.getId());
         setName(status.getName());
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

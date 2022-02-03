@@ -1,11 +1,16 @@
 package system.gc.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 public class Movement implements Serializable{
 
@@ -40,72 +45,17 @@ public class Movement implements Serializable{
 	public Movement() {}
 
 	public Movement(Date moveDateAndTime, Date dueDate, double previousValue) {
-		this.moveDateAndTime = moveDateAndTime;
-		this.dueDate = dueDate;
-		this.previousValue = previousValue;
+		setMoveDateAndTime(moveDateAndTime);
+		setDueDate(dueDate);
+		setPreviousValue(previousValue);
 	}
 
 	public Movement(Date moveDateAndTime, Date dueDate, double previousValue, Debt debt, ActivityType activityType, Employee employee) {
-		this.moveDateAndTime = moveDateAndTime;
-		this.dueDate = dueDate;
-		this.previousValue = previousValue;
-		this.debt = debt;
-		this.activityType = activityType;
-		this.employee = employee;
-	}
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Date getMoveDateAndTime() {
-		return moveDateAndTime;
-	}
-
-	public void setMoveDateAndTime(Date moveDateAndTime) {
-		this.moveDateAndTime = moveDateAndTime;
-	}
-
-	public Date getDueDate() {
-		return dueDate;
-	}
-
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
-
-	public double getPreviousValue() {
-		return previousValue;
-	}
-
-	public void setPreviousValue(double previousValue) {
-		this.previousValue = previousValue;
-	}
-
-	public Debt getDebt() {
-		return debt;
-	}
-
-	public void setDebt(Debt debt) {
-		this.debt = debt;
-	}
-
-	public ActivityType getActivityType() {
-		return activityType;
-	}
-
-	public void setActivityType(ActivityType activityType) {
-		this.activityType = activityType;
-	}
-
-	public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
+		setMoveDateAndTime(moveDateAndTime);
+		setDueDate(dueDate);
+		setPreviousValue(previousValue);
+		setDebt(debt);
+		setActivityType(activityType);
+		setEmployee(employee);
 	}
 }

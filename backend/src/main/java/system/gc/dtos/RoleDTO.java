@@ -1,9 +1,13 @@
 package system.gc.dtos;
 
+import lombok.Getter;
+import lombok.Setter;
 import system.gc.entities.Role;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
 public class RoleDTO implements ConvertEntityAndDTO<RoleDTO, Role> {
     private Integer id;
 
@@ -13,29 +17,9 @@ public class RoleDTO implements ConvertEntityAndDTO<RoleDTO, Role> {
 
     public RoleDTO() {}
 
-    public RoleDTO(String name) {
-        setName(name);
-    }
-
     public RoleDTO(Role role) {
         setId(role.getId());
         setName(role.getName());
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

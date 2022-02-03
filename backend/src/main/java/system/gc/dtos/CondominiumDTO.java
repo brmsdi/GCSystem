@@ -1,9 +1,13 @@
 package system.gc.dtos;
 
+import lombok.Getter;
+import lombok.Setter;
 import system.gc.entities.Condominium;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
 public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condominium>{
     private Integer id;
 
@@ -19,27 +23,24 @@ public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condo
     private int numberApartments;
 
     @NotNull(message = "{required.validation}")
-    @NotBlank(message = "{required.validation}")
-    private StatusDTO statusDTO;
+    private StatusDTO status;
 
     @NotNull(message = "{required.validation}")
-    @NotBlank(message = "{required.validation}")
-    private LocalizationCondominiumDTO localizationCondominiumDTO;
+    private LocalizationCondominiumDTO localization;
 
     /*
     @NotNull(message = "{required.validation}")
     @NotBlank(message = "{required.validation}")
     private Set<Contract> contract; */
 
-    public CondominiumDTO() {
-    }
+    public CondominiumDTO() {}
 
-    public CondominiumDTO(String name, String description, int numberApartments, StatusDTO statusDTO, LocalizationCondominiumDTO localizationCondominiumDTO) {
+    public CondominiumDTO(String name, String description, int numberApartments, StatusDTO status, LocalizationCondominiumDTO localization) {
         setName(name);
         setDescription(description);
         setNumberApartments(numberApartments);
-        setStatusDTO(statusDTO);
-        setLocalizationCondominiumDTO(localizationCondominiumDTO);
+        setStatus(status);
+        setLocalization(localization);
     }
 
     public CondominiumDTO(Condominium condominium) {
@@ -47,56 +48,8 @@ public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condo
         setName(condominium.getName());
         setDescription(condominium.getDescription());
         setNumberApartments(condominium.getNumberApartments());
-        setStatusDTO(new StatusDTO(condominium.getStatus()));
-        setLocalizationCondominiumDTO(new LocalizationCondominiumDTO(condominium.getLocalizationCondominium()));
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getNumberApartments() {
-        return numberApartments;
-    }
-
-    public void setNumberApartments(int numberApartments) {
-        this.numberApartments = numberApartments;
-    }
-
-    public StatusDTO getStatusDTO() {
-        return statusDTO;
-    }
-
-    public void setStatusDTO(StatusDTO statusDTO) {
-        this.statusDTO = statusDTO;
-    }
-
-    public LocalizationCondominiumDTO getLocalizationCondominiumDTO() {
-        return localizationCondominiumDTO;
-    }
-
-    public void setLocalizationCondominiumDTO(LocalizationCondominiumDTO localizationCondominiumDTO) {
-        this.localizationCondominiumDTO = localizationCondominiumDTO;
+        setStatus(new StatusDTO(condominium.getStatus()));
+        setLocalization(new LocalizationCondominiumDTO(condominium.getLocalizationCondominium()));
     }
 
     @Override
@@ -109,8 +62,8 @@ public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condo
         Condominium condominium = new Condominium(condominiumDTO.getName(),
                 condominiumDTO.getDescription(),
                 condominiumDTO.getNumberApartments(),
-                new StatusDTO().toEntity(condominiumDTO.getStatusDTO()),
-                new LocalizationCondominiumDTO().toEntity(condominiumDTO.getLocalizationCondominiumDTO()),
+                new StatusDTO().toEntity(condominiumDTO.getStatus()),
+                new LocalizationCondominiumDTO().toEntity(condominiumDTO.getLocalization()),
                 null);
         if(condominiumDTO.getId() != null) {
             condominium.setId(condominiumDTO.getId());

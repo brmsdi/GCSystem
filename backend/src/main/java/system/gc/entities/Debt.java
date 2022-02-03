@@ -1,5 +1,8 @@
 package system.gc.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -8,6 +11,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 public class Debt implements Serializable {
 
@@ -37,58 +42,10 @@ public class Debt implements Serializable {
 	public Debt() {}
 
 	public Debt(Date dueDate, double value, Status status, Set<Movement> movements, Lessee lessee) {
-		this.dueDate = dueDate;
-		this.value = value;
-		this.status = status;
-		this.movements = movements;
-		this.lessee = lessee;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Date getDueDate() {
-		return dueDate;
-	}
-
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
-
-	public double getValue() {
-		return value;
-	}
-
-	public void setValue(double value) {
-		this.value = value;
-	}
-
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	public Set<Movement> getMovements() {
-		return movements;
-	}
-
-	public void setMovements(Set<Movement> movements) {
-		this.movements = movements;
-	}
-
-	public Lessee getLessee() {
-		return lessee;
-	}
-
-	public void setLessee(Lessee lessee) {
-		this.lessee = lessee;
+		setDueDate(dueDate);
+		setValue(value);
+		setStatus(status);
+		setMovements(movements);
+		setLessee(lessee);
 	}
 }
