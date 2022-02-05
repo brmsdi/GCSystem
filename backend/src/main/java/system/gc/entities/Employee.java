@@ -41,6 +41,10 @@ public class Employee implements Serializable {
 
 	private Date hiringDate;
 
+	@NotNull
+	@NotBlank
+	private String password;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_role_id", referencedColumnName = "id" )
 	private Role role;
@@ -62,13 +66,14 @@ public class Employee implements Serializable {
 
 	public Employee() {}
 
-	public Employee(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, Role role, Set<Specialty> specialties, Set<Movement> movements, Status status) {
+	public Employee(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, Role role, Set<Specialty> specialties, Set<Movement> movements, Status status) {
 		setName(name);
 		setRg(rg);
 		setCpf(cpf);
 		setBirthDate(birthDate);
 		setEmail(email);
 		setHiringDate(hiringDate);
+		setPassword(password);
 		setRole(role);
 		setSpecialties(specialties);
 		setMovements(movements);

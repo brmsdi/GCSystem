@@ -3,6 +3,7 @@ package system.gc.configuration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
@@ -20,7 +21,7 @@ public class MessageConfiguration implements WebMvcConfigurer {
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasenames("classpath:/messages/messages");
-        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setDefaultEncoding("ISO-8859-1");
         return messageSource;
     }
 
@@ -34,7 +35,7 @@ public class MessageConfiguration implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        sessionLocaleResolver.setDefaultLocale(Locale.US);
+        sessionLocaleResolver.setDefaultLocale(LocaleContextHolder.getLocale());
         return sessionLocaleResolver;
     }
 

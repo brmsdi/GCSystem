@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ import system.gc.repositories.SpecialtyRepository;
 import system.gc.repositories.StatusRepository;
 import system.gc.services.CondominiumService;
 import system.gc.services.EmployeeService;
+import system.gc.services.LesseeService;
 import system.gc.services.LocalizationService;
 
 import java.text.SimpleDateFormat;
@@ -45,6 +47,9 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
     @Autowired
     CondominiumService condominiumService;
+
+    @Autowired
+    LesseeService lesseeService;
 
     @Autowired
     private MessageSource messageSource;
@@ -75,6 +80,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     simpleDateFormat.parse("1995-12-06"),
                     "srmarquesms@gmail.com",
                     new Date(),
+                    "12345678",
                     new RoleDTO(roles.get(0)),
                     spEmployee,
                     null,
@@ -86,6 +92,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     simpleDateFormat.parse("2000-12-06"),
                     "exemple@gmail.com",
                     new Date(),
+                    "67896755656",
                     new RoleDTO(roles.get(0)),
                     spEmployee,
                     null,
@@ -108,6 +115,29 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
             condominiumService.save(condominiumDTO);
             condominiumService.save(condominiumDTO1);
+
+            for(int i = 5; i < 15; i++) {
+                CondominiumDTO condominiumDTO3 = new CondominiumDTO("PTU",
+                        "PTU30" + i,
+                        8 + i,
+                        new StatusDTO(status.get(0)),
+                        new LocalizationCondominiumDTO("900" + i, localizationDTO1));
+                condominiumService.save(condominiumDTO3);
+            }
+
+            for(int i = 0; i < 3; i++) {
+                LesseeDTO lesseeDTO = new LesseeDTO(
+                        "Daniel" + i,
+                        "635986" + i,
+                        "1256325667" + i,
+                        simpleDateFormat.parse("2003-06-02"),
+                        "daniel@gmail.com",
+                        "9298863526" + i,
+                        "785452545" + i,
+                        new StatusDTO(status.get(0))
+                );
+                lesseeService.save(lesseeDTO);
+            }
 /*
             employeeService.update(new EmployeeDTO("Amanda2 Silva",
                     "695854",
@@ -118,7 +148,13 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     new RoleDTO(roles.get(0)),
                     spEmployee,
                     null,
-                    new StatusDTO(status.get(0))));  */
+                    new StatusDTO(status.get(0))));
+
+
+                    */
+
+            System.out.println(LocaleContextHolder.getLocale());
+
         } catch (IllegalArgumentException e){
             log.warn(e.getMessage());
 

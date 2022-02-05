@@ -30,10 +30,10 @@ public class Lessee implements Serializable {
 
 	@NotNull
 	@NotBlank
+	@Column(unique = true)
 	private String cpf;
 
 	@NotNull
-	@NotBlank
 	private Date birthDate;
 
 	@NotNull
@@ -44,7 +44,11 @@ public class Lessee implements Serializable {
 	@NotBlank
 	private String contactNumber;
 
-	@ManyToOne
+	@NotNull
+	@NotBlank
+	private String password;
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
 	private Status status;
 
@@ -56,13 +60,14 @@ public class Lessee implements Serializable {
 
 	public Lessee() {}
 
-	public Lessee(String name, String rg, String cpf, Date birthDate, String email, String contactNumber, Status status, Set<Debt> debts, Set<Contract> contracts) {
+	public Lessee(String name, String rg, String cpf, Date birthDate, String email, String contactNumber, String password, Status status, Set<Debt> debts, Set<Contract> contracts) {
 		setName(name);
 		setRg(rg);
 		setCpf(cpf);
 		setBirthDate(birthDate);
 		setEmail(email);
 		setContactNumber(contactNumber);
+		setPassword(password);
 		setStatus(status);
 		setDebts(debts);
 		setContracts(contracts);

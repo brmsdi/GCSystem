@@ -35,6 +35,10 @@ public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condo
 
     public CondominiumDTO() {}
 
+    public CondominiumDTO(String name) {
+        setName(name);
+    }
+
     public CondominiumDTO(String name, String description, int numberApartments, StatusDTO status, LocalizationCondominiumDTO localization) {
         setName(name);
         setDescription(description);

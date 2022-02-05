@@ -41,6 +41,10 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee> {
     private Date hiringDate;
 
     @NotNull(message = "{required.validation}")
+    @NotBlank(message = "{required.validation}")
+    private String password;
+
+    @NotNull(message = "{required.validation}")
     private RoleDTO role;
 
     private Set<SpecialtyDTO> specialties = new HashSet<>();
@@ -55,13 +59,14 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee> {
         setCpf(cpf);
     }
 
-    public EmployeeDTO(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, RoleDTO role, Set<SpecialtyDTO> specialties, Set<MovementDTO> movements, StatusDTO status) {
+    public EmployeeDTO(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, RoleDTO role, Set<SpecialtyDTO> specialties, Set<MovementDTO> movements, StatusDTO status) {
         setName(name);
         setRg(rg);
         setCpf(cpf);
         setBirthDate(birthDate);
         setEmail(email);
         setHiringDate(hiringDate);
+        setPassword(password);
         setRole(role);
         setSpecialties(specialties);
         setMovements(movements);
@@ -97,6 +102,7 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee> {
                 employeeDTO.getBirthDate(),
                 employeeDTO.getEmail(),
                 employeeDTO.getHiringDate(),
+                employeeDTO.getPassword(),
                 new RoleDTO().toEntity(employeeDTO.getRole()),
                 new SpecialtyDTO().convertSetEntityDTOFromSetEntity(employeeDTO.getSpecialties()),
                 new MovementDTO().convertSetEntityDTOFromSetEntity(employeeDTO.getMovements()),

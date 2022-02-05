@@ -33,7 +33,7 @@ public class Condominium implements Serializable {
 	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
 	private Status status;
 
-	@OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_localization_condominium_id", referencedColumnName = "id")
 	private LocalizationCondominium localizationCondominium;
 

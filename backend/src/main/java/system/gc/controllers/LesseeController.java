@@ -8,37 +8,38 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import system.gc.dtos.EmployeeDTO;
-import system.gc.services.EmployeeService;
+import system.gc.dtos.LesseeDTO;
+import system.gc.services.LesseeService;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value="/employee")
+@RequestMapping(value="/lessee")
 @Slf4j
-public class EmployeeController {
+public class LesseeController {
     @Autowired
-    private EmployeeService employeeService;
+    private LesseeService lesseeService;
 
     @Autowired
     private MessageSource messageSource;
 
     @GetMapping
-    public ResponseEntity<Page<EmployeeDTO>> listPaginationEmployees(
+    public ResponseEntity<Page<LesseeDTO>> listPaginationLessees (
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size) {
-        return ResponseEntity.ok(employeeService.listPaginationEmployees(PageRequest.of(page, size)));
+        return ResponseEntity.ok(lesseeService.listPaginationLessees(PageRequest.of(page, size)));
     }
 
     @PostMapping
-    public ResponseEntity<String> save(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<String> save(@Valid @RequestBody LesseeDTO lesseeDTO) {
         log.info("Inserindo registro!");
-        if((employeeService.cpfIsAvailable(employeeDTO)) != null) {
+        if((lesseeService.cpfIsAvailable(lesseeDTO)) != null) {
             return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
         }
 
-        if(employeeService.save(employeeDTO) == null) {
-            return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_EMPLOYEE",
+        if(lesseeService.save(lesseeDTO) == null) {
+            return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_LESSEE",
                     null,
                     LocaleContextHolder.getLocale()));
         }
@@ -48,26 +49,26 @@ public class EmployeeController {
     }
 
     @PutMapping
-    public ResponseEntity<String> update(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<String> update(@Valid @RequestBody LesseeDTO lesseeDTO) {
         log.info("Atualizando registro");
-        employeeService.update(employeeDTO);
+        lesseeService.update(lesseeDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
     }
 
     @GetMapping(value = "search")
-    public ResponseEntity<Page<EmployeeDTO>> searchForCPF(HttpServletResponse response,
+    public ResponseEntity<Page<LesseeDTO>> searchForCPF(HttpServletResponse response,
                                                           @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                           @RequestParam(name = "size", defaultValue = "5") Integer size,
                                                           @RequestParam(name = "cpf") String cpf) {
-        log.info("Localizando funcionário...");
-        return ResponseEntity.ok(employeeService.findByCPF(PageRequest.of(page, size), new EmployeeDTO(cpf.trim())));
+        log.info("Localizando locatário...");
+        return ResponseEntity.ok(lesseeService.findForCPF(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
     }
 
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam(name = "id") Integer ID) {
-        employeeService.delete(ID);
+        lesseeService.delete(ID);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));

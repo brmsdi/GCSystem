@@ -7,9 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.CondominiumDTO;
 import system.gc.entities.Condominium;
+import system.gc.entities.Employee;
 import system.gc.repositories.CondominiumRepository;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -32,11 +35,39 @@ public class CondominiumService {
     }
 
     @Transactional
-    public Page<CondominiumDTO> findAllPagination(Pageable pageable) {
+    public Page<CondominiumDTO> listPaginationCondominium(Pageable pageable) {
         log.info("Bunscando condominios");
         Page<Condominium> pageCondominium = condominiumRepository.findAll(pageable);
-        condominiumRepository.findCondominiumPagination(pageCondominium.toList());
+        condominiumRepository.loadLazyCondominiums(pageCondominium.toList());
         return pageCondominium.map(CondominiumDTO::new);
+    }
+
+    @Transactional
+    public void update(CondominiumDTO condominiumDTO) throws EntityNotFoundException {
+        Optional<Condominium> condominium = condominiumRepository.findById(condominiumDTO.getId());
+        condominium.orElseThrow(() ->  new EntityNotFoundException("Registro não encontrado"));
+        condominiumRepository.save(new CondominiumDTO().toEntity(condominiumDTO));
+    }
+
+    @Transactional
+    public Page<CondominiumDTO> searchCondominium(Pageable pageable, CondominiumDTO condominiumDTO) {
+        log.info("Bucando registro de condiminios com o nome: " + condominiumDTO.getName());
+        Page<Condominium> condominiums = condominiumRepository.findAllByName(pageable, condominiumDTO.getName());
+        if(condominiums.isEmpty()) {
+           log.warn("Registro não encontrado");
+           return Page.empty();
+        }
+        condominiumRepository.loadLazyCondominiums(condominiums.toList());
+        return condominiums.map(CondominiumDTO::new);
+    }
+
+    @Transactional
+    public void delete(Integer ID) throws EntityNotFoundException{
+        log.info("Deletando registro com o ID: " + ID);
+        Optional<Condominium> condominium = condominiumRepository.findById(ID);
+        condominium.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o ID: " + ID));
+        condominiumRepository.delete(condominium.get());
+        log.info("Registro deletado com sucesso");
     }
 
 }

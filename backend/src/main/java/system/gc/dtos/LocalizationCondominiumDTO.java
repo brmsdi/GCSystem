@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class LocalizationCondominiumDTO implements ConvertEntityAndDTO<LocalizationCondominiumDTO, LocalizationCondominium> {
 
+    private Integer id;
+
     @NotNull(message = "{required.validation}")
     @NotBlank(message = "{required.validation}")
     private String number;
@@ -17,8 +19,7 @@ public class LocalizationCondominiumDTO implements ConvertEntityAndDTO<Localizat
     @NotNull(message = "{required.validation}")
     private LocalizationDTO localization;
 
-    public LocalizationCondominiumDTO() {
-    }
+    public LocalizationCondominiumDTO() {}
 
     public LocalizationCondominiumDTO(String number, LocalizationDTO localization) {
         setNumber(number);
@@ -37,8 +38,12 @@ public class LocalizationCondominiumDTO implements ConvertEntityAndDTO<Localizat
 
     @Override
     public LocalizationCondominium toEntity(LocalizationCondominiumDTO localizationCondominiumDTO) {
-        return new LocalizationCondominium(
+        LocalizationCondominium localizationCondominium = new LocalizationCondominium(
                 localizationCondominiumDTO.getNumber(),
                 new LocalizationDTO().toEntity(localizationCondominiumDTO.getLocalization()));
+        if(localizationCondominiumDTO.getId() != null) {
+            localizationCondominium.setId(localizationCondominiumDTO.getId());
+        }
+        return localizationCondominium;
     }
 }

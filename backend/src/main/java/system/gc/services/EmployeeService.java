@@ -3,16 +3,17 @@ package system.gc.services;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.EmployeeDTO;
+import system.gc.dtos.LesseeDTO;
 import system.gc.entities.Employee;
+import system.gc.entities.Lessee;
 import system.gc.repositories.EmployeeRepository;
-
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -39,42 +40,62 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Page<EmployeeDTO> findAllPageable(Pageable pageable) {
+    public Page<EmployeeDTO> listPaginationEmployees(Pageable pageable) {
         log.info("Listando funcionários");
         Page<Employee> page = employeeRepository.findAll(pageable);
-        employeeRepository.findEmployeesPagination(page.toList());
+        if(!page.isEmpty()) {
+            employeeRepository.loadLazyEmployees(page.toList());
+        }
         return page.map(EmployeeDTO::new);
     }
 
     @Transactional
     public void update(EmployeeDTO updateEmployeeDTO) throws EntityNotFoundException {
         log.info("Atualizando registro do funionário");
-        Optional<Employee> employee = employeeRepository.findByCPF(updateEmployeeDTO.getCpf());
-        employee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o CPF: " + updateEmployeeDTO.getCpf()));
-        updateEmployeeDTO.setId(employee.get().getId());
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeRepository.save(employeeDTO.toEntity(updateEmployeeDTO));
+        Optional<Employee> employee = employeeRepository.findById(updateEmployeeDTO.getId());
+        employee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o id: " + updateEmployeeDTO.getId()));
+        //updateEmployeeDTO.setId(employee.get().getId());
+        EmployeeDTO employeeResultForCpf = cpfIsAvailable(updateEmployeeDTO);
+        if( employeeResultForCpf != null && !Objects.equals(employee.get().getId(), employeeResultForCpf.getId())) {
+            log.warn("Cpf não corresponde ao ID no banco de dados");
+            throw new EntityNotFoundException("Cpf indisponível");
+        }
+        employeeRepository.save(new EmployeeDTO().toEntity(updateEmployeeDTO));
         log.info("Atualizado com sucesso");
     }
 
-    public Page<EmployeeDTO> findByCPF(EmployeeDTO employeeDTO) {
+    @Transactional
+    public EmployeeDTO cpfIsAvailable(EmployeeDTO employeeDTO) {
         log.info("Localizando registro do funcionário com o cpf: " + employeeDTO.getCpf());
-        Page<Employee> page = employeeRepository.findByCPF(PageRequest.of(0, 5), employeeDTO.getCpf());
+        Optional<Employee> employee = employeeRepository.findByCPF(employeeDTO.getCpf());
+        if(employee.isEmpty()) {
+            log.warn("O cpf: " + employeeDTO.getCpf() + " está disponível");
+            return null;
+        }
+        log.info("O cpf: " + employeeDTO.getCpf() + " não está disponível");
+        return new EmployeeDTO().toDTO(employee.get());
+    }
+
+    @Transactional
+    public Page<EmployeeDTO> findByCPF(Pageable pageable, EmployeeDTO employeeDTO) {
+        log.info("Localizando registro do funcionário com o cpf: " + employeeDTO.getCpf());
+        Page<Employee> page = employeeRepository.findByCPF(pageable, employeeDTO.getCpf());
         if(page.isEmpty()) {
             log.warn("Registro com o cpf " + employeeDTO.getCpf() + " não foi localizado");
-            return page.map(EmployeeDTO::new);
+            return Page.empty();
         }
-        employeeRepository.findEmployeesPagination(page.stream().toList());
+        employeeRepository.loadLazyEmployees(page.toList());
         log.info("Registro do funcionário com o cpf: " + employeeDTO.getCpf() + " localizado com sucesso");
         return page.map(EmployeeDTO::new);
     }
 
     @Transactional
-    public void delete(EmployeeDTO employeeDTO) throws EntityNotFoundException{
-        log.info("Deletando registro com o CPF: " + employeeDTO.getCpf());
-        Optional<Employee> employee = employeeRepository.findByCPF(employeeDTO.getCpf());
-        employee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o CPF: " + employeeDTO.getCpf()));
+    public void delete(Integer ID) throws EntityNotFoundException{
+        log.info("Deletando registro com o ID: " + ID);
+        Optional<Employee> employee = employeeRepository.findById(ID);
+        employee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o ID: " + ID));
         employeeRepository.delete(employee.get());
         log.info("Registro deletado com sucesso");
     }
+
 }
