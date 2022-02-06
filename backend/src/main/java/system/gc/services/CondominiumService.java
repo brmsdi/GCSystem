@@ -36,7 +36,7 @@ public class CondominiumService {
 
     @Transactional
     public Page<CondominiumDTO> listPaginationCondominium(Pageable pageable) {
-        log.info("Bunscando condominios");
+        log.info("Busscando condominios");
         Page<Condominium> pageCondominium = condominiumRepository.findAll(pageable);
         condominiumRepository.loadLazyCondominiums(pageCondominium.toList());
         return pageCondominium.map(CondominiumDTO::new);
@@ -51,7 +51,7 @@ public class CondominiumService {
 
     @Transactional
     public Page<CondominiumDTO> searchCondominium(Pageable pageable, CondominiumDTO condominiumDTO) {
-        log.info("Bucando registro de condiminios com o nome: " + condominiumDTO.getName());
+        log.info("Buscando registro de condiminios com o nome: " + condominiumDTO.getName());
         Page<Condominium> condominiums = condominiumRepository.findAllByName(pageable, condominiumDTO.getName());
         if(condominiums.isEmpty()) {
            log.warn("Registro não encontrado");
@@ -65,7 +65,7 @@ public class CondominiumService {
     public void delete(Integer ID) throws EntityNotFoundException{
         log.info("Deletando registro com o ID: " + ID);
         Optional<Condominium> condominium = condominiumRepository.findById(ID);
-        condominium.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o ID: " + ID));
+        condominium.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         condominiumRepository.delete(condominium.get());
         log.info("Registro deletado com sucesso");
     }

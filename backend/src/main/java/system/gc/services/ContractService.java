@@ -1,0 +1,78 @@
+package system.gc.services;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import system.gc.dtos.ContractDTO;
+import system.gc.dtos.LesseeDTO;
+import system.gc.entities.Contract;
+import system.gc.repositories.ContractRepository;
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import java.util.Optional;
+
+@Service
+@Slf4j
+public class ContractService {
+
+    @Autowired
+    private ContractRepository contractRepository;
+
+    @Autowired
+    private LesseeService lesseeService;
+
+    @Transactional
+    public ContractDTO save(ContractDTO contractDTO) {
+        log.info("Salvando novo registro de contrato no banco de dados");
+        ContractDTO contractDTOService = new ContractDTO();
+        Contract registeredContract = contractRepository.save(contractDTOService.toEntity(contractDTO));
+        if(registeredContract.getId() == null) {
+            log.warn("Erro ao salvar!");
+            return null;
+        }
+        log.info("Salvo com sucesso. ID: " + registeredContract.getId());
+        return contractDTOService.toDTO(registeredContract);
+    }
+
+    @Transactional
+    public Page<ContractDTO> listPaginationContract(Pageable pageable) {
+        log.info("Buscando contratos");
+        Page<Contract> pageContract = contractRepository.findAll(pageable);
+        contractRepository.loadLazyContracts(pageContract.toList());
+        return pageContract.map(ContractDTO::new);
+    }
+
+    @Transactional
+    public void update(ContractDTO contractDTO) throws EntityNotFoundException {
+        Optional<Contract> contract = contractRepository.findById(contractDTO.getId());
+        contract.orElseThrow(() ->  new EntityNotFoundException("Registro não encontrado"));
+        contractRepository.save(new ContractDTO().toEntity(contractDTO));
+    }
+
+    @Transactional
+    public Page<ContractDTO> searchContract(Pageable pageable, LesseeDTO lesseeDTO) {
+        log.info("Buscando registro de contrato");
+        LesseeDTO lessee = lesseeService.cpfIsAvailable(lesseeDTO);
+        if(lessee == null) {
+           log.warn("Locatário com o CPF: " + lesseeDTO.getCpf() + " não foi localizado");
+           return Page.empty();
+        }
+        Page<Contract> pageContract = contractRepository.findContractsForLessee(pageable, lessee.getId());
+        contractRepository.loadLazyContracts(pageContract.toList());
+        return pageContract.map(ContractDTO::new);
+    }
+
+    @Transactional
+    public void delete(Integer ID) throws EntityNotFoundException{
+        log.info("Deletando registro com o ID: " + ID);
+        Optional<Contract> contract = contractRepository.findById(ID);
+        contract.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        contractRepository.delete(contract.get());
+        log.info("Registro deletado com sucesso");
+    }
+
+    public void generateContract() {}
+
+}

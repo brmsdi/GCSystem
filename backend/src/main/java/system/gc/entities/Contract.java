@@ -18,28 +18,26 @@ public class Contract implements Serializable {
 	private Integer id;
 
 	@NotNull
-	@NotBlank
 	private Date contractDate;
 
 	@NotNull
-	@NotBlank
 	private double contractValue;
 
 	@NotNull
-	@NotBlank
-	private Date monthlyPaymentDate;
+	private int monthlyPaymentDate;
 
 	@NotNull
-	@NotBlank
-	private Date monthlyDueDate;
+	private int monthlyDueDate;
 
 	@NotNull
-	@NotBlank
 	private Date contractExpirationDate;
 
 	@NotNull
-	@NotBlank
 	private int apartmentNumber;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
+	private Status status;
 
 	@ManyToOne
 	@JoinColumn(name = "fk_condominium_id", referencedColumnName = "id")
@@ -51,13 +49,14 @@ public class Contract implements Serializable {
 
 	public Contract() {}
 
-	public Contract(Date contractDate, double contractValue, Date monthlyPaymentDate, Date monthlyDueDate, Date contractExpirationDate, int apartmentNumber, Condominium condominium, Lessee lessee) {
+	public Contract(Date contractDate, double contractValue, int monthlyPaymentDate, int monthlyDueDate, Date contractExpirationDate, int apartmentNumber, Status status, Condominium condominium, Lessee lessee) {
 		setContractDate(contractDate);
 		setContractValue(contractValue);
 		setMonthlyPaymentDate(monthlyPaymentDate);
 		setMonthlyDueDate(monthlyDueDate);
 		setContractExpirationDate(contractExpirationDate);
 		setApartmentNumber(apartmentNumber);
+		setStatus(status);
 		setCondominium(condominium);
 		setLessee(lessee);
 	}

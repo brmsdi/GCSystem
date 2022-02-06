@@ -6,13 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.EmployeeDTO;
-import system.gc.dtos.LesseeDTO;
 import system.gc.entities.Employee;
-import system.gc.entities.Lessee;
 import system.gc.repositories.EmployeeRepository;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -93,7 +90,7 @@ public class EmployeeService {
     public void delete(Integer ID) throws EntityNotFoundException{
         log.info("Deletando registro com o ID: " + ID);
         Optional<Employee> employee = employeeRepository.findById(ID);
-        employee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o ID: " + ID));
+        employee.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         employeeRepository.delete(employee.get());
         log.info("Registro deletado com sucesso");
     }

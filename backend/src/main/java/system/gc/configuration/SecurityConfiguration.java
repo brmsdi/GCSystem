@@ -52,7 +52,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/lessee")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/lessee")
+                .antMatchers(HttpMethod.POST, "/contract")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/contract")
                 .permitAll();
 
     }

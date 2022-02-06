@@ -87,7 +87,7 @@ public class LesseeService {
     public void delete(Integer ID) throws EntityNotFoundException{
         log.info("Deletando registro com o ID: " + ID);
         Optional<Lessee> lessee = lesseeRepository.findById(ID);
-        lessee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o ID: " + ID));
+        lessee.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         lesseeRepository.delete(lessee.get());
         log.info("Registro deletado com sucesso");
     }

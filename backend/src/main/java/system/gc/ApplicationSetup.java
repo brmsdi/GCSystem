@@ -18,10 +18,7 @@ import system.gc.entities.Status;
 import system.gc.repositories.RoleRepository;
 import system.gc.repositories.SpecialtyRepository;
 import system.gc.repositories.StatusRepository;
-import system.gc.services.CondominiumService;
-import system.gc.services.EmployeeService;
-import system.gc.services.LesseeService;
-import system.gc.services.LocalizationService;
+import system.gc.services.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -47,6 +44,9 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
     @Autowired
     CondominiumService condominiumService;
+
+    @Autowired
+    ContractService contractService;
 
     @Autowired
     LesseeService lesseeService;
@@ -125,7 +125,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                 condominiumService.save(condominiumDTO3);
             }
 
-            for(int i = 0; i < 3; i++) {
+            for(int i = 0; i < 8; i++) {
                 LesseeDTO lesseeDTO = new LesseeDTO(
                         "Daniel" + i,
                         "635986" + i,
@@ -138,6 +138,35 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                 );
                 lesseeService.save(lesseeDTO);
             }
+
+            Page<CondominiumDTO> condominiumDTOPage = condominiumService.listPaginationCondominium(PageRequest.of(0, 5));
+            Page<LesseeDTO> lesseeDTOPage = lesseeService.listPaginationLessees(PageRequest.of(0, 5));
+            ContractDTO contractDTO = new ContractDTO(simpleDateFormat.parse("2022-02-05"),
+                    1200.00,
+                    5,
+                    15,
+                    simpleDateFormat.parse("2022-07-05"),
+                    60,
+                    new StatusDTO(status.get(0)),
+                    condominiumDTOPage.toList().get(0),
+                    lesseeDTOPage.toList().get(0));
+
+            ContractDTO contractDTO2 = new ContractDTO(simpleDateFormat.parse("2022-02-10"),
+                    1100.00,
+                    10,
+                    20,
+                    simpleDateFormat.parse("2022-07-05"),
+                    10,
+                    new StatusDTO(status.get(0)),
+                    condominiumDTOPage.toList().get(1),
+                    lesseeDTOPage.toList().get(1));
+            contractService.save(contractDTO);
+            contractService.save(contractDTO);
+            contractService.save(contractDTO2);
+
+            contractService.listPaginationContract(PageRequest.of(0, 5)).forEach(item -> System.out.println(item.getId())); ;
+
+
 /*
             employeeService.update(new EmployeeDTO("Amanda2 Silva",
                     "695854",
@@ -152,8 +181,6 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
 
                     */
-
-            System.out.println(LocaleContextHolder.getLocale());
 
         } catch (IllegalArgumentException e){
             log.warn(e.getMessage());
