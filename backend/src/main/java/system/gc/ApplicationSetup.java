@@ -12,9 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import system.gc.dtos.*;
+import system.gc.entities.ActivityType;
 import system.gc.entities.Role;
 import system.gc.entities.Specialty;
 import system.gc.entities.Status;
+import system.gc.repositories.ActivityTypeRepository;
 import system.gc.repositories.RoleRepository;
 import system.gc.repositories.SpecialtyRepository;
 import system.gc.repositories.StatusRepository;
@@ -40,6 +42,9 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     StatusRepository statusRepository;
 
     @Autowired
+    ActivityTypeRepository activityTypeRepository;
+
+    @Autowired
     LocalizationService localizationService;
 
     @Autowired
@@ -50,6 +55,9 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
     @Autowired
     LesseeService lesseeService;
+
+    @Autowired
+    DebtService debtService;
 
     @Autowired
     private MessageSource messageSource;
@@ -65,6 +73,10 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         specialtyRepository.save(new Specialty("Desenvolvedor de Software"));
         statusRepository.save(new Status("Ativo"));
         statusRepository.save(new Status("Inativo"));
+        statusRepository.save(new Status("Aberto"));
+        statusRepository.save(new Status("Desativado"));
+        activityTypeRepository.save(new ActivityType("registrado"));
+        activityTypeRepository.save(new ActivityType("atualizado"));
         List<Role> roles = roleRepository.findAll();
         List<Specialty> specialties = specialtyRepository.findAll();
         List<Status> status = statusRepository.findAll();
@@ -166,7 +178,14 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
             contractService.listPaginationContract(PageRequest.of(0, 5)).forEach(item -> System.out.println(item.getId())); ;
 
+            DebtDTO debtDTO = new DebtDTO(simpleDateFormat.parse("2022-03-07"),
+                    2000,
+                    new StatusDTO().toDTO(status.get(2)),
+                    null,
+                    lesseeDTOPage.toList().get(0));
+            debtService.save(debtDTO);
 
+            debtService.listPaginationDebts(PageRequest.of(0, 5));
 /*
             employeeService.update(new EmployeeDTO("Amanda2 Silva",
                     "695854",

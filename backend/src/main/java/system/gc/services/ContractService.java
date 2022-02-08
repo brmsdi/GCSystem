@@ -54,7 +54,7 @@ public class ContractService {
     @Transactional
     public Page<ContractDTO> searchContract(Pageable pageable, LesseeDTO lesseeDTO) {
         log.info("Buscando registro de contrato");
-        LesseeDTO lessee = lesseeService.cpfIsAvailable(lesseeDTO);
+        LesseeDTO lessee = lesseeService.findByCPF(lesseeDTO);
         if(lessee == null) {
            log.warn("Locatário com o CPF: " + lesseeDTO.getCpf() + " não foi localizado");
            return Page.empty();

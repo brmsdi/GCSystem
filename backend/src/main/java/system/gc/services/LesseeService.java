@@ -1,5 +1,6 @@
 package system.gc.services;
 
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,7 +49,7 @@ public class LesseeService {
         log.info("Atualizando registro do locatário");
         Optional<Lessee> lessee = lesseeRepository.findById(updateLesseeDTO.getId());
         lessee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o id: " + updateLesseeDTO.getId()));
-        LesseeDTO lesseeResultForCpf = cpfIsAvailable(updateLesseeDTO);
+        LesseeDTO lesseeResultForCpf = findByCPF(updateLesseeDTO);
         if( lesseeResultForCpf != null && !Objects.equals(lessee.get().getId(), lesseeResultForCpf.getId())) {
             log.warn("Cpf não corresponde ao ID no banco de dados");
             throw new EntityNotFoundException("Cpf indisponível");
@@ -58,20 +59,20 @@ public class LesseeService {
     }
 
     @Transactional
-    public LesseeDTO cpfIsAvailable(LesseeDTO lesseeDTO) {
+    public LesseeDTO findByCPF(LesseeDTO lesseeDTO) {
         log.info("Localizando registro do locatário com o cpf: " + lesseeDTO.getCpf());
         Optional<Lessee> lessee = lesseeRepository.findByCPF(lesseeDTO.getCpf());
         if(lessee.isEmpty()) {
-            log.warn("O cpf: " + lesseeDTO.getCpf() + " está disponível");
+            log.warn("Registro com o cpf: " + lesseeDTO.getCpf() + " não foi localizado");
             return null;
         }
-        //lesseeRepository.loadLazyLessees(lessees);
-        log.info("O cpf: " + lesseeDTO.getCpf() + " não está disponível");
+        lesseeRepository.loadLazyLessees(lessee.stream().toList());
+        log.info("Registro com o CPF:  " + lesseeDTO.getCpf() + " localizado");
         return new LesseeDTO().toDTO(lessee.get());
     }
 
     @Transactional
-    public Page<LesseeDTO> findForCPF(Pageable pageable, LesseeDTO lesseeDTO) {
+    public Page<LesseeDTO> findByCPFPagination(Pageable pageable, LesseeDTO lesseeDTO) {
         log.info("Localizando registro do locatário com o cpf: " + lesseeDTO.getCpf());
         Page<Lessee> page = lesseeRepository.findByCPF(pageable, lesseeDTO.getCpf());
         if(page.isEmpty()) {
@@ -90,5 +91,13 @@ public class LesseeService {
         lessee.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         lesseeRepository.delete(lessee.get());
         log.info("Registro deletado com sucesso");
+    }
+
+    public boolean isEnabled(@NonNull LesseeDTO lesseeDTO) {
+        return lesseeDTO.getStatus().getName().equalsIgnoreCase("Ativo");
+    }
+
+    public boolean lesseeRegistrationIsEnabled(LesseeDTO lesseeDTO) {
+        return findByCPF(lesseeDTO) != null && isEnabled(lesseeDTO);
     }
 }

@@ -47,12 +47,17 @@ public class EmployeeService {
     }
 
     @Transactional
+    public Employee findByID(Integer ID) {
+        return employeeRepository.findById(ID).orElse(null);
+    }
+
+    @Transactional
     public void update(EmployeeDTO updateEmployeeDTO) throws EntityNotFoundException {
         log.info("Atualizando registro do funionário");
         Optional<Employee> employee = employeeRepository.findById(updateEmployeeDTO.getId());
         employee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o id: " + updateEmployeeDTO.getId()));
         //updateEmployeeDTO.setId(employee.get().getId());
-        EmployeeDTO employeeResultForCpf = cpfIsAvailable(updateEmployeeDTO);
+        EmployeeDTO employeeResultForCpf = findByCPF(updateEmployeeDTO);
         if( employeeResultForCpf != null && !Objects.equals(employee.get().getId(), employeeResultForCpf.getId())) {
             log.warn("Cpf não corresponde ao ID no banco de dados");
             throw new EntityNotFoundException("Cpf indisponível");
@@ -62,19 +67,19 @@ public class EmployeeService {
     }
 
     @Transactional
-    public EmployeeDTO cpfIsAvailable(EmployeeDTO employeeDTO) {
+    public EmployeeDTO findByCPF(EmployeeDTO employeeDTO) {
         log.info("Localizando registro do funcionário com o cpf: " + employeeDTO.getCpf());
         Optional<Employee> employee = employeeRepository.findByCPF(employeeDTO.getCpf());
         if(employee.isEmpty()) {
-            log.warn("O cpf: " + employeeDTO.getCpf() + " está disponível");
+            log.warn("Registro com o cpf: " + employeeDTO.getCpf() + " não foi localizado");
             return null;
         }
-        log.info("O cpf: " + employeeDTO.getCpf() + " não está disponível");
+        log.info("Registro com o CPF:  " + employeeDTO.getCpf() + " localizado");
         return new EmployeeDTO().toDTO(employee.get());
     }
 
     @Transactional
-    public Page<EmployeeDTO> findByCPF(Pageable pageable, EmployeeDTO employeeDTO) {
+    public Page<EmployeeDTO> findByCPFPagination(Pageable pageable, EmployeeDTO employeeDTO) {
         log.info("Localizando registro do funcionário com o cpf: " + employeeDTO.getCpf());
         Page<Employee> page = employeeRepository.findByCPF(pageable, employeeDTO.getCpf());
         if(page.isEmpty()) {

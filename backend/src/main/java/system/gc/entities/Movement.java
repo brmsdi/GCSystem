@@ -19,15 +19,12 @@ public class Movement implements Serializable{
 	private Integer id;
 
 	@NotNull
-	@NotBlank
 	private Date moveDateAndTime;
 
 	@NotNull
-	@NotBlank
 	private Date dueDate;
 
 	@NotNull
-	@NotBlank
 	private double previousValue;
 
 	@ManyToOne
@@ -39,16 +36,10 @@ public class Movement implements Serializable{
 	private ActivityType activityType;
 
 	@ManyToOne
-	@JoinColumn(name = "fk_employee_id", referencedColumnName = "id")
+	@JoinColumn(name = "fk_employee_id", referencedColumnName = "id", nullable = false)
 	private Employee employee;
 
 	public Movement() {}
-
-	public Movement(Date moveDateAndTime, Date dueDate, double previousValue) {
-		setMoveDateAndTime(moveDateAndTime);
-		setDueDate(dueDate);
-		setPreviousValue(previousValue);
-	}
 
 	public Movement(Date moveDateAndTime, Date dueDate, double previousValue, Debt debt, ActivityType activityType, Employee employee) {
 		setMoveDateAndTime(moveDateAndTime);

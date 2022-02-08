@@ -33,7 +33,7 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Inserindo registro!");
-        if((employeeService.cpfIsAvailable(employeeDTO)) != null) {
+        if((employeeService.findByCPF(employeeDTO)) != null) {
             return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
         }
 
@@ -62,7 +62,7 @@ public class EmployeeController {
                                                           @RequestParam(name = "size", defaultValue = "5") Integer size,
                                                           @RequestParam(name = "cpf") String cpf) {
         log.info("Localizando funcionário...");
-        return ResponseEntity.ok(employeeService.findByCPF(PageRequest.of(page, size), new EmployeeDTO(cpf.trim())));
+        return ResponseEntity.ok(employeeService.findByCPFPagination(PageRequest.of(page, size), new EmployeeDTO(cpf.trim())));
     }
 
     @DeleteMapping

@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.LesseeDTO;
 import system.gc.services.LesseeService;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -34,7 +33,7 @@ public class LesseeController {
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody LesseeDTO lesseeDTO) {
         log.info("Inserindo registro!");
-        if((lesseeService.cpfIsAvailable(lesseeDTO)) != null) {
+        if((lesseeService.findByCPF(lesseeDTO)) != null) {
             return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
         }
 
@@ -63,7 +62,7 @@ public class LesseeController {
                                                           @RequestParam(name = "size", defaultValue = "5") Integer size,
                                                           @RequestParam(name = "cpf") String cpf) {
         log.info("Localizando locatário...");
-        return ResponseEntity.ok(lesseeService.findForCPF(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
+        return ResponseEntity.ok(lesseeService.findByCPFPagination(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
     }
 
     @DeleteMapping

@@ -21,21 +21,19 @@ public class Debt implements Serializable {
 	private Integer id;
 
 	@NotNull
-	@NotBlank
 	private Date dueDate;
 
 	@NotNull
-	@NotBlank
 	private double value;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
 	private Status status;
 
 	@OneToMany(mappedBy = "debt")
 	private Set<Movement> movements = new HashSet<>();
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name= "fk_lessee_id", referencedColumnName = "id")
 	private Lessee lessee;
 
