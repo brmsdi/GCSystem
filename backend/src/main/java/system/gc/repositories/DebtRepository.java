@@ -10,7 +10,17 @@ import java.util.List;
 
 public interface DebtRepository extends JpaRepository<Debt, Integer> {
 
-    @Query("SELECT debt FROM Debt debt JOIN FETCH debt.status JOIN FETCH debt.movements movements JOIN FETCH movements.activityType JOIN FETCH movements.employee employee JOIN FETCH employee.role JOIN FETCH employee.specialties JOIN FETCH employee.status JOIN FETCH debt.lessee lessee JOIN FETCH lessee.status WHERE debt IN :debts")
+    @Query("SELECT debt FROM Debt debt " +
+            "JOIN FETCH debt.status " +
+            "JOIN FETCH debt.movements movements " +
+            "JOIN FETCH movements.activityType " +
+            "JOIN FETCH movements.employee employee " +
+            "JOIN FETCH employee.role " +
+            "JOIN FETCH employee.specialties " +
+            "JOIN FETCH employee.status " +
+            "JOIN FETCH debt.lessee lessee " +
+            "JOIN FETCH lessee.status " +
+            "WHERE debt IN :debts")
     List<Debt> loadLazyDebts(List<Debt> debts);
 
     @Query("SELECT debt FROM Debt debt WHERE debt.lessee.id = :id")

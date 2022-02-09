@@ -36,7 +36,7 @@ public class CondominiumService {
 
     @Transactional
     public Page<CondominiumDTO> listPaginationCondominium(Pageable pageable) {
-        log.info("Busscando condominios");
+        log.info("Buscando condominios");
         Page<Condominium> pageCondominium = condominiumRepository.findAll(pageable);
         condominiumRepository.loadLazyCondominiums(pageCondominium.toList());
         return pageCondominium.map(CondominiumDTO::new);

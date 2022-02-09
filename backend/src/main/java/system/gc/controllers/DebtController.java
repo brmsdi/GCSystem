@@ -8,35 +8,34 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import system.gc.dtos.ContractDTO;
-import system.gc.dtos.LesseeDTO;
-import system.gc.services.ContractService;
+import system.gc.dtos.DebtDTO;
+import system.gc.services.DebtService;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/contract")
+@RequestMapping(value = "/debt")
 @Slf4j
-public class ContractController {
+public class DebtController {
 
     @Autowired
-    private ContractService contractService;
+    private DebtService debtService;
 
     @Autowired
     private MessageSource messageSource;
 
     @GetMapping
-    public ResponseEntity<Page<ContractDTO>> listPaginationContract (
+    public ResponseEntity<Page<DebtDTO>> listPaginationDebt (
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size) {
-        log.info("Listando contratos");
-        return ResponseEntity.ok(contractService.listPaginationContract(PageRequest.of(page, size)));
+        log.info("Listando débitos");
+        return ResponseEntity.ok(debtService.listPaginationDebts(PageRequest.of(page, size)));
     }
 
     @PostMapping
-    public ResponseEntity<String> save(@Valid @RequestBody ContractDTO contractDTO) {
-        if(contractService.save(contractDTO) == null) {
-            return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_CONTRACT",
+    public ResponseEntity<String> save(@Valid @RequestBody DebtDTO debtDTO) {
+        if(debtService.save(debtDTO) == null) {
+            return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_DEBT",
                     null,
                     LocaleContextHolder.getLocale()));
         }
@@ -46,27 +45,20 @@ public class ContractController {
     }
 
     @PutMapping
-    public ResponseEntity<String> update(@Valid @RequestBody ContractDTO contractDTO) {
+    public ResponseEntity<String> update(@Valid @RequestBody DebtDTO debtDTO) {
         log.info("Atualizando registro");
-        contractService.update(contractDTO);
+        debtService.update(debtDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
     }
 
-    @GetMapping(value = "search")
-    public ResponseEntity<Page<ContractDTO>> search( @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                        @RequestParam(name = "size", defaultValue = "5") Integer size,
-                                                        @RequestParam(name = "cpf") String cpf) {
-        log.info("Localizando contratos");
-        return ResponseEntity.ok(contractService.searchContract(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
-    }
-
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam(name = "id") Integer ID) {
-        contractService.delete(ID);
+        debtService.delete(ID);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
     }
+
 }

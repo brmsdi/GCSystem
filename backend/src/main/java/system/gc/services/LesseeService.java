@@ -4,14 +4,18 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import system.gc.dtos.DebtDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.entities.Lessee;
 import system.gc.repositories.LesseeRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -91,6 +95,14 @@ public class LesseeService {
         lessee.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         lesseeRepository.delete(lessee.get());
         log.info("Registro deletado com sucesso");
+    }
+
+    @Transactional
+    public Page<LesseeDTO> listPaginationDebtsByLessee(LesseeDTO lesseeDTO, Page<DebtDTO> debtDTOPage) {
+        for(DebtDTO debtDTO : debtDTOPage) {
+            lesseeDTO.getDebts().add(DebtDTO.toViewByLessee(debtDTO));
+        }
+        return new PageImpl<>(List.of(lesseeDTO), debtDTOPage.getPageable(), debtDTOPage.getTotalElements());
     }
 
     public boolean isEnabled(@NonNull LesseeDTO lesseeDTO) {

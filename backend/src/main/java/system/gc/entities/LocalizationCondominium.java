@@ -22,7 +22,7 @@ public class LocalizationCondominium implements Serializable {
     @NotBlank
     private String number;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_localization_id", referencedColumnName = "id")
     private Localization localization;
 

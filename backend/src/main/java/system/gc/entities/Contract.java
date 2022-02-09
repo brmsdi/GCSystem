@@ -39,11 +39,11 @@ public class Contract implements Serializable {
 	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
 	private Status status;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_condominium_id", referencedColumnName = "id")
 	private Condominium condominium;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_contract_id", referencedColumnName = "id")
 	private Lessee lessee;
 

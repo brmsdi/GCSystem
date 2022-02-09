@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.LesseeDTO;
+import system.gc.services.DebtService;
 import system.gc.services.LesseeService;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -19,6 +20,9 @@ import javax.validation.Valid;
 public class LesseeController {
     @Autowired
     private LesseeService lesseeService;
+
+    @Autowired
+    private DebtService debtService;
 
     @Autowired
     private MessageSource messageSource;
@@ -71,5 +75,20 @@ public class LesseeController {
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
+    }
+
+    @GetMapping(value = "debt")
+    public ResponseEntity<Page<LesseeDTO>> listPaginationDebtsByLessee(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                       @RequestParam(name = "size", defaultValue = "5") Integer size,
+                                                                       @RequestParam(name = "cpf") String cpf) {
+
+        log.info("Localizando débito");
+        LesseeDTO lessee = lesseeService.findByCPF(new LesseeDTO(cpf.trim()));
+
+        if(lessee == null) {
+            log.warn("Locatário com o CPF: " +  cpf + " não foi localizado");
+            return ResponseEntity.ok(Page.empty());
+        }
+        return ResponseEntity.ok(lesseeService.listPaginationDebtsByLessee(lessee, debtService.searchDebts(PageRequest.of(page, size), lessee)));
     }
 }

@@ -50,6 +50,7 @@ public class MovementDTO implements ConvertEntityAndDTO<MovementDTO, Movement> {
         setMoveDateAndTime(movement.getMoveDateAndTime());
         setDueDate(movement.getDueDate());
         setPreviousValue(movement.getPreviousValue());
+        setEmployee(new EmployeeDTO().toDTO(movement.getEmployee()));
         setActivityType(new ActivityTypeDTO().toDTO(movement.getActivityType()));
     }
 

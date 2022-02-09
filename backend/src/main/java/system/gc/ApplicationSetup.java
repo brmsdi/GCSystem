@@ -75,8 +75,9 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         statusRepository.save(new Status("Inativo"));
         statusRepository.save(new Status("Aberto"));
         statusRepository.save(new Status("Desativado"));
-        activityTypeRepository.save(new ActivityType("registrado"));
-        activityTypeRepository.save(new ActivityType("atualizado"));
+        activityTypeRepository.save(new ActivityType("Registrado"));
+        activityTypeRepository.save(new ActivityType("Atualizado"));
+        activityTypeRepository.save(new ActivityType("Desativado"));
         List<Role> roles = roleRepository.findAll();
         List<Specialty> specialties = specialtyRepository.findAll();
         List<Status> status = statusRepository.findAll();
@@ -176,8 +177,6 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
             contractService.save(contractDTO);
             contractService.save(contractDTO2);
 
-            contractService.listPaginationContract(PageRequest.of(0, 5)).forEach(item -> System.out.println(item.getId())); ;
-
             DebtDTO debtDTO = new DebtDTO(simpleDateFormat.parse("2022-03-07"),
                     2000,
                     new StatusDTO().toDTO(status.get(2)),
@@ -185,7 +184,6 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     lesseeDTOPage.toList().get(0));
             debtService.save(debtDTO);
 
-            debtService.listPaginationDebts(PageRequest.of(0, 5));
 /*
             employeeService.update(new EmployeeDTO("Amanda2 Silva",
                     "695854",

@@ -14,7 +14,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     //Page<Employee> findAll(Pageable pageable);
     //JOIN FETCH employee.movements JOIN FETCH employee.specialties
 
-    @Query("SELECT employee FROM Employee employee JOIN FETCH employee.specialties JOIN FETCH employee.role JOIN FETCH employee.status WHERE employee IN :employees")
+    @Query("SELECT employee FROM Employee employee " +
+            "JOIN FETCH employee.specialties " +
+            "JOIN FETCH employee.role " +
+            "JOIN FETCH employee.status " +
+            "WHERE employee IN :employees")
     List<Employee> loadLazyEmployees(List<Employee> employees);
 
     @Query("SELECT employee FROM Employee employee WHERE employee.cpf LIKE :cpf")

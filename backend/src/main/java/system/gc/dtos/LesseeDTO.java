@@ -2,11 +2,7 @@ package system.gc.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
-import system.gc.entities.Contract;
-import system.gc.entities.Debt;
 import system.gc.entities.Lessee;
-import system.gc.entities.Status;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -48,7 +44,7 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee> {
     @NotNull(message = "{required.validation}")
     private StatusDTO status;
 
-    //private Set<Debt> debts = new HashSet<>();
+    private Set<DebtDTO> debts = new HashSet<>();
 
     //private Set<Contract> contracts = new HashSet<>();
 
@@ -77,7 +73,6 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee> {
         setBirthDate(lessee.getBirthDate());
         setEmail(lessee.getEmail());
         setContactNumber(lessee.getContactNumber());
-        setPassword(lessee.getPassword());
         setStatus(new StatusDTO().toDTO(lessee.getStatus()));
     }
 

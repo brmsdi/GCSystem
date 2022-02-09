@@ -35,27 +35,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/h2-console/**")
-                .permitAll()
-                .antMatchers(HttpMethod.GET,"/employee")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/employee")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/role")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/specialty")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/status")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/condominium")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/condominium")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/lessee")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/contract")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/contract")
                 .permitAll();
-
     }
 }

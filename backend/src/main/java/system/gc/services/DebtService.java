@@ -8,11 +8,8 @@ import org.springframework.stereotype.Service;
 import system.gc.dtos.*;
 import system.gc.entities.*;
 import system.gc.repositories.DebtRepository;
-
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -49,8 +46,8 @@ public class DebtService {
         }
         log.info("Débito registrado com o id: " + registeredDebt.getId());
         // MODIFICAR
-        List<ActivityType> activitiesType =  new ActivityTypeDTO().convertListEntityDTOFromListEntity(activityTypeService.findAll());
-        registerMovementDebt(registeredDebt, activitiesType.get(0));
+       // List<ActivityType> activitiesType =  new ActivityTypeDTO().convertListEntityDTOFromListEntity(activityTypeService.findAll());
+        registerMovementDebt(registeredDebt, activityTypeService.findByName("Registrado"));
         return registeredDebt;
     }
 
@@ -69,21 +66,24 @@ public class DebtService {
         log.info("Atualizando registro do débito");
         Optional<Debt> debt = debtRepository.findById(updateDebtDTO.getId());
         debt.orElseThrow(() -> new EntityNotFoundException("Débito inexistente: "));
+        DebtDTO previousDebt = new DebtDTO().toDTO(debt.get());
         Debt updatedDebt = debtRepository.save(new DebtDTO().toEntity(updateDebtDTO));
         log.info("Atualizado com sucesso");
-        List<ActivityType> activitiesType = new ActivityTypeDTO().convertListEntityDTOFromListEntity(activityTypeService.findAll());
-        registerMovementDebt(updatedDebt, activitiesType.get(1));
+        //List<ActivityType> activitiesType = new ActivityTypeDTO().convertListEntityDTOFromListEntity(activityTypeService.findAll());
+        registerMovementDebt(previousDebt, updatedDebt, activityTypeService.findByName("Atualizado"));
     }
 
     @Transactional
     public Page<DebtDTO> searchDebts(Pageable pageable, LesseeDTO lesseeDTO) {
         log.info("Buscando débitos");
+        /*
         LesseeDTO lessee = lesseeService.findByCPF(lesseeDTO);
         if(lessee == null) {
             log.warn("Locatário com o CPF: " + lesseeDTO.getCpf() + " não foi localizado");
             return Page.empty();
         }
-        Page<Debt> pageDebts = debtRepository.findDebtsForLessee(pageable, lessee.getId());
+         */
+        Page<Debt> pageDebts = debtRepository.findDebtsForLessee(pageable, lesseeDTO.getId());
         debtRepository.loadLazyDebts(pageDebts.toList());
         return pageDebts.map(DebtDTO::new);
     }
@@ -93,8 +93,11 @@ public class DebtService {
         log.info("Desativando registro com o ID: " + ID);
         Optional<Debt> debt = debtRepository.findById(ID);
         debt.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        DebtDTO previousDebt =  new DebtDTO().toDTO(debt.get());
         debt.get().setStatus(statusService.findByName("Desativado"));
-        debtRepository.save(debt.get());
+        Debt disabledDebt = debtRepository.save(debt.get());
+        //List<ActivityType> activitiesType = new ActivityTypeDTO().convertListEntityDTOFromListEntity(activityTypeService.findAll());
+        registerMovementDebt(previousDebt, disabledDebt, activityTypeService.findByName("Desativado"));
         log.info("Registro desativado com sucesso");
     }
 
@@ -102,4 +105,7 @@ public class DebtService {
         movementService.registerMovement(debt, activityType, employeeService.findByID(1));
     }
 
+    private void registerMovementDebt(DebtDTO previousDebtDTO, Debt debt, ActivityType activityType) {
+        movementService.registerMovement(previousDebtDTO, debt, activityType, employeeService.findByID(1));
+    }
 }
