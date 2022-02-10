@@ -27,6 +27,7 @@ public class EmployeeController {
     public ResponseEntity<Page<EmployeeDTO>> listPaginationEmployees(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size) {
+
         return ResponseEntity.ok(employeeService.listPaginationEmployees(PageRequest.of(page, size)));
     }
 

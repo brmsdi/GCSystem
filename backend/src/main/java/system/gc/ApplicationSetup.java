@@ -10,6 +10,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import system.gc.dtos.*;
 import system.gc.entities.ActivityType;
@@ -93,7 +94,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     simpleDateFormat.parse("1995-12-06"),
                     "srmarquesms@gmail.com",
                     new Date(),
-                    "12345678",
+                    new BCryptPasswordEncoder().encode("admin"),
                     new RoleDTO(roles.get(0)),
                     spEmployee,
                     null,
@@ -105,7 +106,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     simpleDateFormat.parse("2000-12-06"),
                     "exemple@gmail.com",
                     new Date(),
-                    "67896755656",
+                    new BCryptPasswordEncoder().encode("67896755656"),
                     new RoleDTO(roles.get(0)),
                     spEmployee,
                     null,

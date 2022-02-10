@@ -15,7 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Slf4j
-public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee> {
+public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, AuthenticateDTO<EmployeeDTO, Employee> {
     private Integer id;
 
     @NotNull(message = "{required.validation}")
@@ -113,4 +113,18 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee> {
         return employee;
     }
 
+    /**
+     * @return 'DTO' DTO da entidade correspondente ao tipo de autenticação. Instancia com senha para gerenciamento interno do ProviderManager.
+     */
+    @Override
+    public EmployeeDTO initAuthenticate(Employee employee) {
+        EmployeeDTO result = new EmployeeDTO();
+        result.setId(employee.getId());
+        result.setName(employee.getName());
+        result.setCpf(employee.getCpf());
+        result.setRole(new RoleDTO(employee.getRole()));
+        result.setStatus(new StatusDTO(employee.getStatus()));
+        result.setPassword(employee.getPassword());
+        return result;
+    }
 }

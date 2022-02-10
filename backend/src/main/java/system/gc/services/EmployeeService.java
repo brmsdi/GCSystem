@@ -10,6 +10,7 @@ import system.gc.entities.Employee;
 import system.gc.repositories.EmployeeRepository;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,6 +23,9 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private AuthenticationEmployee authenticationEmployee;
 
     @Transactional
     public EmployeeDTO save(EmployeeDTO newEmployeeDTO) {
@@ -74,6 +78,7 @@ public class EmployeeService {
             log.warn("Registro com o cpf: " + employeeDTO.getCpf() + " não foi localizado");
             return null;
         }
+        employeeRepository.loadLazyEmployees(List.of(employee.get()));
         log.info("Registro com o CPF:  " + employeeDTO.getCpf() + " localizado");
         return new EmployeeDTO().toDTO(employee.get());
     }
@@ -100,4 +105,7 @@ public class EmployeeService {
         log.info("Registro deletado com sucesso");
     }
 
+    public EmployeeDTO authentication(String username) {
+        return authenticationEmployee.authentication(username,new EmployeeDTO(), employeeRepository);
+    }
 }
