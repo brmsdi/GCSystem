@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.ContractDTO;
 import system.gc.dtos.LesseeDTO;
-import system.gc.services.ContractService;
+import system.gc.services.ServiceImpl.ContractService;
 
 import javax.validation.Valid;
 

@@ -17,6 +17,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import system.gc.security.EmployeeUserDetailsService;
+import system.gc.security.Filter.EmployeeAuthenticationFilter;
+import system.gc.security.Filter.JWTAuthenticationFilter;
+import system.gc.security.Filter.LesseeAuthenticationFilter;
+import system.gc.security.LesseeUserDetailsService;
 
 import java.util.Arrays;
 
@@ -28,8 +32,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     Environment environment;
 
+    final EmployeeUserDetailsService employeeUserDetailsService;
+
     @Autowired
-    EmployeeUserDetailsService employeeUserDetailsService;
+    LesseeUserDetailsService lesseeUserDetailsService;
+
+    ProviderManager employeeProviderManager;
+
+    protected SecurityConfiguration(EmployeeUserDetailsService employeeUserDetailsService) {
+        this.employeeUserDetailsService = employeeUserDetailsService;
+        this.employeeProviderManager = new ProviderManager(employeeDaoAuthenticationManagerProvider(this.employeeUserDetailsService));
+    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -38,27 +51,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             log.info("Perfil de teste ativado");
             httpSecurity.headers().frameOptions().disable();
         }
+
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity
                 .cors()
                 .and()
                 .csrf()
                 .disable()
+                .addFilter(employeeJWTAuthenticationFilter())
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/employee/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/lessee/login").permitAll()
                 .anyRequest()
                 .authenticated();
     }
 
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManager() throws Exception {
-        log.info("Configurando autenticação");
-        return new ProviderManager(initProvider(employeeUserDetailsService));
-    }
-
-    private DaoAuthenticationProvider initProvider(UserDetailsService userDetailsService)
+    public DaoAuthenticationProvider employeeDaoAuthenticationManagerProvider(UserDetailsService userDetailsService)
     {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
@@ -66,10 +75,43 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return authenticationProvider;
     }
 
-    @Bean
-    public UsernamePasswordAuthenticationFilter authenticationFilter() throws Exception {
-        UsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter = new UsernamePasswordAuthenticationFilter();
-        jwtUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager());
-        return jwtUsernamePasswordAuthenticationFilter;
+
+    private DaoAuthenticationProvider lesseeDaoAuthenticationManagerProvider(LesseeUserDetailsService lesseeUserDetailsService)
+    {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(lesseeUserDetailsService);
+        authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+        return authenticationProvider;
     }
+
+    @Bean
+    public UsernamePasswordAuthenticationFilter employeeAuthenticationFilter() {
+        return initUsernamePasswordAuthenticationFilter("/employee/login",
+                new EmployeeAuthenticationFilter(),
+                employeeProviderManager);
+    }
+
+    @Bean
+    public UsernamePasswordAuthenticationFilter lesseeAuthenticationFilter() {
+        return initUsernamePasswordAuthenticationFilter("/lessee/login",
+                new LesseeAuthenticationFilter(),
+                new ProviderManager(lesseeDaoAuthenticationManagerProvider(lesseeUserDetailsService)));
+    }
+
+    @Bean
+    public JWTAuthenticationFilter employeeJWTAuthenticationFilter() {
+       // employeeProviderManager = initEmployeeProviderManager();
+        return new JWTAuthenticationFilter(employeeProviderManager);
+    }
+
+    private UsernamePasswordAuthenticationFilter initUsernamePasswordAuthenticationFilter(String url,
+                                                                                          UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter,
+                                                                                          AuthenticationManager authenticationManager) {
+
+        usernamePasswordAuthenticationFilter.setFilterProcessesUrl(url);
+        usernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager);
+        return usernamePasswordAuthenticationFilter;
+
+    }
+
 }

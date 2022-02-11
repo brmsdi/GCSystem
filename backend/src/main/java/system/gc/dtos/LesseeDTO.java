@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee> {
+public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, AuthenticateDTO<LesseeDTO, Lessee> {
     private Integer id;
 
     @NotNull(message = "{required.validation}")
@@ -97,5 +97,20 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee> {
             lessee.setId(lesseeDTO.getId());
         }
         return lessee;
+    }
+
+    /**
+     * @param lessee
+     * @return 'DTO' DTO da entidade correspondente ao tipo de autenticação. Instancia com senha para gerenciamento interno do ProviderManager.
+     */
+    @Override
+    public LesseeDTO initAuthenticate(Lessee lessee) {
+        LesseeDTO result = new LesseeDTO();
+        result.setId(lessee.getId());
+        result.setName(lessee.getName());
+        result.setCpf(lessee.getCpf());
+        result.setStatus(new StatusDTO(lessee.getStatus()));
+        result.setPassword(lessee.getPassword());
+        return result;
     }
 }

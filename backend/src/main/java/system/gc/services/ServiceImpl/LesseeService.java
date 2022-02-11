@@ -1,4 +1,4 @@
-package system.gc.services;
+package system.gc.services.ServiceImpl;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.DebtDTO;
+import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.entities.Lessee;
 import system.gc.repositories.LesseeRepository;
@@ -24,6 +25,9 @@ import java.util.Optional;
 public class LesseeService {
     @Autowired
     private LesseeRepository lesseeRepository;
+
+    @Autowired
+    private AuthenticationLessee authenticationLessee;
 
     @Transactional
     public LesseeDTO save(LesseeDTO newLesseeDTO) {
@@ -111,5 +115,9 @@ public class LesseeService {
 
     public boolean lesseeRegistrationIsEnabled(LesseeDTO lesseeDTO) {
         return findByCPF(lesseeDTO) != null && isEnabled(lesseeDTO);
+    }
+
+    public LesseeDTO authentication(String username) {
+        return authenticationLessee.authentication(username,new LesseeDTO(), lesseeRepository);
     }
 }

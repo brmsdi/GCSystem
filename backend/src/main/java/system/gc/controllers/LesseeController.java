@@ -9,8 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.LesseeDTO;
-import system.gc.services.DebtService;
-import system.gc.services.LesseeService;
+import system.gc.services.ServiceImpl.DebtService;
+import system.gc.services.ServiceImpl.LesseeService;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 

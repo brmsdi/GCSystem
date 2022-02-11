@@ -9,7 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.EmployeeDTO;
-import system.gc.services.EmployeeService;
+import system.gc.services.ServiceImpl.EmployeeService;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 

@@ -9,7 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.DebtDTO;
-import system.gc.services.DebtService;
+import system.gc.services.ServiceImpl.DebtService;
 
 import javax.validation.Valid;
 

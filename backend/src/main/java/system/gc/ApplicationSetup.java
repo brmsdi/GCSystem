@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +20,7 @@ import system.gc.repositories.ActivityTypeRepository;
 import system.gc.repositories.RoleRepository;
 import system.gc.repositories.SpecialtyRepository;
 import system.gc.repositories.StatusRepository;
-import system.gc.services.*;
+import system.gc.services.ServiceImpl.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -147,7 +146,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                         simpleDateFormat.parse("2003-06-02"),
                         "daniel@gmail.com",
                         "9298863526" + i,
-                        "785452545" + i,
+                         new BCryptPasswordEncoder().encode("785452545" + i),
                         new StatusDTO(status.get(0))
                 );
                 lesseeService.save(lesseeDTO);
@@ -362,7 +361,7 @@ Hibernate:
             on debt2_.fk_status_id=status5_.id
     where
         movements0_.fk_employee_id=?
-2022-01-22 19:49:40.466  INFO 33508 --- [nio-8080-exec-2] system.gc.services.EmployeeService       : Listando funcionários
+2022-01-22 19:49:40.466  INFO 33508 --- [nio-8080-exec-2] system.gc.services.ServiceImpl.EmployeeService       : Listando funcionários
 Hibernate:
     select
         employee0_.id as id1_4_,

@@ -1,4 +1,4 @@
-package system.gc.services;
+package system.gc.services.ServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import system.gc.dtos.ContractDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.entities.Contract;
 import system.gc.repositories.ContractRepository;
+
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Optional;
