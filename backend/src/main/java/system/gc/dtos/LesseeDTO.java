@@ -3,6 +3,7 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Lessee;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -48,7 +49,8 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
 
     //private Set<Contract> contracts = new HashSet<>();
 
-    public LesseeDTO() {}
+    public LesseeDTO() {
+    }
 
     public LesseeDTO(String cpf) {
         setCpf(cpf);
@@ -93,7 +95,7 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
                 new StatusDTO().toEntity(lesseeDTO.getStatus()),
                 null,
                 null);
-        if(lesseeDTO.getId() != null) {
+        if (lesseeDTO.getId() != null) {
             lessee.setId(lesseeDTO.getId());
         }
         return lessee;

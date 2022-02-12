@@ -1,4 +1,5 @@
 package system.gc.dtos;
+
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Specialty;
@@ -15,7 +16,8 @@ public class SpecialtyDTO implements ConvertEntityAndDTO<SpecialtyDTO, Specialty
     @NotBlank(message = "{required.validation}")
     private String name;
 
-    public SpecialtyDTO() {}
+    public SpecialtyDTO() {
+    }
 
     public SpecialtyDTO(Specialty specialty) {
         setId(specialty.getId());
@@ -30,7 +32,7 @@ public class SpecialtyDTO implements ConvertEntityAndDTO<SpecialtyDTO, Specialty
     @Override
     public Specialty toEntity(SpecialtyDTO specialtyDTO) {
         Specialty specialty = new Specialty(specialtyDTO.getName());
-        if(specialtyDTO.getId() != null) {
+        if (specialtyDTO.getId() != null) {
             specialty.setId(specialtyDTO.getId());
         }
         return specialty;

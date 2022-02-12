@@ -3,13 +3,13 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.LocalizationCondominium;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class LocalizationCondominiumDTO implements ConvertEntityAndDTO<LocalizationCondominiumDTO, LocalizationCondominium> {
-
     private Integer id;
 
     @NotNull(message = "{required.validation}")
@@ -19,7 +19,8 @@ public class LocalizationCondominiumDTO implements ConvertEntityAndDTO<Localizat
     @NotNull(message = "{required.validation}")
     private LocalizationDTO localization;
 
-    public LocalizationCondominiumDTO() {}
+    public LocalizationCondominiumDTO() {
+    }
 
     public LocalizationCondominiumDTO(String number, LocalizationDTO localization) {
         setNumber(number);
@@ -41,7 +42,7 @@ public class LocalizationCondominiumDTO implements ConvertEntityAndDTO<Localizat
         LocalizationCondominium localizationCondominium = new LocalizationCondominium(
                 localizationCondominiumDTO.getNumber(),
                 new LocalizationDTO().toEntity(localizationCondominiumDTO.getLocalization()));
-        if(localizationCondominiumDTO.getId() != null) {
+        if (localizationCondominiumDTO.getId() != null) {
             localizationCondominium.setId(localizationCondominiumDTO.getId());
         }
         return localizationCondominium;

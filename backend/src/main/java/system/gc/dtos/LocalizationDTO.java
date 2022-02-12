@@ -3,6 +3,7 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Localization;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -50,7 +51,7 @@ public class LocalizationDTO implements ConvertEntityAndDTO<LocalizationDTO, Loc
                 localizationDTO.getRoad(),
                 localizationDTO.getZipCode());
 
-        if(localizationDTO.getId() != null) {
+        if (localizationDTO.getId() != null) {
             localization.setId(localizationDTO.getId());
         }
         return localization;

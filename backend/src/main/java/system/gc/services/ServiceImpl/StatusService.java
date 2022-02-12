@@ -10,7 +10,7 @@ import system.gc.repositories.StatusRepository;
 import java.util.List;
 
 @Service
-public class StatusService{
+public class StatusService {
 
     @Autowired
     private StatusRepository statusRepository;
@@ -22,6 +22,6 @@ public class StatusService{
 
     @Transactional(readOnly = true)
     public Status findByName(String name) {
-        return statusRepository.getByName(name).orElse(null) ;
+        return statusRepository.getByName(name).orElse(null);
     }
 }

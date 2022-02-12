@@ -15,30 +15,31 @@ import java.util.Set;
 @Entity
 public class Specialty implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@NotNull
-	@NotBlank
-	private String name;
+    @NotNull
+    @NotBlank
+    private String name;
 
-	@ManyToMany(mappedBy = "specialties")
-	private Set<Employee> employees = new HashSet<>();
+    @ManyToMany(mappedBy = "specialties")
+    private Set<Employee> employees = new HashSet<>();
 
-	public Specialty() {}
+    public Specialty() {
+    }
 
-	public Specialty(String name) {
-		setName(name);
-	}
+    public Specialty(String name) {
+        setName(name);
+    }
 
-	public Specialty(Integer id, String name) {
-		setId(id);
-		setName(name);
-	}
+    public Specialty(Integer id, String name) {
+        setId(id);
+        setName(name);
+    }
 
-	public Specialty(String name, Set<Employee> employees) {
-		this.setName(name);
-		this.setEmployees(employees);
-	}
+    public Specialty(String name, Set<Employee> employees) {
+        this.setName(name);
+        this.setEmployees(employees);
+    }
 }

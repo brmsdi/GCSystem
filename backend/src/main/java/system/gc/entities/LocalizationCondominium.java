@@ -29,7 +29,8 @@ public class LocalizationCondominium implements Serializable {
     //@OneToOne(mappedBy = "localizationCondominium")
     //private Condominium condominium;
 
-    public LocalizationCondominium() {}
+    public LocalizationCondominium() {
+    }
 
     public LocalizationCondominium(String number, Localization localization) {
         setNumber(number);

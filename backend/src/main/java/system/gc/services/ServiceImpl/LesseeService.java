@@ -34,7 +34,7 @@ public class LesseeService {
         log.info("Salvando novo registro de locatário no banco de dados. Nome: " + newLesseeDTO.getName());
         LesseeDTO lesseeDTO = new LesseeDTO();
         Lessee registeredLessee = lesseeRepository.save(lesseeDTO.toEntity(newLesseeDTO));
-        if(registeredLessee.getId() == null) {
+        if (registeredLessee.getId() == null) {
             log.warn("Erro ao salvar!");
             return null;
         }
@@ -46,7 +46,7 @@ public class LesseeService {
     public Page<LesseeDTO> listPaginationLessees(Pageable pageable) {
         log.info("Listando locatários");
         Page<Lessee> page = lesseeRepository.findAll(pageable);
-        if(!page.isEmpty()) {
+        if (!page.isEmpty()) {
             lesseeRepository.loadLazyLessees(page.toList());
         }
         return page.map(LesseeDTO::new);
@@ -58,7 +58,7 @@ public class LesseeService {
         Optional<Lessee> lessee = lesseeRepository.findById(updateLesseeDTO.getId());
         lessee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o id: " + updateLesseeDTO.getId()));
         LesseeDTO lesseeResultForCpf = findByCPF(updateLesseeDTO);
-        if( lesseeResultForCpf != null && !Objects.equals(lessee.get().getId(), lesseeResultForCpf.getId())) {
+        if (lesseeResultForCpf != null && !Objects.equals(lessee.get().getId(), lesseeResultForCpf.getId())) {
             log.warn("Cpf não corresponde ao ID no banco de dados");
             throw new EntityNotFoundException("Cpf indisponível");
         }
@@ -70,7 +70,7 @@ public class LesseeService {
     public LesseeDTO findByCPF(LesseeDTO lesseeDTO) {
         log.info("Localizando registro do locatário com o cpf: " + lesseeDTO.getCpf());
         Optional<Lessee> lessee = lesseeRepository.findByCPF(lesseeDTO.getCpf());
-        if(lessee.isEmpty()) {
+        if (lessee.isEmpty()) {
             log.warn("Registro com o cpf: " + lesseeDTO.getCpf() + " não foi localizado");
             return null;
         }
@@ -83,7 +83,7 @@ public class LesseeService {
     public Page<LesseeDTO> findByCPFPagination(Pageable pageable, LesseeDTO lesseeDTO) {
         log.info("Localizando registro do locatário com o cpf: " + lesseeDTO.getCpf());
         Page<Lessee> page = lesseeRepository.findByCPF(pageable, lesseeDTO.getCpf());
-        if(page.isEmpty()) {
+        if (page.isEmpty()) {
             log.warn("Registro com o cpf " + lesseeDTO.getCpf() + " não foi localizado");
             return Page.empty();
         }
@@ -93,7 +93,7 @@ public class LesseeService {
     }
 
     @Transactional
-    public void delete(Integer ID) throws EntityNotFoundException{
+    public void delete(Integer ID) throws EntityNotFoundException {
         log.info("Deletando registro com o ID: " + ID);
         Optional<Lessee> lessee = lesseeRepository.findById(ID);
         lessee.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
@@ -103,7 +103,7 @@ public class LesseeService {
 
     @Transactional
     public Page<LesseeDTO> listPaginationDebtsByLessee(LesseeDTO lesseeDTO, Page<DebtDTO> debtDTOPage) {
-        for(DebtDTO debtDTO : debtDTOPage) {
+        for (DebtDTO debtDTO : debtDTOPage) {
             lesseeDTO.getDebts().add(DebtDTO.toViewByLessee(debtDTO));
         }
         return new PageImpl<>(List.of(lesseeDTO), debtDTOPage.getPageable(), debtDTOPage.getTotalElements());
@@ -118,6 +118,6 @@ public class LesseeService {
     }
 
     public LesseeDTO authentication(String username) {
-        return authenticationLessee.authentication(username,new LesseeDTO(), lesseeRepository);
+        return authenticationLessee.authentication(username, new LesseeDTO(), lesseeRepository);
     }
 }

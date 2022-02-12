@@ -10,7 +10,7 @@ public interface AuthenticationByCPFGenericImpl<DTO extends AuthenticateDTO<DTO,
      */
     default DTO authentication(String username, DTO entityDTO, REPOSITORY repository) {
         E result = repository.getAuthentication(username);
-        if(result == null) {
+        if (result == null) {
             return null;
         }
         return entityDTO.initAuthenticate(result);

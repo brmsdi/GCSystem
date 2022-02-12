@@ -1,8 +1,10 @@
 package system.gc.dtos;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import system.gc.entities.Employee;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -11,7 +13,7 @@ import java.util.Set;
 
 /**
  * @author Wisley Bruno Marques França
- * */
+ */
 @Getter
 @Setter
 @Slf4j
@@ -53,7 +55,8 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
     @NotNull(message = "{required.validation}")
     private StatusDTO status;
 
-    public EmployeeDTO() {}
+    public EmployeeDTO() {
+    }
 
     public EmployeeDTO(String cpf) {
         setCpf(cpf);

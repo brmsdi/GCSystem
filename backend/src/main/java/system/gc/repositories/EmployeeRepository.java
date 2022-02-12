@@ -11,11 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer>, AuthenticateEntityByCPF<Employee> {
-
-    //@Query("SELECT employees FROM Employee as employees")
-    //Page<Employee> findAll(Pageable pageable);
-    //JOIN FETCH employee.movements JOIN FETCH employee.specialties
-
     @Query("SELECT employee FROM Employee employee " +
             "JOIN FETCH employee.specialties " +
             "JOIN FETCH employee.role " +

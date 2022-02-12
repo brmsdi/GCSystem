@@ -31,7 +31,7 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiErrorDTO> handlerMethodArgumentNotValid (
+    public ResponseEntity<ApiErrorDTO> handlerMethodArgumentNotValid(
             MethodArgumentNotValidException methodArgumentNotValidException
     ) {
         log.error("Exception {}, Message: {}",
@@ -84,7 +84,7 @@ public class ExceptionHandlerAdvice {
     }
 
     private ErrorDTO buildError(FieldError error, String messageKey) {
-        String message = messageSource.getMessage(messageKey, new Object[] {error.getField()}, LocaleContextHolder.getLocale());
+        String message = messageSource.getMessage(messageKey, new Object[]{error.getField()}, LocaleContextHolder.getLocale());
 
         return new ErrorDTO(error.getCode(), message);
     }

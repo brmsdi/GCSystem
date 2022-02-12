@@ -12,7 +12,7 @@ import system.gc.services.ServiceImpl.SpecialtyService;
 import java.util.List;
 
 @Controller
-@RequestMapping(value="/specialty")
+@RequestMapping(value = "/specialty")
 @Slf4j
 public class SpecialtyController {
 

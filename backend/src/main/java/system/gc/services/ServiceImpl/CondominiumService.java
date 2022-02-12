@@ -26,7 +26,7 @@ public class CondominiumService {
         log.info("Salvando novo registro de condomínio no banco de dados: " + condominiumDTO.getName());
         CondominiumDTO condominiumDTOService = new CondominiumDTO();
         Condominium registeredCondominium = condominiumRepository.save(condominiumDTOService.toEntity(condominiumDTO));
-        if(registeredCondominium.getId() == null) {
+        if (registeredCondominium.getId() == null) {
             log.warn("Erro ao salvar!");
             return null;
         }
@@ -45,7 +45,7 @@ public class CondominiumService {
     @Transactional
     public void update(CondominiumDTO condominiumDTO) throws EntityNotFoundException {
         Optional<Condominium> condominium = condominiumRepository.findById(condominiumDTO.getId());
-        condominium.orElseThrow(() ->  new EntityNotFoundException("Registro não encontrado"));
+        condominium.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         condominiumRepository.save(new CondominiumDTO().toEntity(condominiumDTO));
     }
 
@@ -53,16 +53,16 @@ public class CondominiumService {
     public Page<CondominiumDTO> searchCondominium(Pageable pageable, CondominiumDTO condominiumDTO) {
         log.info("Buscando registro de condiminios com o nome: " + condominiumDTO.getName());
         Page<Condominium> condominiums = condominiumRepository.findAllByName(pageable, condominiumDTO.getName());
-        if(condominiums.isEmpty()) {
-           log.warn("Registro não encontrado");
-           return Page.empty();
+        if (condominiums.isEmpty()) {
+            log.warn("Registro não encontrado");
+            return Page.empty();
         }
         condominiumRepository.loadLazyCondominiums(condominiums.toList());
         return condominiums.map(CondominiumDTO::new);
     }
 
     @Transactional
-    public void delete(Integer ID) throws EntityNotFoundException{
+    public void delete(Integer ID) throws EntityNotFoundException {
         log.info("Deletando registro com o ID: " + ID);
         Optional<Condominium> condominium = condominiumRepository.findById(ID);
         condominium.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));

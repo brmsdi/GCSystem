@@ -15,23 +15,24 @@ import java.util.Set;
 @Entity
 public class Status implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@NotNull
-	@NotBlank
-	private String name;
+    @NotNull
+    @NotBlank
+    private String name;
 
-	public Status() {}
+    public Status() {
+    }
 
-	public Status(String name) {
-		this.name = name;
-	}
+    public Status(String name) {
+        this.name = name;
+    }
 
-	public Status(Integer id, String name) {
-		setId(id);
-		setName(name);
-	}
+    public Status(Integer id, String name) {
+        setId(id);
+        setName(name);
+    }
 
 }

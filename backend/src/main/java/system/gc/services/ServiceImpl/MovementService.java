@@ -21,7 +21,7 @@ public class MovementService {
 
     public void registerMovement(Debt debt, ActivityType activityType, Employee employee) {
         log.info("Registrando movimentação");
-        movementRepository.save( new Movement(new Date(),
+        movementRepository.save(new Movement(new Date(),
                 debt.getDueDate(),
                 debt.getValue(),
                 debt,
@@ -32,7 +32,7 @@ public class MovementService {
 
     public void registerMovement(DebtDTO previousDebtDTO, Debt debt, ActivityType activityType, Employee employee) {
         log.info("Registrando movimentação");
-        movementRepository.save( new Movement(new Date(),
+        movementRepository.save(new Movement(new Date(),
                 debt.getDueDate(),
                 previousDebtDTO.getValue(),
                 debt,

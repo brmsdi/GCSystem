@@ -68,7 +68,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     @SneakyThrows
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        if(!Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) return;
+        if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) return;
         roleRepository.save(new Role("Administrador"));
         specialtyRepository.save(new Specialty("Desenvolvedor de Software"));
         statusRepository.save(new Status("Ativo"));
@@ -129,7 +129,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
             condominiumService.save(condominiumDTO);
             condominiumService.save(condominiumDTO1);
 
-            for(int i = 5; i < 15; i++) {
+            for (int i = 5; i < 15; i++) {
                 CondominiumDTO condominiumDTO3 = new CondominiumDTO("PTU",
                         "PTU30" + i,
                         8 + i,
@@ -138,7 +138,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                 condominiumService.save(condominiumDTO3);
             }
 
-            for(int i = 0; i < 8; i++) {
+            for (int i = 0; i < 8; i++) {
                 LesseeDTO lesseeDTO = new LesseeDTO(
                         "Daniel" + i,
                         "635986" + i,
@@ -146,7 +146,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                         simpleDateFormat.parse("2003-06-02"),
                         "daniel@gmail.com",
                         "9298863526" + i,
-                         new BCryptPasswordEncoder().encode("785452545" + i),
+                        new BCryptPasswordEncoder().encode("785452545" + i),
                         new StatusDTO(status.get(0))
                 );
                 lesseeService.save(lesseeDTO);
@@ -199,7 +199,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
                     */
 
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());
 
         }

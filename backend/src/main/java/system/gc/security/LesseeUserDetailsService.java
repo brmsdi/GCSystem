@@ -19,15 +19,15 @@ public class LesseeUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("Tentativa de autenticação username: " + username );
+        log.info("Tentativa de autenticação username: " + username);
 
-        if(username == null || username.isEmpty()) {
+        if (username == null || username.isEmpty()) {
             log.warn("Username inválido!");
             throw new UsernameNotFoundException("Campo username precisa ser preenchido");
         }
         LesseeDTO lesseeUser = lesseeService.authentication(username);
 
-        if(lesseeUser == null) {
+        if (lesseeUser == null) {
             log.warn("Username não corresponde a nenhum registro!");
             throw new UsernameNotFoundException("Registro não foi localizado");
         }

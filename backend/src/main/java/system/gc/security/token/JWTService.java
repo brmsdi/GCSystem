@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import system.gc.utils.TextUtils;
+
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -14,11 +15,10 @@ import java.util.concurrent.TimeUnit;
 public class JWTService {
 
     /**
-     *
-     * @param authentication    Manager utilizado para autenticar o usuário
-     * @param TYPE              Tipo da autenticação
+     * @param authentication Manager utilizado para autenticar o usuário
+     * @param TYPE           Tipo da autenticação
      * @return 'String'         Token criado para autenticação
-     * @throws Exception        Se o token não for criado
+     * @throws Exception Se o token não for criado
      */
     public static String createTokenJWT(Authentication authentication, final String TYPE) throws Exception {
         log.info("Criando token valido por " + TimeUnit.HOURS.convert(TextUtils.TIME_TOKE_EXPIRATION, TimeUnit.MILLISECONDS) + " horas");

@@ -10,10 +10,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class LesseeUserDetails implements UserDetails {
-
     private final LesseeDTO userDetail;
-    public LesseeUserDetails(LesseeDTO lesseeDTO)
-    {
+
+    public LesseeUserDetails(LesseeDTO lesseeDTO) {
         this.userDetail = lesseeDTO;
     }
 

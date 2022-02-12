@@ -34,7 +34,7 @@ public class CondominiumController {
 
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody CondominiumDTO condominiumDTO) {
-        if(condominiumService.save(condominiumDTO) == null) {
+        if (condominiumService.save(condominiumDTO) == null) {
             return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_CONDOMINIUM",
                     null,
                     LocaleContextHolder.getLocale()));
@@ -54,9 +54,9 @@ public class CondominiumController {
     }
 
     @GetMapping(value = "search")
-    public ResponseEntity<Page<CondominiumDTO>> search( @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                        @RequestParam(name = "size", defaultValue = "5") Integer size,
-                                                        @RequestParam(name = "name") String name) {
+    public ResponseEntity<Page<CondominiumDTO>> search(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                       @RequestParam(name = "size", defaultValue = "5") Integer size,
+                                                       @RequestParam(name = "name") String name) {
         log.info("Localizando condominios");
         return ResponseEntity.ok(condominiumService.searchCondominium(PageRequest.of(page, size), new CondominiumDTO(name.trim())));
     }

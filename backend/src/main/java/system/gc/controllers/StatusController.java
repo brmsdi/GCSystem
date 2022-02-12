@@ -12,7 +12,7 @@ import system.gc.services.ServiceImpl.StatusService;
 import java.util.List;
 
 @Controller
-@RequestMapping(value="/status")
+@RequestMapping(value = "/status")
 @Slf4j
 public class StatusController {
 

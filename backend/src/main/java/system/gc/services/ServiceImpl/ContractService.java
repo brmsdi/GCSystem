@@ -29,7 +29,7 @@ public class ContractService {
         log.info("Salvando novo registro de contrato no banco de dados");
         ContractDTO contractDTOService = new ContractDTO();
         Contract registeredContract = contractRepository.save(contractDTOService.toEntity(contractDTO));
-        if(registeredContract.getId() == null) {
+        if (registeredContract.getId() == null) {
             log.warn("Erro ao salvar!");
             return null;
         }
@@ -48,7 +48,7 @@ public class ContractService {
     @Transactional
     public void update(ContractDTO contractDTO) throws EntityNotFoundException {
         Optional<Contract> contract = contractRepository.findById(contractDTO.getId());
-        contract.orElseThrow(() ->  new EntityNotFoundException("Registro não encontrado"));
+        contract.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         contractRepository.save(new ContractDTO().toEntity(contractDTO));
     }
 
@@ -56,9 +56,9 @@ public class ContractService {
     public Page<ContractDTO> searchContract(Pageable pageable, LesseeDTO lesseeDTO) {
         log.info("Buscando registro de contrato");
         LesseeDTO lessee = lesseeService.findByCPF(lesseeDTO);
-        if(lessee == null) {
-           log.warn("Locatário com o CPF: " + lesseeDTO.getCpf() + " não foi localizado");
-           return Page.empty();
+        if (lessee == null) {
+            log.warn("Locatário com o CPF: " + lesseeDTO.getCpf() + " não foi localizado");
+            return Page.empty();
         }
         Page<Contract> pageContract = contractRepository.findContractsForLessee(pageable, lessee.getId());
         contractRepository.loadLazyContracts(pageContract.toList());
@@ -66,7 +66,7 @@ public class ContractService {
     }
 
     @Transactional
-    public void delete(Integer ID) throws EntityNotFoundException{
+    public void delete(Integer ID) throws EntityNotFoundException {
         log.info("Deletando registro com o ID: " + ID);
         Optional<Contract> contract = contractRepository.findById(ID);
         contract.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
@@ -74,6 +74,7 @@ public class ContractService {
         log.info("Registro deletado com sucesso");
     }
 
-    public void generateContract() {}
+    public void generateContract() {
+    }
 
 }

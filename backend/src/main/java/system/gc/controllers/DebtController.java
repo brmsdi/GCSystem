@@ -25,7 +25,7 @@ public class DebtController {
     private MessageSource messageSource;
 
     @GetMapping
-    public ResponseEntity<Page<DebtDTO>> listPaginationDebt (
+    public ResponseEntity<Page<DebtDTO>> listPaginationDebt(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size) {
         log.info("Listando débitos");
@@ -34,7 +34,7 @@ public class DebtController {
 
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody DebtDTO debtDTO) {
-        if(debtService.save(debtDTO) == null) {
+        if (debtService.save(debtDTO) == null) {
             return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_DEBT",
                     null,
                     LocaleContextHolder.getLocale()));

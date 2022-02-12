@@ -51,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         log.info("Security Configuration");
-        if(Arrays.stream(environment.getActiveProfiles()).toList().contains("test") ) {
+        if (Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) {
             log.info("Perfil de teste ativado");
             httpSecurity.headers().frameOptions().disable();
         }
@@ -74,16 +74,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
     }
 
-    public DaoAuthenticationProvider employeeDaoAuthenticationManagerProvider(UserDetailsService userDetailsService)
-    {
+    public DaoAuthenticationProvider employeeDaoAuthenticationManagerProvider(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return authenticationProvider;
     }
 
-    private DaoAuthenticationProvider lesseeDaoAuthenticationManagerProvider(LesseeUserDetailsService lesseeUserDetailsService)
-    {
+    private DaoAuthenticationProvider lesseeDaoAuthenticationManagerProvider(LesseeUserDetailsService lesseeUserDetailsService) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(lesseeUserDetailsService);
         authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());

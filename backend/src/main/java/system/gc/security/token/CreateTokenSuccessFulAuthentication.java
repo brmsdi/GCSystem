@@ -9,8 +9,8 @@ import java.io.IOException;
 
 public interface CreateTokenSuccessFulAuthentication {
     default void createTokenSuccessFulAuthentication(HttpServletResponse response,
-                                                                    Authentication authResult,
-                                                                    final String TYPE) throws Exception, IOException {
+                                                     Authentication authResult,
+                                                     final String TYPE) throws Exception, IOException {
         writeToken(JWTService.createTokenJWT(authResult, TYPE), response);
 
     }

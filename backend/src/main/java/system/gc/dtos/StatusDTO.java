@@ -1,4 +1,5 @@
 package system.gc.dtos;
+
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Status;
@@ -15,7 +16,8 @@ public class StatusDTO implements ConvertEntityAndDTO<StatusDTO, Status> {
     @NotBlank(message = "{required.validation}")
     private String name;
 
-    public StatusDTO() {}
+    public StatusDTO() {
+    }
 
     public StatusDTO(String name) {
         setName(name);
@@ -28,13 +30,13 @@ public class StatusDTO implements ConvertEntityAndDTO<StatusDTO, Status> {
 
     @Override
     public StatusDTO toDTO(Status status) {
-        return new StatusDTO(status) ;
+        return new StatusDTO(status);
     }
 
     @Override
     public Status toEntity(StatusDTO statusDTO) {
         Status status = new Status(statusDTO.getName());
-        if(statusDTO.getId() != null) {
+        if (statusDTO.getId() != null) {
             status.setId(statusDTO.getId());
         }
         return status;

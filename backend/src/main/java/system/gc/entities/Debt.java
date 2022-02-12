@@ -16,34 +16,35 @@ import java.util.Set;
 @Entity
 public class Debt implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@NotNull
-	private Date dueDate;
+    @NotNull
+    private Date dueDate;
 
-	@NotNull
-	private double value;
+    @NotNull
+    private double value;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
-	private Status status;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_status_id", referencedColumnName = "id")
+    private Status status;
 
-	@OneToMany(mappedBy = "debt")
-	private Set<Movement> movements = new HashSet<>();
+    @OneToMany(mappedBy = "debt")
+    private Set<Movement> movements = new HashSet<>();
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name= "fk_lessee_id", referencedColumnName = "id")
-	private Lessee lessee;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_lessee_id", referencedColumnName = "id")
+    private Lessee lessee;
 
-	public Debt() {}
+    public Debt() {
+    }
 
-	public Debt(Date dueDate, double value, Status status, Set<Movement> movements, Lessee lessee) {
-		setDueDate(dueDate);
-		setValue(value);
-		setStatus(status);
-		setMovements(movements);
-		setLessee(lessee);
-	}
+    public Debt(Date dueDate, double value, Status status, Set<Movement> movements, Lessee lessee) {
+        setDueDate(dueDate);
+        setValue(value);
+        setStatus(status);
+        setMovements(movements);
+        setLessee(lessee);
+    }
 }

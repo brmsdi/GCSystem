@@ -3,12 +3,13 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Condominium;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condominium>{
+public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condominium> {
     private Integer id;
 
     @NotNull(message = "{required.validation}")
@@ -33,7 +34,8 @@ public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condo
     @NotBlank(message = "{required.validation}")
     private Set<Contract> contract; */
 
-    public CondominiumDTO() {}
+    public CondominiumDTO() {
+    }
 
     public CondominiumDTO(String name) {
         setName(name);
@@ -69,7 +71,7 @@ public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condo
                 new StatusDTO().toEntity(condominiumDTO.getStatus()),
                 new LocalizationCondominiumDTO().toEntity(condominiumDTO.getLocalization()),
                 null);
-        if(condominiumDTO.getId() != null) {
+        if (condominiumDTO.getId() != null) {
             condominium.setId(condominiumDTO.getId());
         }
         return condominium;

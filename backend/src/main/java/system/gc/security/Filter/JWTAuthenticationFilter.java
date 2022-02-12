@@ -36,7 +36,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         log.info("Filtro JWTAuthentication inicializado");
 
         String token = getTokenFromHeader(request);
-        if(token == null || !token.startsWith("Bearer")) {
+        if (token == null || !token.startsWith("Bearer")) {
             log.info("Agent sem token de acesso");
             chain.doFilter(request, response);
             return;
@@ -48,8 +48,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(getUsernamePasswordAuthenticationToken(decodedJWT));
             response.setStatus(HttpServletResponse.SC_GONE);
             chain.doFilter(request, response);
-        } catch (Exception exception)
-        {
+        } catch (Exception exception) {
             log.error("Token de acesso invalido!");
             log.error(exception.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -58,14 +57,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }
 
     /**
-     *
      * @param request Requisição
      * @return Token existente na requisição
      */
-    private String getTokenFromHeader(HttpServletRequest request)
-    {
+    private String getTokenFromHeader(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        if(token == null || !token.startsWith("Bearer ")) {
+        if (token == null || !token.startsWith("Bearer ")) {
             return null;
         }
         return token;
@@ -74,44 +71,43 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     /**
      * Entrada: Bearer: 12345
      * Saída: 12345
+     *
      * @param token Token vindo da requisição
      * @return 'String' Recupera somente o token vindo na requisição.
      */
-    private String clearTypeToken(String token)
-    {
+    private String clearTypeToken(String token) {
         return token.substring(7);
     }
 
     /**
-     *
      * @param decodedJWT JWT DECODIFICADO
      * @return UsernamePasswordAuthenticationToken Autentica o usuário no sistema
      */
-   private UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationToken(DecodedJWT decodedJWT) throws Exception{
-       final String TYPE = decodedJWT.getClaim("TYPE").asString();
-       final String USERNAME = decodedJWT.getClaim("USERNAME").asString();
-        if(TYPE.equals(System.getenv("TYPE_1"))) {
+    private UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationToken(DecodedJWT decodedJWT) throws Exception {
+        final String TYPE = decodedJWT.getClaim("TYPE").asString();
+        final String USERNAME = decodedJWT.getClaim("USERNAME").asString();
+        if (TYPE.equals(System.getenv("TYPE_1"))) {
             EmployeeDTO employeeDTO = employeeService.authentication(USERNAME);
-            if(employeeDTO == null) {
+            if (employeeDTO == null) {
                 throw new Exception("O usuário não foi localizado (Employee)");
             }
             log.info("Usuário lozalizado. (Employee)");
             return create(new EmployeeUserDetails(employeeDTO));
 
-        } else if(TYPE.equals(System.getenv("TYPE_2"))) {
+        } else if (TYPE.equals(System.getenv("TYPE_2"))) {
             LesseeDTO lesseeDTO = lesseeService.authentication(USERNAME);
-            if(lesseeDTO == null) {
+            if (lesseeDTO == null) {
                 throw new Exception("O usuário não foi localizado (Lessee)");
             }
             log.info("Usuário lozalizado. (Lessee)");
             return create(new LesseeUserDetails(lesseeDTO));
         }
         throw new BadCredentialsException("Token não corresponde a nenhum tipo de autenticação");
-   }
+    }
 
-   private UsernamePasswordAuthenticationToken create(UserDetails userDetails) {
-       return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
-               userDetails.getPassword(),
-               userDetails.getAuthorities());
-   }
+    private UsernamePasswordAuthenticationToken create(UserDetails userDetails) {
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
+                userDetails.getPassword(),
+                userDetails.getAuthorities());
+    }
 }

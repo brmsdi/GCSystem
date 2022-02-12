@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * @author Wisley Bruno Marques França
  * @since 25/01/2022
- * */
+ */
 @Getter
 @Setter
 public class ApiErrorDTO {
@@ -18,7 +18,8 @@ public class ApiErrorDTO {
     private String code;
     private Set<ErrorDTO> errors;
 
-    public ApiErrorDTO() {}
+    public ApiErrorDTO() {
+    }
 
     public ApiErrorDTO(Date timestamp, Integer status, String code, Set<ErrorDTO> errors) {
         setTimestamp(timestamp);

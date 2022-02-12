@@ -16,67 +16,68 @@ import java.util.Set;
 @Entity
 public class Employee implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@NotNull
-	@NotBlank
-	private String name;
+    @NotNull
+    @NotBlank
+    private String name;
 
-	@NotNull
-	@NotBlank
-	private String rg;
+    @NotNull
+    @NotBlank
+    private String rg;
 
-	@NotNull
-	@NotBlank
-	@Column(unique = true)
-	private String cpf;
+    @NotNull
+    @NotBlank
+    @Column(unique = true)
+    private String cpf;
 
-	private Date birthDate;
+    private Date birthDate;
 
-	@NotNull
-	@NotBlank
-	private String email;
+    @NotNull
+    @NotBlank
+    private String email;
 
-	private Date hiringDate;
+    private Date hiringDate;
 
-	@NotNull
-	@NotBlank
-	private String password;
+    @NotNull
+    @NotBlank
+    private String password;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_role_id", referencedColumnName = "id" )
-	private Role role;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_role_id", referencedColumnName = "id")
+    private Role role;
 
-	@ManyToMany
-	@JoinTable(
-			name = "employee_specialty",
-			joinColumns = @JoinColumn(name = "employee_id"),
-			inverseJoinColumns = @JoinColumn(name = "specialty_id")
-	)
-	private Set<Specialty> specialties = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "employee_specialty",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "specialty_id")
+    )
+    private Set<Specialty> specialties = new HashSet<>();
 
-	@OneToMany(mappedBy = "employee")
-	private Set<Movement> movements = new HashSet<>();
+    @OneToMany(mappedBy = "employee")
+    private Set<Movement> movements = new HashSet<>();
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
-	private Status status;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_status_id", referencedColumnName = "id")
+    private Status status;
 
-	public Employee() {}
+    public Employee() {
+    }
 
-	public Employee(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, Role role, Set<Specialty> specialties, Set<Movement> movements, Status status) {
-		setName(name);
-		setRg(rg);
-		setCpf(cpf);
-		setBirthDate(birthDate);
-		setEmail(email);
-		setHiringDate(hiringDate);
-		setPassword(password);
-		setRole(role);
-		setSpecialties(specialties);
-		setMovements(movements);
-		setStatus(status);
-	}
+    public Employee(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, Role role, Set<Specialty> specialties, Set<Movement> movements, Status status) {
+        setName(name);
+        setRg(rg);
+        setCpf(cpf);
+        setBirthDate(birthDate);
+        setEmail(email);
+        setHiringDate(hiringDate);
+        setPassword(password);
+        setRole(role);
+        setSpecialties(specialties);
+        setMovements(movements);
+        setStatus(status);
+    }
 }

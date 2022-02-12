@@ -2,6 +2,7 @@ package system.gc.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,17 +13,18 @@ import java.io.Serializable;
 @Entity
 public class ActivityType implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@NotBlank
-	@NotNull
-	private String name;
+    @NotBlank
+    @NotNull
+    private String name;
 
-	public ActivityType() {}
+    public ActivityType() {
+    }
 
-	public ActivityType(String name) {
-		setName(name);
-	}
+    public ActivityType(String name) {
+        setName(name);
+    }
 }

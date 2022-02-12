@@ -26,7 +26,7 @@ public class ContractController {
     private MessageSource messageSource;
 
     @GetMapping
-    public ResponseEntity<Page<ContractDTO>> listPaginationContract (
+    public ResponseEntity<Page<ContractDTO>> listPaginationContract(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size) {
         log.info("Listando contratos");
@@ -35,7 +35,7 @@ public class ContractController {
 
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody ContractDTO contractDTO) {
-        if(contractService.save(contractDTO) == null) {
+        if (contractService.save(contractDTO) == null) {
             return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_CONTRACT",
                     null,
                     LocaleContextHolder.getLocale()));
@@ -55,9 +55,9 @@ public class ContractController {
     }
 
     @GetMapping(value = "search")
-    public ResponseEntity<Page<ContractDTO>> search( @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                        @RequestParam(name = "size", defaultValue = "5") Integer size,
-                                                        @RequestParam(name = "cpf") String cpf) {
+    public ResponseEntity<Page<ContractDTO>> search(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                    @RequestParam(name = "size", defaultValue = "5") Integer size,
+                                                    @RequestParam(name = "cpf") String cpf) {
         log.info("Localizando contratos");
         return ResponseEntity.ok(contractService.searchContract(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
     }

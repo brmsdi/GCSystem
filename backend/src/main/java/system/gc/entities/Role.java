@@ -14,23 +14,24 @@ import java.util.Set;
 @Entity
 public class Role implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@NotNull
-	@NotBlank
-	private String name;
+    @NotNull
+    @NotBlank
+    private String name;
 
-	public Role() {}
+    public Role() {
+    }
 
-	public Role(String name) {
-		setName(name);
-	}
+    public Role(String name) {
+        setName(name);
+    }
 
-	public Role(Integer id, String name) {
-		setId(id);
-		setName(name);
-	}
+    public Role(Integer id, String name) {
+        setId(id);
+        setName(name);
+    }
 
 }

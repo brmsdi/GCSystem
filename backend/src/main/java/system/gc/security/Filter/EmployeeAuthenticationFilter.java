@@ -1,4 +1,5 @@
 package system.gc.security.Filter;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -7,6 +8,7 @@ import system.gc.dtos.TokenDTO;
 import system.gc.security.token.CreateTokenSuccessFulAuthentication;
 import system.gc.security.token.JWTService;
 import system.gc.utils.TextUtils;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

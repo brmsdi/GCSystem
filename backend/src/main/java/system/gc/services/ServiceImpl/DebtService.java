@@ -36,18 +36,18 @@ public class DebtService {
 
     @Transactional
     public Debt save(DebtDTO debtDTO) {
-        if(!lesseeService.lesseeRegistrationIsEnabled(debtDTO.getLessee())) {
+        if (!lesseeService.lesseeRegistrationIsEnabled(debtDTO.getLessee())) {
             log.warn("Locatário não está apto a receber débitos ou não existe no banco de dados");
             return null;
         }
         Debt registeredDebt = debtRepository.save(new DebtDTO().toEntity(debtDTO));
-        if(registeredDebt.getId() == null) {
+        if (registeredDebt.getId() == null) {
             log.warn("Erro ao salvar!");
             return null;
         }
         log.info("Débito registrado com o id: " + registeredDebt.getId());
         // MODIFICAR
-       // List<ActivityType> activitiesType =  new ActivityTypeDTO().convertListEntityDTOFromListEntity(activityTypeService.findAll());
+        // List<ActivityType> activitiesType =  new ActivityTypeDTO().convertListEntityDTOFromListEntity(activityTypeService.findAll());
         registerMovementDebt(registeredDebt, activityTypeService.findByName("Registrado"));
         return registeredDebt;
     }
@@ -56,7 +56,7 @@ public class DebtService {
     public Page<DebtDTO> listPaginationDebts(Pageable pageable) {
         log.info("Listando débitos");
         Page<Debt> page = debtRepository.findAll(pageable);
-        if(!page.isEmpty()) {
+        if (!page.isEmpty()) {
             debtRepository.loadLazyDebts(page.toList());
         }
         return page.map(DebtDTO::new);
@@ -90,11 +90,11 @@ public class DebtService {
     }
 
     @Transactional
-    public void delete(Integer ID) throws EntityNotFoundException{
+    public void delete(Integer ID) throws EntityNotFoundException {
         log.info("Desativando registro com o ID: " + ID);
         Optional<Debt> debt = debtRepository.findById(ID);
         debt.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
-        DebtDTO previousDebt =  new DebtDTO().toDTO(debt.get());
+        DebtDTO previousDebt = new DebtDTO().toDTO(debt.get());
         debt.get().setStatus(statusService.findByName("Desativado"));
         Debt disabledDebt = debtRepository.save(debt.get());
         //List<ActivityType> activitiesType = new ActivityTypeDTO().convertListEntityDTOFromListEntity(activityTypeService.findAll());

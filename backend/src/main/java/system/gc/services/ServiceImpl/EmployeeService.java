@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.entities.Employee;
 import system.gc.repositories.EmployeeRepository;
+
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 /**
  * @author Wisley Bruno Marques França
- * */
+ */
 @Service
 @Slf4j
 public class EmployeeService {
@@ -32,9 +33,9 @@ public class EmployeeService {
         log.info("Salvando novo registro de funcionário no banco de dados. Nome: " + newEmployeeDTO.getName());
         EmployeeDTO employeeDTO = new EmployeeDTO();
         Employee registeredEmployee = employeeRepository.save(employeeDTO.toEntity(newEmployeeDTO));
-        if(registeredEmployee.getId() == null) {
+        if (registeredEmployee.getId() == null) {
             log.warn("Erro ao salvar!");
-                return null;
+            return null;
         }
         log.info("Salvo com sucesso. ID: " + registeredEmployee.getId());
         return employeeDTO.toDTO(registeredEmployee);
@@ -44,7 +45,7 @@ public class EmployeeService {
     public Page<EmployeeDTO> listPaginationEmployees(Pageable pageable) {
         log.info("Listando funcionários");
         Page<Employee> page = employeeRepository.findAll(pageable);
-        if(!page.isEmpty()) {
+        if (!page.isEmpty()) {
             employeeRepository.loadLazyEmployees(page.toList());
         }
         return page.map(EmployeeDTO::new);
@@ -62,7 +63,7 @@ public class EmployeeService {
         employee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o id: " + updateEmployeeDTO.getId()));
         //updateEmployeeDTO.setId(employee.get().getId());
         EmployeeDTO employeeResultForCpf = findByCPF(updateEmployeeDTO);
-        if( employeeResultForCpf != null && !Objects.equals(employee.get().getId(), employeeResultForCpf.getId())) {
+        if (employeeResultForCpf != null && !Objects.equals(employee.get().getId(), employeeResultForCpf.getId())) {
             log.warn("Cpf não corresponde ao ID no banco de dados");
             throw new EntityNotFoundException("Cpf indisponível");
         }
@@ -74,7 +75,7 @@ public class EmployeeService {
     public EmployeeDTO findByCPF(EmployeeDTO employeeDTO) {
         log.info("Localizando registro do funcionário com o cpf: " + employeeDTO.getCpf());
         Optional<Employee> employee = employeeRepository.findByCPF(employeeDTO.getCpf());
-        if(employee.isEmpty()) {
+        if (employee.isEmpty()) {
             log.warn("Registro com o cpf: " + employeeDTO.getCpf() + " não foi localizado");
             return null;
         }
@@ -87,7 +88,7 @@ public class EmployeeService {
     public Page<EmployeeDTO> findByCPFPagination(Pageable pageable, EmployeeDTO employeeDTO) {
         log.info("Localizando registro do funcionário com o cpf: " + employeeDTO.getCpf());
         Page<Employee> page = employeeRepository.findByCPF(pageable, employeeDTO.getCpf());
-        if(page.isEmpty()) {
+        if (page.isEmpty()) {
             log.warn("Registro com o cpf " + employeeDTO.getCpf() + " não foi localizado");
             return Page.empty();
         }
@@ -97,7 +98,7 @@ public class EmployeeService {
     }
 
     @Transactional
-    public void delete(Integer ID) throws EntityNotFoundException{
+    public void delete(Integer ID) throws EntityNotFoundException {
         log.info("Deletando registro com o ID: " + ID);
         Optional<Employee> employee = employeeRepository.findById(ID);
         employee.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
@@ -106,6 +107,6 @@ public class EmployeeService {
     }
 
     public EmployeeDTO authentication(String username) {
-        return authenticationEmployee.authentication(username,new EmployeeDTO(), employeeRepository);
+        return authenticationEmployee.authentication(username, new EmployeeDTO(), employeeRepository);
     }
 }

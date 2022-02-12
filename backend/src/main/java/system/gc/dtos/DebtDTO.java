@@ -34,7 +34,8 @@ public class DebtDTO implements ConvertEntityAndDTO<DebtDTO, Debt> {
     @NotNull(message = "{required.validation}")
     private LesseeDTO lessee;
 
-    public DebtDTO() {}
+    public DebtDTO() {
+    }
 
     public DebtDTO(Date dueDate, double value, StatusDTO status, Set<MovementDTO> movements, LesseeDTO lessee) {
         setDueDate(dueDate);
@@ -75,7 +76,7 @@ public class DebtDTO implements ConvertEntityAndDTO<DebtDTO, Debt> {
                 new StatusDTO().toEntity(debtDTO.getStatus()),
                 new MovementDTO().convertSetEntityDTOFromSetEntity(debtDTO.getMovements()),
                 new LesseeDTO().toEntity(debtDTO.getLessee()));
-        if(debtDTO.getId() != null) {
+        if (debtDTO.getId() != null) {
             debt.setId(debtDTO.getId());
         }
         return debt;

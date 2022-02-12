@@ -12,7 +12,7 @@ import system.gc.services.ServiceImpl.RoleService;
 import java.util.List;
 
 @Controller
-@RequestMapping(value="/role")
+@RequestMapping(value = "/role")
 @Slf4j
 public class RoleController {
 

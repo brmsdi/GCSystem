@@ -10,11 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.services.ServiceImpl.EmployeeService;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value="/employee")
+@RequestMapping(value = "/employee")
 @Slf4j
 public class EmployeeController {
     @Autowired
@@ -34,11 +35,11 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Inserindo registro!");
-        if((employeeService.findByCPF(employeeDTO)) != null) {
+        if ((employeeService.findByCPF(employeeDTO)) != null) {
             return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
         }
 
-        if(employeeService.save(employeeDTO) == null) {
+        if (employeeService.save(employeeDTO) == null) {
             return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_EMPLOYEE",
                     null,
                     LocaleContextHolder.getLocale()));

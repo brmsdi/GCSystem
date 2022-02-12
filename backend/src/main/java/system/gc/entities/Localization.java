@@ -15,27 +15,28 @@ import java.util.Set;
 @Entity
 public class Localization implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@NotNull
-	@NotBlank
-	private String name;
+    @NotNull
+    @NotBlank
+    private String name;
 
-	@NotNull
-	@NotBlank
-	private String road;
+    @NotNull
+    @NotBlank
+    private String road;
 
-	@NotNull
-	@NotBlank
-	private String zipCode;
+    @NotNull
+    @NotBlank
+    private String zipCode;
 
-	public Localization() {}
+    public Localization() {
+    }
 
-	public Localization(String name, String road, String zipCode) {
-		setName(name);
-		setRoad(road);
-		setZipCode(zipCode);
-	}
+    public Localization(String name, String road, String zipCode) {
+        setName(name);
+        setRoad(road);
+        setZipCode(zipCode);
+    }
 }
