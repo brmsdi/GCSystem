@@ -5,7 +5,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -50,6 +49,7 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ApiErrorDTO> entityNotFoundException(EntityNotFoundException exception) {
+
         log.error(exception.getMessage());
         ErrorDTO errorDTO = buildError(HttpStatus.NOT_FOUND.toString(), exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -80,7 +80,6 @@ public class ExceptionHandlerAdvice {
     }
 
     private ErrorDTO buildError(String code, String message) {
-
         return new ErrorDTO(code, message);
     }
 
@@ -111,4 +110,5 @@ public class ExceptionHandlerAdvice {
         }
         return responseStatus.value();
     }
+
 }

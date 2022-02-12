@@ -17,9 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import system.gc.security.EmployeeUserDetailsService;
-import system.gc.security.Filter.EmployeeAuthenticationFilter;
-import system.gc.security.Filter.JWTAuthenticationFilter;
-import system.gc.security.Filter.LesseeAuthenticationFilter;
+import system.gc.security.Filter.*;
 import system.gc.security.LesseeUserDetailsService;
 
 import java.util.Arrays;
@@ -30,18 +28,24 @@ import java.util.Arrays;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Autowired
     Environment environment;
 
     final EmployeeUserDetailsService employeeUserDetailsService;
 
-    @Autowired
-    LesseeUserDetailsService lesseeUserDetailsService;
+    final LesseeUserDetailsService lesseeUserDetailsService;
 
     ProviderManager employeeProviderManager;
 
-    protected SecurityConfiguration(EmployeeUserDetailsService employeeUserDetailsService) {
+    ProviderManager lesseeProviderManager;
+
+    protected SecurityConfiguration(EmployeeUserDetailsService employeeUserDetailsService, LesseeUserDetailsService lesseeUserDetailsService) {
         this.employeeUserDetailsService = employeeUserDetailsService;
+        this.lesseeUserDetailsService = lesseeUserDetailsService;
         this.employeeProviderManager = new ProviderManager(employeeDaoAuthenticationManagerProvider(this.employeeUserDetailsService));
+        this.lesseeProviderManager = new ProviderManager(lesseeDaoAuthenticationManagerProvider(this.lesseeUserDetailsService));
     }
 
     @Override
@@ -53,18 +57,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         }
 
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         httpSecurity
                 .cors()
                 .and()
                 .csrf()
                 .disable()
-                .addFilter(employeeJWTAuthenticationFilter())
+                .addFilterBefore(jwtAuthenticationFilter2(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/employee/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/lessee/login").permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
     }
 
     public DaoAuthenticationProvider employeeDaoAuthenticationManagerProvider(UserDetailsService userDetailsService)
@@ -75,7 +82,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return authenticationProvider;
     }
 
-
     private DaoAuthenticationProvider lesseeDaoAuthenticationManagerProvider(LesseeUserDetailsService lesseeUserDetailsService)
     {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -85,23 +91,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public UsernamePasswordAuthenticationFilter employeeAuthenticationFilter() {
+    public UsernamePasswordAuthenticationFilter employeeUsernamePasswordAuthenticationFilter() {
         return initUsernamePasswordAuthenticationFilter("/employee/login",
                 new EmployeeAuthenticationFilter(),
                 employeeProviderManager);
     }
 
     @Bean
-    public UsernamePasswordAuthenticationFilter lesseeAuthenticationFilter() {
+    public UsernamePasswordAuthenticationFilter lesseeUsernamePasswordAuthenticationFilter() {
         return initUsernamePasswordAuthenticationFilter("/lessee/login",
                 new LesseeAuthenticationFilter(),
-                new ProviderManager(lesseeDaoAuthenticationManagerProvider(lesseeUserDetailsService)));
+                lesseeProviderManager);
     }
 
     @Bean
-    public JWTAuthenticationFilter employeeJWTAuthenticationFilter() {
-       // employeeProviderManager = initEmployeeProviderManager();
-        return new JWTAuthenticationFilter(employeeProviderManager);
+    public JWTAuthenticationFilter jwtAuthenticationFilter2() {
+        return new JWTAuthenticationFilter();
     }
 
     private UsernamePasswordAuthenticationFilter initUsernamePasswordAuthenticationFilter(String url,

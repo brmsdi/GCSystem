@@ -1,14 +1,13 @@
 package system.gc.security.Filter;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.security.EmployeeUserDetails;
@@ -16,6 +15,7 @@ import system.gc.security.LesseeUserDetails;
 import system.gc.security.token.JWTService;
 import system.gc.services.ServiceImpl.EmployeeService;
 import system.gc.services.ServiceImpl.LesseeService;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
+public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private EmployeeService employeeService;
@@ -31,12 +31,8 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
     @Autowired
     private LesseeService lesseeService;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
-        super(authenticationManager);
-    }
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         log.info("Filtro JWTAuthentication inicializado");
 
         String token = getTokenFromHeader(request);
@@ -110,7 +106,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
             log.info("Usuário lozalizado. (Lessee)");
             return create(new LesseeUserDetails(lesseeDTO));
         }
-        throw new Exception("Token não corresponde a nenhum tipo de autenticação");
+        throw new BadCredentialsException("Token não corresponde a nenhum tipo de autenticação");
    }
 
    private UsernamePasswordAuthenticationToken create(UserDetails userDetails) {
