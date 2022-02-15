@@ -75,6 +75,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         statusRepository.save(new Status("Inativo"));
         statusRepository.save(new Status("Aberto"));
         statusRepository.save(new Status("Desativado"));
+        statusRepository.save(new Status("Aguardando"));
         activityTypeRepository.save(new ActivityType("Registrado"));
         activityTypeRepository.save(new ActivityType("Atualizado"));
         activityTypeRepository.save(new ActivityType("Desativado"));
@@ -129,7 +130,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
             condominiumService.save(condominiumDTO);
             condominiumService.save(condominiumDTO1);
 
-            for (int i = 5; i < 15; i++) {
+            for (int i = 5; i < 10; i++) {
                 CondominiumDTO condominiumDTO3 = new CondominiumDTO("PTU",
                         "PTU30" + i,
                         8 + i,
@@ -144,7 +145,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                         "635986" + i,
                         "1256325667" + i,
                         simpleDateFormat.parse("2003-06-02"),
-                        "daniel@gmail.com",
+                        i + "daniel@gmail.com",
                         "9298863526" + i,
                         new BCryptPasswordEncoder().encode("785452545" + i),
                         new StatusDTO(status.get(0))

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.entities.Employee;
+import system.gc.entities.PasswordCode;
 import system.gc.repositories.EmployeeRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -26,7 +27,13 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    private AuthenticationEmployee authenticationEmployee;
+    private EmployeeAuthenticationService employeeAuthenticationServiceImpl;
+
+    @Autowired
+    private StatusService statusService;
+
+    @Autowired
+    private PasswordCodeService passwordCodeService;
 
     @Transactional
     public EmployeeDTO save(EmployeeDTO newEmployeeDTO) {
@@ -107,6 +114,15 @@ public class EmployeeService {
     }
 
     public EmployeeDTO authentication(String username) {
-        return authenticationEmployee.authentication(username, new EmployeeDTO(), employeeRepository);
+        return employeeAuthenticationServiceImpl.authentication(username, new EmployeeDTO(), employeeRepository);
+    }
+
+    @Transactional
+    public boolean changePassword(String email) {
+        log.info("Iniciando processo de geração de codigo para troca de senha");
+        Employee employeeResult = employeeAuthenticationServiceImpl.verifyEmail(email, employeeRepository);
+        PasswordCode passwordCode = employeeAuthenticationServiceImpl.startProcess(employeeResult, statusService.findByName("Aguardando"), passwordCodeService);
+        log.info("Enviando código para o E-mail");
+        return employeeAuthenticationServiceImpl.sendEmail(passwordCode, employeeResult.getEmail());
     }
 }

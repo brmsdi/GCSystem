@@ -5,12 +5,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.Employee;
-import system.gc.services.AuthenticateEntityByCPF;
+import system.gc.services.AuthenticateEntity;
+import system.gc.services.ChangePasswordEntity;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface EmployeeRepository extends JpaRepository<Employee, Integer>, AuthenticateEntityByCPF<Employee> {
+public interface EmployeeRepository extends JpaRepository<Employee, Integer>, AuthenticateEntity<Employee>, ChangePasswordEntity<Employee> {
     @Query("SELECT employee FROM Employee employee " +
             "JOIN FETCH employee.specialties " +
             "JOIN FETCH employee.role " +
@@ -29,5 +30,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>, Au
             "JOIN FETCH employee.role " +
             "JOIN FETCH employee.status " +
             "WHERE employee.cpf LIKE :cpf")
-    Employee getAuthentication(String cpf);
+    Employee getAuthenticationByCPF(String cpf);
+
+    @Override
+    @Query("SELECT employee FROM Employee employee WHERE employee.email LIKE :email")
+    Optional<Employee> findByEMAIL(String email);
+
 }

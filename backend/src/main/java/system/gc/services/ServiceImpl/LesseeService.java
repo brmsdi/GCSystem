@@ -8,14 +8,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.DebtDTO;
-import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.LesseeDTO;
+import system.gc.entities.Employee;
 import system.gc.entities.Lessee;
+import system.gc.entities.PasswordCode;
 import system.gc.repositories.LesseeRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,7 +27,13 @@ public class LesseeService {
     private LesseeRepository lesseeRepository;
 
     @Autowired
-    private AuthenticationLessee authenticationLessee;
+    private LesseeAuthenticationService lesseeAuthenticationServiceImpl;
+
+    @Autowired
+    private StatusService statusService;
+
+    @Autowired
+    private PasswordCodeService passwordCodeService;
 
     @Transactional
     public LesseeDTO save(LesseeDTO newLesseeDTO) {
@@ -118,6 +124,15 @@ public class LesseeService {
     }
 
     public LesseeDTO authentication(String username) {
-        return authenticationLessee.authentication(username, new LesseeDTO(), lesseeRepository);
+        return lesseeAuthenticationServiceImpl.authentication(username, new LesseeDTO(), lesseeRepository);
+    }
+
+    @Transactional
+    public boolean changePassword(String email) {
+        log.info("Iniciando processo de geração de codigo para troca de senha");
+        Lessee lesseeResult = lesseeAuthenticationServiceImpl.verifyEmail(email, lesseeRepository);
+        PasswordCode passwordCode = lesseeAuthenticationServiceImpl.startProcess(lesseeResult, statusService.findByName("Aguardando"), passwordCodeService);
+        log.info("Enviando código para o E-mail");
+        return lesseeAuthenticationServiceImpl.sendEmail(passwordCode, lesseeResult.getEmail());
     }
 }
