@@ -5,6 +5,7 @@ import system.gc.entities.Status;
 import system.gc.services.ServiceImpl.PasswordCodeService;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 import java.util.Random;
 
 public interface ChangePasswordInterface<E, REPOSITORY extends ChangePasswordEntity<E>> {
@@ -24,7 +25,7 @@ public interface ChangePasswordInterface<E, REPOSITORY extends ChangePasswordEnt
 
      default PasswordCode startProcess(E e, Status status, PasswordCodeService passwordCodeService) {
           String code = generateCode();
-          PasswordCode passwordCode = new PasswordCode(e, code, status);
+          PasswordCode passwordCode = new PasswordCode(e, code, status, new Date(), Short.parseShort("0"));
           return passwordCodeService.save(passwordCode);
      }
 

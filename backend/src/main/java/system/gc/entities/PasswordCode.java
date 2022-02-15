@@ -6,6 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -21,9 +23,16 @@ public class PasswordCode {
     private String code;
 
     @NotNull
+    private Date date;
+
+    @NotNull
+    private short numberOfAttempts;
+
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "fk_status_id", referencedColumnName = "id")
     private Status status;
+
 
     @ManyToOne
     @JoinColumn(name = "fk_employee_id", referencedColumnName = "id")
@@ -35,7 +44,7 @@ public class PasswordCode {
 
     public PasswordCode() {}
 
-    public PasswordCode(Object entity, String code, Status status) {
+    public PasswordCode(Object entity, String code, Status status, Date date, short numberOfAttempts) {
         if(entity instanceof Employee) {
             setEmployee((Employee) entity);
         } else if(entity instanceof Lessee) {
@@ -45,5 +54,7 @@ public class PasswordCode {
         }
         setCode(code);
         setStatus(status);
+        setDate(date);
+        setNumberOfAttempts(numberOfAttempts);
     }
 }

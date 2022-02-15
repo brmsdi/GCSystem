@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import system.gc.services.ServiceImpl.EmployeeService;
 import system.gc.services.ServiceImpl.LesseeService;
+import system.gc.services.ServiceImpl.PasswordCodeService;
 import system.gc.utils.TextUtils;
 import system.gc.utils.TypeUserEnum;
 
@@ -25,40 +26,45 @@ public class AuthenticationController {
     @Autowired
     private LesseeService lesseeService;
 
+    @Autowired
+    private PasswordCodeService passwordCodeService;
+
     @PostMapping(value = "requestCode")
     public ResponseEntity<String> requestCode(String email, Integer type) {
         if(!(TextUtils.textIsValid(email) && type != null)) {
             return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_EMAIL_EMPTY_OR_NULL",
-                    new Object[]{email}, LocaleContextHolder.getLocale()));
+                    null, LocaleContextHolder.getLocale()));
         }
 
         if (TypeUserEnum.valueOf(type) == TypeUserEnum.EMPLOYEE) {
             //EmployeeDTO employeeDTO = employeeChangePasswordService.verifyEmail(email);
             if (employeeService.changePassword(email)) {
                 return ResponseEntity.ok().body(messageSource.getMessage("TEXT_MSG_EMAIL_SENT_SUCCESS",
-                        new Object[]{email}, LocaleContextHolder.getLocale()));
+                        null, LocaleContextHolder.getLocale()));
             }
         } else if (TypeUserEnum.valueOf(type) == TypeUserEnum.LESSEE) {
             //LesseeDTO lesseeDTO = lesseeChangePasswordService.verifyEmail(email);
             if (lesseeService.changePassword(email)) {
                 return ResponseEntity.ok().body(messageSource.getMessage("TEXT_MSG_EMAIL_SENT_SUCCESS",
-                        new Object[]{email}, LocaleContextHolder.getLocale()));
+                        null, LocaleContextHolder.getLocale()));
             }
         }
 
         return ResponseEntity.ok().body(messageSource.getMessage("TEXT_ERROR_CHANGE_PASSWORD",
-                new Object[]{email}, LocaleContextHolder.getLocale()));
+                null, LocaleContextHolder.getLocale()));
     }
 
     @PostMapping(value = "receiveCode")
     public ResponseEntity<String> receiveCode(String email, Integer type, String code) {
         if(!(TextUtils.textIsValid(email) && type != null && TextUtils.textIsValid(code))) {
             return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_EMAIL_EMPTY_OR_NULL",
-                    new Object[]{email}, LocaleContextHolder.getLocale()));
+                    null, LocaleContextHolder.getLocale()));
         }
+
+        passwordCodeService.validateCode(email, code);
+
+
 
         return null;
     }
-
-
 }
