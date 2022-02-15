@@ -78,6 +78,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         statusRepository.save(new Status("Aguardando"));
         statusRepository.save(new Status("Valido"));
         statusRepository.save(new Status("Invalido"));
+        statusRepository.save(new Status("Cancelado"));
         activityTypeRepository.save(new ActivityType("Registrado"));
         activityTypeRepository.save(new ActivityType("Atualizado"));
         activityTypeRepository.save(new ActivityType("Desativado"));

@@ -64,6 +64,9 @@ public class Employee implements Serializable {
     @JoinColumn(name = "fk_status_id", referencedColumnName = "id")
     private Status status;
 
+    @OneToMany(mappedBy = "employee")
+    private Set<PasswordCode> passwordCode = new HashSet<>();
+
     public Employee() {
     }
 

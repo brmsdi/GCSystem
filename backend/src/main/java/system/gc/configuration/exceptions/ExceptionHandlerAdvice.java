@@ -56,6 +56,24 @@ public class ExceptionHandlerAdvice {
                 .body(baseErrorBuilder(HttpStatus.NOT_FOUND, Set.of(errorDTO)));
     }
 
+    @ExceptionHandler(CodeChangePasswordInvalidException.class)
+    public ResponseEntity<ApiErrorDTO> codeChangePasswordInvalidException(CodeChangePasswordInvalidException exception) {
+
+        log.error(exception.getMessage());
+        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+    }
+
+    @ExceptionHandler(CodeChangeOpenedException.class)
+    public ResponseEntity<ApiErrorDTO> codeChangeOpenedException(CodeChangeOpenedException exception) {
+
+        log.error(exception.getMessage());
+        ErrorDTO errorDTO = buildError(HttpStatus.NOT_ACCEPTABLE.toString(), exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                .body(baseErrorBuilder(HttpStatus.NOT_ACCEPTABLE, Set.of(errorDTO)));
+    }
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ApiErrorDTO> missingServletRequestParameterException(MissingServletRequestParameterException exception) {
         log.error(exception.getMessage());

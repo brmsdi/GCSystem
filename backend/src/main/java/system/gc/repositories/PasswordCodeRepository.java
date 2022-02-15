@@ -12,4 +12,9 @@ public interface PasswordCodeRepository extends JpaRepository<PasswordCode, Inte
             "JOIN FETCH obj.status status WHERE employee.email LIKE :email AND status.id = :statusID")
     Optional<PasswordCode> findPasswordChangeRequestEmployee(String email, Integer statusID);
 
+    @Query("SELECT obj FROM PasswordCode obj " +
+            "JOIN FETCH obj.lessee lessee " +
+            "JOIN FETCH obj.status status WHERE lessee.email LIKE :email AND status.id = :statusID")
+    Optional<PasswordCode> findPasswordChangeRequestLessee(String email, Integer statusID);
+
 }

@@ -36,4 +36,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>, Au
     @Query("SELECT employee FROM Employee employee WHERE employee.email LIKE :email")
     Optional<Employee> findByEMAIL(String email);
 
+    @Override
+    @Query("SELECT employee FROM Employee employee " +
+            "JOIN FETCH employee.passwordCode passwordCode " +
+            "JOIN FETCH passwordCode.status status " +
+            "WHERE employee.id = :ID AND status.id = :statusID")
+    Optional<Employee> CheckIfThereISAnOpenRequest(Integer ID, Integer statusID);
+
+
 }

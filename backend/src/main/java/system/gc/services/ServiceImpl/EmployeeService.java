@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import system.gc.configuration.exceptions.CodeChangeOpenedException;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.PasswordCode;
+import system.gc.entities.Status;
 import system.gc.repositories.EmployeeRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -120,8 +122,15 @@ public class EmployeeService {
     @Transactional
     public boolean changePassword(String email) {
         log.info("Iniciando processo de geração de codigo para troca de senha");
+        Status waitingStatus = statusService.findByName("Aguardando");
+        Status cancelStatus = statusService.findByName("Cancelado");
         Employee employeeResult = employeeAuthenticationServiceImpl.verifyEmail(email, employeeRepository);
-        PasswordCode passwordCode = employeeAuthenticationServiceImpl.startProcess(employeeResult, statusService.findByName("Aguardando"), passwordCodeService);
+        Optional<Employee> employeeOptional = employeeAuthenticationServiceImpl.CheckIfThereISAnOpenRequest(employeeResult.getId(), employeeRepository, waitingStatus.getId());
+        if (employeeOptional.isPresent()) {
+            employeeOptional.get().getPasswordCode().forEach(it -> it.setStatus(cancelStatus));
+            passwordCodeService.cancelCode(employeeOptional.get().getPasswordCode());
+        }
+        PasswordCode passwordCode = employeeAuthenticationServiceImpl.startProcess(employeeResult, waitingStatus, passwordCodeService);
         log.info("Enviando código para o E-mail");
         return employeeAuthenticationServiceImpl.sendEmail(passwordCode, employeeResult.getEmail());
     }

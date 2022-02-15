@@ -12,6 +12,7 @@ import system.gc.dtos.LesseeDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.Lessee;
 import system.gc.entities.PasswordCode;
+import system.gc.entities.Status;
 import system.gc.repositories.LesseeRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -130,7 +131,14 @@ public class LesseeService {
     @Transactional
     public boolean changePassword(String email) {
         log.info("Iniciando processo de geração de codigo para troca de senha");
+        Status waitingStatus = statusService.findByName("Aguardando");
+        Status cancelStatus = statusService.findByName("Cancelado");
         Lessee lesseeResult = lesseeAuthenticationServiceImpl.verifyEmail(email, lesseeRepository);
+        Optional<Lessee> lesseeOptional = lesseeAuthenticationServiceImpl.CheckIfThereISAnOpenRequest(lesseeResult.getId(), lesseeRepository, waitingStatus.getId());
+        if (lesseeOptional.isPresent()) {
+            lesseeOptional.get().getPasswordCode().forEach(it -> it.setStatus(cancelStatus));
+            passwordCodeService.cancelCode(lesseeOptional.get().getPasswordCode());
+        }
         PasswordCode passwordCode = lesseeAuthenticationServiceImpl.startProcess(lesseeResult, statusService.findByName("Aguardando"), passwordCodeService);
         log.info("Enviando código para o E-mail");
         return lesseeAuthenticationServiceImpl.sendEmail(passwordCode, lesseeResult.getEmail());

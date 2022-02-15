@@ -58,6 +58,9 @@ public class Lessee implements Serializable {
     @OneToMany(mappedBy = "lessee")
     private Set<Contract> contracts = new HashSet<>();
 
+    @OneToMany(mappedBy = "lessee")
+    private Set<PasswordCode> passwordCode = new HashSet<>();
+
     public Lessee() {
     }
 

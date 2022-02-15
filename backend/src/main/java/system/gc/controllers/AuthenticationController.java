@@ -31,7 +31,7 @@ public class AuthenticationController {
 
     @PostMapping(value = "requestCode")
     public ResponseEntity<String> requestCode(String email, Integer type) {
-        if(!(TextUtils.textIsValid(email) && type != null)) {
+        if (!(TextUtils.textIsValid(email) && type != null)) {
             return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_EMAIL_EMPTY_OR_NULL",
                     null, LocaleContextHolder.getLocale()));
         }
@@ -56,15 +56,15 @@ public class AuthenticationController {
 
     @PostMapping(value = "receiveCode")
     public ResponseEntity<String> receiveCode(String email, Integer type, String code) {
-        if(!(TextUtils.textIsValid(email) && type != null && TextUtils.textIsValid(code))) {
+        if (!(TextUtils.textIsValid(email) && type != null && TextUtils.textIsValid(code))) {
             return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_EMAIL_EMPTY_OR_NULL",
                     null, LocaleContextHolder.getLocale()));
         }
-
-        passwordCodeService.validateCode(email, code);
-
-
-
-        return null;
+        if (!passwordCodeService.validateCode(email, type, code)) {
+            return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_CODE_INVALID",
+                    null, LocaleContextHolder.getLocale()));
+        }
+        return ResponseEntity.ok().body(messageSource.getMessage("TEXT_MSG_CODE_APPROVED",
+                null, LocaleContextHolder.getLocale()));
     }
 }
