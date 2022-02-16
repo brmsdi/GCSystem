@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.DebtDTO;
 import system.gc.dtos.LesseeDTO;
-import system.gc.entities.Employee;
 import system.gc.entities.Lessee;
 import system.gc.entities.PasswordCode;
 import system.gc.entities.Status;

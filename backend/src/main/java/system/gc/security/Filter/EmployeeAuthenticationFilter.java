@@ -14,6 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 public class EmployeeAuthenticationFilter extends UsernamePasswordAuthenticationFilter implements CreateTokenSuccessFulAuthentication {
@@ -22,7 +24,10 @@ public class EmployeeAuthenticationFilter extends UsernamePasswordAuthentication
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         log.info("Usuário autenticado.");
         try {
-            createTokenSuccessFulAuthentication(response, authResult, System.getenv("TYPE_1"));
+            Map<String, String> params = new HashMap<>();
+            params.put("USERNAME", authResult.getName());
+            params.put("TYPE", System.getenv("TYPE_1"));
+            createTokenSuccessFulAuthentication(response, params);
         } catch (Exception e) {
             log.error("Erro ao criar token");
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());

@@ -1,6 +1,7 @@
 package system.gc.security.token;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -9,26 +10,33 @@ import org.springframework.security.core.Authentication;
 import system.gc.utils.TextUtils;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class JWTService {
 
     /**
-     * @param authentication Manager utilizado para autenticar o usuário
-     * @param TYPE           Tipo da autenticação
-     * @return 'String'         Token criado para autenticação
-     * @throws Exception Se o token não for criado
+     * @param claims Parametros para compor a chave autenticada
+     * @param TIME_TOKEN        Validade do token
+     * @return 'String'         Token criado
+     * @throws Exception Se houver erro durante a criação do token
      */
-    public static String createTokenJWT(Authentication authentication, final String TYPE) throws Exception {
-        log.info("Criando token valido por " + TimeUnit.HOURS.convert(TextUtils.TIME_TOKE_EXPIRATION, TimeUnit.MILLISECONDS) + " horas");
+    public static String createTokenJWT(final Map<String, String> claims, Long TIME_TOKEN) {
+        log.info("Criando token");
+        JWTCreator.Builder builder = JWT.create()
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(System.currentTimeMillis() + TIME_TOKEN));
+        claims.forEach(builder::withClaim);
+        return builder.sign(Algorithm.HMAC256(System.getenv("PRIVATE_KEY_TOKEN")));
+        /*
         return JWT
                 .create()
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + TextUtils.TIME_TOKE_EXPIRATION))
                 .withClaim("USERNAME", authentication.getName())
                 .withClaim("TYPE", TYPE)
-                .sign(Algorithm.HMAC256(System.getenv("PRIVATE_KEY_TOKEN")));
+                .sign(Algorithm.HMAC256(System.getenv("PRIVATE_KEY_TOKEN"))); */
     }
 
     public static DecodedJWT isValid(String token) throws JWTVerificationException {
@@ -36,7 +44,5 @@ public class JWTService {
                 .require(Algorithm.HMAC256(System.getenv("PRIVATE_KEY_TOKEN")))
                 .build()
                 .verify(token);
-
     }
-
 }

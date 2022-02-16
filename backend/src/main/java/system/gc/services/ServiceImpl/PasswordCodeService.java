@@ -2,18 +2,23 @@ package system.gc.services.ServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
+import system.gc.dtos.TokenDTO;
 import system.gc.entities.PasswordCode;
+import system.gc.entities.Status;
 import system.gc.repositories.PasswordCodeRepository;
+import system.gc.security.token.JWTService;
+import system.gc.utils.TextUtils;
 import system.gc.utils.TypeUserEnum;
-
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -25,13 +30,15 @@ public class PasswordCodeService {
     @Autowired
     StatusService statusService;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @Transactional
     public PasswordCode save(PasswordCode passwordCode) {
         return passwordCodeRepository.save(passwordCode);
     }
 
-    @Transactional
-    public boolean validateCode(String email, Integer type, String code) {
+    public TokenDTO validateCode(String email, Integer type, String code) {
         log.info("Validando código");
         PasswordCode passwordCode = chooseType(email, type);
         Date currentDate = new Date();
@@ -42,47 +49,60 @@ public class PasswordCodeService {
             if (passwordCode.getCode().equals(code)) {
                 passwordCode.setStatus(statusService.findByName("Valido"));
                 log.info("Código valido");
-                return true;
+                save(passwordCode);
+                return TokenDTO.builder()
+                        .type("changePassword")
+                        .token(createTokenChangePassword(email, passwordCode.getId(), passwordCode.getCode())).build();
             } else {
                 log.info("Tentativa invalida");
                 short attempts = passwordCode.getNumberOfAttempts();
                 attempts++;
                 passwordCode.setNumberOfAttempts(attempts);
                 if (attempts == 3) {
-                    invalidateCode(passwordCode, "Excedeu o número de tentativas");
+                    invalidateCode(passwordCode);
+                    throw new CodeChangePasswordInvalidException("Excedeu o número de tentativas");
                 }
             }
             save(passwordCode);
-            return false;
+            throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_CODE_INVALID",
+                    null, LocaleContextHolder.getLocale()));
         }
-        invalidateCode(passwordCode, "Código invalido.");
-        return false;
+        invalidateCode(passwordCode);
+        throw new CodeChangePasswordInvalidException("As informações não correspondem. Solicite outro código!");
     }
     
     private PasswordCode chooseType(String email, Integer type) {
         Optional<PasswordCode> passwordCode;
+        Status WaitingStatus = statusService.findByName("Aguardando");
         if (TypeUserEnum.valueOf(type) == TypeUserEnum.EMPLOYEE) {
             log.info("Tentativa de validação de código (EMPLOYEE)");
-            passwordCode = passwordCodeRepository.findPasswordChangeRequestEmployee(email, statusService.findByName("Aguardando").getId()) ;
+            passwordCode = passwordCodeRepository.findPasswordChangeRequestEmployee(email, WaitingStatus.getId());
             return passwordCode.orElseThrow(() -> new EntityNotFoundException("Dados invalidos!"));
         } else if (TypeUserEnum.valueOf(type) == TypeUserEnum.LESSEE) {
             log.info("Tentativa de validação de código (LESSEE)");
-            passwordCode = passwordCodeRepository.findPasswordChangeRequestLessee(email, statusService.findByName("Aguardando").getId()) ;
+            passwordCode = passwordCodeRepository.findPasswordChangeRequestLessee(email, WaitingStatus.getId()) ;
             return passwordCode.orElseThrow(() -> new EntityNotFoundException("Dados invalidos!"));
         }
         throw new EntityNotFoundException("Dados invalidos!");
     }
     
-    private void invalidateCode(PasswordCode passwordCode, String message) {
+    private void invalidateCode(PasswordCode passwordCode) {
         log.info("Código invalido");
         passwordCode.setStatus(statusService.findByName("Invalido"));
         save(passwordCode);
-        throw new CodeChangePasswordInvalidException(message);
     }
 
     public void cancelCode(Iterable<PasswordCode> passwordCodes) {
         log.info("Cancelando código...");
         passwordCodeRepository.saveAll(passwordCodes);
+    }
 
+    private String createTokenChangePassword(String email, Integer ID, String code) {
+        log.info("Criando token de troca de senha");
+        Map<String, String> params = new HashMap<>();
+        params.put("EMAIL", email);
+        params.put("ID", String.valueOf(ID));
+        params.put("CODE", code);
+        return JWTService.createTokenJWT(params, TextUtils.TIME_TOKEN_CHANGE_PASSWORD_EXPIRATION);
     }
 }
