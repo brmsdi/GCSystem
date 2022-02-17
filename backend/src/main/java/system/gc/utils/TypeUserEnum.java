@@ -4,7 +4,7 @@ public enum TypeUserEnum {
     EMPLOYEE(0),
     LESSEE(1);
 
-    private int code;
+    private final int code;
 
     TypeUserEnum(int code) {
         this.code = code;

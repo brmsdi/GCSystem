@@ -136,7 +136,7 @@ public class LesseeService {
         Optional<Lessee> lesseeOptional = lesseeAuthenticationServiceImpl.CheckIfThereISAnOpenRequest(lesseeResult.getId(), lesseeRepository, waitingStatus.getId());
         if (lesseeOptional.isPresent()) {
             lesseeOptional.get().getPasswordCode().forEach(it -> it.setStatus(cancelStatus));
-            passwordCodeService.cancelCode(lesseeOptional.get().getPasswordCode());
+            passwordCodeService.updateStatusCode(lesseeOptional.get().getPasswordCode());
         }
         PasswordCode passwordCode = lesseeAuthenticationServiceImpl.startProcess(lesseeResult, statusService.findByName("Aguardando"), passwordCodeService);
         log.info("Enviando código para o E-mail");

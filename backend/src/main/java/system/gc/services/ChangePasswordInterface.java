@@ -1,7 +1,11 @@
 package system.gc.services;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.entities.PasswordCode;
 import system.gc.entities.Status;
+import system.gc.security.token.JWTService;
 import system.gc.services.ServiceImpl.PasswordCodeService;
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
@@ -38,4 +42,15 @@ public interface ChangePasswordInterface<E, REPOSITORY extends ChangePasswordEnt
           return true;
      }
 
+     default Optional<E> verifyTokenForChangePassword(String token, REPOSITORY repository, Integer statusID) {
+          try {
+               DecodedJWT tokenDecoded = JWTService.isValid(token);
+               String email = tokenDecoded.getClaim("EMAIL").asString();
+               Integer ID = Integer.valueOf(tokenDecoded.getClaim("ID").asString());
+               String code = tokenDecoded.getClaim("CODE").asString();
+               return repository.findRecordToChangePassword(email, ID, code, statusID);
+          } catch (JWTVerificationException | NumberFormatException exception) {
+               throw new CodeChangePasswordInvalidException(exception.getMessage());
+          }
+     }
 }

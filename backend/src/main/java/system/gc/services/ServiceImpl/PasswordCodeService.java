@@ -45,21 +45,20 @@ public class PasswordCodeService {
         Date passwordCodeDate = passwordCode.getDate();
         long time = currentDate.getTime() - passwordCodeDate.getTime();
         long minutesPast = TimeUnit.MINUTES.convert(time, TimeUnit.MILLISECONDS);
+        short attempts = passwordCode.getNumberOfAttempts();
+        attempts++;
         if (minutesPast <= 5 && passwordCode.getNumberOfAttempts() < 3) {
             if (passwordCode.getCode().equals(code)) {
                 passwordCode.setStatus(statusService.findByName("Valido"));
                 log.info("Código valido");
+                passwordCode.setNumberOfAttempts(attempts);
                 save(passwordCode);
-                return TokenDTO.builder()
-                        .type("changePassword")
-                        .token(createTokenChangePassword(email, passwordCode.getId(), passwordCode.getCode())).build();
+                return createTokenDTO(passwordCode, email);
             } else {
                 log.info("Tentativa invalida");
-                short attempts = passwordCode.getNumberOfAttempts();
-                attempts++;
                 passwordCode.setNumberOfAttempts(attempts);
                 if (attempts == 3) {
-                    invalidateCode(passwordCode);
+                    updateStatusCode(passwordCode, statusService.findByName("Invalido"));
                     throw new CodeChangePasswordInvalidException("Excedeu o número de tentativas");
                 }
             }
@@ -67,7 +66,7 @@ public class PasswordCodeService {
             throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_CODE_INVALID",
                     null, LocaleContextHolder.getLocale()));
         }
-        invalidateCode(passwordCode);
+        updateStatusCode(passwordCode, statusService.findByName("Invalido"));
         throw new CodeChangePasswordInvalidException("As informações não correspondem. Solicite outro código!");
     }
     
@@ -86,14 +85,13 @@ public class PasswordCodeService {
         throw new EntityNotFoundException("Dados invalidos!");
     }
     
-    private void invalidateCode(PasswordCode passwordCode) {
-        log.info("Código invalido");
-        passwordCode.setStatus(statusService.findByName("Invalido"));
+    private void updateStatusCode(PasswordCode passwordCode, Status status) {
+        log.info("Atualizando status do registro de troca de senha");
+        passwordCode.setStatus(status);
         save(passwordCode);
     }
 
-    public void cancelCode(Iterable<PasswordCode> passwordCodes) {
-        log.info("Cancelando código...");
+    public void updateStatusCode(Iterable<PasswordCode> passwordCodes) {
         passwordCodeRepository.saveAll(passwordCodes);
     }
 
@@ -104,5 +102,16 @@ public class PasswordCodeService {
         params.put("ID", String.valueOf(ID));
         params.put("CODE", code);
         return JWTService.createTokenJWT(params, TextUtils.TIME_TOKEN_CHANGE_PASSWORD_EXPIRATION);
+    }
+
+    private TokenDTO createTokenDTO(PasswordCode passwordCode, String email) {
+        if(passwordCode.getEmployee() != null) {
+            return TokenDTO.builder()
+                    .type(String.valueOf(TypeUserEnum.EMPLOYEE))
+                    .token(createTokenChangePassword(email, passwordCode.getId(), passwordCode.getCode())).build();
+        }
+        return TokenDTO.builder()
+                .type(String.valueOf(TypeUserEnum.LESSEE))
+                .token(createTokenChangePassword(email, passwordCode.getId(), passwordCode.getCode())).build();
     }
 }

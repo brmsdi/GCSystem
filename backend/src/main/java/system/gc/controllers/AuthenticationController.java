@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
+import system.gc.dtos.TokenChangePasswordDTO;
 import system.gc.dtos.TokenDTO;
 import system.gc.services.ServiceImpl.EmployeeService;
 import system.gc.services.ServiceImpl.LesseeService;
@@ -41,7 +42,7 @@ public class AuthenticationController {
 
         if (TypeUserEnum.valueOf(type) == TypeUserEnum.EMPLOYEE) {
             //EmployeeDTO employeeDTO = employeeChangePasswordService.verifyEmail(email);
-            if (employeeService.changePassword(email)) {
+            if (employeeService.generateCodeForChangePassword(email)) {
                 return ResponseEntity.ok().body(messageSource.getMessage("TEXT_MSG_EMAIL_SENT_SUCCESS",
                         null, LocaleContextHolder.getLocale()));
             }
@@ -64,5 +65,21 @@ public class AuthenticationController {
                     null, LocaleContextHolder.getLocale()));
         }
         return ResponseEntity.ok().body(passwordCodeService.validateCode(email, type, code));
+    }
+
+    @PostMapping(value = "change")
+    public ResponseEntity<String> changePassword(@RequestBody TokenChangePasswordDTO tokenChangePasswordDTO) {
+        System.out.println(tokenChangePasswordDTO.getToken());
+        System.out.println(tokenChangePasswordDTO.getType());
+        System.out.println(tokenChangePasswordDTO.getNewPassword());
+        if (tokenChangePasswordDTO.getType().equalsIgnoreCase(String.valueOf(TypeUserEnum.EMPLOYEE))) {
+            employeeService.changePassword(tokenChangePasswordDTO.getToken(), tokenChangePasswordDTO.getNewPassword());
+            return ResponseEntity.ok( messageSource.getMessage("TEXT_MSG_PASSWORD_UPDATE_SUCCESS",
+                    null, LocaleContextHolder.getLocale()) );
+        } else if (tokenChangePasswordDTO.getType().equalsIgnoreCase(String.valueOf(TypeUserEnum.LESSEE))) {
+
+        }
+
+        return null;
     }
 }

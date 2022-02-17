@@ -6,12 +6,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import system.gc.utils.TextUtils;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class JWTService {
@@ -20,7 +17,6 @@ public class JWTService {
      * @param claims Parametros para compor a chave autenticada
      * @param TIME_TOKEN        Validade do token
      * @return 'String'         Token criado
-     * @throws Exception Se houver erro durante a criação do token
      */
     public static String createTokenJWT(final Map<String, String> claims, Long TIME_TOKEN) {
         log.info("Criando token");

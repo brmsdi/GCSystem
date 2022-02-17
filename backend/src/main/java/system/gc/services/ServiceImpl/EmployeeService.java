@@ -4,8 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import system.gc.configuration.exceptions.CodeChangeOpenedException;
+import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.PasswordCode;
@@ -120,7 +121,7 @@ public class EmployeeService {
     }
 
     @Transactional
-    public boolean changePassword(String email) {
+    public boolean generateCodeForChangePassword(String email) {
         log.info("Iniciando processo de geração de codigo para troca de senha");
         Status waitingStatus = statusService.findByName("Aguardando");
         Status cancelStatus = statusService.findByName("Cancelado");
@@ -128,10 +129,23 @@ public class EmployeeService {
         Optional<Employee> employeeOptional = employeeAuthenticationServiceImpl.CheckIfThereISAnOpenRequest(employeeResult.getId(), employeeRepository, waitingStatus.getId());
         if (employeeOptional.isPresent()) {
             employeeOptional.get().getPasswordCode().forEach(it -> it.setStatus(cancelStatus));
-            passwordCodeService.cancelCode(employeeOptional.get().getPasswordCode());
+            passwordCodeService.updateStatusCode(employeeOptional.get().getPasswordCode());
         }
         PasswordCode passwordCode = employeeAuthenticationServiceImpl.startProcess(employeeResult, waitingStatus, passwordCodeService);
         log.info("Enviando código para o E-mail");
         return employeeAuthenticationServiceImpl.sendEmail(passwordCode, employeeResult.getEmail());
+    }
+
+    @Transactional
+    public void changePassword(String token, String newPassword) {
+        log.info("Atualizando senha");
+        Status statusValid = statusService.findByName("Valido");
+        Status statusRescued = statusService.findByName("Resgatado");
+        Optional<Employee> employeeOptional = employeeAuthenticationServiceImpl.verifyTokenForChangePassword(token, employeeRepository, statusValid.getId());
+        Employee employee = employeeOptional.orElseThrow(() -> new CodeChangePasswordInvalidException("Nenhum registro encontrado para a solicitação"));
+        employee.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        employeeRepository.save(employee);
+        employee.getPasswordCode().forEach(it -> it.setStatus(statusRescued));
+        passwordCodeService.updateStatusCode(employee.getPasswordCode());
     }
 }

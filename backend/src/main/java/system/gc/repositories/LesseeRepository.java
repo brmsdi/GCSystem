@@ -39,4 +39,15 @@ public interface LesseeRepository extends JpaRepository<Lessee, Integer>, Authen
             "JOIN FETCH passwordCode.status status " +
             "WHERE lessee.id = :ID AND status.id = :statusID")
     Optional<Lessee> CheckIfThereISAnOpenRequest(Integer ID, Integer statusID);
+
+    @Override
+    @Query("SELECT lessee FROM Lessee lessee " +
+            "JOIN FETCH lessee.passwordCode passwordCode " +
+            "JOIN FETCH passwordCode.status status " +
+            "WHERE lessee.email LIKE :email " +
+            "AND passwordCode.id = :ID " +
+            "AND passwordCode.code LIKE :code " +
+            "AND status.id = :statusID")
+    Optional<Lessee> findRecordToChangePassword(String email, Integer ID, String code, Integer statusID);
+
 }

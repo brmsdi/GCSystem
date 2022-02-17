@@ -70,6 +70,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/lessee/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/changePassword/requestCode").permitAll()
                 .antMatchers(HttpMethod.POST, "/changePassword/receiveCode").permitAll()
+                .antMatchers(HttpMethod.POST, "/changePassword/change").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

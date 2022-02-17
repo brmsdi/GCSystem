@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.Employee;
+import system.gc.entities.Status;
 import system.gc.services.AuthenticateEntity;
 import system.gc.services.ChangePasswordEntity;
 
@@ -43,5 +44,14 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>, Au
             "WHERE employee.id = :ID AND status.id = :statusID")
     Optional<Employee> CheckIfThereISAnOpenRequest(Integer ID, Integer statusID);
 
+    @Override
+    @Query("SELECT employee FROM Employee employee " +
+            "JOIN FETCH employee.passwordCode passwordCode " +
+            "JOIN FETCH passwordCode.status status " +
+            "WHERE employee.email LIKE :email " +
+            "AND passwordCode.id = :ID " +
+            "AND passwordCode.code LIKE :code " +
+            "AND status.id = :statusID")
+    Optional<Employee> findRecordToChangePassword(String email, Integer ID, String code, Integer statusID);
 
 }
