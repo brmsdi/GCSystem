@@ -2,8 +2,11 @@ package system.gc.services.ServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
@@ -13,11 +16,11 @@ import system.gc.entities.PasswordCode;
 import system.gc.entities.Status;
 import system.gc.repositories.EmployeeRepository;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Wisley Bruno Marques França
@@ -37,6 +40,9 @@ public class EmployeeService {
 
     @Autowired
     private PasswordCodeService passwordCodeService;
+
+    @Autowired
+    private GCEmailService gcEmailService;
 
     @Transactional
     public EmployeeDTO save(EmployeeDTO newEmployeeDTO) {
@@ -133,7 +139,11 @@ public class EmployeeService {
         }
         PasswordCode passwordCode = employeeAuthenticationServiceImpl.startProcess(employeeResult, waitingStatus, passwordCodeService);
         log.info("Enviando código para o E-mail");
-        return employeeAuthenticationServiceImpl.sendEmail(passwordCode, employeeResult.getEmail());
+        Map<String, String> bodyParams = new HashMap<>();
+        bodyParams.put("code", passwordCode.getCode());
+        MimeMessage mimeMessage = gcEmailService.createMimeMessage(System.getenv("EMAIL_GCSYSTEM"), email, gcEmailService.getSubjectEmail(), bodyParams);
+        gcEmailService.send(mimeMessage);
+        return true;
     }
 
     @Transactional

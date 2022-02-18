@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Redefinição de senha</title>
+</head>
+<!--
+<style>
+    
+    :root {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    body {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        height: 90vh;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;   
+        width: 35%;
+        height: 50%;
+        margin-top: 40px;
+    }
+
+    h2 {
+        color: #3498db;
+        text-align: center;
+        margin: 0;
+    }
+
+    main {
+        text-align: center;
+        width: 100%;
+    }
+
+    .code {
+        border: 1px solid #3498db;
+        border-radius: 5%;
+        font-weight: 800;
+        color: #363636;
+        letter-spacing: 1px;
+        font-size: 1.5rem;
+        padding: 10px;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        font-size: 15px;
+        padding: 10px;
+    }
+
+</style>
+-->
+
+<body style="display: block;
+    margin: 0 auto;">
+    <div class="content" style="display: block; 
+        width: 90%;
+        height: 50%;
+        margin: 40px auto; ">
+    <div class="header">
+        <h2 style="color: #3498db;
+            text-align: center;
+            margin: 0;">GC - SYSTEM</h2>
+        <div>
+            <p>Código para redefinição de senha de acesso. 
+                Este código é valido por apenas 5 minutos, não o compartilhe com ninguém.
+            </p>
+        </div>
+    </div>
+    <main style=" text-align: center;
+        width: 100%;">
+        <div class="code" style="border: 1px solid #3498db;
+            font-weight: 700;
+            color: #363636;
+            letter-spacing: 1px;
+            font-size: 1.4rem;
+            padding: 10px;
+            text-align: center"><span th:text="${code}"></span></div>
+    </main>
+    <footer style="
+        width:100%;
+        text-align:center;
+        font-size: 15px;
+        padding: 10px;">
+        <div><span>GCSystem - Gerenciamento de condomínios</span></div>
+        <div><span>Desenvolvido por Wisley Bruno Marques França</span></div>
+        <div><span>Contato: srmarquesms@gmail.com</span></div>
+    </footer>
+</div>
+</body>
+</html>

@@ -3,9 +3,11 @@ package system.gc.services.ServiceImpl;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.DebtDTO;
 import system.gc.dtos.LesseeDTO;
@@ -34,6 +36,9 @@ public class LesseeService {
 
     @Autowired
     private PasswordCodeService passwordCodeService;
+
+    @Autowired
+    private GCEmailService gcEmailService;
 
     @Transactional
     public LesseeDTO save(LesseeDTO newLesseeDTO) {
@@ -140,6 +145,8 @@ public class LesseeService {
         }
         PasswordCode passwordCode = lesseeAuthenticationServiceImpl.startProcess(lesseeResult, statusService.findByName("Aguardando"), passwordCodeService);
         log.info("Enviando código para o E-mail");
-        return lesseeAuthenticationServiceImpl.sendEmail(passwordCode, lesseeResult.getEmail());
+        SimpleMailMessage simpleMailMessage = gcEmailService.createSimpleMessage(System.getenv("EMAIL_GCSYSTEM"), email, gcEmailService.getSubjectEmail(), passwordCode.getCode());
+        gcEmailService.send(simpleMailMessage);
+        return true;
     }
 }
