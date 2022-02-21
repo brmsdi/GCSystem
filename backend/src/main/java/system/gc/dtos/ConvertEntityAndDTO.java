@@ -7,45 +7,45 @@ import java.util.*;
 /**
  * @author Wisley Bruno Marques França
  */
-public interface ConvertEntityAndDTO<T, X> {
-    default Set<T> convertSetEntityToSetEntityDTO(Set<X> entityList) {
+public interface ConvertEntityAndDTO<DTO, E> {
+    default Set<DTO> convertSetEntityToSetEntityDTO(Set<E> entityList) {
         if (entityList == null || entityList.isEmpty()) {
             return null;
         }
-        Set<T> convertedList = new HashSet<>();
+        Set<DTO> convertedList = new HashSet<>();
         entityList.forEach(item -> convertedList.add(toDTO(item)));
         return convertedList;
     }
 
-    default Set<X> convertSetEntityDTOFromSetEntity(Set<T> setEntityDTO) {
+    default Set<E> convertSetEntityDTOFromSetEntity(Set<DTO> setEntityDTO) {
         if (setEntityDTO == null || setEntityDTO.isEmpty()) {
             return null;
         }
-        Set<X> convertedList = new HashSet<>();
+        Set<E> convertedList = new HashSet<>();
         setEntityDTO.forEach(item -> convertedList.add(toEntity(item)));
         return convertedList;
     }
 
-    default List<T> convertListEntityFromListDTO(List<X> entityList) {
+    default List<DTO> convertListEntityFromListDTO(List<E> entityList) {
         if (entityList == null || entityList.isEmpty()) {
             return null;
         }
-        List<T> convertedList = new ArrayList<>();
+        List<DTO> convertedList = new ArrayList<>();
         entityList.forEach(item -> convertedList.add(toDTO(item)));
         return convertedList;
     }
 
-    default List<X> convertListEntityDTOFromListEntity(List<T> listEntityDTO) {
+    default List<E> convertListEntityDTOFromListEntity(List<DTO> listEntityDTO) {
         if (listEntityDTO == null || listEntityDTO.isEmpty()) {
             return null;
         }
-        List<X> convertedList = new ArrayList<>();
+        List<E> convertedList = new ArrayList<>();
         listEntityDTO.forEach(item -> convertedList.add(toEntity(item)));
         return convertedList;
     }
 
     @Deprecated
-    default T convertToDTO(T newDTO, X entity) {
+    default DTO convertToDTO(DTO newDTO, E entity) {
         Method[] entityMethods = entity.getClass().getDeclaredMethods();
         Arrays.stream(entityMethods).forEach(getMethod -> {
             if (getMethod.getName().toUpperCase().contains("GET")
@@ -62,7 +62,7 @@ public interface ConvertEntityAndDTO<T, X> {
     }
 
     @Deprecated
-    private void executeConversion(T newDTO, X entity, Method getMethod) throws InvocationTargetException, IllegalAccessException {
+    private void executeConversion(DTO newDTO, E entity, Method getMethod) throws InvocationTargetException, IllegalAccessException {
         Object returnedValueMethod = getMethod.invoke(entity, null);
         Method[] setMethods = newDTO.getClass().getDeclaredMethods();
         for (Method setMethod : setMethods) {
@@ -75,7 +75,7 @@ public interface ConvertEntityAndDTO<T, X> {
     }
 
     @Deprecated
-    default X convertToEntity(T objectDTO, X newEntity) {
+    default E convertToEntity(DTO objectDTO, E newEntity) {
         Method[] entityMethods = objectDTO.getClass().getDeclaredMethods();
         Arrays.stream(entityMethods).forEach(getMethod -> {
             if (getMethod.getName().toUpperCase().contains("GET")
@@ -92,7 +92,7 @@ public interface ConvertEntityAndDTO<T, X> {
     }
 
     @Deprecated
-    private void executeConversionToEntity(T objectDTO, X newEntity, Method getMethod) throws InvocationTargetException, IllegalAccessException {
+    private void executeConversionToEntity(DTO objectDTO, E newEntity, Method getMethod) throws InvocationTargetException, IllegalAccessException {
         Object returnedValueMethod = getMethod.invoke(objectDTO, null);
         Method[] setMethods = newEntity.getClass().getDeclaredMethods();
         for (Method setMethod : setMethods) {
@@ -104,7 +104,7 @@ public interface ConvertEntityAndDTO<T, X> {
         }
     }
 
-    T toDTO(X x);
+    DTO toDTO(E e);
 
-    X toEntity(T t);
+    E toEntity(DTO DTO);
 }

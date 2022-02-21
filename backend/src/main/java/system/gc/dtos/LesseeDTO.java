@@ -1,5 +1,6 @@
 package system.gc.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Lessee;
@@ -7,7 +8,6 @@ import system.gc.entities.Lessee;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -40,12 +40,13 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
 
     @NotNull(message = "{required.validation}")
     @NotBlank(message = "{required.validation}")
+    @JsonIgnore
     private String password;
 
     @NotNull(message = "{required.validation}")
     private StatusDTO status;
 
-    private Set<DebtDTO> debts = new HashSet<>();
+    private Set<DebtDTO> debts;
 
     //private Set<Contract> contracts = new HashSet<>();
 

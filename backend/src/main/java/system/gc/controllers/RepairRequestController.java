@@ -8,35 +8,36 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import system.gc.dtos.ContractDTO;
 import system.gc.dtos.LesseeDTO;
-import system.gc.services.ServiceImpl.ContractService;
+import system.gc.dtos.RepairRequestDTO;
+import system.gc.services.ServiceImpl.RepairRequestService;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/contracts")
+@RequestMapping(value = "/repair-requests")
 @Slf4j
-public class ContractController {
+public class RepairRequestController {
 
     @Autowired
-    private ContractService contractService;
+    private RepairRequestService repairRequestService;
 
     @Autowired
     private MessageSource messageSource;
 
     @GetMapping
-    public ResponseEntity<Page<ContractDTO>> listPaginationContract(
+    public ResponseEntity<Page<RepairRequestDTO>> listPaginationContract(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size) {
-        log.info("Listando contratos");
-        return ResponseEntity.ok(contractService.listPaginationContract(PageRequest.of(page, size)));
+        log.info("Listando solicitações de reparo");
+        return ResponseEntity.ok(repairRequestService.listPaginationRepairRequest(PageRequest.of(page, size)));
     }
 
     @PostMapping
-    public ResponseEntity<String> save(@Valid @RequestBody ContractDTO contractDTO) {
-        if (contractService.save(contractDTO) == null) {
-            return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_CONTRACT",
+    public ResponseEntity<String> save(@Valid @RequestBody RepairRequestDTO repairRequestDTO) {
+        log.info("Inserindo nova solicitação");
+        if (repairRequestService.save(repairRequestDTO) == null) {
+            return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_REPAIR_REQUEST",
                     null,
                     LocaleContextHolder.getLocale()));
         }
@@ -46,25 +47,25 @@ public class ContractController {
     }
 
     @PutMapping
-    public ResponseEntity<String> update(@Valid @RequestBody ContractDTO contractDTO) {
+    public ResponseEntity<String> update(@Valid @RequestBody RepairRequestDTO repairRequestDTO) {
         log.info("Atualizando registro");
-        contractService.update(contractDTO);
+        repairRequestService.update(repairRequestDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
     }
 
     @GetMapping(value = "search")
-    public ResponseEntity<Page<ContractDTO>> search(@RequestParam(name = "page", defaultValue = "0") Integer page,
+    public ResponseEntity<Page<RepairRequestDTO>> search(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                     @RequestParam(name = "size", defaultValue = "5") Integer size,
                                                     @RequestParam(name = "cpf") String cpf) {
-        log.info("Localizando contratos");
-        return ResponseEntity.ok(contractService.searchContract(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
+        log.info("Localizando solicitação de reparo");
+        return ResponseEntity.ok(repairRequestService.searchRepairRequest(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
     }
 
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam(name = "id") Integer ID) {
-        contractService.delete(ID);
+        repairRequestService.delete(ID);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));

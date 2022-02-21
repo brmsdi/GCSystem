@@ -7,9 +7,9 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.dtos.TokenDTO;
-import system.gc.entities.PasswordCode;
+import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
-import system.gc.repositories.PasswordCodeRepository;
+import system.gc.repositories.LogPasswordCodeRepository;
 import system.gc.security.token.JWTService;
 import system.gc.utils.TextUtils;
 import system.gc.utils.TypeUserEnum;
@@ -23,9 +23,9 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
-public class PasswordCodeService {
+public class LogPasswordCodeService {
     @Autowired
-    PasswordCodeRepository passwordCodeRepository;
+    LogPasswordCodeRepository logPasswordCodeRepository;
 
     @Autowired
     StatusService statusService;
@@ -34,65 +34,65 @@ public class PasswordCodeService {
     private MessageSource messageSource;
 
     @Transactional
-    public PasswordCode save(PasswordCode passwordCode) {
-        return passwordCodeRepository.save(passwordCode);
+    public LogChangePassword save(LogChangePassword logChangePassword) {
+        return logPasswordCodeRepository.save(logChangePassword);
     }
 
     public TokenDTO validateCode(String email, Integer type, String code) {
         log.info("Validando código");
-        PasswordCode passwordCode = chooseType(email, type);
+        LogChangePassword logChangePassword = chooseType(email, type);
         Date currentDate = new Date();
-        Date passwordCodeDate = passwordCode.getDate();
+        Date passwordCodeDate = logChangePassword.getDate();
         long time = currentDate.getTime() - passwordCodeDate.getTime();
         long minutesPast = TimeUnit.MINUTES.convert(time, TimeUnit.MILLISECONDS);
-        short attempts = passwordCode.getNumberOfAttempts();
+        short attempts = logChangePassword.getNumberOfAttempts();
         attempts++;
-        if (minutesPast <= 5 && passwordCode.getNumberOfAttempts() < 3) {
-            if (passwordCode.getCode().equals(code)) {
-                passwordCode.setStatus(statusService.findByName("Valido"));
+        if (minutesPast <= 5 && logChangePassword.getNumberOfAttempts() < 3) {
+            if (logChangePassword.getCode().equals(code)) {
+                logChangePassword.setStatus(statusService.findByName("Valido"));
                 log.info("Código valido");
-                passwordCode.setNumberOfAttempts(attempts);
-                save(passwordCode);
-                return createTokenDTO(passwordCode, email);
+                logChangePassword.setNumberOfAttempts(attempts);
+                save(logChangePassword);
+                return createTokenDTO(logChangePassword, email);
             } else {
                 log.info("Tentativa invalida");
-                passwordCode.setNumberOfAttempts(attempts);
+                logChangePassword.setNumberOfAttempts(attempts);
                 if (attempts == 3) {
-                    updateStatusCode(passwordCode, statusService.findByName("Invalido"));
+                    updateStatusCode(logChangePassword, statusService.findByName("Invalido"));
                     throw new CodeChangePasswordInvalidException("Excedeu o número de tentativas");
                 }
             }
-            save(passwordCode);
+            save(logChangePassword);
             throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_CODE_INVALID",
                     null, LocaleContextHolder.getLocale()));
         }
-        updateStatusCode(passwordCode, statusService.findByName("Invalido"));
+        updateStatusCode(logChangePassword, statusService.findByName("Invalido"));
         throw new CodeChangePasswordInvalidException("As informações não correspondem. Solicite outro código!");
     }
     
-    private PasswordCode chooseType(String email, Integer type) {
-        Optional<PasswordCode> passwordCode;
+    private LogChangePassword chooseType(String email, Integer type) {
+        Optional<LogChangePassword> passwordCode;
         Status WaitingStatus = statusService.findByName("Aguardando");
         if (TypeUserEnum.valueOf(type) == TypeUserEnum.EMPLOYEE) {
             log.info("Tentativa de validação de código (EMPLOYEE)");
-            passwordCode = passwordCodeRepository.findPasswordChangeRequestEmployee(email, WaitingStatus.getId());
+            passwordCode = logPasswordCodeRepository.findPasswordChangeRequestEmployee(email, WaitingStatus.getId());
             return passwordCode.orElseThrow(() -> new EntityNotFoundException("Dados invalidos!"));
         } else if (TypeUserEnum.valueOf(type) == TypeUserEnum.LESSEE) {
             log.info("Tentativa de validação de código (LESSEE)");
-            passwordCode = passwordCodeRepository.findPasswordChangeRequestLessee(email, WaitingStatus.getId()) ;
+            passwordCode = logPasswordCodeRepository.findPasswordChangeRequestLessee(email, WaitingStatus.getId()) ;
             return passwordCode.orElseThrow(() -> new EntityNotFoundException("Dados invalidos!"));
         }
         throw new EntityNotFoundException("Dados invalidos!");
     }
     
-    private void updateStatusCode(PasswordCode passwordCode, Status status) {
+    private void updateStatusCode(LogChangePassword logChangePassword, Status status) {
         log.info("Atualizando status do registro de troca de senha");
-        passwordCode.setStatus(status);
-        save(passwordCode);
+        logChangePassword.setStatus(status);
+        save(logChangePassword);
     }
 
-    public void updateStatusCode(Iterable<PasswordCode> passwordCodes) {
-        passwordCodeRepository.saveAll(passwordCodes);
+    public void updateStatusCode(Iterable<LogChangePassword> passwordCodes) {
+        logPasswordCodeRepository.saveAll(passwordCodes);
     }
 
     private String createTokenChangePassword(String email, Integer ID, String code) {
@@ -104,14 +104,14 @@ public class PasswordCodeService {
         return JWTService.createTokenJWT(params, TextUtils.TIME_TOKEN_CHANGE_PASSWORD_EXPIRATION);
     }
 
-    private TokenDTO createTokenDTO(PasswordCode passwordCode, String email) {
-        if(passwordCode.getEmployee() != null) {
+    private TokenDTO createTokenDTO(LogChangePassword logChangePassword, String email) {
+        if(logChangePassword.getEmployee() != null) {
             return TokenDTO.builder()
                     .type(String.valueOf(TypeUserEnum.EMPLOYEE))
-                    .token(createTokenChangePassword(email, passwordCode.getId(), passwordCode.getCode())).build();
+                    .token(createTokenChangePassword(email, logChangePassword.getId(), logChangePassword.getCode())).build();
         }
         return TokenDTO.builder()
                 .type(String.valueOf(TypeUserEnum.LESSEE))
-                .token(createTokenChangePassword(email, passwordCode.getId(), passwordCode.getCode())).build();
+                .token(createTokenChangePassword(email, logChangePassword.getId(), logChangePassword.getCode())).build();
     }
 }

@@ -14,7 +14,7 @@ import system.gc.services.ServiceImpl.CondominiumService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/condominium")
+@RequestMapping(value = "/condominiums")
 @Slf4j
 public class CondominiumController {
 

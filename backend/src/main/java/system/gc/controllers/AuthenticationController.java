@@ -13,12 +13,12 @@ import system.gc.dtos.TokenChangePasswordDTO;
 import system.gc.dtos.TokenDTO;
 import system.gc.services.ServiceImpl.EmployeeService;
 import system.gc.services.ServiceImpl.LesseeService;
-import system.gc.services.ServiceImpl.PasswordCodeService;
+import system.gc.services.ServiceImpl.LogPasswordCodeService;
 import system.gc.utils.TextUtils;
 import system.gc.utils.TypeUserEnum;
 
 @RestController
-@RequestMapping(value = "/changePassword")
+@RequestMapping(value = "/change-password")
 public class AuthenticationController {
 
     @Autowired
@@ -31,9 +31,9 @@ public class AuthenticationController {
     private LesseeService lesseeService;
 
     @Autowired
-    private PasswordCodeService passwordCodeService;
+    private LogPasswordCodeService logPasswordCodeService;
 
-    @PostMapping(value = "requestCode")
+    @PostMapping(value = "request-code")
     public ResponseEntity<String> requestCode(String email, Integer type) {
         if (!(TextUtils.textIsValid(email) && type != null)) {
             return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_EMAIL_EMPTY_OR_NULL",
@@ -48,7 +48,7 @@ public class AuthenticationController {
             }
         } else if (TypeUserEnum.valueOf(type) == TypeUserEnum.LESSEE) {
             //LesseeDTO lesseeDTO = lesseeChangePasswordService.verifyEmail(email);
-            if (lesseeService.changePassword(email)) {
+            if (lesseeService.generateCodeForChangePassword(email)) {
                 return ResponseEntity.ok().body(messageSource.getMessage("TEXT_MSG_EMAIL_SENT_SUCCESS",
                         null, LocaleContextHolder.getLocale()));
             }
@@ -58,28 +58,27 @@ public class AuthenticationController {
                 null, LocaleContextHolder.getLocale()));
     }
 
-    @PostMapping(value = "receiveCode")
+    @PostMapping(value = "receive-code")
     public ResponseEntity<TokenDTO> receiveCode(String email, Integer type, String code) {
         if (!(TextUtils.textIsValid(email) && type != null && TextUtils.textIsValid(code))) {
             throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_EMAIL_EMPTY_OR_NULL",
                     null, LocaleContextHolder.getLocale()));
         }
-        return ResponseEntity.ok().body(passwordCodeService.validateCode(email, type, code));
+        return ResponseEntity.ok().body(logPasswordCodeService.validateCode(email, type, code));
     }
 
     @PostMapping(value = "change")
     public ResponseEntity<String> changePassword(@RequestBody TokenChangePasswordDTO tokenChangePasswordDTO) {
-        System.out.println(tokenChangePasswordDTO.getToken());
-        System.out.println(tokenChangePasswordDTO.getType());
-        System.out.println(tokenChangePasswordDTO.getNewPassword());
         if (tokenChangePasswordDTO.getType().equalsIgnoreCase(String.valueOf(TypeUserEnum.EMPLOYEE))) {
             employeeService.changePassword(tokenChangePasswordDTO.getToken(), tokenChangePasswordDTO.getNewPassword());
             return ResponseEntity.ok( messageSource.getMessage("TEXT_MSG_PASSWORD_UPDATE_SUCCESS",
                     null, LocaleContextHolder.getLocale()) );
         } else if (tokenChangePasswordDTO.getType().equalsIgnoreCase(String.valueOf(TypeUserEnum.LESSEE))) {
-
+            lesseeService.changePassword(tokenChangePasswordDTO.getToken(), tokenChangePasswordDTO.getNewPassword());
+            return ResponseEntity.ok( messageSource.getMessage("TEXT_MSG_PASSWORD_UPDATE_SUCCESS",
+                    null, LocaleContextHolder.getLocale()) );
         }
 
-        return null;
+        throw new IllegalArgumentException("Entrada invalida!");
     }
 }

@@ -66,11 +66,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtAuthenticationFilter2(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/employee/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/lessee/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/changePassword/requestCode").permitAll()
-                .antMatchers(HttpMethod.POST, "/changePassword/receiveCode").permitAll()
-                .antMatchers(HttpMethod.POST, "/changePassword/change").permitAll()
+                .antMatchers(HttpMethod.POST, "/employees/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/lessees/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/change-password/request-code").permitAll()
+                .antMatchers(HttpMethod.POST, "/change-password/receive-code").permitAll()
+                .antMatchers(HttpMethod.POST, "/change-password/change").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -93,14 +93,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public UsernamePasswordAuthenticationFilter employeeUsernamePasswordAuthenticationFilter() {
-        return initUsernamePasswordAuthenticationFilter("/employee/login",
+        return initUsernamePasswordAuthenticationFilter("/employees/login",
                 new EmployeeAuthenticationFilter(),
                 employeeProviderManager);
     }
 
     @Bean
     public UsernamePasswordAuthenticationFilter lesseeUsernamePasswordAuthenticationFilter() {
-        return initUsernamePasswordAuthenticationFilter("/lessee/login",
+        return initUsernamePasswordAuthenticationFilter("/lessees/login",
                 new LesseeAuthenticationFilter(),
                 lesseeProviderManager);
     }

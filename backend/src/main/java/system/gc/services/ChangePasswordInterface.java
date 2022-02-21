@@ -2,13 +2,11 @@ package system.gc.services;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.springframework.mail.SimpleMailMessage;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
-import system.gc.entities.PasswordCode;
+import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
 import system.gc.security.token.JWTService;
-import system.gc.services.ServiceImpl.GCEmailService;
-import system.gc.services.ServiceImpl.PasswordCodeService;
+import system.gc.services.ServiceImpl.LogPasswordCodeService;
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.Optional;
@@ -33,10 +31,10 @@ public interface ChangePasswordInterface<E, REPOSITORY extends ChangePasswordEnt
           return new String(code);
      }
 
-     default PasswordCode startProcess(E e, Status status, PasswordCodeService passwordCodeService) {
+     default LogChangePassword startProcess(E e, Status status, LogPasswordCodeService logPasswordCodeService) {
           String code = generateCode();
-          PasswordCode passwordCode = new PasswordCode(e, code, status, new Date(), Short.parseShort("0"));
-          return passwordCodeService.save(passwordCode);
+          LogChangePassword logChangePassword = new LogChangePassword(e, code, status, new Date(), Short.parseShort("0"));
+          return logPasswordCodeService.save(logChangePassword);
      }
 
      default Optional<E> verifyTokenForChangePassword(String token, REPOSITORY repository, Integer statusID) {

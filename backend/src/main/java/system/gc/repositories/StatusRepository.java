@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface StatusRepository extends JpaRepository<Status, Integer> {
 
     @Query("SELECT status FROM Status status WHERE status.name like :name")
-    Optional<Status> getByName(String name);
+    Optional<Status> findByName(String name);
 }

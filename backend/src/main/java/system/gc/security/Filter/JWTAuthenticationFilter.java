@@ -1,5 +1,6 @@
 package system.gc.security.Filter;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,17 +42,21 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-
+        log.info("Agent com token de acesso");
         try {
             token = clearTypeToken(token);
             DecodedJWT decodedJWT = JWTService.isValid(token);
             SecurityContextHolder.getContext().setAuthentication(getUsernamePasswordAuthenticationToken(decodedJWT));
             response.setStatus(HttpServletResponse.SC_GONE);
             chain.doFilter(request, response);
-        } catch (Exception exception) {
+        } catch (JWTVerificationException jwtVerificationException) {
             log.error("Token de acesso invalido!");
-            log.error(exception.getMessage());
+            log.error(jwtVerificationException.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            jwtVerificationException.printStackTrace();
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            e.printStackTrace();
         }
     }
 
@@ -82,23 +87,23 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
      * @param decodedJWT JWT DECODIFICADO
      * @return UsernamePasswordAuthenticationToken Autentica o usuário no sistema
      */
-    private UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationToken(DecodedJWT decodedJWT) throws Exception {
+    private UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationToken(DecodedJWT decodedJWT) {
         final String TYPE = decodedJWT.getClaim("TYPE").asString();
         final String USERNAME = decodedJWT.getClaim("USERNAME").asString();
         if (TYPE.equals(System.getenv("TYPE_1"))) {
             EmployeeDTO employeeDTO = employeeService.authentication(USERNAME);
             if (employeeDTO == null) {
-                throw new Exception("O usuário não foi localizado (Employee)");
+                throw new BadCredentialsException("O usuário não foi localizado (Employee)");
             }
-            log.info("Usuário lozalizado. (Employee)");
+            log.info("Usuário localizado. (Employee)");
             return create(new EmployeeUserDetails(employeeDTO));
 
         } else if (TYPE.equals(System.getenv("TYPE_2"))) {
             LesseeDTO lesseeDTO = lesseeService.authentication(USERNAME);
             if (lesseeDTO == null) {
-                throw new Exception("O usuário não foi localizado (Lessee)");
+                throw new BadCredentialsException("O usuário não foi localizado (Lessee)");
             }
-            log.info("Usuário lozalizado. (Lessee)");
+            log.info("Usuário localizado. (Lessee)");
             return create(new LesseeUserDetails(lesseeDTO));
         }
         throw new BadCredentialsException("Token não corresponde a nenhum tipo de autenticação");

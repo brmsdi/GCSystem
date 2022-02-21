@@ -53,13 +53,13 @@ public class Lessee implements Serializable {
     private Status status;
 
     @OneToMany(mappedBy = "lessee")
-    private Set<Debt> debts = new HashSet<>();
+    private Set<Debt> debts;
 
     @OneToMany(mappedBy = "lessee")
-    private Set<Contract> contracts = new HashSet<>();
+    private Set<Contract> contracts;
 
     @OneToMany(mappedBy = "lessee")
-    private Set<PasswordCode> passwordCode = new HashSet<>();
+    private Set<LogChangePassword> logChangePassword;
 
     public Lessee() {
     }

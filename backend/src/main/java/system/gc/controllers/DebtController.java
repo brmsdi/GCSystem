@@ -14,7 +14,7 @@ import system.gc.services.ServiceImpl.DebtService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/debt")
+@RequestMapping(value = "/debts")
 @Slf4j
 public class DebtController {
 

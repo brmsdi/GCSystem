@@ -2,21 +2,16 @@ package system.gc.services.ServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.entities.Employee;
-import system.gc.entities.PasswordCode;
+import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
 import system.gc.repositories.EmployeeRepository;
-
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -39,7 +34,7 @@ public class EmployeeService {
     private StatusService statusService;
 
     @Autowired
-    private PasswordCodeService passwordCodeService;
+    private LogPasswordCodeService logPasswordCodeService;
 
     @Autowired
     private GCEmailService gcEmailService;
@@ -134,15 +129,16 @@ public class EmployeeService {
         Employee employeeResult = employeeAuthenticationServiceImpl.verifyEmail(email, employeeRepository);
         Optional<Employee> employeeOptional = employeeAuthenticationServiceImpl.CheckIfThereISAnOpenRequest(employeeResult.getId(), employeeRepository, waitingStatus.getId());
         if (employeeOptional.isPresent()) {
-            employeeOptional.get().getPasswordCode().forEach(it -> it.setStatus(cancelStatus));
-            passwordCodeService.updateStatusCode(employeeOptional.get().getPasswordCode());
+            employeeOptional.get().getLogChangePassword().forEach(it -> it.setStatus(cancelStatus));
+            logPasswordCodeService.updateStatusCode(employeeOptional.get().getLogChangePassword());
         }
-        PasswordCode passwordCode = employeeAuthenticationServiceImpl.startProcess(employeeResult, waitingStatus, passwordCodeService);
+        LogChangePassword logChangePassword = employeeAuthenticationServiceImpl.startProcess(employeeResult, waitingStatus, logPasswordCodeService);
         log.info("Enviando código para o E-mail");
         Map<String, String> bodyParams = new HashMap<>();
-        bodyParams.put("code", passwordCode.getCode());
+        bodyParams.put("code", logChangePassword.getCode());
         MimeMessage mimeMessage = gcEmailService.createMimeMessage(System.getenv("EMAIL_GCSYSTEM"), email, gcEmailService.getSubjectEmail(), bodyParams);
         gcEmailService.send(mimeMessage);
+        log.info("Código enviado para o E-mail");
         return true;
     }
 
@@ -155,7 +151,7 @@ public class EmployeeService {
         Employee employee = employeeOptional.orElseThrow(() -> new CodeChangePasswordInvalidException("Nenhum registro encontrado para a solicitação"));
         employee.setPassword(new BCryptPasswordEncoder().encode(newPassword));
         employeeRepository.save(employee);
-        employee.getPasswordCode().forEach(it -> it.setStatus(statusRescued));
-        passwordCodeService.updateStatusCode(employee.getPasswordCode());
+        employee.getLogChangePassword().forEach(it -> it.setStatus(statusRescued));
+        logPasswordCodeService.updateStatusCode(employee.getLogChangePassword());
     }
 }

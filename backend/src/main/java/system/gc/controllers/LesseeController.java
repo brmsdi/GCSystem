@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/lessee")
+@RequestMapping(value = "/lessees")
 @Slf4j
 public class LesseeController {
     @Autowired

@@ -3,24 +3,23 @@ package system.gc.services.ServiceImpl;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.dtos.DebtDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.entities.Lessee;
-import system.gc.entities.PasswordCode;
+import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
 import system.gc.repositories.LesseeRepository;
 
+import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -35,7 +34,7 @@ public class LesseeService {
     private StatusService statusService;
 
     @Autowired
-    private PasswordCodeService passwordCodeService;
+    private LogPasswordCodeService logPasswordCodeService;
 
     @Autowired
     private GCEmailService gcEmailService;
@@ -133,20 +132,36 @@ public class LesseeService {
     }
 
     @Transactional
-    public boolean changePassword(String email) {
+    public boolean generateCodeForChangePassword(String email) {
         log.info("Iniciando processo de geração de codigo para troca de senha");
         Status waitingStatus = statusService.findByName("Aguardando");
         Status cancelStatus = statusService.findByName("Cancelado");
         Lessee lesseeResult = lesseeAuthenticationServiceImpl.verifyEmail(email, lesseeRepository);
         Optional<Lessee> lesseeOptional = lesseeAuthenticationServiceImpl.CheckIfThereISAnOpenRequest(lesseeResult.getId(), lesseeRepository, waitingStatus.getId());
         if (lesseeOptional.isPresent()) {
-            lesseeOptional.get().getPasswordCode().forEach(it -> it.setStatus(cancelStatus));
-            passwordCodeService.updateStatusCode(lesseeOptional.get().getPasswordCode());
+            lesseeOptional.get().getLogChangePassword().forEach(it -> it.setStatus(cancelStatus));
+            logPasswordCodeService.updateStatusCode(lesseeOptional.get().getLogChangePassword());
         }
-        PasswordCode passwordCode = lesseeAuthenticationServiceImpl.startProcess(lesseeResult, statusService.findByName("Aguardando"), passwordCodeService);
+        LogChangePassword logChangePassword = lesseeAuthenticationServiceImpl.startProcess(lesseeResult, statusService.findByName("Aguardando"), logPasswordCodeService);
         log.info("Enviando código para o E-mail");
-        SimpleMailMessage simpleMailMessage = gcEmailService.createSimpleMessage(System.getenv("EMAIL_GCSYSTEM"), email, gcEmailService.getSubjectEmail(), passwordCode.getCode());
-        gcEmailService.send(simpleMailMessage);
+        Map<String, String> bodyParams = new HashMap<>();
+        bodyParams.put("code", logChangePassword.getCode());
+        MimeMessage mimeMessage = gcEmailService.createMimeMessage(System.getenv("EMAIL_GCSYSTEM"), email, gcEmailService.getSubjectEmail(), bodyParams);
+        gcEmailService.send(mimeMessage);
+        log.info("Código enviado para o E-mail");
         return true;
+    }
+
+    @Transactional
+    public void changePassword(String token, String newPassword) {
+        log.info("Atualizando senha");
+        Status statusValid = statusService.findByName("Valido");
+        Status statusRescued = statusService.findByName("Resgatado");
+        Optional<Lessee> lesseeOptional = lesseeAuthenticationServiceImpl.verifyTokenForChangePassword(token, lesseeRepository, statusValid.getId());
+        Lessee lessee = lesseeOptional.orElseThrow(() -> new CodeChangePasswordInvalidException("Nenhum registro encontrado para a solicitação"));
+        lessee.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        lesseeRepository.save(lessee);
+        lessee.getLogChangePassword().forEach(it -> it.setStatus(statusRescued));
+        logPasswordCodeService.updateStatusCode(lessee.getLogChangePassword());
     }
 }

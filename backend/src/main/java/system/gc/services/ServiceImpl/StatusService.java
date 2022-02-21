@@ -22,6 +22,6 @@ public class StatusService {
 
     @Transactional(readOnly = true)
     public Status findByName(String name) {
-        return statusRepository.getByName(name).orElse(null);
+        return statusRepository.findByName(name).orElse(null);
     }
 }

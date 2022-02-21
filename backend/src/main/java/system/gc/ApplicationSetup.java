@@ -61,10 +61,17 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     DebtService debtService;
 
     @Autowired
+    TypeProblemService typeProblemService;
+
+    @Autowired
+    RepairRequestService repairRequestService;
+
+    @Autowired
     private MessageSource messageSource;
 
     @Autowired
     Environment environment;
+
 
     @SneakyThrows
     @Override
@@ -74,7 +81,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         specialtyRepository.save(new Specialty("Desenvolvedor de Software"));
         statusRepository.save(new Status("Ativo"));
         statusRepository.save(new Status("Inativo"));
-        statusRepository.save(new Status("Aberto"));
+        Status satatusOpen = statusRepository.save(new Status("Aberto"));
         statusRepository.save(new Status("Desativado"));
         statusRepository.save(new Status("Aguardando"));
         statusRepository.save(new Status("Valido"));
@@ -84,16 +91,16 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         activityTypeRepository.save(new ActivityType("Registrado"));
         activityTypeRepository.save(new ActivityType("Atualizado"));
         activityTypeRepository.save(new ActivityType("Desativado"));
+
         List<Role> roles = roleRepository.findAll();
         List<Specialty> specialties = specialtyRepository.findAll();
         List<Status> status = statusRepository.findAll();
         SpecialtyDTO spEmployeeDTO = new SpecialtyDTO(specialties.get(0));
         Set<SpecialtyDTO> spEmployee = new HashSet<>();
         spEmployee.add(spEmployeeDTO);
-
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            employeeService.save(new EmployeeDTO("Wisley Bruno Marques França",
+            EmployeeDTO employeeDTOWisley = employeeService.save(new EmployeeDTO("Wisley Bruno Marques França",
                     "2343435",
                     "1234567898",
                     simpleDateFormat.parse("1995-12-06"),
@@ -132,7 +139,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     new StatusDTO(status.get(0)),
                     new LocalizationCondominiumDTO("900", localizationDTO1));
 
-            condominiumService.save(condominiumDTO);
+            CondominiumDTO condominiumDTO2Saved = condominiumService.save(condominiumDTO);
             condominiumService.save(condominiumDTO1);
 
             for (int i = 5; i < 10; i++) {
@@ -144,7 +151,18 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                 condominiumService.save(condominiumDTO3);
             }
 
-            for (int i = 0; i < 8; i++) {
+            LesseeDTO lesseeDTODEV = new LesseeDTO(
+                    "Dev",
+                    "63598623",
+                    "12563256347",
+                    simpleDateFormat.parse("2003-06-02"),
+                    "brmarques.dev@gmail.com",
+                    "9298863526",
+                    new BCryptPasswordEncoder().encode("785452545"),
+                    new StatusDTO(status.get(0))
+            );
+            LesseeDTO lesseeDTODEVSave = lesseeService.save(lesseeDTODEV);
+            for (int i = 0; i < 7; i++) {
                 LesseeDTO lesseeDTO = new LesseeDTO(
                         "Daniel" + i,
                         "635986" + i,
@@ -204,6 +222,19 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
 
                     */
+
+
+            typeProblemService.save(new TypeProblemDTO("Eletrica"));
+            TypeProblemDTO typeProblemDTOEletric = new TypeProblemDTO(typeProblemService.findByName("Eletrica"));
+            RepairRequestDTO repairRequestDTO = new RepairRequestDTO("Troca de fios eletricos",
+                    new Date(),
+                    typeProblemDTOEletric,
+                    lesseeDTODEVSave,
+                    condominiumDTO2Saved,
+                    new StatusDTO(satatusOpen));
+
+            repairRequestService.save(repairRequestDTO);
+
 
         } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());

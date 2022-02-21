@@ -6,13 +6,12 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.Instant;
 import java.util.Date;
 
 @Entity
 @Getter
 @Setter
-public class PasswordCode {
+public class LogChangePassword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,9 +41,9 @@ public class PasswordCode {
     @JoinColumn(name = "fk_lessee_id", referencedColumnName = "id")
     private Lessee lessee;
 
-    public PasswordCode() {}
+    public LogChangePassword() {}
 
-    public PasswordCode(Object entity, String code, Status status, Date date, short numberOfAttempts) {
+    public LogChangePassword(Object entity, String code, Status status, Date date, short numberOfAttempts) {
         if(entity instanceof Employee) {
             setEmployee((Employee) entity);
         } else if(entity instanceof Lessee) {

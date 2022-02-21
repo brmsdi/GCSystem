@@ -65,7 +65,7 @@ public class Employee implements Serializable {
     private Status status;
 
     @OneToMany(mappedBy = "employee")
-    private Set<PasswordCode> passwordCode = new HashSet<>();
+    private Set<LogChangePassword> logChangePassword = new HashSet<>();
 
     public Employee() {
     }
