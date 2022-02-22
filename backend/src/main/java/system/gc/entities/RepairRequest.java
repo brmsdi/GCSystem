@@ -41,5 +41,9 @@ public class RepairRequest implements Serializable {
     @JoinColumn(name = "fk_status_id", referencedColumnName = "id")
     private Status status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_order_service", referencedColumnName = "id")
+    private OrderService orderService;
+
     public RepairRequest() {}
 }

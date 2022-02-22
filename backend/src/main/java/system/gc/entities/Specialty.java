@@ -24,7 +24,7 @@ public class Specialty implements Serializable {
     private String name;
 
     @ManyToMany(mappedBy = "specialties")
-    private Set<Employee> employees = new HashSet<>();
+    private Set<Employee> employees;
 
     public Specialty() {
     }

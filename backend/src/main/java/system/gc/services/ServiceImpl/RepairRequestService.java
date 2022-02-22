@@ -5,24 +5,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import system.gc.dtos.ContractDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.dtos.RepairRequestDTO;
-import system.gc.dtos.TypeProblemDTO;
-import system.gc.entities.Contract;
 import system.gc.entities.RepairRequest;
+import system.gc.entities.Status;
 import system.gc.repositories.RepairRequestRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
 public class RepairRequestService {
     @Autowired
     private RepairRequestRepository repairRequestRepository;
+
+    @Autowired
+    private StatusService statusService;
 
     @Transactional
     public RepairRequestDTO save(RepairRequestDTO repairRequestDTO) {
@@ -54,6 +54,11 @@ public class RepairRequestService {
     }
 
     @Transactional
+    public void update(Set<RepairRequest> repairRequests) throws EntityNotFoundException {
+        repairRequestRepository.saveAll(repairRequests);
+    }
+
+    @Transactional
     public Page<RepairRequestDTO> searchRepairRequest(Pageable pageable, LesseeDTO lesseeDTO) {
         log.info("Buscando registro de solicitações");
         Page<RepairRequest> repairRequestPage = repairRequestRepository.findRepairRequestForLessee(pageable, lesseeDTO.getCpf());
@@ -68,6 +73,14 @@ public class RepairRequestService {
         repairRequestOptional.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         repairRequestRepository.delete(repairRequestOptional.get());
         log.info("Registro deletado com sucesso");
+    }
+
+    public boolean checkIfTheRequestIsOpen(Set<RepairRequestDTO> repairRequestDTOSet) {
+        Status statusOpen = statusService.findByName("Aberto");
+        log.info("Verificando as solicitações em aberto");
+        List<RepairRequest> repairRequests = new RepairRequestDTO().convertSetEntityDTOFromSetEntity(repairRequestDTOSet).stream().toList();
+        List<RepairRequest> repairRequestList = repairRequestRepository.checkIfTheRequestIsOpen(repairRequests, statusOpen.getId());
+        return repairRequests.size() == repairRequestList.size();
     }
 
 }

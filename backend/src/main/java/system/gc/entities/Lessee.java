@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -61,8 +60,7 @@ public class Lessee implements Serializable {
     @OneToMany(mappedBy = "lessee")
     private Set<LogChangePassword> logChangePassword;
 
-    public Lessee() {
-    }
+    public Lessee() {}
 
     public Lessee(String name, String rg, String cpf, Date birthDate, String email, String contactNumber, String password, Status status, Set<Debt> debts, Set<Contract> contracts) {
         setName(name);

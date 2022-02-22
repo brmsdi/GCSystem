@@ -55,17 +55,20 @@ public class Employee implements Serializable {
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "specialty_id")
     )
-    private Set<Specialty> specialties = new HashSet<>();
+    private Set<Specialty> specialties;
 
     @OneToMany(mappedBy = "employee")
-    private Set<Movement> movements = new HashSet<>();
+    private Set<Movement> movements;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_status_id", referencedColumnName = "id")
     private Status status;
 
     @OneToMany(mappedBy = "employee")
-    private Set<LogChangePassword> logChangePassword = new HashSet<>();
+    private Set<LogChangePassword> logChangePassword;
+
+    @ManyToMany(mappedBy = "employees")
+    private Set<OrderService> orderServices;
 
     public Employee() {
     }

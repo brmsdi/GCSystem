@@ -22,9 +22,11 @@ import system.gc.repositories.RoleRepository;
 import system.gc.repositories.SpecialtyRepository;
 import system.gc.repositories.StatusRepository;
 import system.gc.services.ServiceImpl.*;
+import system.gc.utils.TextUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
@@ -67,6 +69,9 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     RepairRequestService repairRequestService;
 
     @Autowired
+    OrderServiceService orderServiceService;
+
+    @Autowired
     private MessageSource messageSource;
 
     @Autowired
@@ -82,6 +87,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         statusRepository.save(new Status("Ativo"));
         statusRepository.save(new Status("Inativo"));
         Status satatusOpen = statusRepository.save(new Status("Aberto"));
+        statusRepository.save(new Status("Em andamento"));
         statusRepository.save(new Status("Desativado"));
         statusRepository.save(new Status("Aguardando"));
         statusRepository.save(new Status("Valido"));
@@ -233,7 +239,14 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     condominiumDTO2Saved,
                     new StatusDTO(satatusOpen));
 
-            repairRequestService.save(repairRequestDTO);
+            RepairRequestDTO repairRequestDTOSaved = repairRequestService.save(repairRequestDTO);
+            OrderServiceDTO orderServiceDTO = new OrderServiceDTO(
+                    new Date(),
+                    new Date(System.currentTimeMillis() + TextUtils.TIME_TOKEN_AUTH_EXPIRATION),
+                    Set.of(repairRequestDTOSaved),
+                    Set.of(employeeDTOWisley)
+            );
+            orderServiceService.save(orderServiceDTO);
 
 
         } catch (IllegalArgumentException e) {
