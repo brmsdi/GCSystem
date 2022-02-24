@@ -75,12 +75,15 @@ public class RepairRequestService {
         log.info("Registro deletado com sucesso");
     }
 
+    @Transactional
     public boolean checkIfTheRequestIsOpen(Set<RepairRequestDTO> repairRequestDTOSet) {
         Status statusOpen = statusService.findByName("Aberto");
         log.info("Verificando as solicitações em aberto");
-        List<RepairRequest> repairRequests = new RepairRequestDTO().convertSetEntityDTOFromSetEntity(repairRequestDTOSet).stream().toList();
-        List<RepairRequest> repairRequestList = repairRequestRepository.checkIfTheRequestIsOpen(repairRequests, statusOpen.getId());
-        return repairRequests.size() == repairRequestList.size();
+        List<RepairRequest> repairRequestList = new ArrayList<>();
+        for (RepairRequestDTO repairRequestDTO : repairRequestDTOSet) {
+            repairRequestList.add(new RepairRequestDTO().toEntity(repairRequestDTO));
+        }
+        List<RepairRequest> repairRequestListResult = repairRequestRepository.checkIfTheRequestIsOpen(repairRequestList, statusOpen.getId());
+        return repairRequestList.size() == repairRequestListResult.size();
     }
-
 }

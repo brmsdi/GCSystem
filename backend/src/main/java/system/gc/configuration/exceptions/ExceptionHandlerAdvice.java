@@ -82,6 +82,15 @@ public class ExceptionHandlerAdvice {
                 .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
     }
 
+
+    @ExceptionHandler(IllegalSelectedRepairRequestsException.class)
+    public ResponseEntity<ApiErrorDTO> illegalSelectedRepairRequestsException(IllegalSelectedRepairRequestsException exception) {
+        log.error(exception.getMessage());
+        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+    }
+
     @ExceptionHandler(BaseRuntimeException.class)
     public ResponseEntity<ApiErrorDTO> handlerBaseException(Throwable exception) {
         log.error("Exception {}", exception.getClass().getName());

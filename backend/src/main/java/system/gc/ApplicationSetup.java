@@ -244,10 +244,10 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     new Date(),
                     new Date(System.currentTimeMillis() + TextUtils.TIME_TOKEN_AUTH_EXPIRATION),
                     Set.of(repairRequestDTOSaved),
-                    Set.of(employeeDTOWisley)
+                    Set.of(employeeDTOWisley),
+                    new StatusDTO().toDTO(satatusOpen)
             );
             orderServiceService.save(orderServiceDTO);
-
 
         } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());

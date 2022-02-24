@@ -23,13 +23,6 @@ public class OrderService {
 	@NotNull
 	private Date reservedDate;
 
-	/*
-	@ManyToMany
-	@JoinTable(name = "OrderServiceRepairRequest",
-	joinColumns = @JoinColumn(name = "orderService_id"),
-	inverseJoinColumns = @JoinColumn(name = "repairRequest_id"))
-
-	 */
 	@OneToMany
 	private Set<RepairRequest> repairRequests;
 
@@ -38,4 +31,8 @@ public class OrderService {
 			joinColumns = @JoinColumn(name = "orderService_id"),
 			inverseJoinColumns = @JoinColumn(name = "employee_id"))
 	private Set<Employee> employees;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_status_id", referencedColumnName = "id")
+	private Status status;
 }

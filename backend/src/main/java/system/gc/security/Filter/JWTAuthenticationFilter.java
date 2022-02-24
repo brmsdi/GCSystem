@@ -54,9 +54,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             log.error(jwtVerificationException.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             jwtVerificationException.printStackTrace();
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            e.printStackTrace();
         }
     }
 

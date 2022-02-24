@@ -41,8 +41,7 @@ public class Condominium implements Serializable {
     @OneToMany(mappedBy = "condominium")
     private Set<Contract> contract = new HashSet<>();
 
-    public Condominium() {
-    }
+    public Condominium() {}
 
     public Condominium(String name, String description, int numberApartments, Status status, LocalizationCondominium localizationCondominium, Set<Contract> contract) {
         setName(name);

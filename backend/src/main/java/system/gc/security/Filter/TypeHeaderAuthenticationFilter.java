@@ -4,7 +4,8 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
-@WebFilter({"/employee/login", "/lessee/login"})
+
+@WebFilter({"/employees/login", "/lessees/login"})
 public class TypeHeaderAuthenticationFilter implements Filter {
 
     @Override
