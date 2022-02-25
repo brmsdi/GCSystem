@@ -7,10 +7,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import system.gc.configuration.exceptions.IllegalSelectedRepairRequestsException;
-import system.gc.dtos.ContractDTO;
-import system.gc.dtos.LesseeDTO;
-import system.gc.dtos.OrderServiceDTO;
-import system.gc.dtos.RepairRequestDTO;
+import system.gc.dtos.*;
 import system.gc.entities.Contract;
 import system.gc.entities.OrderService;
 import system.gc.entities.RepairRequest;
@@ -18,10 +15,7 @@ import system.gc.entities.Status;
 import system.gc.repositories.OrderServiceRepository;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -74,6 +68,17 @@ public class OrderServiceService {
             return new PageImpl<>(List.of(OrderServiceDTO.forViewOrders(orderServiceOptional.get())));
         }
         return Page.empty();
+    }
+
+    @Transactional
+    public void closeOrderService(OrderServiceDTO orderServiceDTO) {
+        log.info("Registrando conclusão da ordem de serviço");
+        Status statusConcluded = statusService.findByName("Concluído");
+        OrderService orderService = new OrderServiceDTO().toEntity(orderServiceDTO);
+        orderService.getRepairRequests().forEach(repairRequestDTO -> repairRequestDTO.setStatus(statusConcluded));
+        orderService.setStatus(statusConcluded);
+        orderService.setCompletationDate(new Date());
+        orderServiceRepository.save(orderService);
     }
 
 }

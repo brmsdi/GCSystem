@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -44,6 +45,9 @@ public class RepairRequest implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_order_service", referencedColumnName = "id")
     private OrderService orderService;
+
+    @OneToMany(mappedBy = "repairRequest", fetch = FetchType.LAZY)
+    private Set<Item> items;
 
     public RepairRequest() {}
 }

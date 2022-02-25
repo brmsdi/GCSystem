@@ -3,12 +3,14 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Condominium;
+import system.gc.entities.Item;
 import system.gc.entities.Lessee;
 import system.gc.entities.RepairRequest;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,6 +30,8 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
     private CondominiumDTO condominium;
 
     private StatusDTO status;
+
+    private Set<ItemDTO> items;
 
     public RepairRequestDTO() {}
 
@@ -55,6 +59,7 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         condominiumDTO.setId(repairRequest.getCondominium().getId());
         condominiumDTO.setName(repairRequest.getCondominium().getName());
         setCondominium(condominiumDTO);
+        setItems(new ItemDTO().convertSetEntityToSetEntityDTO(repairRequest.getItems()));
     }
 
     @Override
@@ -78,6 +83,7 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         condominium.setName(repairRequestDTO.getCondominium().getName());
         repairRequest.setCondominium(condominium);
         repairRequest.setStatus(new StatusDTO().toEntity(repairRequestDTO.getStatus()));
+        repairRequest.setItems(new ItemDTO().convertSetEntityDTOFromSetEntity(repairRequestDTO.getItems()));
         if(repairRequestDTO.getId() != null ) {
             repairRequest.setId(repairRequestDTO.getId());
         }

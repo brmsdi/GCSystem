@@ -3,7 +3,6 @@ package system.gc;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -26,7 +25,6 @@ import system.gc.utils.TextUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
@@ -94,6 +92,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         statusRepository.save(new Status("Invalido"));
         statusRepository.save(new Status("Cancelado"));
         statusRepository.save(new Status("Resgatado"));
+        statusRepository.save(new Status("Concluído"));
         activityTypeRepository.save(new ActivityType("Registrado"));
         activityTypeRepository.save(new ActivityType("Atualizado"));
         activityTypeRepository.save(new ActivityType("Desativado"));
@@ -225,13 +224,12 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     spEmployee,
                     null,
                     new StatusDTO(status.get(0))));
-
-
                     */
+            typeProblemService.save(new TypeProblemDTO("Elétrico"));
+            typeProblemService.save(new TypeProblemDTO("Hidráulico"));
+            typeProblemService.save(new TypeProblemDTO("Outros"));
 
-
-            typeProblemService.save(new TypeProblemDTO("Eletrica"));
-            TypeProblemDTO typeProblemDTOEletric = new TypeProblemDTO(typeProblemService.findByName("Eletrica"));
+            TypeProblemDTO typeProblemDTOEletric = new TypeProblemDTO(typeProblemService.findByName("Elétrico"));
             RepairRequestDTO repairRequestDTO = new RepairRequestDTO("Troca de fios eletricos",
                     new Date(),
                     typeProblemDTOEletric,

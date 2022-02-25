@@ -53,4 +53,12 @@ public class OrderServiceontroller {
         return ResponseEntity.ok(orderServiceService.searchOrderService(ID));
     }
 
+    @PostMapping(value = "order-service")
+    public ResponseEntity<String> closeOrderService(@RequestBody  OrderServiceDTO orderServiceDTO)
+    {
+        orderServiceService.closeOrderService(orderServiceDTO);
+        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_CLOSE_ORDER_SUCCESS",
+                null,
+                LocaleContextHolder.getLocale()));
+    }
 }

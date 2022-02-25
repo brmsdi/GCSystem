@@ -23,6 +23,8 @@ public class OrderService {
 	@NotNull
 	private Date reservedDate;
 
+	private Date CompletationDate;
+
 	@OneToMany
 	private Set<RepairRequest> repairRequests;
 

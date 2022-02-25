@@ -15,6 +15,7 @@ public interface RepairRequestRepository extends JpaRepository<RepairRequest, In
             "JOIN FETCH repairRequest.lessee " +
             "JOIN FETCH repairRequest.condominium " +
             "JOIN FETCH repairRequest.status " +
+            "JOIN FETCH repairRequest.items " +
             "WHERE repairRequest IN :repairRequests")
     List<RepairRequest> loadLazyRepairRequests(List<RepairRequest> repairRequests);
 

@@ -57,8 +57,7 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
     @NotNull(message = "{required.validation}")
     private StatusDTO status;
 
-    public EmployeeDTO() {
-    }
+    public EmployeeDTO() {}
 
     public EmployeeDTO(String cpf) {
         setCpf(cpf);
