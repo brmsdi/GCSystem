@@ -82,6 +82,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) return;
         roleRepository.save(new Role("Administrador"));
         specialtyRepository.save(new Specialty("Desenvolvedor de Software"));
+
         statusRepository.save(new Status("Ativo"));
         statusRepository.save(new Status("Inativo"));
         Status satatusOpen = statusRepository.save(new Status("Aberto"));
@@ -93,9 +94,14 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         statusRepository.save(new Status("Cancelado"));
         statusRepository.save(new Status("Resgatado"));
         statusRepository.save(new Status("Concluído"));
+
         activityTypeRepository.save(new ActivityType("Registrado"));
         activityTypeRepository.save(new ActivityType("Atualizado"));
         activityTypeRepository.save(new ActivityType("Desativado"));
+
+        typeProblemService.save(new TypeProblemDTO("Elétrico"));
+        typeProblemService.save(new TypeProblemDTO("Hidráulico"));
+        typeProblemService.save(new TypeProblemDTO("Outros"));
 
         List<Role> roles = roleRepository.findAll();
         List<Specialty> specialties = specialtyRepository.findAll();
@@ -225,9 +231,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     null,
                     new StatusDTO(status.get(0))));
                     */
-            typeProblemService.save(new TypeProblemDTO("Elétrico"));
-            typeProblemService.save(new TypeProblemDTO("Hidráulico"));
-            typeProblemService.save(new TypeProblemDTO("Outros"));
+
 
             TypeProblemDTO typeProblemDTOEletric = new TypeProblemDTO(typeProblemService.findByName("Elétrico"));
             RepairRequestDTO repairRequestDTO = new RepairRequestDTO("Troca de fios eletricos",
