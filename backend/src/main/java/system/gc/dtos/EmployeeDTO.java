@@ -1,6 +1,5 @@
 package system.gc.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +8,6 @@ import system.gc.entities.Employee;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -45,7 +43,6 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
 
     @NotNull(message = "{required.validation}")
     @NotBlank(message = "{required.validation}")
-    @JsonIgnore
     private String password;
 
     @NotNull(message = "{required.validation}")

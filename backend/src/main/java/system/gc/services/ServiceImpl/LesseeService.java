@@ -43,6 +43,7 @@ public class LesseeService {
     public LesseeDTO save(LesseeDTO newLesseeDTO) {
         log.info("Salvando novo registro de locatário no banco de dados. Nome: " + newLesseeDTO.getName());
         LesseeDTO lesseeDTO = new LesseeDTO();
+        newLesseeDTO.setPassword(new BCryptPasswordEncoder().encode(newLesseeDTO.getPassword()));
         Lessee registeredLessee = lesseeRepository.save(lesseeDTO.toEntity(newLesseeDTO));
         if (registeredLessee.getId() == null) {
             log.warn("Erro ao salvar!");
@@ -72,6 +73,7 @@ public class LesseeService {
             log.warn("Cpf não corresponde ao ID no banco de dados");
             throw new EntityNotFoundException("Cpf indisponível");
         }
+        updateLesseeDTO.setPassword(lessee.get().getPassword());
         lesseeRepository.save(new LesseeDTO().toEntity(updateLesseeDTO));
         log.info("Atualizado com sucesso");
     }
@@ -127,8 +129,8 @@ public class LesseeService {
         return findByCPF(lesseeDTO) != null && isEnabled(lesseeDTO);
     }
 
-    public LesseeDTO authentication(String username) {
-        return lesseeAuthenticationServiceImpl.authentication(username, new LesseeDTO(), lesseeRepository);
+    public Lessee authentication(String username) {
+        return lesseeAuthenticationServiceImpl.authentication(username, lesseeRepository);
     }
 
     @Transactional

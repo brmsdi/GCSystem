@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.LesseeDTO;
+import system.gc.entities.Lessee;
 import system.gc.services.ServiceImpl.LesseeService;
 
 @Component
@@ -25,7 +26,7 @@ public class LesseeUserDetailsService implements UserDetailsService {
             log.warn("Username inválido!");
             throw new UsernameNotFoundException("Campo username precisa ser preenchido");
         }
-        LesseeDTO lesseeUser = lesseeService.authentication(username);
+        Lessee lesseeUser = lesseeService.authentication(username);
 
         if (lesseeUser == null) {
             log.warn("Username não corresponde a nenhum registro!");

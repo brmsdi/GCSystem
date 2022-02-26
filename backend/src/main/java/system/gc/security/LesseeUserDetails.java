@@ -4,16 +4,17 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import system.gc.dtos.LesseeDTO;
+import system.gc.entities.Lessee;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class LesseeUserDetails implements UserDetails {
-    private final LesseeDTO userDetail;
+    private final Lessee userDetail;
 
-    public LesseeUserDetails(LesseeDTO lesseeDTO) {
-        this.userDetail = lesseeDTO;
+    public LesseeUserDetails(Lessee lessee) {
+        this.userDetail = lessee;
     }
 
     @Override

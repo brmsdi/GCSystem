@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.LesseeDTO;
+import system.gc.entities.Employee;
+import system.gc.entities.Lessee;
 import system.gc.security.EmployeeUserDetails;
 import system.gc.security.LesseeUserDetails;
 import system.gc.security.token.JWTService;
@@ -88,20 +90,20 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         final String TYPE = decodedJWT.getClaim("TYPE").asString();
         final String USERNAME = decodedJWT.getClaim("USERNAME").asString();
         if (TYPE.equals(System.getenv("TYPE_1"))) {
-            EmployeeDTO employeeDTO = employeeService.authentication(USERNAME);
-            if (employeeDTO == null) {
+            Employee employee = employeeService.authentication(USERNAME);
+            if (employee == null) {
                 throw new BadCredentialsException("O usuário não foi localizado (Employee)");
             }
             log.info("Usuário localizado. (Employee)");
-            return create(new EmployeeUserDetails(employeeDTO));
+            return create(new EmployeeUserDetails(employee));
 
         } else if (TYPE.equals(System.getenv("TYPE_2"))) {
-            LesseeDTO lesseeDTO = lesseeService.authentication(USERNAME);
-            if (lesseeDTO == null) {
+            Lessee lessee = lesseeService.authentication(USERNAME);
+            if (lessee == null) {
                 throw new BadCredentialsException("O usuário não foi localizado (Lessee)");
             }
             log.info("Usuário localizado. (Lessee)");
-            return create(new LesseeUserDetails(lesseeDTO));
+            return create(new LesseeUserDetails(lessee));
         }
         throw new BadCredentialsException("Token não corresponde a nenhum tipo de autenticação");
     }

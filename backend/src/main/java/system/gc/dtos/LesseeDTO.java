@@ -1,6 +1,5 @@
 package system.gc.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Lessee;
@@ -40,7 +39,6 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
 
     @NotNull(message = "{required.validation}")
     @NotBlank(message = "{required.validation}")
-    @JsonIgnore
     private String password;
 
     @NotNull(message = "{required.validation}")

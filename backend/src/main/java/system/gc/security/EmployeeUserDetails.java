@@ -4,15 +4,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import system.gc.dtos.EmployeeDTO;
+import system.gc.entities.Employee;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class EmployeeUserDetails implements UserDetails {
-    private final EmployeeDTO userDetail;
+    private final Employee userDetail;
 
-    public EmployeeUserDetails(EmployeeDTO employeeDTOUser) {
+    public EmployeeUserDetails(Employee employeeDTOUser) {
         this.userDetail = employeeDTOUser;
     }
 

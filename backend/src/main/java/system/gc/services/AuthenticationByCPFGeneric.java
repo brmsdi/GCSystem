@@ -16,5 +16,13 @@ public interface AuthenticationByCPFGeneric<DTO extends AuthenticateDTO<DTO, E>,
         return entityDTO.initAuthenticate(result);
     }
 
+    /**
+     * @param username Informação de login
+     * @return Entidade correspondente ao tipo de autenticação. Employee ou Lessee!
+     */
+    default E authentication(String username, REPOSITORY repository) {
+        return repository.getAuthenticationByCPF(username);
+    }
+
 
 }

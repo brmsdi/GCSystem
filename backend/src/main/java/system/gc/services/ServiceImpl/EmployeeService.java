@@ -43,6 +43,7 @@ public class EmployeeService {
     public EmployeeDTO save(EmployeeDTO newEmployeeDTO) {
         log.info("Salvando novo registro de funcionário no banco de dados. Nome: " + newEmployeeDTO.getName());
         EmployeeDTO employeeDTO = new EmployeeDTO();
+        newEmployeeDTO.setPassword(new BCryptPasswordEncoder().encode(newEmployeeDTO.getPassword()));
         Employee registeredEmployee = employeeRepository.save(employeeDTO.toEntity(newEmployeeDTO));
         if (registeredEmployee.getId() == null) {
             log.warn("Erro ao salvar!");
@@ -78,6 +79,7 @@ public class EmployeeService {
             log.warn("Cpf não corresponde ao ID no banco de dados");
             throw new EntityNotFoundException("Cpf indisponível");
         }
+        updateEmployeeDTO.setPassword(employee.get().getPassword());
         employeeRepository.save(new EmployeeDTO().toEntity(updateEmployeeDTO));
         log.info("Atualizado com sucesso");
     }
@@ -88,7 +90,7 @@ public class EmployeeService {
         Optional<Employee> employee = employeeRepository.findByCPF(employeeDTO.getCpf());
         if (employee.isEmpty()) {
             log.warn("Registro com o cpf: " + employeeDTO.getCpf() + " não foi localizado");
-            return null;
+            throw new EntityNotFoundException("Cpf indisponível");
         }
         employeeRepository.loadLazyEmployees(List.of(employee.get()));
         log.info("Registro com o CPF:  " + employeeDTO.getCpf() + " localizado");
@@ -117,8 +119,8 @@ public class EmployeeService {
         log.info("Registro deletado com sucesso");
     }
 
-    public EmployeeDTO authentication(String username) {
-        return employeeAuthenticationServiceImpl.authentication(username, new EmployeeDTO(), employeeRepository);
+    public Employee authentication(String username) {
+        return employeeAuthenticationServiceImpl.authentication(username, employeeRepository);
     }
 
     @Transactional

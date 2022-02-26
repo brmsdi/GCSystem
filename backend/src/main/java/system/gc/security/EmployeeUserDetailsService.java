@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import system.gc.dtos.EmployeeDTO;
+import system.gc.entities.Employee;
 import system.gc.services.ServiceImpl.EmployeeService;
 
 @Component
@@ -25,7 +26,7 @@ public class EmployeeUserDetailsService implements UserDetailsService {
             log.warn("Username inválido!");
             throw new UsernameNotFoundException("Campo username precisa ser preenchido");
         }
-        EmployeeDTO employeeUser = employeeService.authentication(username);
+        Employee employeeUser = employeeService.authentication(username);
 
         if (employeeUser == null) {
             log.warn("Username não corresponde a nenhum registro!");
