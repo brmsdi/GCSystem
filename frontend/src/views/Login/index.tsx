@@ -1,22 +1,46 @@
 import Alert from "components/messages";
 import { useState } from "react";
-import { Link, Outlet, useNavigate} from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { autheticate, setToken } from "services/Authentication";
+import Swal from "sweetalert2";
+import { AuthCpfAndPassword } from "types/Login";
+import { setAuthorization } from "utils/http";
+import { NAV_HOME } from "utils/requests";
 import { RECOVER_PASSWORD_URL } from "utils/urls";
 
 const Login = () => {
-
   let nav = useNavigate();
-  
-  const[cpf, setCPF] = useState('');
-  function changeCPFInput(value : string) {
-    if(value.length <= 11 ) {
-        setCPF(value)
-    }
+
+  const [auth, setAuth] = useState<AuthCpfAndPassword>({
+    cpf: "",
+    password: "",
+  });
+
+  function changeInput(value: any) {
+    setAuth((auth) => ({ ...auth, ...value }));
   }
 
-  function submit(event : any)  {
+  async function submit(event: any) {
     event.preventDefault();
-    nav('/');
+    //nav('/');
+    try {
+      const result = await autheticate(auth);
+      setToken(result);
+      setAuthorization(result)
+      nav(NAV_HOME)
+
+    } catch (error: any) {
+      if (!error.response) {
+        Swal.fire("oops!", "Sem conexão com o servidor!", "error");
+      } else if (
+        error.response.status === 401 ||
+        error.response.status === 403
+      ) {
+        Swal.fire("oops!", "Cpf ou senha inválidos", "error");
+      } else {
+        Swal.fire("oops!", "" + error.response.status, "error");
+      }
+    }
   }
   return (
     <div className="content-login animate-down">
@@ -32,17 +56,19 @@ const Login = () => {
             placeholder="CPF"
             id="cpf"
             name="cpf"
-            value={cpf}
-            onChange={(e) => changeCPFInput(e.target.value)}
+            value={auth.cpf}
+            onChange={(e) => changeInput({ cpf: e.target.value })}
             required
           />
         </div>
         <div>
           <input
             id="senha"
-            name="senha"
+            name="password"
             type="password"
             placeholder="SENHA"
+            value={auth.password}
+            onChange={(e) => changeInput({ password: e.target.value })}
             required
           />
         </div>
@@ -56,7 +82,7 @@ const Login = () => {
         </div>
       </form>
       <Outlet />
-      </div>
-  )
-}
+    </div>
+  );
+};
 export default Login;

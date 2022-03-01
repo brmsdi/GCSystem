@@ -15,7 +15,6 @@ import system.gc.entities.Lessee;
 import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
 import system.gc.repositories.LesseeRepository;
-
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;

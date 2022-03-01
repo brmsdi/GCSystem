@@ -16,11 +16,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import system.gc.security.EmployeeUserDetailsService;
 import system.gc.security.Filter.*;
 import system.gc.security.LesseeUserDetailsService;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -55,14 +59,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             log.info("Perfil de teste ativado");
             httpSecurity.headers().frameOptions().disable();
         }
-
+        httpSecurity.headers().frameOptions().sameOrigin();
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        httpSecurity.csrf().disable();
         httpSecurity
                 .cors()
                 .and()
-                .csrf()
-                .disable()
                 .addFilterBefore(jwtAuthenticationFilter2(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
@@ -118,5 +120,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         usernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager);
         return usernamePasswordAuthenticationFilter;
 
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        log.info("configurando cors");
+        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "UPDATE", "PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedOrigins(
+                List.of(System.getenv("ORIGINV1"),
+                        System.getenv("ORIGINV2")));
+        final UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+        return corsConfigurationSource;
     }
 }

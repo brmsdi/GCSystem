@@ -16,7 +16,7 @@ public interface CreateTokenSuccessFulAuthentication {
 
     private void writeToken(String token, HttpServletResponse response) throws IOException {
         response.getWriter().print(TextUtils.GSON.toJson(TokenDTO.builder().type("Bearer").token(token).build()));
-        response.setStatus(HttpServletResponse.SC_GONE);
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
 }
