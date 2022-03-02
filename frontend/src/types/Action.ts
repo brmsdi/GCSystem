@@ -23,3 +23,8 @@ export enum StateFormEnum {
     NEW = "Novo",
     UPDATE = "Atualizar"
 }
+
+export type AuthAction = {
+    type: string;
+    isLogged?: boolean;
+}

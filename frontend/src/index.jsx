@@ -6,20 +6,23 @@ import store from 'store';
 import 'bootstrap/dist/css/bootstrap.css'
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'assets/css/styles.scss';
-import isValidToken from 'routes/PrivateRoutes';
 import App from 'components/App';
 import Login from 'views/Login';
 import RecoverPasswordSendCodeEmail from 'views/Login/RecoverPasswordSendCodeEmail';
 import RecoverPasswordSendCode from 'views/Login/RecoverPasswordSendCode';
 import RecoverPasswordChange from 'views/Login/RecoverPasswordChange';
 import { RECOVER_PASSWORD_CHANGE_URL, RECOVER_PASSWORD_SEND_CODE_URL, RECOVER_PASSWORD_URL } from 'utils/urls';
+import PrivateRoute from 'routes/PrivateRoutes';
 
 reactDom.render(
-    <React.StrictMode>
         <Provider store={store}>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={ isValidToken() ? (<App />) : (<Login />) } />
+                    <Route path="/employees" element={
+                        <PrivateRoute>
+                            <App />
+                        </PrivateRoute>} 
+                    />
                     <Route path="login">
                         <Route path="" element={<Login />} />
                         <Route path={RECOVER_PASSWORD_URL} element={<RecoverPasswordSendCodeEmail />} />
@@ -28,8 +31,7 @@ reactDom.render(
                     </Route>
                 </Routes>
             </BrowserRouter>
-        </Provider>
-    </React.StrictMode>,
+        </Provider>,
    document.getElementById("root")
 );
 
