@@ -5,8 +5,7 @@ import { autheticate, setToken } from "services/Authentication";
 import Swal from "sweetalert2";
 import { AuthCpfAndPassword } from "types/Login";
 import { setAuthorization } from "utils/http";
-import { NAV_EMPLOYEES, NAV_HOME } from "utils/requests";
-import { RECOVER_PASSWORD_URL } from "utils/urls";
+import { EMPLOYEES_HOME_URL, RECOVER_PASSWORD_URL } from "utils/urls";
 
 const Login = () => {
   let nav = useNavigate();
@@ -27,7 +26,7 @@ const Login = () => {
       const result = await autheticate(auth);
       await setToken(result);
       await setAuthorization(result)
-      nav(NAV_EMPLOYEES)
+      nav(EMPLOYEES_HOME_URL)
 
     } catch (error: any) {
       if (!error.response) {

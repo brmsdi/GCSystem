@@ -19,11 +19,11 @@
         margin-top: 7rem;
         div {
             width: 80%;
-            margin: .3rem 0;
+            margin: .4rem 0;
             h2 {
                 text-align: center;
             }
-            input {
+            input, select {
                 background-color: $--color-v4;
                 text-align: center;
                 border: .2rem solid #3498db;
@@ -52,7 +52,7 @@
     } // end form
 
     #form-send-email-forgot {
-        height: 20.15rem;
+        height: 27.15rem;
         width: 42.39rem;
     }
 

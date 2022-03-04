@@ -1,4 +1,3 @@
-import React from 'react';
 import reactDom from 'react-dom';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 import { Provider } from 'react-redux'
@@ -11,23 +10,20 @@ import Login from 'views/Login';
 import RecoverPasswordSendCodeEmail from 'views/Login/RecoverPasswordSendCodeEmail';
 import RecoverPasswordSendCode from 'views/Login/RecoverPasswordSendCode';
 import RecoverPasswordChange from 'views/Login/RecoverPasswordChange';
-import { RECOVER_PASSWORD_CHANGE_URL, RECOVER_PASSWORD_SEND_CODE_URL, RECOVER_PASSWORD_URL } from 'utils/urls';
+import { EMPLOYEES_HOME_URL, LOGIN_URL, RECOVER_PASSWORD_CHANGE_URL, RECOVER_PASSWORD_SEND_CODE_URL, RECOVER_PASSWORD_URL } from 'utils/urls';
 import PrivateRoute from 'routes/PrivateRoutes';
+import Home from 'views/Home';
 
 reactDom.render(
         <Provider store={store}>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/employees" element={
-                        <PrivateRoute>
-                            <App />
-                        </PrivateRoute>} 
-                    />
-                    <Route path="login">
-                        <Route path="" element={<Login />} />
-                        <Route path={RECOVER_PASSWORD_URL} element={<RecoverPasswordSendCodeEmail />} />
-                        <Route path={ RECOVER_PASSWORD_SEND_CODE_URL } element={<RecoverPasswordSendCode />}/>
-                        <Route path={ RECOVER_PASSWORD_CHANGE_URL } element={<RecoverPasswordChange />}/>
+                    <Route path={EMPLOYEES_HOME_URL} element={<PrivateRoute children={<Home />} redirect={LOGIN_URL} />} />
+                    <Route path={LOGIN_URL}>
+                        <Route path="" element={<App children={<Login />}/>} />
+                        <Route path={RECOVER_PASSWORD_URL} element={<App children={<RecoverPasswordSendCodeEmail />}/>}/>
+                        <Route path={ RECOVER_PASSWORD_SEND_CODE_URL } element={<App children={<RecoverPasswordSendCode />}/>}/>
+                        <Route path={ RECOVER_PASSWORD_CHANGE_URL } element={<App children={<RecoverPasswordChange />}/>}/>
                     </Route>
                 </Routes>
             </BrowserRouter>

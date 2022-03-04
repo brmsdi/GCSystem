@@ -1,5 +1,2 @@
-import Home from "views/Home";
-
-const App = () => <Home />
-
+const App = (props: {children: any}) => props.children 
 export default App;

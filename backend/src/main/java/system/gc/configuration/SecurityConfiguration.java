@@ -119,7 +119,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         usernamePasswordAuthenticationFilter.setFilterProcessesUrl(url);
         usernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager);
         return usernamePasswordAuthenticationFilter;
-
     }
 
     @Bean
