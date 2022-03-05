@@ -1,11 +1,16 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { EmailRequestCode } from "types/Login";
+import { requestCode } from "services/Authentication";
+import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
+import Swal from "sweetalert2";
+import { EmailRequestCode, stateAuthenticationChange } from "types/Login";
 import { REQUEST_LOGIN } from "utils/requests";
 import { LOGIN_URL, RECOVER_PASSWORD_SEND_CODE_URL } from "utils/urls";
 
 const RecoverPasswordSendCodeEmail = () => {
   let nav = useNavigate();
+  const dispatch = useDispatch();
 
   const[form, setForm] = useState<EmailRequestCode>({
     email: '',
@@ -14,12 +19,25 @@ const RecoverPasswordSendCodeEmail = () => {
 
   function changeForm(value : any) {
     setForm((form) => ({...form, ...value}))
-    console.log(form)
   }
 
-  function submit() {
-    nav(LOGIN_URL + RECOVER_PASSWORD_SEND_CODE_URL);
+  function submit(event : any) {
+    event.preventDefault();
+    requestCode(form)
+    .then(() => {
+      dispatch(insertRequestCodeInfo(stateAuthenticationChange.WAITINGCODE, form));
+      nav(LOGIN_URL + RECOVER_PASSWORD_SEND_CODE_URL);
+    })
+    .catch(error => {
+      if (error.response) {
+        const errors = error.response.data.errors;
+        Swal.fire('oops!', errors[0].message, 'error')
+      } else {
+        Swal.fire("oops!", "Sem conexão com o servidor!", "error");
+      }
+    })
   }
+
   return (
     <div className="content-login animate-down">
       <form id="form-send-email-forgot" onSubmit={submit}>
@@ -44,7 +62,6 @@ const RecoverPasswordSendCodeEmail = () => {
         <div>
           <select onChange={(e) => changeForm({type: e.target.value})} >
             <option value={0}>Funcionário</option>
-            <option value={1}>Locatário</option>
           </select>
         </div>
         <div>

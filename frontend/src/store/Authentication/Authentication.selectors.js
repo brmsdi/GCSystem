@@ -1,0 +1,1 @@
+export const selectStateChangePassword = state => state.authenticationChangeState;

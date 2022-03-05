@@ -1,19 +1,44 @@
 import Alert from "components/messages";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { change } from "services/Authentication";
+import { selectStateChangePassword } from "store/Authentication/Authentication.selectors";
+import Swal from "sweetalert2";
+import { EmailRequestCode, stateAuthenticationChange } from "types/Login";
+import { LOGIN_URL } from "utils/urls";
 
 const RecoverPasswordChange = () => {
-  const [password, setPassord] = useState({
+  let nav = useNavigate();
+  const stateChangePassword: EmailRequestCode = useSelector(selectStateChangePassword);
+  if (!(stateChangePassword.state === stateAuthenticationChange.CHANGINGPASSWORD)) {
+    nav(LOGIN_URL)
+  }
+
+  const[password, setPassword] = useState({
     newPassword: "",
     repeatPassword: "",
   });
 
   const changeNewPassword = (value: any) => {
-    setPassord((password) => ({ ...password, ...value }));
+    setPassword((password) => ({ ...password, ...value }));
   };
 
   function submitPassword(event: any) {
     event.preventDefault();
+    if (password.newPassword === password.repeatPassword && stateChangePassword.token) {
+      stateChangePassword.token.newPassword = password.newPassword;
+      change(stateChangePassword)
+      .then(response => {
+        Swal.fire("Eeeba!", response.data, "success")
+        nav(LOGIN_URL)
+      })
+      .catch();
+      
+    } else {
+      Swal.fire('Oops!', 'As senhas não correspondem', 'error')
+      return
+    }
   }
 
   return (
@@ -31,6 +56,8 @@ const RecoverPasswordChange = () => {
             placeholder="Nova senha"
             value={password.newPassword}
             onChange={(e) => changeNewPassword({ newPassword: e.target.value })}
+            minLength={5}
+            maxLength={16}
             required
           />
         </div>
@@ -43,6 +70,8 @@ const RecoverPasswordChange = () => {
             onChange={(e) =>
               changeNewPassword({ repeatPassword: e.target.value })
             }
+            minLength={5}
+            maxLength={16}
             required
           />
         </div>
