@@ -5,8 +5,8 @@ export type AuthCpfAndPassword = {
 
 export type EmailRequestCode = {
     state?: stateAuthenticationChange,
-    email: string,
-    type: number,
+    email?: string,
+    type?: number,
     code?: string,
     token?: {
         type: string,
@@ -22,5 +22,7 @@ export type EmailRequestCodeAction = {
 
 export enum stateAuthenticationChange {
     WAITINGCODE="INSERINDO CODIGO",
-    CHANGINGPASSWORD="ATUALIZANDO SENHA"
+    CHANGINGPASSWORD="ATUALIZANDO SENHA",
+    CLEAN="CLEAN",
+    INSERTINFO="INSERT-INFO"
 }

@@ -1,8 +1,8 @@
-import Alert from "components/messages";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { change } from "services/Authentication";
+import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
 import { selectStateChangePassword } from "store/Authentication/Authentication.selectors";
 import Swal from "sweetalert2";
 import { EmailRequestCode, stateAuthenticationChange } from "types/Login";
@@ -10,6 +10,7 @@ import { LOGIN_URL } from "utils/urls";
 
 const RecoverPasswordChange = () => {
   let nav = useNavigate();
+  const dispatch = useDispatch(); 
   const stateChangePassword: EmailRequestCode = useSelector(selectStateChangePassword);
   if (!(stateChangePassword.state === stateAuthenticationChange.CHANGINGPASSWORD)) {
     nav(LOGIN_URL)
@@ -31,6 +32,7 @@ const RecoverPasswordChange = () => {
       change(stateChangePassword)
       .then(response => {
         Swal.fire("Eeeba!", response.data, "success")
+        dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, {}))
         nav(LOGIN_URL)
       })
       .catch();
@@ -48,7 +50,6 @@ const RecoverPasswordChange = () => {
           <h2>System</h2>
           <span>Atualizar senha de acesso</span>
         </div>
-        <Alert msg="As senhas não correspondem" />
         <div>
           <input
             type="password"

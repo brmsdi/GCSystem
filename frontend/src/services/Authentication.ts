@@ -10,6 +10,7 @@ export const autheticate = (auth : AuthCpfAndPassword) => {
 
 export const requestCode = (data : EmailRequestCode) => {
     return http.post(`${REQUEST_REQUEST_CODE}?email=${data.email}&type=${data.type}`)
+    .then()
 } 
 
 export const tokenValidate = () => {
@@ -18,6 +19,7 @@ export const tokenValidate = () => {
 
 export const validateCode = (data: EmailRequestCode ) =>  {
     return http.post(`${REQUEST_VALIDATE_CODE}?email=${data.email}&type=${data.type}&code=${data.code}`)
+    .then(response => response)
 }
 
 export const change = (data : EmailRequestCode) => {

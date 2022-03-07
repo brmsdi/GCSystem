@@ -5,7 +5,6 @@ export function insertRequestCodeInfo(type: string, payload: EmailRequestCode) {
         type: type,
         payload: payload
     }
-
     return action;
 }
 

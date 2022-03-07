@@ -15,23 +15,28 @@ const RecoverPasswordSendCode = () => {
   if (!(stateChangePassword.state === stateAuthenticationChange.WAITINGCODE)) {
     nav(LOGIN_URL)
   }
-  const[form, setForm] = useState<EmailRequestCode>(stateChangePassword);
+  const[form, setForm] = useState<EmailRequestCode>({
+    ...stateChangePassword,
+    code: ''
+  });
   function changeCode(value: any) {
     setForm(form => ({...form, ...value}))
   }
-
+/*
   function submit(event : any) {
     event.preventDefault();
     validateCode(form)
     .then(response => {
       let newForm: EmailRequestCode = {
         ...form,
+        state: stateAuthenticationChange.CHANGINGPASSWORD,
         token: {
           type: response.data.type,
           token: response.data.token
         }
       }
-      dispatch(insertRequestCodeInfo(stateAuthenticationChange.CHANGINGPASSWORD, newForm))
+
+      dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, newForm))
       nav(LOGIN_URL + RECOVER_PASSWORD_CHANGE_URL);
     })
     .catch(error => {
@@ -43,6 +48,35 @@ const RecoverPasswordSendCode = () => {
       }
     })
   }
+  */
+
+  async function submit(event : any) {
+    event.preventDefault();
+    try {
+      
+      let data = validateCode(form)
+      
+      let newForm: EmailRequestCode = {
+        ...form,
+        state: stateAuthenticationChange.CHANGINGPASSWORD,
+        token: {
+          type: data.type,
+          token: data.token
+        }
+      }
+
+      dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, newForm))
+      nav(LOGIN_URL + RECOVER_PASSWORD_CHANGE_URL);
+    }
+    catch(error : any) {
+      if (error.response) {
+        let message = error.response.data.errors[0].message;
+        Swal.fire('Oops!', '' + message, 'error')
+      } else {
+        Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
+      }
+    }
+
     return (
       <div className="content-login animate-down">
         <form id="form-send-code" onSubmit={submit}>

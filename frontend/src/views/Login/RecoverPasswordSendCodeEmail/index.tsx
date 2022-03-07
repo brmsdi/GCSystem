@@ -20,12 +20,13 @@ const RecoverPasswordSendCodeEmail = () => {
   function changeForm(value : any) {
     setForm((form) => ({...form, ...value}))
   }
-
+/*
   function submit(event : any) {
     event.preventDefault();
     requestCode(form)
     .then(() => {
-      dispatch(insertRequestCodeInfo(stateAuthenticationChange.WAITINGCODE, form));
+      form.state = stateAuthenticationChange.WAITINGCODE; 
+      dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, form));
       nav(LOGIN_URL + RECOVER_PASSWORD_SEND_CODE_URL);
     })
     .catch(error => {
@@ -37,7 +38,27 @@ const RecoverPasswordSendCodeEmail = () => {
       }
     })
   }
+*/
 
+async function submit(event : any) {
+  event.preventDefault();
+  try {
+    form.state = stateAuthenticationChange.WAITINGCODE; 
+    await requestCode(form)
+    await dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, form));
+    nav(LOGIN_URL + RECOVER_PASSWORD_SEND_CODE_URL);
+  }
+  catch(error : any) {
+    if (error.response) {
+      const errors = error.response.data.errors;
+      Swal.fire('oops!', errors[0].message, 'error')
+    } else {
+      Swal.fire("oops!", "Sem conexão com o servidor!", "error");
+    }
+  }
+}
+
+  console.log('render')
   return (
     <div className="content-login animate-down">
       <form id="form-send-email-forgot" onSubmit={submit}>

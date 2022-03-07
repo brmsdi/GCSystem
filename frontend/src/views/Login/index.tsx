@@ -1,36 +1,35 @@
-import Alert from "components/messages";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { autheticate, setToken } from "services/Authentication";
+import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
 import Swal from "sweetalert2";
-import { AuthCpfAndPassword } from "types/Login";
+import { AuthCpfAndPassword, stateAuthenticationChange } from "types/Login";
 import { setAuthorization } from "utils/http";
 import { EMPLOYEES_HOME_URL, RECOVER_PASSWORD_URL } from "utils/urls";
 
 const Login = () => {
   let nav = useNavigate();
-
+  const dispatch = useDispatch();
+  dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, {}));
   const [auth, setAuth] = useState<AuthCpfAndPassword>({
     cpf: "",
     password: "",
-  });
-
+  })
   function changeInput(value: any) {
     setAuth((auth) => ({ ...auth, ...value }));
   }
 
   async function submit(event: any) {
     event.preventDefault();
-    //nav('/');
     try {
       const result = await autheticate(auth);
       await setToken(result);
       await setAuthorization(result)
       nav(EMPLOYEES_HOME_URL)
-
     } catch (error: any) {
       if (!error.response) {
-        Swal.fire("oops!", "Sem conexão com o servidor!", "error");
+        Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
       } else if (
         error.response.status === 401 ||
         error.response.status === 403
@@ -48,7 +47,6 @@ const Login = () => {
           <h2>System</h2>
           <span>Autenticar-se no sistema</span>
         </div>
-        <Alert msg="CPF ou senha inválida" />
         <div>
           <input
             type="number"
@@ -82,6 +80,6 @@ const Login = () => {
       </form>
       <Outlet />
     </div>
-  );
-};
+  )
+}
 export default Login;

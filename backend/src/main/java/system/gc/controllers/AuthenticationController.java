@@ -52,7 +52,6 @@ public class AuthenticationController {
                         null, LocaleContextHolder.getLocale()));
             }
         }
-
         return ResponseEntity.ok().body(messageSource.getMessage("TEXT_ERROR_CHANGE_PASSWORD",
                 null, LocaleContextHolder.getLocale()));
     }
