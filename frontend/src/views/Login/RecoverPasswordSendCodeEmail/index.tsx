@@ -45,7 +45,7 @@ async function submit(event : any) {
   try {
     form.state = stateAuthenticationChange.WAITINGCODE; 
     await requestCode(form)
-    await dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, form));
+    dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, form));
     nav(LOGIN_URL + RECOVER_PASSWORD_SEND_CODE_URL);
   }
   catch(error : any) {
@@ -58,7 +58,6 @@ async function submit(event : any) {
   }
 }
 
-  console.log('render')
   return (
     <div className="content-login animate-down">
       <form id="form-send-email-forgot" onSubmit={submit}>

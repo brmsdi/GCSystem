@@ -12,51 +12,21 @@ const RecoverPasswordSendCode = () => {
   let nav = useNavigate();
   const dispatch = useDispatch();
   const stateChangePassword: EmailRequestCode = useSelector(selectStateChangePassword);
-  if (!(stateChangePassword.state === stateAuthenticationChange.WAITINGCODE)) {
-    nav(LOGIN_URL)
-  }
   const[form, setForm] = useState<EmailRequestCode>({
-    ...stateChangePassword,
     code: ''
-  });
+  })
   function changeCode(value: any) {
     setForm(form => ({...form, ...value}))
   }
-/*
-  function submit(event : any) {
-    event.preventDefault();
-    validateCode(form)
-    .then(response => {
-      let newForm: EmailRequestCode = {
-        ...form,
-        state: stateAuthenticationChange.CHANGINGPASSWORD,
-        token: {
-          type: response.data.type,
-          token: response.data.token
-        }
-      }
-
-      dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, newForm))
-      nav(LOGIN_URL + RECOVER_PASSWORD_CHANGE_URL);
-    })
-    .catch(error => {
-      if (error.response) {
-        let message = error.response.data.errors[0].message;
-        Swal.fire('Oops!', '' + message, 'error')
-      } else {
-        Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
-      }
-    })
-  }
-  */
 
   async function submit(event : any) {
     event.preventDefault();
-    try {
-      
-      let data = validateCode(form)
-      
+    try 
+    {
+      await verifyCurrentState();
+      let data = await validateCode({ ...stateChangePassword, ...form })
       let newForm: EmailRequestCode = {
+        ...stateChangePassword,
         ...form,
         state: stateAuthenticationChange.CHANGINGPASSWORD,
         token: {
@@ -64,18 +34,31 @@ const RecoverPasswordSendCode = () => {
           token: data.token
         }
       }
-
       dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, newForm))
       nav(LOGIN_URL + RECOVER_PASSWORD_CHANGE_URL);
     }
     catch(error : any) {
       if (error.response) {
-        let message = error.response.data.errors[0].message;
-        Swal.fire('Oops!', '' + message, 'error')
+        let data = error.response.data;
+        if (data.error) {
+          Swal.fire('Oops!', '' + data.error, 'error')
+        } else if (error.response.data.errors[0]) {
+          let message = error.response.data.errors[0].message;
+          Swal.fire('Oops!', '' + message, 'error')
+        } else {
+          Swal.fire('Oops!', 'Erro desconhecido!', 'error')
+        }
       } else {
         Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
       }
     }
+  }
+
+  async function verifyCurrentState() {
+    if (!(stateChangePassword.state === stateAuthenticationChange.WAITINGCODE)) {
+      nav(LOGIN_URL)
+    }
+  }
 
     return (
       <div className="content-login animate-down">
@@ -102,8 +85,7 @@ const RecoverPasswordSendCode = () => {
           </div>
         </form>
       </div>
-    );
-  };
+    )
+  }
   
   export default RecoverPasswordSendCode;
-  

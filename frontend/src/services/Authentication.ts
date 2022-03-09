@@ -18,12 +18,13 @@ export const tokenValidate = () => {
 } 
 
 export const validateCode = (data: EmailRequestCode ) =>  {
-    return http.post(`${REQUEST_VALIDATE_CODE}?email=${data.email}&type=${data.type}&code=${data.code}`)
-    .then(response => response)
+    return http.post<Token>(`${REQUEST_VALIDATE_CODE}?email=${data.email}&type=${data.type}&code=${data.code}`)
+    .then(response => response.data)
 }
 
-export const change = (data : EmailRequestCode) => {
+export const changePassword = (data : EmailRequestCode) => {
     return http.post(REQUEST_PASSWORD_CHANGE, data.token)
+    .then(response => response.data)
 }
 
 export const setToken = (token: Token) => {

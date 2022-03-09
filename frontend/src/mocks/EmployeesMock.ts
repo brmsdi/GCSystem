@@ -8,102 +8,107 @@ export function getAllEmployeesMock(number: number ): Employee[] {
     {
       id: 1,
       name: "Wisley Bruno Marques França",
-      RG: "1235265",
-      CPF: "02356325536",
+      rg: "1235265",
+      cpf: "02356325536",
+      birthDate: "01/08/1997",
       email: "srmarquesms@gmail.com",
-      role: "Analista de sistemas",
-      specialty: ["Desenvolvedor"],
+      role: {
+        id: 1,
+        name: "Analista de sistemas"
+      },
+      specialties: [{
+        id: 1,
+        name: "Desenvolvedor"
+      }],
       hiringDate: "01/01/2022",
+      status: {
+        id: 1,
+        name: "Ativo"
+      }
     },
     {
       id: 2,
       name: "Wisley Bruno Marques França",
-      RG: "1235265",
-      CPF: "02356325536",
+      rg: "1235265",
+      cpf: "02356325536",
+      birthDate: "01/08/1997",
       email: "srmarquesms@gmail.com",
-      role: "Analista de sistemas",
-      specialty: ["Desenvolvedor"],
+      role: {
+        id: 1,
+        name: "Analista de sistemas"
+      },
+      specialties: [{
+        id: 1,
+        name: "Desenvolvedor"
+      }],
       hiringDate: "01/01/2022",
+      status: {
+        id: 1,
+        name: "Ativo"
+      }
     },
     {
       id: 3,
       name: "Wisley Bruno Marques França",
-      RG: "1235265",
-      CPF: "02356325536",
+      rg: "1235265",
+      cpf: "02356325536",
+      birthDate: "01/08/1997",
       email: "srmarquesms@gmail.com",
-      role: "Analista de sistemas",
-      specialty: ["Desenvolvedor"],
+      role: {
+        id: 1,
+        name: "Analista de sistemas"
+      },
+      specialties: [{
+        id: 1,
+        name: "Desenvolvedor"
+      }],
       hiringDate: "01/01/2022",
+      status: {
+        id: 1,
+        name: "Ativo"
+      }
     },
     {
       id: 4,
       name: "Wisley Bruno Marques França",
-      RG: "1235265",
-      CPF: "02356325536",
+      rg: "1235265",
+      cpf: "02356325536",
+      birthDate: "01/08/1997",
       email: "srmarquesms@gmail.com",
-      role: "Analista de sistemas",
-      specialty: ["Desenvolvedor"],
+      role: {
+        id: 1,
+        name: "Analista de sistemas"
+      },
+      specialties: [{
+        id: 1,
+        name: "Desenvolvedor"
+      }],
       hiringDate: "01/01/2022",
+      status: {
+        id: 1,
+        name: "Ativo"
+      }
     },
     {
       id: 5,
       name: "Wisley Bruno Marques França",
-      RG: "1235265",
-      CPF: "02356325536",
+      rg: "1235265",
+      cpf: "02356325536",
+      birthDate: "01/08/1997",
       email: "srmarquesms@gmail.com",
-      role: "Analista de sistemas",
-      specialty: ["Desenvolvedor"],
+      role: {
+        id: 1,
+        name: "Analista de sistemas"
+      },
+      specialties: [{
+        id: 1,
+        name: "Desenvolvedor"
+      }],
       hiringDate: "01/01/2022",
-    },
-    {
-      id: 6,
-      name: "Wisley Bruno Marques França",
-      RG: "1235265",
-      CPF: "02356325536",
-      email: "srmarquesms@gmail.com",
-      role: "Analista de sistemas",
-      specialty: ["Desenvolvedor"],
-      hiringDate: "01/01/2022",
-    },
-    {
-      id: 7,
-      name: "Wisley Bruno Marques França",
-      RG: "1235265",
-      CPF: "02356325536",
-      email: "srmarquesms@gmail.com",
-      role: "Analista de sistemas",
-      specialty: ["Desenvolvedor"],
-      hiringDate: "01/01/2022",
-    },
-    {
-      id: 8,
-      name: "Wisley Bruno Marques França",
-      RG: "1235265",
-      CPF: "02356325536",
-      email: "srmarquesms@gmail.com",
-      role: "Analista de sistemas",
-      specialty: ["Desenvolvedor"],
-      hiringDate: "01/01/2022",
-    },
-    {
-      id: 9,
-      name: "Wisley Bruno Marques França",
-      RG: "1235265",
-      CPF: "02356325536",
-      email: "srmarquesms@gmail.com",
-      role: "Analista de sistemas",
-      specialty: ["Desenvolvedor"],
-      hiringDate: "01/01/2022",
-    },
-    {
-      id: 10,
-      name: "Wisley Bruno Marques França",
-      RG: "1235265",
-      CPF: "02356325536",
-      email: "srmarquesms@gmail.com",
-      role: "Analista de sistemas",
-      specialty: ["Desenvolvedor"],
-      hiringDate: "01/01/2022",
+      status: {
+        id: 1,
+        name: "Ativo"
+      }
     }
   ]
 

@@ -1,9 +1,21 @@
-import { Action, StateFormAction} from "types/Action";
+import { StateFormAction} from "types/Action";
+import { ActionEmployee, Pagination } from "types/Employee";
 
-export function getAllEmployees(page = 1) {
-    let getAllEmployeesAction: Action = {
+export function getAllEmployeesAction(page = 1) {
+    let getAllEmployeesAction: ActionEmployee = {
         type: 'GET-ALL-EMPLOYEES',
         payload: {page: page}
+    }
+    return getAllEmployeesAction;
+}
+
+export function updateEmployeesTable(page = 1, pagination: Pagination) {
+    let getAllEmployeesAction: ActionEmployee = {
+        type: 'UPDATE-TABLE',
+        payload: {
+            page: page,
+            pagination: pagination
+        }
     }
     return getAllEmployeesAction;
 }

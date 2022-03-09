@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { PropsPagination } from "types/Pagination";
 const PaginationItem = (props: { propsPagination: PropsPagination }) => {
   let propsPagination = props.propsPagination;
-  let pages = propsPagination.pages;
+  let pages = propsPagination.pagesNumbers;
   let activePage = propsPagination.activePage;
   return (
     <nav aria-label="...">

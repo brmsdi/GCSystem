@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { change } from "services/Authentication";
+import { changePassword } from "services/Authentication";
 import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
 import { selectStateChangePassword } from "store/Authentication/Authentication.selectors";
 import Swal from "sweetalert2";
@@ -12,10 +12,6 @@ const RecoverPasswordChange = () => {
   let nav = useNavigate();
   const dispatch = useDispatch(); 
   const stateChangePassword: EmailRequestCode = useSelector(selectStateChangePassword);
-  if (!(stateChangePassword.state === stateAuthenticationChange.CHANGINGPASSWORD)) {
-    nav(LOGIN_URL)
-  }
-
   const[password, setPassword] = useState({
     newPassword: "",
     repeatPassword: "",
@@ -25,24 +21,36 @@ const RecoverPasswordChange = () => {
     setPassword((password) => ({ ...password, ...value }));
   };
 
-  function submitPassword(event: any) {
+  async function submitPassword(event: any) {
     event.preventDefault();
+    await verifyCurrentState()
     if (password.newPassword === password.repeatPassword && stateChangePassword.token) {
-      stateChangePassword.token.newPassword = password.newPassword;
-      change(stateChangePassword)
-      .then(response => {
-        Swal.fire("Eeeba!", response.data, "success")
+      try 
+      {
+        stateChangePassword.token.newPassword = password.newPassword;
+        const message = await changePassword(stateChangePassword)
+        await Swal.fire("Eeeba!", message, "success")
         dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, {}))
         nav(LOGIN_URL)
-      })
-      .catch();
-      
+      } catch(error : any) {
+        if (error.response) {
+          let message = error.response.data.errors[0].message;
+          Swal.fire('Oops!', '' + message, 'error')
+        } else {
+          Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
+        }
+      }
     } else {
       Swal.fire('Oops!', 'As senhas não correspondem', 'error')
       return
     }
   }
 
+  async function verifyCurrentState() {
+    if (!(stateChangePassword.state === stateAuthenticationChange.CHANGINGPASSWORD)) {
+      nav(LOGIN_URL)
+    }
+  }
   return (
     <div className="content-login animate-down">
       <form onSubmit={submitPassword}>

@@ -2,10 +2,23 @@ import { useSelector } from "react-redux";
 import { selectAllEmployees } from "store/Employees/Employees.selectors";
 import { Employee } from "types/Employee";
 const TableEmployee = () => {
-  var employeesList: Employee[] = useSelector(selectAllEmployees);
-  var data = employeesList.map((item: Employee) => {
-    return <ItemTable key={item.id} item={item} />;
-  })
+  //const pageSelected : number = useSelector(selectCurrentPaginationTableEmployees)
+  /*
+  const[page, setPage] = useState<Pagination>()
+
+  useEffect(() => {
+    getAllEmployees(pageSelected)
+    .then(response => {
+      setPage(response.data)
+    })
+    .catch(error => {
+      if (!error.response) {
+        Swal.fire('Oops!', 'Sem conexão com o servidor', 'error')
+      }
+    })
+  }, [pageSelected])  */
+ const page = useSelector(selectAllEmployees);
+  
   return (
     <div className="table-responsive">
       <table className="table table-striped">
@@ -22,7 +35,11 @@ const TableEmployee = () => {
           </tr>
         </thead>
         <tbody>
-        {data}
+        {
+          page?.content?.map((item : Employee) => {
+            return <ItemTable key={item.id} item={item} />;
+          }) 
+        }
         </tbody>
       </table>
     </div>
@@ -30,6 +47,7 @@ const TableEmployee = () => {
 }
 const ItemTable = (props: {item: Employee }) => {
   let item = props.item;
+  
   return (
     <tr>
       <th className="thead-min">ID</th>
@@ -37,15 +55,17 @@ const ItemTable = (props: {item: Employee }) => {
       <th className="thead-min">Nome</th>
       <td>{item.name}</td>
       <th className="thead-min">RG</th>
-      <td>{item.RG}</td>
+      <td>{item.rg}</td>
       <th className="thead-min">CPF</th>
-      <td>{item.CPF}</td>
+      <td>{item.cpf}</td>
       <th className="thead-min">E-mail</th>
       <td>{item.email}</td>
       <th className="thead-min">Cargo</th>
-      <td>{item.role}</td>
+      <td>{item.role.name}</td>
       <th className="thead-min">Especialidade</th>
-      <td>{item.specialty}</td>
+      <td>{
+        item.specialties?.map((specialty) => specialty.name)
+      }</td>
       <th className="thead-min">Contratação</th>
       <td>{item.hiringDate}</td>
     </tr>

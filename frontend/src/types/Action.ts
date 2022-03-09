@@ -1,9 +1,3 @@
-export type Action = {
-    type: string;
-    payload?: {
-        page: number
-    }
-}
 
 export type StateFormAction = {
     type: string;

@@ -1,5 +1,5 @@
 export type PropsPagination = {
-    pages: number[],
+    pagesNumbers: number[],
     activePage?: number;
     changeNumberPage: Function;
 }
