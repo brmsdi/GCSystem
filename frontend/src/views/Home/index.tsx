@@ -1,40 +1,18 @@
-import Aside from "components/Aside";
-import BarHome from "components/BarHome";
-import FormEmployee from "components/Form/FormEmployee";
 import MenuRouterActivity from "components/MenuRouterActivity";
-import PaginationTableEmployee from "components/Pagination/PaginationTableEmployee";
-import TableEmployee from "components/Table/TableEmployee";
 
-const Home = () => {
-  function headerOpenOrClose() {
-    document.getElementById('header-aside')?.classList.toggle('open')
-  }
-  const pagination =  <PaginationTableEmployee />;
+const HomeView = () => {
   return (
-    <div className="content">
-      <header id="header-aside">
-        <div id="headerEvent" onClick={() => headerOpenOrClose()}></div>
-        <Aside />
-      </header>
-      <main className="content-main animate-right">
-        <div className="home-header">
-          <h1>{"Funcionários"}</h1>
-        </div>
-        <MenuRouterActivity />
-        <BarHome />
-        <div className="content-form">
-          <FormEmployee />
-        </div>
-        <div className="content-table">
-          { pagination }
-          <TableEmployee />
-          <div className="pagination-mobile">
-          { pagination }
-          </div>
-        </div>
-      </main>
+    <main className="content-main animate-right">
+    <div className="home-header">
+        <h1>{"GCSystem"}</h1>
     </div>
-  );
-};
+    <MenuRouterActivity />
+    <div>
+      <p>home</p>
+    </div>
+    
+    </main>
+  )
+}
 
-export default Home;
+export default HomeView;

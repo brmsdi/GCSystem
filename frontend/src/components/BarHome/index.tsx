@@ -1,9 +1,8 @@
-import SearchEmployee from "components/search/SearchEmployee";
 import { useDispatch } from "react-redux";
 import { setStateFormAction } from "store/Employees/Employees.actions";
 import { StateFormEnum } from "types/Action";
 
-const BarHome = () => {
+const BarHome = (props: {search: any}) => {
   const dispatch = useDispatch();
 
   function toogleClass() {
@@ -23,9 +22,9 @@ const BarHome = () => {
         onClick={() => toogleClass()}>
         Novo
       </button>
-      <SearchEmployee />
+      {props.search}
     </div>
-  );
-};
+  )
+}
 
 export default BarHome;

@@ -24,7 +24,8 @@ export function getAllEmployeesMock(number: number ): Employee[] {
       status: {
         id: 1,
         name: "Ativo"
-      }
+      },
+      password: ''
     },
     {
       id: 2,
@@ -45,7 +46,8 @@ export function getAllEmployeesMock(number: number ): Employee[] {
       status: {
         id: 1,
         name: "Ativo"
-      }
+      },
+      password: ''
     },
     {
       id: 3,
@@ -66,7 +68,8 @@ export function getAllEmployeesMock(number: number ): Employee[] {
       status: {
         id: 1,
         name: "Ativo"
-      }
+      },
+      password: ''
     },
     {
       id: 4,
@@ -87,7 +90,8 @@ export function getAllEmployeesMock(number: number ): Employee[] {
       status: {
         id: 1,
         name: "Ativo"
-      }
+      },
+      password: ''
     },
     {
       id: 5,
@@ -108,7 +112,8 @@ export function getAllEmployeesMock(number: number ): Employee[] {
       status: {
         id: 1,
         name: "Ativo"
-      }
+      },
+      password: ''
     }
   ]
 

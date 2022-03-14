@@ -37,6 +37,7 @@ public class Lessee implements Serializable {
 
     @NotNull
     @NotBlank
+    @Column(unique = true)
     private String email;
 
     @NotNull

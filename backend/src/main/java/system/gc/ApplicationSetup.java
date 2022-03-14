@@ -134,16 +134,13 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     spEmployee,
                     null,
                     new StatusDTO(status.get(0))));
-
             LocalizationDTO localizationDTO = localizationService.save(new LocalizationDTO("Flores", "920", "69058200"));
             LocalizationDTO localizationDTO1 = localizationService.save(new LocalizationDTO("Parque 10", "Nov H", "69058223"));
-
             CondominiumDTO condominiumDTO = new CondominiumDTO("Villa Lobos",
                     "A30",
                     20,
                     new StatusDTO(status.get(0)),
                     new LocalizationCondominiumDTO("500", localizationDTO));
-
             CondominiumDTO condominiumDTO1 = new CondominiumDTO("PTU",
                     "PTU30",
                     8,

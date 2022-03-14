@@ -2,7 +2,7 @@ import { tokenValidate } from "services/Authentication";
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export default function PrivateRoute({ children, redirect }) {
+export default function PrivateRoute({ children, failRedirect }) {
     const[auth, setAuth] = useState();
     useEffect(() => {
         tokenValidate()
@@ -18,5 +18,5 @@ export default function PrivateRoute({ children, redirect }) {
         })
     }, []);
     if (auth === undefined) return null;
-    return auth === true ? children : <Navigate to={redirect} />;
+    return auth === true ? children : <Navigate to={failRedirect} />;
 }

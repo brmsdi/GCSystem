@@ -90,7 +90,8 @@ public class EmployeeService {
         Optional<Employee> employee = employeeRepository.findByCPF(employeeDTO.getCpf());
         if (employee.isEmpty()) {
             log.warn("Registro com o cpf: " + employeeDTO.getCpf() + " não foi localizado");
-            throw new EntityNotFoundException("Cpf indisponível");
+            //throw new EntityNotFoundException("Cpf indisponível");
+            return null;
         }
         employeeRepository.loadLazyEmployees(List.of(employee.get()));
         log.info("Registro com o CPF:  " + employeeDTO.getCpf() + " localizado");

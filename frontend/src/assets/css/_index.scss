@@ -512,7 +512,7 @@ a {
         font-size: 1.1em;
       }
       .menu-text {
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
     } // end menu-title
 
@@ -520,13 +520,17 @@ a {
       display: flex;
       width: 80%;
       margin: 0 1.3rem;
-      font-size: 0.99rem;
+      font-size: 0.95rem;
     } // end sub-menu
     a {
       width: 100%;
       padding: 0.6rem;
       border-radius: 1rem;
       text-align: start;
+    }
+
+    .sub-menu-icon {
+      font-size: 1.2rem;
     }
 
     .text-submenu {

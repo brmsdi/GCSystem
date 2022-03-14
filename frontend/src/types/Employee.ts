@@ -24,6 +24,7 @@ export type Employee = {
     role: Role;
     specialties?: Specialty[];
     status: Status;
+    password: string;
 }
 
 export type Pagination = {

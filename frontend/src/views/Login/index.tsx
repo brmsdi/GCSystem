@@ -1,25 +1,27 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { autheticate, setToken } from "services/Authentication";
+import { autheticate, clearToken, setToken } from "services/Authentication";
 import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
 import Swal from "sweetalert2";
 import { AuthCpfAndPassword, stateAuthenticationChange } from "types/Login";
-import { setAuthorization } from "utils/http";
+import { clearAuth, setAuthorization } from "utils/http";
 import { EMPLOYEES_HOME_URL, RECOVER_PASSWORD_URL } from "utils/urls";
 
 const Login = () => {
   let nav = useNavigate();
   const dispatch = useDispatch();
+  clearAuth();
+  clearToken();
   dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, {}));
-  const [auth, setAuth] = useState<AuthCpfAndPassword>({
+  const[auth, setAuth] = useState<AuthCpfAndPassword>({
     cpf: "",
     password: "",
   })
   function changeInput(value: any) {
     setAuth((auth) => ({ ...auth, ...value }));
   }
-
+  
   async function submit(event: any) {
     event.preventDefault();
     try {

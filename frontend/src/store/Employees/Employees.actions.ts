@@ -1,5 +1,6 @@
 import { StateFormAction} from "types/Action";
 import { ActionEmployee, Pagination } from "types/Employee";
+import { PaginationTableAction } from "types/Pagination";
 
 export function getAllEmployeesAction(page = 1) {
     let getAllEmployeesAction: ActionEmployee = {
@@ -28,9 +29,11 @@ export function setStateFormAction(state: string ) {
     return stateForm;
 } 
 
-export function setCurrentPaginationAction(state: number) {
-    return { 
-        type: 'SET-CURRENT-PAGINATION-TABLE-EMPLOYEES',
-        currentPage: state
-     }
+export function paginationTableAction(paginationTableAction: PaginationTableAction) {
+    let action : PaginationTableAction = { 
+        type: paginationTableAction.type,
+        currentPage: paginationTableAction.currentPage,
+        search: paginationTableAction.search        
+    }
+    return action;
 }

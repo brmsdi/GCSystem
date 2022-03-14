@@ -1,4 +1,5 @@
 import AccountInformation from "components/AccountInformation";
+import { EMPLOYEES_HOME_URL, HOME_URL } from "utils/urls";
 import ItemMenu from "./ItemMenu";
 import SubMenu from "./SubMenu";
 
@@ -7,6 +8,7 @@ const Aside = () => {
     document.getElementById('header-aside')?.classList.toggle('open');
   }
 
+  // <i class="bi bi-house"></i>
   return (
     <aside>
       <div className="aside-header">
@@ -22,6 +24,22 @@ const Aside = () => {
       </div>
       <hr />
       <div className="aside-body animate-right">
+
+      <ItemMenu
+          menuIcon="bi bi-house"
+          menuText="Home"
+          key={90}
+          subMenus={[
+            <SubMenu
+              iconSubMenu="bi bi-house"
+              subMenuText="Inicio"
+              subMenuToolTip="Página inicial"
+              key={90}
+              id="sub-menu-home"
+              to={HOME_URL}
+            />
+          ]}
+        />
      
         <ItemMenu
           menuIcon="bi bi-stack"
@@ -31,9 +49,10 @@ const Aside = () => {
             <SubMenu
               iconSubMenu="bi bi-building"
               subMenuText="Condomínio"
-              subMenuToolTip="condomínio"
+              subMenuToolTip="Gerenciar condomínio"
               key={1}
               id="sub-menu-condominium"
+              to=""
             />,
             <SubMenu
               iconSubMenu="bi bi-people"
@@ -42,137 +61,10 @@ const Aside = () => {
               activated
               key={2}
               id="sub-menu-employee"
+              to={EMPLOYEES_HOME_URL}
             />,
           ]}
         />
-        
-        <ItemMenu
-          menuIcon="bi bi-stack"
-          menuText="Solicitação"
-          key={2}
-          subMenus={[
-            <SubMenu
-              iconSubMenu="bi bi-building"
-              subMenuText="Condomínio"
-              subMenuToolTip="Gerenciar condomínio"
-              key={3}
-              id="sub-menu-condominium2"
-            />,
-            <SubMenu
-              iconSubMenu="bi bi-people"
-              subMenuText="Funcionário"
-              subMenuToolTip="Gerenciar funcionário"
-              key={4}
-              id="sub-menu-employe2"
-            />,
-          ]}
-        />
-        <ItemMenu
-          menuIcon="bi bi-stack"
-          menuText="Financeiro"
-          key={3}
-          subMenus={[
-            <SubMenu
-              iconSubMenu="bi bi-building"
-              subMenuText="Condomínio"
-              subMenuToolTip="Gerenciar condomínio"
-              key={4}
-              id="sub-menu-condominium2"
-            />,
-            <SubMenu
-              iconSubMenu="bi bi-people"
-              subMenuText="Funcionário"
-              subMenuToolTip="Gerenciar funcionário"
-              key={5}
-              id="sub-menu-employe2"
-            />,
-          ]}
-        />
-        <ItemMenu
-          menuIcon="bi bi-stack"
-          menuText="Gerenciar"
-          key={4}
-          subMenus={[
-            <SubMenu
-              iconSubMenu="bi bi-building"
-              subMenuText="Condomínio"
-              subMenuToolTip="Gerenciar condomínio"
-              key={4}
-              id="sub-menu-condominium2"
-            />,
-            <SubMenu
-              iconSubMenu="bi bi-people"
-              subMenuText="Funcionário"
-              subMenuToolTip="Gerenciar funcionário"
-              key={5}
-              id="sub-menu-employe2"
-            />,
-          ]}
-        />
-        <ItemMenu
-          menuIcon="bi bi-stack"
-          menuText="Gerenciar"
-          key={6}
-          subMenus={[
-            <SubMenu
-              iconSubMenu="bi bi-building"
-              subMenuText="Condomínio"
-              subMenuToolTip="Gerenciar condomínio"
-              key={6}
-              id="sub-menu-condominium2"
-            />,
-            <SubMenu
-              iconSubMenu="bi bi-people"
-              subMenuText="Funcionário"
-              subMenuToolTip="Gerenciar funcionário"
-              key={7}
-              id="sub-menu-employe2"
-            />,
-          ]}
-        />
-        <ItemMenu
-          menuIcon="bi bi-stack"
-          menuText="Conta"
-          key={30}
-          subMenus={[
-            <SubMenu
-              iconSubMenu="bi bi-building"
-              subMenuText="Condomínio"
-              subMenuToolTip="Gerenciar condomínio"
-              key={31}
-              id="sub-menu-condominium2"
-            />,
-            <SubMenu
-              iconSubMenu="bi bi-people"
-              subMenuText="Funcionário"
-              subMenuToolTip="Gerenciar funcionário"
-              key={32}
-              id="sub-menu-employe2"
-            />,
-          ]}
-        />
-         <ItemMenu
-          menuIcon="bi bi-stack"
-          menuText="Gerenciar"
-          key={40}
-          subMenus={[
-            <SubMenu
-              iconSubMenu="bi bi-building"
-              subMenuText="Condomínio"
-              subMenuToolTip="Gerenciar condomínio"
-              key={40}
-              id="sub-menu-condominium2"
-            />,
-            <SubMenu
-              iconSubMenu="bi bi-people"
-              subMenuText="Funcionário"
-              subMenuToolTip="Gerenciar funcionário"
-              key={50}
-              id="sub-menu-employe2"
-            />,
-          ]}
-        />
-        
       </div>
       <div className="aside-info-user">
         <AccountInformation />

@@ -97,10 +97,8 @@ public class ExceptionHandlerAdvice {
         MessagesException messageException = (MessagesException) exception;
         ErrorDTO error = buildError(messageException.getExceptionKey(),
                 bindExceptionKeywords(messageException.getMapDetails(), messageException.getExceptionKey()));
-
         Set<ErrorDTO> errors = Set.of(error);
         ApiErrorDTO apiErrorDto = baseErrorBuilder(getResponseStatus(exception), errors);
-
         return ResponseEntity
                 .status(getResponseStatus(exception))
                 .body(apiErrorDto);
@@ -112,7 +110,6 @@ public class ExceptionHandlerAdvice {
 
     private ErrorDTO buildError(FieldError error, String messageKey) {
         String message = messageSource.getMessage(messageKey, new Object[]{error.getField()}, LocaleContextHolder.getLocale());
-
         return new ErrorDTO(error.getCode(), message);
     }
 

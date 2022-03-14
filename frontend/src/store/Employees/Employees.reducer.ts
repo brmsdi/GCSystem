@@ -1,6 +1,7 @@
 import { getAllEmployeesMock } from 'mocks/EmployeesMock'; 
 import { CurrentStateForm, StateFormEnum, StateFormAction } from 'types/Action';
 import { ActionEmployee, Employee, Pagination } from "types/Employee";
+import { PaginationTableAction, statePaginationEnum } from 'types/Pagination';
 
 let initPagination : Pagination = {
     pageNumber: 0,
@@ -61,10 +62,10 @@ export function setStateFormReducer(currentStateForm: CurrentStateForm = {activi
     }
 }
 
-export function setCurrentPagination(state: number = 1, action: { type: string, currentPage: number } ) {
+export function setCurrentPagination(state: PaginationTableAction = {type: statePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES, currentPage: 1, search: undefined }, action: PaginationTableAction) {
     switch(action.type) {
-        case 'SET-CURRENT-PAGINATION-TABLE-EMPLOYEES':
-            return action.currentPage;
+        case statePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES:
+            return action;
         default:
             return state;
     }
