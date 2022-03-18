@@ -1,16 +1,18 @@
 package system.gc.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import system.gc.dtos.EmployeeDTO;
 import system.gc.entities.Employee;
+import system.gc.services.ServiceImpl.EmployeeService;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class EmployeeUserDetails implements UserDetails {
+public class EmployeeUserDetails implements UserDetailsConvert {
+    @Autowired
+    EmployeeService employeeService;
     private final Employee userDetail;
 
     public EmployeeUserDetails(Employee employeeDTOUser) {
@@ -52,5 +54,10 @@ public class EmployeeUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public UserAuthenticatedView getUser() {
+        return new UserAuthenticatedView(userDetail.getName(), userDetail.getRole().getName());
     }
 }

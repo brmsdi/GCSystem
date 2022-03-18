@@ -4,7 +4,7 @@ export type AuthCpfAndPassword = {
 }
 
 export type EmailRequestCode = {
-    state?: stateAuthenticationChange,
+    state?: StateAuthenticationChange,
     email?: string,
     type?: number,
     code?: string,
@@ -20,9 +20,23 @@ export type EmailRequestCodeAction = {
     payload: EmailRequestCode
 }
 
-export enum stateAuthenticationChange {
+export enum StateAuthenticationChange {
     WAITINGCODE="INSERINDO CODIGO",
     CHANGINGPASSWORD="ATUALIZANDO SENHA",
     CLEAN="CLEAN",
     INSERTINFO="INSERT-INFO"
+}
+
+export type UserAuthenticatedView = {
+    name: string;
+    role: string;
+}
+
+export type UserAuthenticatedViewTypeAction = {
+    type: string;
+    user: UserAuthenticatedView;
+}
+
+export enum UserAuthenticatedViewTypesEnum {
+    UPDATE="UPDATE-USER-AUTH"
 }

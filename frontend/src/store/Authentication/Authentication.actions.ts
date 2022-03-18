@@ -1,6 +1,6 @@
-import { EmailRequestCode, EmailRequestCodeAction } from "types/Login";
+import { EmailRequestCode, EmailRequestCodeAction, UserAuthenticatedView, UserAuthenticatedViewTypeAction } from "types/AuthenticationTypes";
 
-export function insertRequestCodeInfo(type: string, payload: EmailRequestCode) {
+export default function insertRequestCodeInfo(type: string, payload: EmailRequestCode) {
     let action: EmailRequestCodeAction = {
         type: type,
         payload: payload
@@ -8,4 +8,10 @@ export function insertRequestCodeInfo(type: string, payload: EmailRequestCode) {
     return action;
 }
 
-export default insertRequestCodeInfo;
+export function setUserAuthenticated(type: string, payload: UserAuthenticatedView) {
+    let action: UserAuthenticatedViewTypeAction = {
+        type: type,
+        user: payload
+    }
+    return action;
+}

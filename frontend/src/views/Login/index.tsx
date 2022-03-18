@@ -4,7 +4,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { autheticate, clearToken, setToken } from "services/Authentication";
 import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
 import Swal from "sweetalert2";
-import { AuthCpfAndPassword, stateAuthenticationChange } from "types/Login";
+import { AuthCpfAndPassword, StateAuthenticationChange } from "types/AuthenticationTypes";
 import { clearAuth, setAuthorization } from "utils/http";
 import { EMPLOYEES_HOME_URL, RECOVER_PASSWORD_URL } from "utils/urls";
 
@@ -13,7 +13,7 @@ const Login = () => {
   const dispatch = useDispatch();
   clearAuth();
   clearToken();
-  dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, {}));
+  dispatch(insertRequestCodeInfo(StateAuthenticationChange.INSERTINFO, {}));
   const[auth, setAuth] = useState<AuthCpfAndPassword>({
     cpf: "",
     password: "",

@@ -1,6 +1,6 @@
 import Alert from "components/messages";
 import { useDispatch, useSelector } from "react-redux";
-import { removeSelectedEmployeeTableAction, selectEmployeeTableAction, setStateFormAction } from "store/Employees/Employees.actions";
+import { selectEmployeeTableAction, setStateFormAction } from "store/Employees/Employees.actions";
 import { selectAllEmployees } from "store/Employees/Employees.selectors";
 import { StateFormEnum } from "types/Action";
 import { Employee, Pagination } from "types/Employee";
@@ -8,21 +8,6 @@ import { formatDateForView } from "utils/textFormt";
 const TableEmployee = () => {
   const dispatch = useDispatch();
   const page: Pagination = useSelector(selectAllEmployees);
-  function toogleClass(selected: Employee | undefined) {
-    let form = document.querySelector(".content-form");
-    if (form != null) {
-      form.classList.toggle("active");
-      if (form.classList.contains("active") && selected) {
-        dispatch(selectEmployeeTableAction(selected))
-        dispatch(setStateFormAction(StateFormEnum.UPDATE))  
-
-      } else {
-        dispatch(setStateFormAction(StateFormEnum.NOACTION))
-        dispatch(removeSelectedEmployeeTableAction())
-      }
-    }
-  }
-
   async function clickButtonUpdate(selected: Employee | undefined) {
     let form = document.querySelector(".content-form");
     if (form != null && selected) 

@@ -1,6 +1,5 @@
 package system.gc.security.token;
 
-import org.springframework.security.core.Authentication;
 import system.gc.dtos.TokenDTO;
 import system.gc.utils.TextUtils;
 

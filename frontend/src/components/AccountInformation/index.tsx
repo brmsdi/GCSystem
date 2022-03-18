@@ -1,7 +1,10 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { selectUserAuthenticated } from "store/Authentication/Authentication.selectors";
+import { UserAuthenticatedView } from "types/AuthenticationTypes";
 
 const AccountInformation = () => {
-
+  const userAuthenticated: UserAuthenticatedView = useSelector(selectUserAuthenticated)
   return (
     <div 
     id="id-account-info" 
@@ -14,10 +17,10 @@ const AccountInformation = () => {
           </span>
         </div>
         <div className="account-info-role">
-          <span>Administrador</span>
+          <span>{userAuthenticated.role}</span>
         </div>
         <div>
-          <span>Wisley Bruno Marques França</span>
+          <span>{userAuthenticated.name}</span>
         </div>
       </div>
       <div className="account-info-options animate-opac">

@@ -5,7 +5,7 @@ import { changePassword } from "services/Authentication";
 import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
 import { selectStateChangePassword } from "store/Authentication/Authentication.selectors";
 import Swal from "sweetalert2";
-import { EmailRequestCode, stateAuthenticationChange } from "types/Login";
+import { EmailRequestCode, StateAuthenticationChange } from "types/AuthenticationTypes";
 import { LOGIN_URL } from "utils/urls";
 
 const RecoverPasswordChange = () => {
@@ -30,7 +30,7 @@ const RecoverPasswordChange = () => {
         stateChangePassword.token.newPassword = password.newPassword;
         const message = await changePassword(stateChangePassword)
         await Swal.fire("Eeeba!", message, "success")
-        dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, {}))
+        dispatch(insertRequestCodeInfo(StateAuthenticationChange.INSERTINFO, {}))
         nav(LOGIN_URL)
       } catch(error : any) {
         if (error.response) {
@@ -47,7 +47,7 @@ const RecoverPasswordChange = () => {
   }
 
   async function verifyCurrentState() {
-    if (!(stateChangePassword.state === stateAuthenticationChange.CHANGINGPASSWORD)) {
+    if (!(stateChangePassword.state === StateAuthenticationChange.CHANGINGPASSWORD)) {
       nav(LOGIN_URL)
     }
   }

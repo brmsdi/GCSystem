@@ -1,5 +1,5 @@
 import { Token } from "types/AuthenticationToken";
-import { AuthCpfAndPassword, EmailRequestCode } from "types/Login";
+import { AuthCpfAndPassword, EmailRequestCode, UserAuthenticatedView } from "types/AuthenticationTypes";
 import http from "utils/http";
 import { REQUEST_LOGIN_EMPLOYEES, REQUEST_PASSWORD_CHANGE, REQUEST_REQUEST_CODE, REQUEST_VALIDATE_CODE, REQUEST_VALIDATE_TOKEN } from "utils/requests";
 
@@ -14,7 +14,7 @@ export const requestCode = (data : EmailRequestCode) => {
 } 
 
 export const tokenValidate = () => {
-    return http.get(REQUEST_VALIDATE_TOKEN)
+    return http.get<UserAuthenticatedView>(REQUEST_VALIDATE_TOKEN)
 } 
 
 export const validateCode = (data: EmailRequestCode ) =>  {

@@ -49,6 +49,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             token = clearTypeToken(token);
             DecodedJWT decodedJWT = JWTService.isValid(token);
             SecurityContextHolder.getContext().setAuthentication(getUsernamePasswordAuthenticationToken(decodedJWT));
+
             response.setStatus(HttpServletResponse.SC_GONE);
             chain.doFilter(request, response);
         } catch (JWTVerificationException jwtVerificationException) {
@@ -95,7 +96,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 throw new BadCredentialsException("O usuário não foi localizado (Employee)");
             }
             log.info("Usuário localizado. (Employee)");
-            return create(new EmployeeUserDetails(employee));
+            return createV2(new EmployeeUserDetails(employee));
 
         } else if (TYPE.equals(System.getenv("TYPE_2"))) {
             Lessee lessee = lesseeService.authentication(USERNAME);
@@ -112,5 +113,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
                 userDetails.getPassword(),
                 userDetails.getAuthorities());
+    }
+
+    private UsernamePasswordAuthenticationToken createV2(UserDetails userDetails) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
+                userDetails.getPassword(),
+                userDetails.getAuthorities());
+        usernamePasswordAuthenticationToken.setDetails(userDetails);
+        return usernamePasswordAuthenticationToken;
     }
 }

@@ -1,5 +1,5 @@
 import { combineReducers, createStore } from 'redux';
-import updateAuthenticationChangeStateReducer from './Authentication/Authentication.reducer';
+import updateAuthenticationChangeStateReducer, { userAuthenticatedViewReducer } from './Authentication/Authentication.reducer';
 import getAllEmployeesReducer, { setStateFormReducer, setCurrentPagination, stateSelectionEmployeeReducer } from './Employees/Employees.reducer';
 
 const rootReducer = combineReducers({
@@ -7,7 +7,8 @@ const rootReducer = combineReducers({
     stateForm: setStateFormReducer,
     currentPaginationTableEmployees: setCurrentPagination,
     authenticationChangeState: updateAuthenticationChangeStateReducer,
-    selectedEmployee: stateSelectionEmployeeReducer
+    selectedEmployee: stateSelectionEmployeeReducer,
+    userAuthenticated: userAuthenticatedViewReducer
 })
 
 const store = createStore(rootReducer);

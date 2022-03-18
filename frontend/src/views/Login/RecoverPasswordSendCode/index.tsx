@@ -5,7 +5,7 @@ import { validateCode } from "services/Authentication";
 import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
 import { selectStateChangePassword } from "store/Authentication/Authentication.selectors";
 import Swal from "sweetalert2";
-import { EmailRequestCode, stateAuthenticationChange } from "types/Login";
+import { EmailRequestCode, StateAuthenticationChange } from "types/AuthenticationTypes";
 import { LOGIN_URL, RECOVER_PASSWORD_CHANGE_URL } from "utils/urls";
 
 const RecoverPasswordSendCode = () => {
@@ -28,13 +28,13 @@ const RecoverPasswordSendCode = () => {
       let newForm: EmailRequestCode = {
         ...stateChangePassword,
         ...form,
-        state: stateAuthenticationChange.CHANGINGPASSWORD,
+        state: StateAuthenticationChange.CHANGINGPASSWORD,
         token: {
           type: data.type,
           token: data.token
         }
       }
-      dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, newForm))
+      dispatch(insertRequestCodeInfo(StateAuthenticationChange.INSERTINFO, newForm))
       nav(LOGIN_URL + RECOVER_PASSWORD_CHANGE_URL);
     }
     catch(error : any) {
@@ -55,7 +55,7 @@ const RecoverPasswordSendCode = () => {
   }
 
   async function verifyCurrentState() {
-    if (!(stateChangePassword.state === stateAuthenticationChange.WAITINGCODE)) {
+    if (!(stateChangePassword.state === StateAuthenticationChange.WAITINGCODE)) {
       nav(LOGIN_URL)
     }
   }

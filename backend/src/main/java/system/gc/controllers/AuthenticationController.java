@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.dtos.TokenChangePasswordDTO;
 import system.gc.dtos.TokenDTO;
+import system.gc.security.UserAuthenticatedView;
+import system.gc.security.UserDetailsConvert;
 import system.gc.services.ServiceImpl.EmployeeService;
 import system.gc.services.ServiceImpl.LesseeService;
 import system.gc.services.ServiceImpl.LogPasswordCodeService;
@@ -81,9 +84,9 @@ public class AuthenticationController {
     }
 
     @GetMapping("/validate/token")
-    public ResponseEntity<String> validateToken() {
+    public ResponseEntity<UserAuthenticatedView> validateToken() {
         log.info("Token valido");
-        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_TOKEN_OK",
-                null, LocaleContextHolder.getLocale()));
+        UserDetailsConvert user = (UserDetailsConvert) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        return ResponseEntity.ok(user.getUser());
     }
 }

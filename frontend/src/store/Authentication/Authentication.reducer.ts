@@ -1,12 +1,20 @@
-import { EmailRequestCode, EmailRequestCodeAction, stateAuthenticationChange } from "types/Login";
+import { EmailRequestCode, EmailRequestCodeAction, StateAuthenticationChange, UserAuthenticatedView, UserAuthenticatedViewTypeAction, UserAuthenticatedViewTypesEnum } from "types/AuthenticationTypes";
 
 export default function updateAuthenticationChangeStateReducer(state: EmailRequestCode = {}, action: EmailRequestCodeAction) {
     switch(action.type)
     {
-        case stateAuthenticationChange.INSERTINFO:
-            state = action.payload;
-            return state
+        case StateAuthenticationChange.INSERTINFO:
+            return action.payload
         default:
             return state
+    }
+}
+
+export function userAuthenticatedViewReducer(state: UserAuthenticatedView = {name: '', role: ''}, action: UserAuthenticatedViewTypeAction) {
+    switch (action.type) {
+        case UserAuthenticatedViewTypesEnum.UPDATE:
+            return action.user
+        default:
+            return state;
     }
 }

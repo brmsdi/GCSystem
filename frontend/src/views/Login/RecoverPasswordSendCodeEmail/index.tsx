@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { requestCode } from "services/Authentication";
 import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
 import Swal from "sweetalert2";
-import { EmailRequestCode, stateAuthenticationChange } from "types/Login";
+import { EmailRequestCode, StateAuthenticationChange } from "types/AuthenticationTypes";
 import { REQUEST_LOGIN } from "utils/requests";
 import { LOGIN_URL, RECOVER_PASSWORD_SEND_CODE_URL } from "utils/urls";
 
@@ -43,9 +43,9 @@ const RecoverPasswordSendCodeEmail = () => {
 async function submit(event : any) {
   event.preventDefault();
   try {
-    form.state = stateAuthenticationChange.WAITINGCODE; 
+    form.state = StateAuthenticationChange.WAITINGCODE; 
     await requestCode(form)
-    dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, form));
+    dispatch(insertRequestCodeInfo(StateAuthenticationChange.INSERTINFO, form));
     nav(LOGIN_URL + RECOVER_PASSWORD_SEND_CODE_URL);
   }
   catch(error : any) {
