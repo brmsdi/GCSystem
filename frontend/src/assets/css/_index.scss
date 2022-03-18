@@ -48,6 +48,13 @@ select {
   background-color: #fff;
 }
 
+select {
+  option {
+    margin: 20px;
+    color: aqua;
+  }
+}
+
 input:focus,
 select:focus {
   color: #212529;

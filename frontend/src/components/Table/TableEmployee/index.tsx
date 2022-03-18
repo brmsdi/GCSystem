@@ -1,53 +1,76 @@
-import { useSelector } from "react-redux";
+import Alert from "components/messages";
+import { useDispatch, useSelector } from "react-redux";
+import { removeSelectedEmployeeTableAction, selectEmployeeTableAction, setStateFormAction } from "store/Employees/Employees.actions";
 import { selectAllEmployees } from "store/Employees/Employees.selectors";
-import { Employee } from "types/Employee";
+import { StateFormEnum } from "types/Action";
+import { Employee, Pagination } from "types/Employee";
+import { formatDateForView } from "utils/textFormt";
 const TableEmployee = () => {
-  //const pageSelected : number = useSelector(selectCurrentPaginationTableEmployees)
-  /*
-  const[page, setPage] = useState<Pagination>()
+  const dispatch = useDispatch();
+  const page: Pagination = useSelector(selectAllEmployees);
+  function toogleClass(selected: Employee | undefined) {
+    let form = document.querySelector(".content-form");
+    if (form != null) {
+      form.classList.toggle("active");
+      if (form.classList.contains("active") && selected) {
+        dispatch(selectEmployeeTableAction(selected))
+        dispatch(setStateFormAction(StateFormEnum.UPDATE))  
 
-  useEffect(() => {
-    getAllEmployees(pageSelected)
-    .then(response => {
-      setPage(response.data)
-    })
-    .catch(error => {
-      if (!error.response) {
-        Swal.fire('Oops!', 'Sem conexão com o servidor', 'error')
+      } else {
+        dispatch(setStateFormAction(StateFormEnum.NOACTION))
+        dispatch(removeSelectedEmployeeTableAction())
       }
-    })
-  }, [pageSelected])  */
- const page = useSelector(selectAllEmployees);
-  
+    }
+  }
+
+  async function clickButtonUpdate(selected: Employee | undefined) {
+    let form = document.querySelector(".content-form");
+    if (form != null && selected) 
+    {
+      if (!form.classList.contains('active')) 
+      {
+        form.classList.toggle('active')
+      }
+      dispatch(selectEmployeeTableAction(selected))
+      dispatch(setStateFormAction(StateFormEnum.UPDATE))  
+    }    
+  }
   return (
     <div className="table-responsive">
-      <table className="table table-striped">
-        <thead className="thead-max">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nome</th>
-            <th scope="col">RG</th>
-            <th scope="col">CPF</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Cargo</th>
-            <th scope="col">Especialidade</th>
-            <th scope="col">Contratação</th>
-          </tr>
-        </thead>
-        <tbody>
-        {
-          page?.content?.map((item : Employee) => {
-            return <ItemTable key={item.id} item={item} />;
-          }) 
-        }
-        </tbody>
-      </table>
-    </div>
+      {
+        (page.empty === true) ?
+          (
+            (<Alert msg="Nenhum registro encontrado!" />)
+          )
+          :
+          <table className="table table-striped">
+            <thead className="thead-max">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">RG</th>
+                <th scope="col">CPF</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Cargo</th>
+                <th scope="col">Especialidade</th>
+                <th scope="col">Contratação</th>
+                <th scope="col">#</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                page?.content?.map((item: Employee) => {
+                  return <ItemTable key={item.id} item={item} toogleClass={clickButtonUpdate} />;
+                })
+              }
+            </tbody>
+          </table>
+      }
+    </div> // end table-responsive
   )
 }
-const ItemTable = (props: {item: Employee }) => {
+const ItemTable = (props: { item: Employee, toogleClass: Function }) => {
   let item = props.item;
-  
   return (
     <tr>
       <th className="thead-min">ID</th>
@@ -67,9 +90,19 @@ const ItemTable = (props: {item: Employee }) => {
         item.specialties?.map((specialty) => specialty.name)
       }</td>
       <th className="thead-min">Contratação</th>
-      <td>{item.hiringDate}</td>
+      <td>{formatDateForView(item.hiringDate)}</td>
+      <th className="thead-min">Opções</th>
+      <td>
+        <button
+          className="btn btn-primary btn-table-options"
+          onClick={(e) => props.toogleClass(item)}><span><i className="bi bi-clipboard-data"></i></span>
+        </button>
+        <button
+          className="btn btn-danger btn-table-options"><span><i className="bi bi-trash"></i></span>
+        </button>
+      </td>
     </tr>
-  ) 
-} 
+  )
+}
 
 export default TableEmployee;

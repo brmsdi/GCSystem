@@ -37,8 +37,6 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
     @NotBlank(message = "{required.validation}")
     private String contactNumber;
 
-    @NotNull(message = "{required.validation}")
-    @NotBlank(message = "{required.validation}")
     private String password;
 
     @NotNull(message = "{required.validation}")

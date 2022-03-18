@@ -39,11 +39,11 @@ public class LesseeController {
     public ResponseEntity<String> save(@Valid @RequestBody LesseeDTO lesseeDTO) {
         log.info("Inserindo registro!");
         if ((lesseeService.findByCPF(lesseeDTO)) != null) {
-            return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
+            return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
         }
 
         if (lesseeService.save(lesseeDTO) == null) {
-            return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_LESSEE",
+            return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_INSERT_LESSEE",
                     null,
                     LocaleContextHolder.getLocale()));
         }

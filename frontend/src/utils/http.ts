@@ -2,7 +2,6 @@ import axios from "axios";
 import { Token } from "types/AuthenticationToken";
 import { REQUEST_BASE_URL } from "./requests";
 
-console.log("==== AXIOS ====");
 const http = axios.create({
     baseURL: REQUEST_BASE_URL
 });

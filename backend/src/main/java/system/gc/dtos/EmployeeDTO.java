@@ -41,8 +41,6 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
     @NotNull(message = "{required.validation}")
     private Date hiringDate;
 
-    @NotNull(message = "{required.validation}")
-    @NotBlank(message = "{required.validation}")
     private String password;
 
     @NotNull(message = "{required.validation}")

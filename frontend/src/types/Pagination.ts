@@ -7,13 +7,13 @@ export type PropsPagination = {
     previousPagination: number
 }
 
-export enum statePaginationEnum {
+export enum StatePaginationEnum {
     SETCURRENTPAGINATIONTABLEEMPLOYEES="SET-CURRENT-PAGINATION-TABLE-EMPLOYEES",
     SEARCH="SEARCH",
 }
 
 export type PaginationTableAction = {
-    type: statePaginationEnum, 
+    type: StatePaginationEnum, 
     currentPage: number,
     search?: string
 }

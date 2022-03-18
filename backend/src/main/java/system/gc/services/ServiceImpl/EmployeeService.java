@@ -70,7 +70,7 @@ public class EmployeeService {
 
     @Transactional
     public void update(EmployeeDTO updateEmployeeDTO) throws EntityNotFoundException {
-        log.info("Atualizando registro do funionário");
+        log.info("Atualizando registro do funcionário");
         Optional<Employee> employee = employeeRepository.findById(updateEmployeeDTO.getId());
         employee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o id: " + updateEmployeeDTO.getId()));
         //updateEmployeeDTO.setId(employee.get().getId());

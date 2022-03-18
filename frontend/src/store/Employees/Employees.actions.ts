@@ -1,5 +1,5 @@
 import { StateFormAction} from "types/Action";
-import { ActionEmployee, Pagination } from "types/Employee";
+import { ActionEmployee, Employee, Pagination, SelectedEmployeeAction, TypeEnumActionEmployee } from "types/Employee";
 import { PaginationTableAction } from "types/Pagination";
 
 export function getAllEmployeesAction(page = 1) {
@@ -36,4 +36,19 @@ export function paginationTableAction(paginationTableAction: PaginationTableActi
         search: paginationTableAction.search        
     }
     return action;
+}
+
+export function selectEmployeeTableAction(employee: Employee) {
+    let action: SelectedEmployeeAction = {
+        type: TypeEnumActionEmployee.SELECTED,
+        payload: employee
+    }
+    return action
+}
+
+export function removeSelectedEmployeeTableAction() {
+    let action: SelectedEmployeeAction = {
+        type: TypeEnumActionEmployee.REMOVED
+    }
+    return action
 }

@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { paginationTableAction } from "store/Employees/Employees.actions";
-import { PaginationTableAction, statePaginationEnum } from "types/Pagination";
+import Swal from "sweetalert2";
+import { PaginationTableAction, StatePaginationEnum } from "types/Pagination";
+import { isValidFieldSearchCPF } from "utils/verifications";
 
 const SearchEmployee = () => {
   const dispatch = useDispatch()
   const[CPF, setCPF] = useState('')
   const[paginationState, setPaginationState] = useState<PaginationTableAction>({
-    type: statePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES,
+    type: StatePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES,
     currentPage: 1,
     search: undefined
   })
@@ -30,7 +32,13 @@ const SearchEmployee = () => {
   
   function submit(event: any) {
     event.preventDefault();
-    dispatch(paginationTableAction(paginationState))
+    if (isValidFieldSearchCPF(CPF))
+    {
+      dispatch(paginationTableAction(paginationState))
+    } else {
+      Swal.fire('Ooop!', 'Digite um CPF válido.', 'error')
+      document.getElementById('inputCPFSearch')?.focus();
+    }
   }
   return (
     <form onSubmit={submit}>
@@ -42,6 +50,7 @@ const SearchEmployee = () => {
           name='cpf'
           value={CPF}
           onChange={(e) => changeCPFValue(e.target.value)}
+          required
         />
         <button type="submit" className="btn btn-secondary">
           <i className="bi bi-search"></i>

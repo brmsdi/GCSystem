@@ -1,7 +1,7 @@
 import { getAllEmployeesMock } from 'mocks/EmployeesMock'; 
 import { CurrentStateForm, StateFormEnum, StateFormAction } from 'types/Action';
-import { ActionEmployee, Employee, Pagination } from "types/Employee";
-import { PaginationTableAction, statePaginationEnum } from 'types/Pagination';
+import { ActionEmployee, Employee, Pagination, SelectedEmployeeAction, TypeEnumActionEmployee } from "types/Employee";
+import { PaginationTableAction, StatePaginationEnum } from 'types/Pagination';
 
 let initPagination : Pagination = {
     pageNumber: 0,
@@ -12,6 +12,22 @@ let initPagination : Pagination = {
     number: -1,
     empty: true
 }
+
+let initEmployee : Employee = {
+    name: '',
+    rg: '',
+    cpf: '',
+    birthDate: '',
+    email: '',
+    hiringDate: '',
+    role: {
+        name: ''
+    },
+    status: {
+        name: ''
+    },
+    password: ''
+} 
 
 export function getAll(state: Employee[] = getAllEmployeesMock(1), action: ActionEmployee) {
 
@@ -55,6 +71,12 @@ export function setStateFormReducer(currentStateForm: CurrentStateForm = {activi
                     active: true
                 }
                 return stateCurrent;
+            } else if(action.activity ===  StateFormEnum.UPDATE ) {
+                let stateCurrent: CurrentStateForm = {
+                    activity: StateFormEnum.UPDATE,
+                    active: true
+                }
+                return stateCurrent;
             }
             return currentStateForm;
         default:
@@ -62,11 +84,22 @@ export function setStateFormReducer(currentStateForm: CurrentStateForm = {activi
     }
 }
 
-export function setCurrentPagination(state: PaginationTableAction = {type: statePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES, currentPage: 1, search: undefined }, action: PaginationTableAction) {
+export function setCurrentPagination(state: PaginationTableAction = {type: StatePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES, currentPage: 1, search: undefined }, action: PaginationTableAction) {
     switch(action.type) {
-        case statePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES:
+        case StatePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES:
             return action;
         default:
             return state;
+    }
+}
+
+export function stateSelectionEmployeeReducer(state: Employee = initEmployee, action: SelectedEmployeeAction) {
+    switch (action.type) {
+        case TypeEnumActionEmployee.SELECTED:
+            return action.payload
+        case TypeEnumActionEmployee.REMOVED:
+            return initEmployee
+        default:
+            return state
     }
 }

@@ -46,3 +46,13 @@ export type ActionEmployee = {
         pagination?: Pagination
     }
 }
+
+export type SelectedEmployeeAction = {
+    type: string,
+    payload?: Employee 
+}
+
+export enum TypeEnumActionEmployee {
+    SELECTED="SELECTED_EMPLOYEE",
+    REMOVED="REMOVENDO"
+}
