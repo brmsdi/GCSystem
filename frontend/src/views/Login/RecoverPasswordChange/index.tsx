@@ -1,3 +1,4 @@
+import PageLoading from "components/Loader/PageLoading";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ const RecoverPasswordChange = () => {
   let nav = useNavigate();
   const dispatch = useDispatch(); 
   const stateChangePassword: EmailRequestCode = useSelector(selectStateChangePassword);
+  const [sending, setSending] = useState(false);
   const[password, setPassword] = useState({
     newPassword: "",
     repeatPassword: "",
@@ -23,6 +25,7 @@ const RecoverPasswordChange = () => {
 
   async function submitPassword(event: any) {
     event.preventDefault();
+    setSending(true)
     await verifyCurrentState()
     if (password.newPassword === password.repeatPassword && stateChangePassword.token) {
       try 
@@ -33,6 +36,7 @@ const RecoverPasswordChange = () => {
         dispatch(insertRequestCodeInfo(StateAuthenticationChange.INSERTINFO, {}))
         nav(LOGIN_URL)
       } catch(error : any) {
+        setSending(false)
         if (error.response) {
           let message = error.response.data.errors[0].message;
           Swal.fire('Oops!', '' + message, 'error')
@@ -51,6 +55,9 @@ const RecoverPasswordChange = () => {
       nav(LOGIN_URL)
     }
   }
+
+  if (sending) return <PageLoading title="Atualizando senha" />
+  
   return (
     <div className="content-login animate-down">
       <form onSubmit={submitPassword}>

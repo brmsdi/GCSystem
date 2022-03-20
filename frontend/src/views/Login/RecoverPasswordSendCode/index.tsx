@@ -1,3 +1,4 @@
+import PageLoading from "components/Loader/PageLoading";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,17 +13,18 @@ const RecoverPasswordSendCode = () => {
   let nav = useNavigate();
   const dispatch = useDispatch();
   const stateChangePassword: EmailRequestCode = useSelector(selectStateChangePassword);
-  const[form, setForm] = useState<EmailRequestCode>({
+  const [sending, setSending] = useState(false);
+  const [form, setForm] = useState<EmailRequestCode>({
     code: ''
   })
   function changeCode(value: any) {
-    setForm(form => ({...form, ...value}))
+    setForm(form => ({ ...form, ...value }))
   }
 
-  async function submit(event : any) {
+  async function submit(event: any) {
     event.preventDefault();
-    try 
-    {
+    try {
+      setSending(true)
       await verifyCurrentState();
       let data = await validateCode({ ...stateChangePassword, ...form })
       let newForm: EmailRequestCode = {
@@ -37,7 +39,8 @@ const RecoverPasswordSendCode = () => {
       dispatch(insertRequestCodeInfo(StateAuthenticationChange.INSERTINFO, newForm))
       nav(LOGIN_URL + RECOVER_PASSWORD_CHANGE_URL);
     }
-    catch(error : any) {
+    catch (error: any) {
+      setSending(false)
       if (error.response) {
         let data = error.response.data;
         if (data.error) {
@@ -60,32 +63,34 @@ const RecoverPasswordSendCode = () => {
     }
   }
 
-    return (
-      <div className="content-login animate-down">
-        <form id="form-send-code" onSubmit={submit}>
-          <div>
-            <h2>Recuperação de senha</h2>
-            <span>
-              Digite o código de verificação enviado para o seu E-mail. 
-            </span>
-          </div>
-          <div>
-            <input 
-            type="number" 
-            name="code" 
-            value={form.code} 
+  if (sending) return <PageLoading title="Validando código" />
+
+  return (
+    <div className="content-login animate-down">
+      <form id="form-send-code" onSubmit={submit}>
+        <div>
+          <h2>Recuperação de senha</h2>
+          <span>
+            Digite o código de verificação enviado para o seu E-mail.
+          </span>
+        </div>
+        <div>
+          <input
+            type="number"
+            name="code"
+            value={form.code}
             placeholder="Código de acesso"
-            onChange={(e) => changeCode({code: e.target.value}) } 
-            required/>
-          </div>
-          <div>
-            <button type="submit" className="btn btn-sm btn-outline-secondary">
-              Enviar
-            </button>
-          </div>
-        </form>
-      </div>
-    )
-  }
-  
-  export default RecoverPasswordSendCode;
+            onChange={(e) => changeCode({ code: e.target.value })}
+            required />
+        </div>
+        <div>
+          <button type="submit" className="btn btn-sm btn-outline-secondary">
+            Enviar
+          </button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+export default RecoverPasswordSendCode;

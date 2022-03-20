@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { selectUserAuthenticated } from "store/Authentication/Authentication.selectors";
 import { UserAuthenticatedView } from "types/AuthenticationTypes";
+import { LOGIN_URL } from "utils/urls";
 
 const AccountInformation = () => {
   const userAuthenticated: UserAuthenticatedView = useSelector(selectUserAuthenticated)
@@ -24,9 +25,9 @@ const AccountInformation = () => {
         </div>
       </div>
       <div className="account-info-options animate-opac">
-          <Link to={"/login"}>
+          <NavLink to={LOGIN_URL}>
           <i className="bi bi-box-arrow-right"></i>
-          </Link>
+          </NavLink>
       </div>
     </div>
   );

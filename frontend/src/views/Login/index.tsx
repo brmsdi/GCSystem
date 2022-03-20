@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { autheticate, clearToken, setToken } from "services/Authentication";
-import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
+import  insertRequestCodeInfo, {setUserAuthenticated } from "store/Authentication/Authentication.actions";
 import Swal from "sweetalert2";
-import { AuthCpfAndPassword, StateAuthenticationChange } from "types/AuthenticationTypes";
+import { AuthCpfAndPassword, StateAuthenticationChange, UserAuthenticatedViewTypesEnum } from "types/AuthenticationTypes";
 import { clearAuth, setAuthorization } from "utils/http";
 import { EMPLOYEES_HOME_URL, RECOVER_PASSWORD_URL } from "utils/urls";
 
@@ -13,7 +13,10 @@ const Login = () => {
   const dispatch = useDispatch();
   clearAuth();
   clearToken();
-  dispatch(insertRequestCodeInfo(StateAuthenticationChange.INSERTINFO, {}));
+  useEffect(() => {
+    dispatch(setUserAuthenticated(UserAuthenticatedViewTypesEnum.UPDATE, {name: '',  role: ''}))
+    dispatch(insertRequestCodeInfo(StateAuthenticationChange.INSERTINFO, {}))
+  },  [dispatch])
   const[auth, setAuth] = useState<AuthCpfAndPassword>({
     cpf: "",
     password: "",
