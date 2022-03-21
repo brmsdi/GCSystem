@@ -2,29 +2,31 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { findByCPFService, getAllEmployees } from "services/Employee";
 import { paginationTableAction, updateEmployeesTable } from "store/Employees/Employees.actions";
-import { selectCurrentPaginationTableEmployees } from "store/Employees/Employees.selectors";
+import { selectCurrentPaginationTableEmployees, selectUpdateTableEmployeeCurrentState } from "store/Employees/Employees.selectors";
 import Swal from "sweetalert2";
 import { PaginationTableAction, PropsPagination } from "types/Pagination";
 import PaginationItem from "../PaginationItem";
 
 const PaginationTableEmployee = () => {
   const dispatch = useDispatch()
-  const statePaginationTable: PaginationTableAction = useSelector(selectCurrentPaginationTableEmployees)
+  const currentPaginationTable: PaginationTableAction = useSelector(selectCurrentPaginationTableEmployees)
   const [propsPagination, setPropsPagination] = useState<PropsPagination>()
+  const updateTableEmployeeCurrentState = useSelector(selectUpdateTableEmployeeCurrentState);
 
   useEffect(() => {
+    console.log('att')
     try {
-      if (statePaginationTable.search) {
-        findByCPFService(statePaginationTable.search)
+      if (currentPaginationTable.search) {
+        findByCPFService(currentPaginationTable.search)
           .then((response) => {
-            createNumberPages(statePaginationTable.currentPage, response.data.totalPages);
-            dispatch(updateEmployeesTable(statePaginationTable.currentPage, response.data));
+            createNumberPages(currentPaginationTable.currentPage, response.data.totalPages);
+            dispatch(updateEmployeesTable(currentPaginationTable.currentPage, response.data));
           })
       } else {
-        getAllEmployees(statePaginationTable.currentPage)
+        getAllEmployees(currentPaginationTable.currentPage)
           .then((response) => {
-            createNumberPages(statePaginationTable.currentPage, response.data.totalPages);
-            dispatch(updateEmployeesTable(statePaginationTable.currentPage, response.data));
+            createNumberPages(currentPaginationTable.currentPage, response.data.totalPages);
+            dispatch(updateEmployeesTable(currentPaginationTable.currentPage, response.data));
           })
       }
 
@@ -34,11 +36,11 @@ const PaginationTableEmployee = () => {
       }
     }
 
-  }, [statePaginationTable, dispatch]);
+  }, [currentPaginationTable, dispatch, updateTableEmployeeCurrentState]);
 
   const changeNumberPage = (pageNumber: number) => {
     dispatch(paginationTableAction({
-      ...statePaginationTable,
+      ...currentPaginationTable,
       currentPage: pageNumber
     }));
   }

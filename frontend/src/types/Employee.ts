@@ -54,5 +54,10 @@ export type SelectedEmployeeAction = {
 
 export enum TypeEnumActionEmployee {
     SELECTED="SELECTED_EMPLOYEE",
-    REMOVED="REMOVENDO"
+    REMOVED="REMOVENDO",
+    UPDATE="UPDATE"
+}
+
+export type TableAction = {
+    type: string
 }

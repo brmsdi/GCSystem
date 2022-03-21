@@ -19,3 +19,8 @@ export const updateEmployee = async (data: Employee) => {
     const response = await http.put(`${REQUEST_EMPLOYEES}`, data)
     return response.data
 }
+
+export const deleteEmployee = async (ID: number) => {
+    const response = await http.delete(`${REQUEST_EMPLOYEES}?id=${ID}`)
+    return response.data
+}

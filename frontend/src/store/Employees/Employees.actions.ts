@@ -1,5 +1,5 @@
 import { StateFormAction} from "types/Action";
-import { ActionEmployee, Employee, Pagination, SelectedEmployeeAction, TypeEnumActionEmployee } from "types/Employee";
+import { ActionEmployee, Employee, Pagination, SelectedEmployeeAction, TableAction, TypeEnumActionEmployee } from "types/Employee";
 import { PaginationTableAction } from "types/Pagination";
 
 export function getAllEmployeesAction(page = 1) {
@@ -50,5 +50,13 @@ export function removeSelectedEmployeeTableAction() {
     let action: SelectedEmployeeAction = {
         type: TypeEnumActionEmployee.REMOVED
     }
+    return action
+}
+
+export function updateTableAction() {
+    let action: TableAction = {
+        type: TypeEnumActionEmployee.UPDATE
+    }
+
     return action
 }

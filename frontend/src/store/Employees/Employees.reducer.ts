@@ -1,6 +1,6 @@
 import { getAllEmployeesMock } from 'mocks/EmployeesMock'; 
 import { CurrentStateForm, StateFormEnum, StateFormAction } from 'types/Action';
-import { ActionEmployee, Employee, Pagination, SelectedEmployeeAction, TypeEnumActionEmployee } from "types/Employee";
+import { ActionEmployee, Employee, Pagination, SelectedEmployeeAction, TableAction, TypeEnumActionEmployee } from "types/Employee";
 import { PaginationTableAction, StatePaginationEnum } from 'types/Pagination';
 
 let initPagination : Pagination = {
@@ -28,6 +28,7 @@ let initEmployee : Employee = {
     },
     password: ''
 } 
+
 
 export function getAll(state: Employee[] = getAllEmployeesMock(1), action: ActionEmployee) {
 
@@ -99,6 +100,16 @@ export function stateSelectionEmployeeReducer(state: Employee = initEmployee, ac
             return action.payload
         case TypeEnumActionEmployee.REMOVED:
             return initEmployee
+        default:
+            return state
+    }
+}
+
+export function updateTableEmployeeReducer(state: boolean = false, action: TableAction) {
+    
+    switch (action.type) {
+        case TypeEnumActionEmployee.UPDATE:
+            return !state 
         default:
             return state
     }
