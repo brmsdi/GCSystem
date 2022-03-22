@@ -1,4 +1,6 @@
+import { useDispatch } from "react-redux";
 import { saveEmployee } from "services/Employee";
+import { updateTableAction } from "store/Employees/Employees.actions";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/Action";
 import { Employee } from "types/Employee";
@@ -27,14 +29,15 @@ let initForm: Employee = {
 }
 
 const FormNewEmployee = () => {
-  
+  const dispatch = useDispatch();
   async function submit(form: Employee) {
     try {
       const result = await saveEmployee(form);
-      Swal.fire('Ebaa!', result, 'success')
+      await Swal.fire('Ebaa!', result, 'success')
+      dispatch(updateTableAction())
     } catch (error: any) {
       if (!error.response) {
-        Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
+        Swal.fire("Oops!", "Sem conexão com o servidor!!", "error");
       } else {
         Swal.fire("Oops!", "" + error.response.data, "error");
       }

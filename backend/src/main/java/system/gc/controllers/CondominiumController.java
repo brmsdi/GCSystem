@@ -6,6 +6,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.CondominiumDTO;
@@ -27,9 +28,10 @@ public class CondominiumController {
     @GetMapping
     public ResponseEntity<Page<CondominiumDTO>> listPaginationCondominium(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "size", defaultValue = "5") Integer size) {
+            @RequestParam(name = "size", defaultValue = "5") Integer size,
+            @RequestParam(name = "sort", defaultValue = "name") String sort) {
         log.info("Listando condominios");
-        return ResponseEntity.ok(condominiumService.listPaginationCondominium(PageRequest.of(page, size)));
+        return ResponseEntity.ok(condominiumService.listPaginationCondominium(PageRequest.of(page, size, Sort.by(sort))));
     }
 
     @PostMapping

@@ -13,6 +13,7 @@ export const findByCPFService = (CPF: string, page: number = 0, size: number = 5
 export const saveEmployee = async (data: Employee) => {
     const response = await http.post(`${REQUEST_EMPLOYEES}`, data)
     return response.data
+    
 }
 
 export const updateEmployee = async (data: Employee) => {

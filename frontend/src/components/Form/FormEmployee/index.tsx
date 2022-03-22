@@ -61,6 +61,7 @@ const FormTemplate = (props: { initForm: Employee, stateForm: StateFormEnum, sub
   async function submit(event: any) {
     event.preventDefault();
     props.submit(form)
+    setForm({...props.initForm})
   }
 
   /*

@@ -1,7 +1,7 @@
 import Alert from "components/messages";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteEmployee } from "services/Employee";
-import { selectEmployeeTableAction, setStateFormAction } from "store/Employees/Employees.actions";
+import { selectEmployeeTableAction, setStateFormAction, updateTableAction } from "store/Employees/Employees.actions";
 import { selectAllEmployees } from "store/Employees/Employees.selectors";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/Action";
@@ -22,7 +22,6 @@ const TableEmployee = () => {
   }
 
   async function clickButtonDelete(ID: number) {
-
     const result = await Swal.fire({
       title: 'Você deseja deletar esse registro?',
       icon: 'warning',
@@ -35,6 +34,7 @@ const TableEmployee = () => {
       try {
         const data = await deleteEmployee(ID)
         Swal.fire('Êbaa!', '' + data, 'success')
+        dispatch(updateTableAction())
       } catch (error: any) {
         if (!error.response) {
           Swal.fire("Oops!", "Sem conexão com o servidor!", "error");

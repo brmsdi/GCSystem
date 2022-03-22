@@ -6,6 +6,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.LesseeDTO;
@@ -31,8 +32,9 @@ public class LesseeController {
     @GetMapping
     public ResponseEntity<Page<LesseeDTO>> listPaginationLessees(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "size", defaultValue = "5") Integer size) {
-        return ResponseEntity.ok(lesseeService.listPaginationLessees(PageRequest.of(page, size)));
+            @RequestParam(name = "size", defaultValue = "5") Integer size,
+            @RequestParam(name = "sort", defaultValue = "name") String sort) {
+        return ResponseEntity.ok(lesseeService.listPaginationLessees(PageRequest.of(page, size, Sort.by(sort))));
     }
 
     @PostMapping
