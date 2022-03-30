@@ -1,6 +1,7 @@
 package system.gc.configuration.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
+import org.postgresql.util.PSQLException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -72,6 +73,14 @@ public class ExceptionHandlerAdvice {
         ErrorDTO errorDTO = buildError(HttpStatus.NOT_ACCEPTABLE.toString(), exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
                 .body(baseErrorBuilder(HttpStatus.NOT_ACCEPTABLE, Set.of(errorDTO)));
+    }
+
+    @ExceptionHandler(DuplicatedFieldException.class)
+    public ResponseEntity<ApiErrorDTO> duplicatedFieldException(DuplicatedFieldException exception) {
+        log.error(exception.getMessage());
+        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

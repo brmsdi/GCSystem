@@ -49,7 +49,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             token = clearTypeToken(token);
             DecodedJWT decodedJWT = JWTService.isValid(token);
             SecurityContextHolder.getContext().setAuthentication(getUsernamePasswordAuthenticationToken(decodedJWT));
-
             response.setStatus(HttpServletResponse.SC_GONE);
             chain.doFilter(request, response);
         } catch (JWTVerificationException jwtVerificationException) {

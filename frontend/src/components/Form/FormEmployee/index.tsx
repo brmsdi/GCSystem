@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import { getAllRoles } from "services/Role";
-import { getAllSpecialties } from "services/Specialty";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/Action";
-import { Employee, Role, Specialty } from "types/Employee";
+import { Employee, Role } from "types/Employee";
 import { formatDate } from "utils/textFormt";
 
-const FormTemplate = (props: { initForm: Employee, stateForm: StateFormEnum, submit: Function, isEditablePassword: boolean }) => {
+const FormTemplate = (props: { initForm: Employee, stateForm: StateFormEnum, submit: Function, isActivedFieldPassword: boolean, isNewEmployeeForm: boolean}) => {
   const [form, setForm] = useState<Employee>(props.initForm)
   const [roles, setRoles] = useState<Role[]>([])
-  const [specialties, setSpecialties] = useState<Specialty[]>([])
 
   function changeInput(value: any) {
     setForm(form => ({ ...form, ...value }))
@@ -25,18 +23,8 @@ const FormTemplate = (props: { initForm: Employee, stateForm: StateFormEnum, sub
     }
   }
 
-  function changeSpecialty(value: number) {
-    for (var index = 0; index < specialties.length; index++) {
-      let specialtySelected = specialties.at(index);
-      if (specialtySelected?.id === value) {
-        setForm({ ...form, specialties: [specialtySelected] })
-        break
-      }
-    }
-  }
-
   useEffect(() => {
-    setForm(form => ({ ...form, ...props.initForm}))
+    setForm(form => ({ ...form, ...props.initForm }))
   }, [props.initForm])
 
   useEffect(() => {
@@ -44,11 +32,6 @@ const FormTemplate = (props: { initForm: Employee, stateForm: StateFormEnum, sub
       getAllRoles()
         .then(response => {
           setRoles(response.data)
-        })
-
-      getAllSpecialties()
-        .then(response => {
-          setSpecialties(response.data)
         })
 
     } catch (error: any) {
@@ -60,7 +43,17 @@ const FormTemplate = (props: { initForm: Employee, stateForm: StateFormEnum, sub
 
   async function submit(event: any) {
     event.preventDefault();
-    props.submit(form)
+    const result = await props.submit(form) 
+    if (result === true) {
+      if (props.isNewEmployeeForm === true) {
+        setForm({ ...props.initForm })
+      } else {
+        setForm({ ...form })
+      }
+    }
+  }
+
+  async function clearField() {
     setForm({...props.initForm})
   }
 
@@ -96,7 +89,7 @@ const FormTemplate = (props: { initForm: Employee, stateForm: StateFormEnum, sub
         <div className="form-container l2">
           <label htmlFor="inputRG">RG</label>
           <input
-            type="text"
+            type="number"
             id="inputRG"
             placeholder="RG"
             name="rg"
@@ -157,19 +150,6 @@ const FormTemplate = (props: { initForm: Employee, stateForm: StateFormEnum, sub
           </select>
         </div>
         <div className="form-container l2">
-          <label htmlFor="inputSpecialty">Especialidade</label>
-          <select
-            id="inputSpecialty"
-            onChange={(e) => changeSpecialty(parseInt(e.target.value))}
-          >
-            {
-              specialties.map(specialty => (
-                <option key={specialty.id} value={specialty.id}>{specialty.name}</option>
-              ))
-            }
-          </select>
-        </div>
-        <div className="form-container l2">
           <label htmlFor="inputHiring">Contratação</label>
           <input
             type="date"
@@ -180,36 +160,39 @@ const FormTemplate = (props: { initForm: Employee, stateForm: StateFormEnum, sub
             required />
 
         </div>
-      </div>
-      <div className="row-form-1">
-
-        <div className="form-container l2">
-          <label htmlFor="inputPassword">Senha de acesso</label>
-          <input
-            type="password"
-            className="form-control"
-            id="inputPassword"
-            placeholder="Senha"
-            name="password"
-            value={form.password}
-            onChange={(e) => changeInput({ password: e.target.value })}
-            disabled={props.isEditablePassword}
-            required={props.isEditablePassword}
-            minLength={8}
-          />
-        </div>
+        {props.isActivedFieldPassword === true ? (
+          <div className="form-container l2">
+            <label htmlFor="inputPassword">Senha de acesso</label>
+            <input
+              type="password"
+              id="inputPassword"
+              placeholder="Senha"
+              name="password"
+              value={form.password}
+              onChange={(e) => changeInput({ password: e.target.value })}
+              required={props.isActivedFieldPassword}
+              minLength={8}
+            />
+          </div>
+        )
+          :
+          (null)
+        }
       </div>
       <div className="row-form-1">
         <div className="form-container l4 btns">
           <button type="submit" className="btn btn-success">
             Salvar
           </button>
-
+          <button type="button" className="btn btn-secondary"
+          onClick={clearField}>
+             { props.isActivedFieldPassword === true ? 'Limpar' : 'Restaurar' }           
+          </button>
         </div>
       </div>
     </form>
-  );
-};
+  )
+}
 
 export default FormTemplate;
 

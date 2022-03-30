@@ -15,10 +15,16 @@ const FormUpdateEmployee = () => {
       const result = await updateEmployee(form);
       await Swal.fire('Ebaa!', result, 'success')
       dispatch(updateTableAction())
+      return true
     } catch (error: any) {
+      const errors = error.response.data.errors
       if (!error.response) {
         Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
-      } else {
+      } 
+      else if (errors) {
+        Swal.fire('oops!', errors[0].message, 'error')
+      } 
+      else {
         Swal.fire("Oops!", "" + error.response.data, "error");
       }
     }
@@ -28,7 +34,8 @@ const FormUpdateEmployee = () => {
       initForm={selectedEmployee}
       stateForm={StateFormEnum.EDITING}
       submit={submit}
-      isEditablePassword={true} />
+      isActivedFieldPassword={false}
+      isNewEmployeeForm={false} />
   )
 }
 

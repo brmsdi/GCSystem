@@ -440,9 +440,6 @@ a {
         padding: 0;
         text-align: center;
         border-radius: 4%;
-        &:hover .tooltip-submenu {
-          transform: translateX(0);
-        }
       }
       .text-submenu {
         display: none;

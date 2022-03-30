@@ -10,7 +10,6 @@ const HomeView = () => {
     <div>
       <p>home</p>
     </div>
-    
     </main>
   )
 }

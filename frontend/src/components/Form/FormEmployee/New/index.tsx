@@ -17,10 +17,6 @@ let initForm: Employee = {
     id: 1,
     name: 'Administrador'
   },
-  specialties: [{
-    id: 1,
-    name: 'Desenvolvedor de Software'
-  }],
   status: {
     id: 1,
     name: 'Ativo'
@@ -35,10 +31,16 @@ const FormNewEmployee = () => {
       const result = await saveEmployee(form);
       await Swal.fire('Ebaa!', result, 'success')
       dispatch(updateTableAction())
+      return true
     } catch (error: any) {
+      const errors = error.response.data.errors
       if (!error.response) {
         Swal.fire("Oops!", "Sem conexão com o servidor!!", "error");
-      } else {
+      }   
+      else if (errors) {
+        Swal.fire('oops!', errors[0].message, 'error')
+      }  
+      else {
         Swal.fire("Oops!", "" + error.response.data, "error");
       }
     }
@@ -48,7 +50,8 @@ const FormNewEmployee = () => {
       initForm={initForm}
       stateForm={StateFormEnum.SAVING}
       submit={submit}
-      isEditablePassword={false} />
+      isActivedFieldPassword={true}
+      isNewEmployeeForm={true} />
   )
 }
 

@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @Slf4j
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -55,10 +55,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         log.info("Security Configuration");
-        if (Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) {
-            log.info("Perfil de teste ativado");
-            httpSecurity.headers().frameOptions().disable();
-        }
         httpSecurity.headers().frameOptions().sameOrigin();
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.csrf().disable();

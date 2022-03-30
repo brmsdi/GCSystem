@@ -2,11 +2,14 @@ package system.gc.services.ServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
+import system.gc.configuration.exceptions.DuplicatedFieldException;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.LogChangePassword;
@@ -39,11 +42,16 @@ public class EmployeeService {
     @Autowired
     private GCEmailService gcEmailService;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @Transactional
     public EmployeeDTO save(EmployeeDTO newEmployeeDTO) {
         log.info("Salvando novo registro de funcionário no banco de dados. Nome: " + newEmployeeDTO.getName());
         EmployeeDTO employeeDTO = new EmployeeDTO();
         newEmployeeDTO.setPassword(new BCryptPasswordEncoder().encode(newEmployeeDTO.getPassword()));
+        cpfIsAvailableSave(newEmployeeDTO);
+        emailIsAvailableSave(newEmployeeDTO);
         Employee registeredEmployee = employeeRepository.save(employeeDTO.toEntity(newEmployeeDTO));
         if (registeredEmployee.getId() == null) {
             log.warn("Erro ao salvar!");
@@ -73,12 +81,8 @@ public class EmployeeService {
         log.info("Atualizando registro do funcionário");
         Optional<Employee> employee = employeeRepository.findById(updateEmployeeDTO.getId());
         employee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o id: " + updateEmployeeDTO.getId()));
-        //updateEmployeeDTO.setId(employee.get().getId());
-        EmployeeDTO employeeResultForCpf = findByCPF(updateEmployeeDTO);
-        if (employeeResultForCpf != null && !Objects.equals(employee.get().getId(), employeeResultForCpf.getId())) {
-            log.warn("Cpf não corresponde ao ID no banco de dados");
-            throw new EntityNotFoundException("Cpf indisponível");
-        }
+        cpfIsAvailableUpdate(updateEmployeeDTO);
+        emailIsAvailableUpdate(updateEmployeeDTO);
         updateEmployeeDTO.setPassword(employee.get().getPassword());
         employeeRepository.save(new EmployeeDTO().toEntity(updateEmployeeDTO));
         log.info("Atualizado com sucesso");
@@ -156,5 +160,40 @@ public class EmployeeService {
         employeeRepository.save(employee);
         employee.getLogChangePassword().forEach(it -> it.setStatus(statusRescued));
         logPasswordCodeService.updateStatusCode(employee.getLogChangePassword());
+    }
+
+    public void cpfIsAvailableSave(EmployeeDTO employeeDTO) {
+        log.info("Verificando CPF");
+        Optional<Employee> employeeOptional = employeeRepository.findByCPF(employeeDTO.getCpf());
+        if (employeeOptional.isPresent()) {
+            log.warn("O CPF não está disponível");
+            throw new DuplicatedFieldException(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
+        }
+    }
+    public void cpfIsAvailableUpdate(EmployeeDTO employeeDTO)  {
+        log.info("Verificando CPF");
+        Optional<Employee> employeeOptional = employeeRepository.findByCPF(employeeDTO.getCpf());
+        if (employeeOptional.isPresent() && !employeeDTO.getId().equals(employeeOptional.get().getId())) {
+            log.warn("O CPF não está disponível");
+            throw new DuplicatedFieldException(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
+        }
+    }
+
+    public void emailIsAvailableSave(EmployeeDTO employeeDTO) {
+        log.info("Verificando E-mail");
+        Optional<Employee> employeeOptional = employeeRepository.findByEMAIL(employeeDTO.getEmail());
+        if (employeeOptional.isPresent()) {
+            log.warn("O E-MAIL não está disponível");
+            throw new DuplicatedFieldException(messageSource.getMessage("TEXT_ERROR_INSERT_EMAIL_DUPLICATED", null, LocaleContextHolder.getLocale()));
+        }
+    }
+
+    public void emailIsAvailableUpdate(EmployeeDTO employeeDTO) {
+        log.info("Verificando E-mail");
+        Optional<Employee> employeeOptional = employeeRepository.findByEMAIL(employeeDTO.getEmail());
+        if (employeeOptional.isPresent() && !employeeDTO.getId().equals(employeeOptional.get().getId())) {
+            log.warn("O E-MAIL não está disponível");
+            throw new DuplicatedFieldException(messageSource.getMessage("TEXT_ERROR_INSERT_EMAIL_DUPLICATED", null, LocaleContextHolder.getLocale()));
+        }
     }
 }

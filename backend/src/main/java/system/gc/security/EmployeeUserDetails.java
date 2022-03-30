@@ -1,18 +1,14 @@
 package system.gc.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import system.gc.entities.Employee;
-import system.gc.services.ServiceImpl.EmployeeService;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class EmployeeUserDetails implements UserDetailsConvert {
-    @Autowired
-    EmployeeService employeeService;
     private final Employee userDetail;
 
     public EmployeeUserDetails(Employee employeeDTOUser) {

@@ -49,14 +49,6 @@ public class Employee implements Serializable {
     @JoinColumn(name = "fk_role_id", referencedColumnName = "id")
     private Role role;
 
-    @ManyToMany
-    @JoinTable(
-            name = "employee_specialty",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "specialty_id")
-    )
-    private Set<Specialty> specialties;
-
     @OneToMany(mappedBy = "employee")
     private Set<Movement> movements;
 
@@ -73,7 +65,7 @@ public class Employee implements Serializable {
     public Employee() {
     }
 
-    public Employee(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, Role role, Set<Specialty> specialties, Set<Movement> movements, Status status) {
+    public Employee(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, Role role, Set<Movement> movements, Status status) {
         setName(name);
         setRg(rg);
         setCpf(cpf);
@@ -82,7 +74,6 @@ public class Employee implements Serializable {
         setHiringDate(hiringDate);
         setPassword(password);
         setRole(role);
-        setSpecialties(specialties);
         setMovements(movements);
         setStatus(status);
     }

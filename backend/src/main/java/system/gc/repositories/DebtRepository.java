@@ -16,7 +16,6 @@ public interface DebtRepository extends JpaRepository<Debt, Integer> {
             "JOIN FETCH movements.activityType " +
             "JOIN FETCH movements.employee employee " +
             "JOIN FETCH employee.role " +
-            "JOIN FETCH employee.specialties " +
             "JOIN FETCH employee.status " +
             "JOIN FETCH debt.lessee lessee " +
             "JOIN FETCH lessee.status " +

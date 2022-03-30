@@ -46,7 +46,6 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
     @NotNull(message = "{required.validation}")
     private RoleDTO role;
 
-    private Set<SpecialtyDTO> specialties;
     private Set<MovementDTO> movements;
 
     @NotNull(message = "{required.validation}")
@@ -58,7 +57,7 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
         setCpf(cpf);
     }
 
-    public EmployeeDTO(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, RoleDTO role, Set<SpecialtyDTO> specialties, Set<MovementDTO> movements, StatusDTO status) {
+    public EmployeeDTO(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, RoleDTO role, Set<MovementDTO> movements, StatusDTO status) {
         setName(name);
         setRg(rg);
         setCpf(cpf);
@@ -67,7 +66,6 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
         setHiringDate(hiringDate);
         setPassword(password);
         setRole(role);
-        setSpecialties(specialties);
         setMovements(movements);
         setStatus(status);
     }
@@ -81,8 +79,6 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
         setEmail(employee.getEmail());
         setHiringDate(employee.getHiringDate());
         setRole(new RoleDTO(employee.getRole()));
-        SpecialtyDTO specialtyDTO = new SpecialtyDTO();
-        setSpecialties(specialtyDTO.convertSetEntityToSetEntityDTO(employee.getSpecialties()));
         //MovementDTO movementDTO = new MovementDTO();
         //setMovements(movementDTO.convertSetEntityToSetEntityDTO(employee.getMovements()));
         setStatus(new StatusDTO(employee.getStatus()));
@@ -103,7 +99,6 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
                 employeeDTO.getHiringDate(),
                 employeeDTO.getPassword(),
                 new RoleDTO().toEntity(employeeDTO.getRole()),
-                new SpecialtyDTO().convertSetEntityDTOFromSetEntity(employeeDTO.getSpecialties()),
                 new MovementDTO().convertSetEntityDTOFromSetEntity(employeeDTO.getMovements()),
                 new StatusDTO().toEntity(employeeDTO.getStatus()));
         if (employeeDTO.getId() != null) {

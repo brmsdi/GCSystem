@@ -3,14 +3,19 @@ package system.gc.services.ServiceImpl;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
+import system.gc.configuration.exceptions.DuplicatedFieldException;
 import system.gc.dtos.DebtDTO;
+import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.LesseeDTO;
+import system.gc.entities.Employee;
 import system.gc.entities.Lessee;
 import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
@@ -38,11 +43,16 @@ public class LesseeService {
     @Autowired
     private GCEmailService gcEmailService;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @Transactional
     public LesseeDTO save(LesseeDTO newLesseeDTO) {
         log.info("Salvando novo registro de locatário no banco de dados. Nome: " + newLesseeDTO.getName());
         LesseeDTO lesseeDTO = new LesseeDTO();
         newLesseeDTO.setPassword(new BCryptPasswordEncoder().encode(newLesseeDTO.getPassword()));
+        cpfIsAvailableSave(newLesseeDTO);
+        emailIsAvailableSave(newLesseeDTO);
         Lessee registeredLessee = lesseeRepository.save(lesseeDTO.toEntity(newLesseeDTO));
         if (registeredLessee.getId() == null) {
             log.warn("Erro ao salvar!");
@@ -67,11 +77,8 @@ public class LesseeService {
         log.info("Atualizando registro do locatário");
         Optional<Lessee> lessee = lesseeRepository.findById(updateLesseeDTO.getId());
         lessee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o id: " + updateLesseeDTO.getId()));
-        LesseeDTO lesseeResultForCpf = findByCPF(updateLesseeDTO);
-        if (lesseeResultForCpf != null && !Objects.equals(lessee.get().getId(), lesseeResultForCpf.getId())) {
-            log.warn("Cpf não corresponde ao ID no banco de dados");
-            throw new EntityNotFoundException("Cpf indisponível");
-        }
+        cpfIsAvailableUpdate(updateLesseeDTO);
+        emailIsAvailableUpdate(updateLesseeDTO);
         updateLesseeDTO.setPassword(lessee.get().getPassword());
         lesseeRepository.save(new LesseeDTO().toEntity(updateLesseeDTO));
         log.info("Atualizado com sucesso");
@@ -164,5 +171,41 @@ public class LesseeService {
         lesseeRepository.save(lessee);
         lessee.getLogChangePassword().forEach(it -> it.setStatus(statusRescued));
         logPasswordCodeService.updateStatusCode(lessee.getLogChangePassword());
+    }
+
+
+    public void cpfIsAvailableSave(LesseeDTO lesseeDTO) {
+        log.info("Verificando CPF");
+        Optional<Lessee> lesseeOptional = lesseeRepository.findByCPF(lesseeDTO.getCpf());
+        if (lesseeOptional.isPresent()) {
+            log.warn("O CPF não está disponível");
+            throw new DuplicatedFieldException(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
+        }
+    }
+    public void cpfIsAvailableUpdate(LesseeDTO lesseeDTO)  {
+        log.info("Verificando CPF");
+        Optional<Lessee> lesseeOptional = lesseeRepository.findByCPF(lesseeDTO.getCpf());
+        if (lesseeOptional.isPresent() && !lesseeDTO.getId().equals(lesseeOptional.get().getId())) {
+            log.warn("O CPF não está disponível");
+            throw new DuplicatedFieldException(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
+        }
+    }
+
+    public void emailIsAvailableSave(LesseeDTO lesseeDTO) {
+        log.info("Verificando E-mail");
+        Optional<Lessee> lesseeOptional = lesseeRepository.findByEMAIL(lesseeDTO.getEmail());
+        if (lesseeOptional.isPresent()) {
+            log.warn("O E-MAIL não está disponível");
+            throw new DuplicatedFieldException(messageSource.getMessage("TEXT_ERROR_INSERT_EMAIL_DUPLICATED", null, LocaleContextHolder.getLocale()));
+        }
+    }
+
+    public void emailIsAvailableUpdate(LesseeDTO lesseeDTO) {
+        log.info("Verificando E-mail");
+        Optional<Lessee> lesseeOptional = lesseeRepository.findByEMAIL(lesseeDTO.getEmail());
+        if (lesseeOptional.isPresent() && !lesseeDTO.getId().equals(lesseeOptional.get().getId())) {
+            log.warn("O E-MAIL não está disponível");
+            throw new DuplicatedFieldException(messageSource.getMessage("TEXT_ERROR_INSERT_EMAIL_DUPLICATED", null, LocaleContextHolder.getLocale()));
+        }
     }
 }

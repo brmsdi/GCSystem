@@ -63,7 +63,6 @@ const TableEmployee = () => {
                 <th scope="col">CPF</th>
                 <th scope="col">E-mail</th>
                 <th scope="col">Cargo</th>
-                <th scope="col">Especialidade</th>
                 <th scope="col">Contratação</th>
                 <th scope="col">#</th>
               </tr>
@@ -96,10 +95,6 @@ const ItemTable = (props: { item: Employee, toogleClass: Function, clickButtonDe
       <td>{item.email}</td>
       <th className="thead-min">Cargo</th>
       <td>{item.role.name}</td>
-      <th className="thead-min">Especialidade</th>
-      <td>{
-        item.specialties?.map((specialty) => specialty.name)
-      }</td>
       <th className="thead-min">Contratação</th>
       <td>{formatDateForView(item.hiringDate)}</td>
       <th className="thead-min">Opções</th>

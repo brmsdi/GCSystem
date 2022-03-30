@@ -3,11 +3,6 @@ export type Role = {
     name: string;
 }
 
-export type Specialty = {
-    id?: number;
-    name: string;
-}
-
 export type Status = {
     id?: number;
     name: string;
@@ -22,7 +17,6 @@ export type Employee = {
     email: string;
     hiringDate: string;
     role: Role;
-    specialties?: Specialty[];
     status: Status;
     password: string;
 }

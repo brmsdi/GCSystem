@@ -13,7 +13,6 @@ import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer>, AuthenticateEntity<Employee>, ChangePasswordEntity<Employee> {
     @Query("SELECT employee FROM Employee employee " +
-            "JOIN FETCH employee.specialties " +
             "JOIN FETCH employee.role " +
             "JOIN FETCH employee.status " +
             "WHERE employee IN :employees")
@@ -52,5 +51,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>, Au
             "AND logChangePassword.code LIKE :code " +
             "AND status.id = :statusID")
     Optional<Employee> findRecordToChangePassword(String email, Integer ID, String code, Integer statusID);
+
+
 
 }

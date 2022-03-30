@@ -1,6 +1,7 @@
 package system.gc.services.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.StatusDTO;
@@ -16,8 +17,8 @@ public class StatusService {
     private StatusRepository statusRepository;
 
     @Transactional(readOnly = true)
-    public List<StatusDTO> findAll() {
-        return statusRepository.findAll().stream().map(StatusDTO::new).toList();
+    public List<StatusDTO> findAll(Sort sort) {
+        return statusRepository.findAll(sort).stream().map(StatusDTO::new).toList();
     }
 
     @Transactional(readOnly = true)

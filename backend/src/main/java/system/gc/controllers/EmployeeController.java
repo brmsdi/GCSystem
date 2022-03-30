@@ -36,10 +36,6 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Inserindo registro!");
-        if ((employeeService.findByCPF(employeeDTO)) != null) {
-            return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
-        }
-
         if (employeeService.save(employeeDTO) == null) {
             return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_INSERT_EMPLOYEE",
                     null,

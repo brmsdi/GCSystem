@@ -4,7 +4,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -14,11 +13,9 @@ import org.springframework.stereotype.Component;
 import system.gc.dtos.*;
 import system.gc.entities.ActivityType;
 import system.gc.entities.Role;
-import system.gc.entities.Specialty;
 import system.gc.entities.Status;
 import system.gc.repositories.ActivityTypeRepository;
 import system.gc.repositories.RoleRepository;
-import system.gc.repositories.SpecialtyRepository;
 import system.gc.repositories.StatusRepository;
 import system.gc.services.ServiceImpl.*;
 import system.gc.utils.TextUtils;
@@ -35,9 +32,6 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
     @Autowired
     RoleRepository roleRepository;
-
-    @Autowired
-    SpecialtyRepository specialtyRepository;
 
     @Autowired
     StatusRepository statusRepository;
@@ -70,9 +64,6 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     OrderServiceService orderServiceService;
 
     @Autowired
-    private MessageSource messageSource;
-
-    @Autowired
     Environment environment;
 
 
@@ -81,7 +72,6 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) return;
         roleRepository.save(new Role("Administrador"));
-        specialtyRepository.save(new Specialty("Desenvolvedor de Software"));
 
         statusRepository.save(new Status("Ativo"));
         statusRepository.save(new Status("Inativo"));
@@ -104,11 +94,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         typeProblemService.save(new TypeProblemDTO("Outros"));
 
         List<Role> roles = roleRepository.findAll();
-        List<Specialty> specialties = specialtyRepository.findAll();
         List<Status> status = statusRepository.findAll();
-        SpecialtyDTO spEmployeeDTO = new SpecialtyDTO(specialties.get(0));
-        Set<SpecialtyDTO> spEmployee = new HashSet<>();
-        spEmployee.add(spEmployeeDTO);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             EmployeeDTO employeeDTOWisley = employeeService.save(new EmployeeDTO("Wisley Bruno Marques França",
@@ -117,9 +103,8 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     simpleDateFormat.parse("1995-12-06"),
                     "srmarquesms@gmail.com",
                     new Date(),
-                    new BCryptPasswordEncoder().encode("admin"),
+                    "admin",
                     new RoleDTO(roles.get(0)),
-                    spEmployee,
                     null,
                     new StatusDTO(status.get(0))));
 
@@ -129,9 +114,8 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     simpleDateFormat.parse("2000-12-06"),
                     "exemple@gmail.com",
                     new Date(),
-                    new BCryptPasswordEncoder().encode("67896755656"),
+                    "67896755656",
                     new RoleDTO(roles.get(0)),
-                    spEmployee,
                     null,
                     new StatusDTO(status.get(0))));
             LocalizationDTO localizationDTO = localizationService.save(new LocalizationDTO("Flores", "920", "69058200"));
@@ -166,7 +150,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     simpleDateFormat.parse("2003-06-02"),
                     "brmarques.dev@gmail.com",
                     "9298863526",
-                    new BCryptPasswordEncoder().encode("785452545"),
+                    "785452545",
                     new StatusDTO(status.get(0))
             );
             LesseeDTO lesseeDTODEVSave = lesseeService.save(lesseeDTODEV);
@@ -178,7 +162,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                         simpleDateFormat.parse("2003-06-02"),
                         i + "daniel@gmail.com",
                         "9298863526" + i,
-                        new BCryptPasswordEncoder().encode("785452545" + i),
+                        "785452545" + i,
                         new StatusDTO(status.get(0))
                 );
                 lesseeService.save(lesseeDTO);

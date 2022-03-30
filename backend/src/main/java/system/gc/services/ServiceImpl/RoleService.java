@@ -1,6 +1,7 @@
 package system.gc.services.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.RoleDTO;
 import system.gc.entities.Role;
@@ -19,7 +20,7 @@ public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public List<RoleDTO> findAll() {
-        return roleRepository.findAll().stream().map(RoleDTO::new).toList();
+    public List<RoleDTO> findAll(Sort sort) {
+        return roleRepository.findAll(sort).stream().map(RoleDTO::new).toList();
     }
 }

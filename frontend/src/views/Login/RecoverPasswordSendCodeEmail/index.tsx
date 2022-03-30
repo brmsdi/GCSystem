@@ -60,7 +60,6 @@ const RecoverPasswordSendCodeEmail = () => {
       }
     }
   }
-
   if (sending) return <PageLoading title="Enviando código para o E-mail" />
 
   return (

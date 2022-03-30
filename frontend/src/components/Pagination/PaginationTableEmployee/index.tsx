@@ -14,7 +14,6 @@ const PaginationTableEmployee = () => {
   const updateTableEmployeeCurrentState = useSelector(selectUpdateTableEmployeeCurrentState);
 
   useEffect(() => {
-    console.log('att')
     try {
       if (currentPaginationTable.search) {
         findByCPFService(currentPaginationTable.search)

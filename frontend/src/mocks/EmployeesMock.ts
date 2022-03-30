@@ -16,10 +16,6 @@ export function getAllEmployeesMock(number: number ): Employee[] {
         id: 1,
         name: "Analista de sistemas"
       },
-      specialties: [{
-        id: 1,
-        name: "Desenvolvedor"
-      }],
       hiringDate: "01/01/2022",
       status: {
         id: 1,
@@ -38,10 +34,6 @@ export function getAllEmployeesMock(number: number ): Employee[] {
         id: 1,
         name: "Analista de sistemas"
       },
-      specialties: [{
-        id: 1,
-        name: "Desenvolvedor"
-      }],
       hiringDate: "01/01/2022",
       status: {
         id: 1,
@@ -60,10 +52,6 @@ export function getAllEmployeesMock(number: number ): Employee[] {
         id: 1,
         name: "Analista de sistemas"
       },
-      specialties: [{
-        id: 1,
-        name: "Desenvolvedor"
-      }],
       hiringDate: "01/01/2022",
       status: {
         id: 1,
@@ -82,10 +70,6 @@ export function getAllEmployeesMock(number: number ): Employee[] {
         id: 1,
         name: "Analista de sistemas"
       },
-      specialties: [{
-        id: 1,
-        name: "Desenvolvedor"
-      }],
       hiringDate: "01/01/2022",
       status: {
         id: 1,
@@ -104,10 +88,6 @@ export function getAllEmployeesMock(number: number ): Employee[] {
         id: 1,
         name: "Analista de sistemas"
       },
-      specialties: [{
-        id: 1,
-        name: "Desenvolvedor"
-      }],
       hiringDate: "01/01/2022",
       status: {
         id: 1,
