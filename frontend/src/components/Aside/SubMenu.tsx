@@ -1,14 +1,25 @@
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
-const SubMenu = (props: { activated?: boolean; id: string; iconSubMenu: string; subMenuText: string; subMenuToolTip: string; to: string }) => {
-    let active = props.activated ? ' active ' : ' '; 
+import { changeSelectedSubMenuAsideAction } from "store/Aside/aside.action";
+interface IProps {
+  activated?: boolean; 
+  id: string; 
+  idSelectedMenu: string,
+  iconSubMenu: string; 
+  subMenuText: string; 
+  subMenuToolTip: string; 
+  to: string
+}
+const SubMenu = (props: IProps) => {
+    const dispatch = useDispatch();
     function changeSelectedMenu(id: any) {
-      let selectedmenu = document.getElementById(id);
       let subMenus = document.querySelector('.sub-menu.active')
       subMenus?.classList.remove('active')
-      selectedmenu?.classList.toggle('active')
+      dispatch(changeSelectedSubMenuAsideAction(id))
+
     }
     return (
-      <div id={props.id} className={`sub-menu${active}animate-right`} onClick={() => changeSelectedMenu(props.id)}>
+      <div id={props.id} className={`sub-menu ${ props.id === props.idSelectedMenu ? 'active' : '' } animate-right`} onClick={() => changeSelectedMenu(props.id)}>
         <NavLink to={props.to}>
           <span className="sub-menu-icon">
             <i className={props.iconSubMenu}></i>

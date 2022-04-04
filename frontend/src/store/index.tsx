@@ -1,15 +1,27 @@
 import { combineReducers, createStore } from 'redux';
-import updateAuthenticationChangeStateReducer, { userAuthenticatedViewReducer } from './Authentication/Authentication.reducer';
-import getAllEmployeesReducer, { setStateFormReducer, setCurrentPagination, stateSelectionEmployeeReducer, updateTableEmployeeReducer } from './Employees/Employees.reducer';
+import { changeSelectedSubMenuAsideReducer } from './Aside/aside.reducer';
+import updateAuthenticationChangeStateReducer, { userAuthenticatedViewReducer } from './Authentication/authentication.reducer';
+import getAllEmployeesReducer, { setCurrentPaginationEmployeeReducer, setStateFormEmployeeReducer, stateSelectionEmployeeReducer, updateTableEmployeeReducer } from './Employees/employees.reducer';
+import getAllELesseesReducer, { setCurrentPaginationLesseeReducer, setStateFormLesseeReducer, stateSelectionLesseeReducer, updateTableLesseeReducer } from './Lessees/lessees.reducer';
 
 const rootReducer = combineReducers({
     employees: getAllEmployeesReducer,
-    stateForm: setStateFormReducer,
-    currentPaginationTableEmployees: setCurrentPagination,
+    stateFormEmployee: setStateFormEmployeeReducer,
+    currentPaginationTableEmployees: setCurrentPaginationEmployeeReducer,
     authenticationChangeState: updateAuthenticationChangeStateReducer,
     selectedEmployee: stateSelectionEmployeeReducer,
     userAuthenticated: userAuthenticatedViewReducer,
-    updateTableEmployeeCurrentState: updateTableEmployeeReducer
+    updateTableEmployeeCurrentState: updateTableEmployeeReducer,
+
+    // LESSEE REDUCER
+    lessees: getAllELesseesReducer,
+    stateFormLessee: setStateFormLesseeReducer,
+    currentPaginationTableLessees: setCurrentPaginationLesseeReducer,
+    updateTableLesseeCurrentState: updateTableLesseeReducer,
+    selectedLessee: stateSelectionLesseeReducer,
+
+    //ASIDE REDUCER
+    menuSelected: changeSelectedSubMenuAsideReducer
 })
 
 const store = createStore(rootReducer);

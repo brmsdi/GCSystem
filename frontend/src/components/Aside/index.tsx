@@ -1,9 +1,13 @@
 import AccountInformation from "components/AccountInformation";
-import { EMPLOYEES_HOME_URL, HOME_URL } from "utils/urls";
+import { useSelector } from "react-redux";
+import { selectSelectedSubMenuAside } from "store/Aside/aside.selector";
+import { TEXT_MENU_ITEM_ID_CONDOMINIUM, TEXT_MENU_ITEM_ID_EMPLOYEE, TEXT_MENU_ITEM_ID_HOME, TEXT_MENU_ITEM_ID_LESSEE } from "utils/menu-items";
+import { EMPLOYEES_HOME_URL, HOME_URL, LESSEES_HOME_URL } from "utils/urls";
 import ItemMenu from "./ItemMenu";
 import SubMenu from "./SubMenu";
 
 const Aside = () => {
+  const idSelectedMenu = useSelector(selectSelectedSubMenuAside)
   function clickColapseMenu() {
     document.getElementById('header-aside')?.classList.toggle('open');
   }
@@ -25,7 +29,7 @@ const Aside = () => {
       <hr />
       <div className="aside-body animate-right">
 
-      <ItemMenu
+        <ItemMenu
           menuIcon="bi bi-house"
           menuText="Home"
           key={90}
@@ -35,12 +39,13 @@ const Aside = () => {
               subMenuText="Inicio"
               subMenuToolTip="Página inicial"
               key={90}
-              id="sub-menu-home"
+              id={TEXT_MENU_ITEM_ID_HOME}
+              idSelectedMenu={idSelectedMenu}
               to={HOME_URL}
             />
           ]}
         />
-     
+
         <ItemMenu
           menuIcon="bi bi-stack"
           menuText="Gerenciar"
@@ -51,17 +56,27 @@ const Aside = () => {
               subMenuText="Condomínio"
               subMenuToolTip="Gerenciar condomínio"
               key={1}
-              id="sub-menu-condominium"
+              id={TEXT_MENU_ITEM_ID_CONDOMINIUM}
+              idSelectedMenu={idSelectedMenu}
               to=""
             />,
             <SubMenu
-              iconSubMenu="bi bi-people"
+              iconSubMenu="bi bi-person-badge"
               subMenuText="Funcionário"
               subMenuToolTip="Gerenciar funcionário"
-              activated
               key={2}
-              id="sub-menu-employee"
+              id={TEXT_MENU_ITEM_ID_EMPLOYEE}
+              idSelectedMenu={idSelectedMenu}
               to={EMPLOYEES_HOME_URL}
+            />,
+            <SubMenu
+              iconSubMenu="bi bi-people"
+              subMenuText="Locatário"
+              subMenuToolTip="Gerenciar locatário"
+              key={3}
+              id={TEXT_MENU_ITEM_ID_LESSEE}
+              idSelectedMenu={idSelectedMenu}
+              to={LESSEES_HOME_URL}
             />,
           ]}
         />

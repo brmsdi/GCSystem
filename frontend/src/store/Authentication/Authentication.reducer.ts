@@ -1,4 +1,4 @@
-import { EmailRequestCode, EmailRequestCodeAction, StateAuthenticationChange, UserAuthenticatedView, UserAuthenticatedViewTypeAction, UserAuthenticatedViewTypesEnum } from "types/AuthenticationTypes";
+import { EmailRequestCode, EmailRequestCodeAction, StateAuthenticationChange, UserAuthenticatedView, UserAuthenticatedViewTypeAction, UserAuthenticatedViewTypesEnum } from "types/authentication-types";
 
 export default function updateAuthenticationChangeStateReducer(state: EmailRequestCode = {}, action: EmailRequestCodeAction) {
     switch(action.type)

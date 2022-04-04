@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { getAllRoles } from "services/Role";
+import { getAllRoles } from "services/role";
 import Swal from "sweetalert2";
-import { StateFormEnum } from "types/Action";
-import { Employee, Role } from "types/Employee";
+import { StateFormEnum } from "types/action";
+import { Employee } from "types/employee";
+import { Role } from "types/role";
 import { formatDate } from "utils/textFormt";
 
 const FormTemplate = (props: { initForm: Employee, stateForm: StateFormEnum, submit: Function, isActivedFieldPassword: boolean, isNewEmployeeForm: boolean}) => {

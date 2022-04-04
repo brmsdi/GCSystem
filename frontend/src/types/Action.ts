@@ -22,3 +22,13 @@ export type AuthAction = {
     type: string;
     isLogged?: boolean;
 }
+
+export type TableAction = {
+    type: string
+}
+
+export enum TypeEnumActionTables {
+    SELECTED="SELECTED_EMPLOYEE",
+    REMOVED="REMOVENDO",
+    UPDATE="UPDATE"
+}

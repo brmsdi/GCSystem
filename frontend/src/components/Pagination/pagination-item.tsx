@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { PropsPagination } from "types/Pagination";
+import { PropsPagination } from "types/pagination";
 const PaginationItem = (props: { propsPagination: PropsPagination, changeNumberPage: Function }) => {
   let propsPagination = props.propsPagination;
   let pages = propsPagination.pagesNumbers;
@@ -40,7 +40,7 @@ const PaginationItem = (props: { propsPagination: PropsPagination, changeNumberP
         </li>
       </ul>
     </nav>
-  );
-};
+  )
+}
 
 export default PaginationItem;

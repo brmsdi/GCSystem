@@ -1,9 +1,8 @@
 import { getAllEmployeesMock } from 'mocks/EmployeesMock'; 
-import { CurrentStateForm, StateFormEnum, StateFormAction } from 'types/Action';
-import { ActionEmployee, Employee, Pagination, SelectedEmployeeAction, TableAction, TypeEnumActionEmployee } from "types/Employee";
-import { PaginationTableAction, StatePaginationEnum } from 'types/Pagination';
-
-let initPagination : Pagination = {
+import { CurrentStateForm, StateFormEnum, StateFormAction, TypeEnumActionTables, TableAction } from 'types/action';
+import { ActionEmployee, Employee, PaginationEmployee, SelectedEmployeeAction } from "types/employee";
+import { PaginationTableAction, StatePaginationEnum } from 'types/pagination';
+let initPagination : PaginationEmployee = {
     pageNumber: 0,
     paged: false,
     totalElements: 0,
@@ -29,9 +28,7 @@ let initEmployee : Employee = {
     password: ''
 } 
 
-
 export function getAll(state: Employee[] = getAllEmployeesMock(1), action: ActionEmployee) {
-
     switch(action.type)
     {
         case 'GET-ALL-EMPLOYEES-MOCK':
@@ -42,7 +39,7 @@ export function getAll(state: Employee[] = getAllEmployeesMock(1), action: Actio
     }
 } 
 
-export default function getAllEmployeesReducer(state: Pagination = initPagination, action: ActionEmployee) {
+export default function getAllEmployeesReducer(state: PaginationEmployee = initPagination, action: ActionEmployee) {
     switch(action.type)
     {
         case 'GET-ALL-EMPLOYEES':
@@ -57,22 +54,22 @@ export default function getAllEmployeesReducer(state: Pagination = initPaginatio
     }
 }
 
-export function setStateFormReducer(currentStateForm: CurrentStateForm = {activity: StateFormEnum.NOACTION, active: false} , action: StateFormAction ) {
+export function setStateFormEmployeeReducer(currentStateForm: CurrentStateForm = {activity: StateFormEnum.NOACTION, active: false} , action: StateFormAction ) {
     switch(action.type) {
-        case 'SET-STATE-FORM':
-            if(action.activity ===  StateFormEnum.NOACTION) {
+        case 'SET-STATE-FORM-EMPLOYEE':
+            if(action.activity === StateFormEnum.NOACTION) {
                 let stateCurrent: CurrentStateForm = {
                     activity: StateFormEnum.NOACTION,
                     active: false
                 }
                 return stateCurrent;
-            } else if(action.activity ===  StateFormEnum.SAVING ) {
+            } else if(action.activity === StateFormEnum.SAVING ) {
                 let stateCurrent: CurrentStateForm = {
                     activity: StateFormEnum.NEW,
                     active: true
                 }
                 return stateCurrent;
-            } else if(action.activity ===  StateFormEnum.UPDATE ) {
+            } else if(action.activity === StateFormEnum.UPDATE ) {
                 let stateCurrent: CurrentStateForm = {
                     activity: StateFormEnum.UPDATE,
                     active: true
@@ -85,7 +82,7 @@ export function setStateFormReducer(currentStateForm: CurrentStateForm = {activi
     }
 }
 
-export function setCurrentPagination(state: PaginationTableAction = {type: StatePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES, currentPage: 1, search: undefined }, action: PaginationTableAction) {
+export function setCurrentPaginationEmployeeReducer(state: PaginationTableAction = {type: StatePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES, currentPage: 1, search: undefined }, action: PaginationTableAction) {
     switch(action.type) {
         case StatePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES:
             return action;
@@ -96,9 +93,9 @@ export function setCurrentPagination(state: PaginationTableAction = {type: State
 
 export function stateSelectionEmployeeReducer(state: Employee = initEmployee, action: SelectedEmployeeAction) {
     switch (action.type) {
-        case TypeEnumActionEmployee.SELECTED:
+        case TypeEnumActionTables.SELECTED:
             return action.payload
-        case TypeEnumActionEmployee.REMOVED:
+        case TypeEnumActionTables.REMOVED:
             return initEmployee
         default:
             return state
@@ -106,9 +103,8 @@ export function stateSelectionEmployeeReducer(state: Employee = initEmployee, ac
 }
 
 export function updateTableEmployeeReducer(state: boolean = false, action: TableAction) {
-    
     switch (action.type) {
-        case TypeEnumActionEmployee.UPDATE:
+        case TypeEnumActionTables.UPDATE:
             return !state 
         default:
             return state

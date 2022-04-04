@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Token } from "types/AuthenticationToken";
+import { Token } from "types/authentication-token";
 import { REQUEST_BASE_URL } from "./requests";
 
 const http = axios.create({

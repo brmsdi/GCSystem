@@ -1,21 +1,27 @@
 import { useDispatch, useSelector } from "react-redux";
-import { removeSelectedEmployeeTableAction, setStateFormAction } from "store/Employees/Employees.actions";
-import { selectStateForm } from "store/Employees/Employees.selectors";
-import { CurrentStateForm, StateFormEnum } from "types/Action";
+import { CurrentStateForm, StateFormEnum } from "types/action";
 
-const BarHome = (props: {search: any}) => {
+interface IProps {
+  search: any,
+  removeSelectedContextTableAction: Function,
+  setStateFormContextAction: Function,
+  selectStateFormContext: any
+}
+
+// VERIFICAR
+const BarHome = (props: IProps) => {
   const dispatch = useDispatch();
-  const stateForm: CurrentStateForm = useSelector(selectStateForm)
+  const stateForm: CurrentStateForm = useSelector(props.selectStateFormContext)
   function toogleClass() {
     let form = document.querySelector(".content-form");
     if (form != null) {
       form.classList.toggle("active");
       if (form.classList.contains('active')) {
-        dispatch(setStateFormAction(StateFormEnum.SAVING))
+        dispatch(props.setStateFormContextAction(StateFormEnum.SAVING))
 
       } else {
-        dispatch(removeSelectedEmployeeTableAction())
-        dispatch(setStateFormAction(StateFormEnum.NOACTION))
+        dispatch(props.removeSelectedContextTableAction())
+        dispatch(props.setStateFormContextAction(StateFormEnum.NOACTION))
       }
     }
   }

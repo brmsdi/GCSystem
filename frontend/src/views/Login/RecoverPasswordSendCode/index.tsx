@@ -2,11 +2,11 @@ import PageLoading from "components/Loader/PageLoading";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { validateCode } from "services/Authentication";
-import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
-import { selectStateChangePassword } from "store/Authentication/Authentication.selectors";
+import { validateCode } from "services/authentication";
+import insertRequestCodeInfo from "store/Authentication/authentication.actions";
+import { selectStateChangePassword } from "store/Authentication/authentication.selectors";
 import Swal from "sweetalert2";
-import { EmailRequestCode, StateAuthenticationChange } from "types/AuthenticationTypes";
+import { EmailRequestCode, StateAuthenticationChange } from "types/authentication-types";
 import { LOGIN_URL, RECOVER_PASSWORD_CHANGE_URL } from "utils/urls";
 
 const RecoverPasswordSendCode = () => {

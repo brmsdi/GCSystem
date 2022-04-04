@@ -1,4 +1,4 @@
-import { Employee } from "types/Employee";
+import { Employee } from "types/employee";
 
 export function getAll1(number1: number, number2: number ): number {
   return number1 + number2;

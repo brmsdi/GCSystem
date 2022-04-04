@@ -1,5 +1,5 @@
-import { Token } from "types/AuthenticationToken";
-import { AuthCpfAndPassword, EmailRequestCode, UserAuthenticatedView } from "types/AuthenticationTypes";
+import { Token } from "types/authentication-token";
+import { AuthCpfAndPassword, EmailRequestCode, UserAuthenticatedView } from "types/authentication-types";
 import http from "utils/http";
 import { REQUEST_LOGIN_EMPLOYEES, REQUEST_PASSWORD_CHANGE, REQUEST_REQUEST_CODE, REQUEST_VALIDATE_CODE, REQUEST_VALIDATE_TOKEN } from "utils/requests";
 

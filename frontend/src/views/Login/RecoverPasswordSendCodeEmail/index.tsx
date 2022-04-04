@@ -2,10 +2,10 @@ import PageLoading from "components/Loader/PageLoading";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { requestCode } from "services/Authentication";
-import insertRequestCodeInfo from "store/Authentication/Authentication.actions";
+import { requestCode } from "services/authentication";
+import insertRequestCodeInfo from "store/Authentication/authentication.actions";
 import Swal from "sweetalert2";
-import { EmailRequestCode, StateAuthenticationChange } from "types/AuthenticationTypes";
+import { EmailRequestCode, StateAuthenticationChange } from "types/authentication-types";
 import { REQUEST_LOGIN } from "utils/requests";
 import { LOGIN_URL, RECOVER_PASSWORD_SEND_CODE_URL } from "utils/urls";
 

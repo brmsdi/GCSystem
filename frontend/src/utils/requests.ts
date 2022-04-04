@@ -10,3 +10,7 @@ export const REQUEST_PASSWORD_CHANGE = process.env.REACT_APP_REQUEST_PASSWORD_CH
 export const REQUEST_STATUS = process.env.REACT_APP_REQUEST_STATUS ?? '';
 export const REQUEST_ROLES = process.env.REACT_APP_REQUEST_ROLES ?? '';
 export const REQUEST_SPECIALTIES = process.env.REACT_APP_REQUEST_SPECIALTIES ?? '';
+
+/*lESSEES REQUEST */
+export const REQUEST_LESSEES = process.env.REACT_APP_REQUEST_LESSEES ?? '';
+export const REQUEST_LESSEE_SEARCH = process.env.REACT_APP_REQUEST_LESSEE_SEARCH ?? '';

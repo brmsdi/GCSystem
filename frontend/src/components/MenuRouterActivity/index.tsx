@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
-import { selectStateForm } from "store/Employees/Employees.selectors";
-import { StateFormEnum } from "types/Action";
+import { selectStateFormEmployee } from "store/Employees/employees.selectors";
+import { StateFormEnum } from "types/action";
 const MenuRouterActivity = () => {
-    var stateForm = useSelector(selectStateForm);
+    var stateForm = useSelector(selectStateFormEmployee);
     let activity = stateForm.activity !== StateFormEnum.NOACTION ? stateForm.activity : "Home";
     return(
         <div className="menu-router-activity">

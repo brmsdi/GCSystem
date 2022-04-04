@@ -1,4 +1,4 @@
-import { Status } from "types/Employee"
+import { Status } from "types/status"
 import http from "utils/http"
 import { REQUEST_BASE_URL, REQUEST_STATUS } from "utils/requests"
 

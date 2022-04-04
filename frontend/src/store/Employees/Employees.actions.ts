@@ -1,6 +1,6 @@
-import { StateFormAction} from "types/Action";
-import { ActionEmployee, Employee, Pagination, SelectedEmployeeAction, TableAction, TypeEnumActionEmployee } from "types/Employee";
-import { PaginationTableAction } from "types/Pagination";
+import { StateFormAction, TableAction, TypeEnumActionTables} from "types/action";
+import { ActionEmployee, Employee, PaginationEmployee, SelectedEmployeeAction } from "types/employee";
+import { PaginationTableAction } from "types/pagination";
 
 export function getAllEmployeesAction(page = 1) {
     let getAllEmployeesAction: ActionEmployee = {
@@ -10,7 +10,7 @@ export function getAllEmployeesAction(page = 1) {
     return getAllEmployeesAction;
 }
 
-export function updateEmployeesTable(page = 1, pagination: Pagination) {
+export function updateEmployeesTable(page = 1, pagination: PaginationEmployee) {
     let getAllEmployeesAction: ActionEmployee = {
         type: 'UPDATE-TABLE',
         payload: {
@@ -21,15 +21,15 @@ export function updateEmployeesTable(page = 1, pagination: Pagination) {
     return getAllEmployeesAction;
 }
 
-export function setStateFormAction(state: string ) {
+export function setStateFormEmployeeAction(state: string) {
     let stateForm: StateFormAction = {
-        type: 'SET-STATE-FORM',
+        type: 'SET-STATE-FORM-EMPLOYEE',
         activity: state
     }
     return stateForm;
 } 
 
-export function paginationTableAction(paginationTableAction: PaginationTableAction) {
+export function paginationEmployeeTableAction(paginationTableAction: PaginationTableAction) {
     let action : PaginationTableAction = { 
         type: paginationTableAction.type,
         currentPage: paginationTableAction.currentPage,
@@ -40,7 +40,7 @@ export function paginationTableAction(paginationTableAction: PaginationTableActi
 
 export function selectEmployeeTableAction(employee: Employee) {
     let action: SelectedEmployeeAction = {
-        type: TypeEnumActionEmployee.SELECTED,
+        type: TypeEnumActionTables.SELECTED,
         payload: employee
     }
     return action
@@ -48,15 +48,14 @@ export function selectEmployeeTableAction(employee: Employee) {
 
 export function removeSelectedEmployeeTableAction() {
     let action: SelectedEmployeeAction = {
-        type: TypeEnumActionEmployee.REMOVED
+        type: TypeEnumActionTables.REMOVED
     }
     return action
 }
 
-export function updateTableAction() {
+export function updateEmployeeTableAction() {
     let action: TableAction = {
-        type: TypeEnumActionEmployee.UPDATE
+        type: TypeEnumActionTables.UPDATE
     }
-
     return action
 }

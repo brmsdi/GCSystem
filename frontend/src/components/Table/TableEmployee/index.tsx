@@ -1,15 +1,15 @@
 import Alert from "components/messages";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteEmployee } from "services/Employee";
-import { selectEmployeeTableAction, setStateFormAction, updateTableAction } from "store/Employees/Employees.actions";
-import { selectAllEmployees } from "store/Employees/Employees.selectors";
+import { deleteEmployee } from "services/employee";
+import { selectEmployeeTableAction, setStateFormEmployeeAction, updateEmployeeTableAction } from "store/Employees/employees.actions";
+import { selectAllEmployees } from "store/Employees/employees.selectors";
 import Swal from "sweetalert2";
-import { StateFormEnum } from "types/Action";
-import { Employee, Pagination } from "types/Employee";
+import { StateFormEnum } from "types/action";
+import { Employee, PaginationEmployee } from "types/employee";
 import { formatDateForView } from "utils/textFormt";
 const TableEmployee = () => {
   const dispatch = useDispatch();
-  const page: Pagination = useSelector(selectAllEmployees);
+  const page: PaginationEmployee = useSelector(selectAllEmployees);
   async function clickButtonUpdate(selected: Employee | undefined) {
     let form = document.querySelector(".content-form");
     if (form != null && selected) {
@@ -17,7 +17,7 @@ const TableEmployee = () => {
         form.classList.toggle('active')
       }
       dispatch(selectEmployeeTableAction(selected))
-      dispatch(setStateFormAction(StateFormEnum.UPDATE))
+      dispatch(setStateFormEmployeeAction(StateFormEnum.UPDATE))
     }
   }
 
@@ -34,7 +34,7 @@ const TableEmployee = () => {
       try {
         const data = await deleteEmployee(ID)
         Swal.fire('Êbaa!', '' + data, 'success')
-        dispatch(updateTableAction())
+        dispatch(updateEmployeeTableAction())
       } catch (error: any) {
         if (!error.response) {
           Swal.fire("Oops!", "Sem conexão com o servidor!", "error");

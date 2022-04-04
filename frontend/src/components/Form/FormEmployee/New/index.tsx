@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
-import { saveEmployee } from "services/Employee";
-import { updateTableAction } from "store/Employees/Employees.actions";
+import { saveEmployee } from "services/employee";
+import { updateEmployeeTableAction } from "store/Employees/employees.actions";
 import Swal from "sweetalert2";
-import { StateFormEnum } from "types/Action";
-import { Employee } from "types/Employee";
+import { StateFormEnum } from "types/action";
+import { Employee } from "types/employee";
 import FormTemplate from "..";
 
 let initForm: Employee = {
@@ -30,7 +30,7 @@ const FormNewEmployee = () => {
     try {
       const result = await saveEmployee(form);
       await Swal.fire('Ebaa!', result, 'success')
-      dispatch(updateTableAction())
+      dispatch(updateEmployeeTableAction())
       return true
     } catch (error: any) {
       const errors = error.response.data.errors

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { findByCPFService, getAllEmployees } from "services/Employee";
-import { paginationTableAction, updateEmployeesTable } from "store/Employees/Employees.actions";
-import { selectCurrentPaginationTableEmployees, selectUpdateTableEmployeeCurrentState } from "store/Employees/Employees.selectors";
+import { findByCPFService, getAllEmployees } from "services/employee";
+import { paginationEmployeeTableAction, updateEmployeesTable } from "store/Employees/employees.actions";
+import { selectCurrentPaginationTableEmployees, selectUpdateTableEmployeeCurrentState } from "store/Employees/employees.selectors";
 import Swal from "sweetalert2";
-import { PaginationTableAction, PropsPagination } from "types/Pagination";
-import PaginationItem from "../PaginationItem";
+import { PaginationTableAction, PropsPagination } from "types/pagination";
+import PaginationItem from "../pagination-item";
 
 const PaginationTableEmployee = () => {
   const dispatch = useDispatch()
@@ -38,7 +38,7 @@ const PaginationTableEmployee = () => {
   }, [currentPaginationTable, dispatch, updateTableEmployeeCurrentState]);
 
   const changeNumberPage = (pageNumber: number) => {
-    dispatch(paginationTableAction({
+    dispatch(paginationEmployeeTableAction({
       ...currentPaginationTable,
       currentPage: pageNumber
     }));

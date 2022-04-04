@@ -10,11 +10,12 @@ import Login from 'views/Login';
 import RecoverPasswordSendCodeEmail from 'views/Login/RecoverPasswordSendCodeEmail';
 import RecoverPasswordSendCode from 'views/Login/RecoverPasswordSendCode';
 import RecoverPasswordChange from 'views/Login/RecoverPasswordChange';
-import { EMPLOYEES_HOME_URL, HOME_URL, LOGIN_URL, RECOVER_PASSWORD_CHANGE_URL, RECOVER_PASSWORD_SEND_CODE_URL, RECOVER_PASSWORD_URL } from 'utils/urls';
+import { LESSEES_HOME_URL, EMPLOYEES_HOME_URL, HOME_URL, LOGIN_URL, RECOVER_PASSWORD_CHANGE_URL, RECOVER_PASSWORD_SEND_CODE_URL, RECOVER_PASSWORD_URL } from 'utils/urls';
 import PrivateRoute from 'routes/PrivateRoutes';
 import TemplateApp from 'views/TemplateApp';
 import EmployeesView from 'views/Employees';
 import HomeView from 'views/Home';
+import LesseeView from 'views/Lessees';
 
 reactDom.render(
         <Provider store={store}>
@@ -22,6 +23,7 @@ reactDom.render(
                 <Routes>
                     <Route path={HOME_URL} element={<PrivateRoute children={<TemplateApp page={<HomeView />}/>} failRedirect={LOGIN_URL} />} />
                     <Route path={EMPLOYEES_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<EmployeesView />}/>} failRedirect={LOGIN_URL} />} />
+                    <Route path={LESSEES_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<LesseeView />}/>} failRedirect={LOGIN_URL} />} />
                     <Route path={LOGIN_URL}>
                         <Route path="" element={<App children={<Login />}/>} />
                         <Route path={RECOVER_PASSWORD_URL} element={<App children={<RecoverPasswordSendCodeEmail />}/>}/>

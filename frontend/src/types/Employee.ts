@@ -1,12 +1,5 @@
-export type Role = {
-    id?: number;
-    name: string;
-}
-
-export type Status = {
-    id?: number;
-    name: string;
-}
+import { Role } from "./role";
+import { Status } from "./status";
 
 export type Employee = {
     id?: number;
@@ -21,7 +14,7 @@ export type Employee = {
     password: string;
 }
 
-export type Pagination = {
+export type PaginationEmployee = {
     content?: Employee[];
     pageNumber: number;
     paged: boolean;
@@ -32,26 +25,15 @@ export type Pagination = {
     empty: boolean;
 }
 
-
 export type ActionEmployee = {
     type: string;
     payload?: {
         page: number,
-        pagination?: Pagination
+        pagination?: PaginationEmployee
     }
 }
 
 export type SelectedEmployeeAction = {
     type: string,
     payload?: Employee 
-}
-
-export enum TypeEnumActionEmployee {
-    SELECTED="SELECTED_EMPLOYEE",
-    REMOVED="REMOVENDO",
-    UPDATE="UPDATE"
-}
-
-export type TableAction = {
-    type: string
 }

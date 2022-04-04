@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { autheticate, clearToken, setToken } from "services/Authentication";
-import  insertRequestCodeInfo, {setUserAuthenticated } from "store/Authentication/Authentication.actions";
+import  insertRequestCodeInfo, {setUserAuthenticated } from "store/Authentication/authentication.actions";
 import Swal from "sweetalert2";
-import { AuthCpfAndPassword, StateAuthenticationChange, UserAuthenticatedViewTypesEnum } from "types/AuthenticationTypes";
+import { AuthCpfAndPassword, StateAuthenticationChange, UserAuthenticatedViewTypesEnum } from "types/authentication-types";
 import { clearAuth, setAuthorization } from "utils/http";
 import { EMPLOYEES_HOME_URL, RECOVER_PASSWORD_URL } from "utils/urls";
+import { autheticate, clearToken, setToken } from "services/authentication";
 
 const Login = () => {
   let nav = useNavigate();
@@ -29,8 +29,8 @@ const Login = () => {
     event.preventDefault();
     try {
       const result = await autheticate(auth);
-      await setToken(result);
-      await setAuthorization(result)
+      setToken(result);
+      setAuthorization(result)
       nav(EMPLOYEES_HOME_URL)
     } catch (error: any) {
       if (!error.response) {
