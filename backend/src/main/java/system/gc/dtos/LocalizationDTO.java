@@ -10,7 +10,9 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class LocalizationDTO implements ConvertEntityAndDTO<LocalizationDTO, Localization> {
-    private Integer id;
+
+    @NotNull(message = "{required.validation}")
+    private int zipCode;
 
     @NotNull(message = "{required.validation}")
     @NotBlank(message = "{required.validation}")
@@ -20,24 +22,19 @@ public class LocalizationDTO implements ConvertEntityAndDTO<LocalizationDTO, Loc
     @NotBlank(message = "{required.validation}")
     private String road;
 
-    @NotNull(message = "{required.validation}")
-    @NotBlank(message = "{required.validation}")
-    private String zipCode;
-
     public LocalizationDTO() {
     }
 
-    public LocalizationDTO(String name, String road, String zipCode) {
+    public LocalizationDTO(String name, String road, int zipCode) {
         setName(name);
         setRoad(road);
         setZipCode(zipCode);
     }
 
     public LocalizationDTO(Localization localization) {
-        setId(localization.getId());
+        setZipCode(localization.getZipCode());
         setName(localization.getName());
         setRoad(localization.getRoad());
-        setZipCode(localization.getZipCode());
     }
 
     @Override
@@ -47,13 +44,8 @@ public class LocalizationDTO implements ConvertEntityAndDTO<LocalizationDTO, Loc
 
     @Override
     public Localization toEntity(LocalizationDTO localizationDTO) {
-        Localization localization = new Localization(localizationDTO.getName(),
+        return new Localization(localizationDTO.getName(),
                 localizationDTO.getRoad(),
                 localizationDTO.getZipCode());
-
-        if (localizationDTO.getId() != null) {
-            localization.setId(localizationDTO.getId());
-        }
-        return localization;
     }
 }

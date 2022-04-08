@@ -10,16 +10,15 @@ import { useDispatch, useSelector } from "react-redux"
 import { changeSelectedSubMenuAsideAction } from "store/Aside/aside.action"
 import { removeSelectedEmployeeTableAction, setStateFormEmployeeAction } from "store/Employees/employees.actions"
 import { selectStateFormEmployee } from "store/Employees/employees.selectors"
-import { StateFormEnum } from "types/action"
+import { StateFormAction, StateFormEnum } from "types/action"
 import { TEXT_MENU_ITEM_ID_EMPLOYEE } from "utils/menu-items"
 
 const EmployeesView = () => {
     const dispatch = useDispatch();
     dispatch(changeSelectedSubMenuAsideAction(TEXT_MENU_ITEM_ID_EMPLOYEE))
     const pagination = <PaginationTableEmployee />
-    var stateForm = useSelector(selectStateFormEmployee);
+    var stateForm: StateFormAction = useSelector(selectStateFormEmployee);
     const [currentForm, setCurrentForm] = useState<ReactElement>(); 
-
     useEffect(() => {
         switch (stateForm.activity) {
             case StateFormEnum.UPDATE:
@@ -43,7 +42,7 @@ const EmployeesView = () => {
             removeSelectedContextTableAction={removeSelectedEmployeeTableAction} 
             setStateFormContextAction={setStateFormEmployeeAction} 
             selectStateFormContext={selectStateFormEmployee}/>
-            <div className="content-form">
+            <div className={stateForm.activity !== StateFormEnum.NOACTION ? 'content-form active' : 'content-form'} >
                 { currentForm }
             </div>
             <div className="content-table">

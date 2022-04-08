@@ -93,9 +93,10 @@ export function setCurrentPaginationEmployeeReducer(state: PaginationTableAction
 
 export function stateSelectionEmployeeReducer(state: Employee = initEmployee, action: SelectedEmployeeAction) {
     switch (action.type) {
-        case TypeEnumActionTables.SELECTED:
+        case TypeEnumActionTables.SELECTED_EMPLOYEE:
+            console.log('Employee')
             return action.payload
-        case TypeEnumActionTables.REMOVED:
+        case TypeEnumActionTables.REMOVING_EMPLOYEE:
             return initEmployee
         default:
             return state

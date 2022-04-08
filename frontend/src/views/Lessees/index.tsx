@@ -42,7 +42,7 @@ const LesseeView = () => {
             removeSelectedContextTableAction={removeSelectedLesseeTableAction} 
             setStateFormContextAction={setStateFormLesseeAction}
             selectStateFormContext={selectStateFormLessee}/>
-            <div className="content-form">
+            <div className={stateForm.activity !== StateFormEnum.NOACTION ? 'content-form active' : 'content-form'}>
                 {currentForm}
             </div>
             <div className="content-table">

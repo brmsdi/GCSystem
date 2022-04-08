@@ -22,8 +22,8 @@ public class LocalizationCondominium implements Serializable {
     @NotBlank
     private String number;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_localization_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+    @JoinColumn(name = "fk_localization_zipcode", referencedColumnName = "zipCode")
     private Localization localization;
 
     //@OneToOne(mappedBy = "localizationCondominium")

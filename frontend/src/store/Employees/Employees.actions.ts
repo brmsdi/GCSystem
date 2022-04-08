@@ -40,7 +40,7 @@ export function paginationEmployeeTableAction(paginationTableAction: PaginationT
 
 export function selectEmployeeTableAction(employee: Employee) {
     let action: SelectedEmployeeAction = {
-        type: TypeEnumActionTables.SELECTED,
+        type: TypeEnumActionTables.SELECTED_EMPLOYEE,
         payload: employee
     }
     return action
@@ -48,7 +48,7 @@ export function selectEmployeeTableAction(employee: Employee) {
 
 export function removeSelectedEmployeeTableAction() {
     let action: SelectedEmployeeAction = {
-        type: TypeEnumActionTables.REMOVED
+        type: TypeEnumActionTables.REMOVING_EMPLOYEE
     }
     return action
 }

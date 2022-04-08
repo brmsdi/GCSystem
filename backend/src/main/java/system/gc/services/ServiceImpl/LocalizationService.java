@@ -22,11 +22,8 @@ public class LocalizationService {
         log.info("Inserindo registro de localização no banco de dados: " + localizationDTO.getName());
         LocalizationDTO localizationDTOService = new LocalizationDTO();
         Localization localization = localizationRepository.save(localizationDTOService.toEntity(localizationDTO));
-        if (localization.getId() == null) {
-            log.warn("Erro ao salvar!");
-            return null;
-        }
-        log.info("Salvo com sucesso. ID: " + localization.getId());
+        //
+        log.info("Salvo com sucesso. ID: " + localization.getZipCode());
         return localizationDTOService.toDTO(localization);
     }
 

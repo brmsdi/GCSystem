@@ -6,7 +6,14 @@ import { Employee } from "types/employee";
 import { Role } from "types/role";
 import { formatDate } from "utils/textFormt";
 
-const FormTemplate = (props: { initForm: Employee, stateForm: StateFormEnum, submit: Function, isActivedFieldPassword: boolean, isNewEmployeeForm: boolean}) => {
+interface IProps { initForm: Employee, 
+  stateForm: StateFormEnum, 
+  submit: Function, 
+  isActivedFieldPassword: boolean, 
+  isNewEmployeeForm: boolean
+}
+
+const FormTemplate = (props: IProps) => {
   const [form, setForm] = useState<Employee>(props.initForm)
   const [roles, setRoles] = useState<Role[]>([])
 

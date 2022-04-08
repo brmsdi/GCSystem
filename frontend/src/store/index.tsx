@@ -1,8 +1,9 @@
 import { combineReducers, createStore } from 'redux';
 import { changeSelectedSubMenuAsideReducer } from './Aside/aside.reducer';
 import updateAuthenticationChangeStateReducer, { userAuthenticatedViewReducer } from './Authentication/authentication.reducer';
+import getAllCondominiumsReducer, { setCurrentPaginationCondominiumReducer, setStateFormCondominiumReducer, stateSelectionCondominiumReducer, updateTableCondominiumReducer } from './Condominium/condiminiums.reducer';
 import getAllEmployeesReducer, { setCurrentPaginationEmployeeReducer, setStateFormEmployeeReducer, stateSelectionEmployeeReducer, updateTableEmployeeReducer } from './Employees/employees.reducer';
-import getAllELesseesReducer, { setCurrentPaginationLesseeReducer, setStateFormLesseeReducer, stateSelectionLesseeReducer, updateTableLesseeReducer } from './Lessees/lessees.reducer';
+import getAllLesseesReducer, { setCurrentPaginationLesseeReducer, setStateFormLesseeReducer, stateSelectionLesseeReducer, updateTableLesseeReducer } from './Lessees/lessees.reducer';
 
 const rootReducer = combineReducers({
     employees: getAllEmployeesReducer,
@@ -14,14 +15,21 @@ const rootReducer = combineReducers({
     updateTableEmployeeCurrentState: updateTableEmployeeReducer,
 
     // LESSEE REDUCER
-    lessees: getAllELesseesReducer,
+    lessees: getAllLesseesReducer,
     stateFormLessee: setStateFormLesseeReducer,
     currentPaginationTableLessees: setCurrentPaginationLesseeReducer,
     updateTableLesseeCurrentState: updateTableLesseeReducer,
     selectedLessee: stateSelectionLesseeReducer,
 
     //ASIDE REDUCER
-    menuSelected: changeSelectedSubMenuAsideReducer
+    menuSelected: changeSelectedSubMenuAsideReducer,
+
+    // CONDOMINIUM REDUCER
+    condominiums: getAllCondominiumsReducer,
+    stateFormCondominium: setStateFormCondominiumReducer,
+    currentPaginationTableCondominiums: setCurrentPaginationCondominiumReducer,
+    updateTableCondominiumCurrentState: updateTableCondominiumReducer,
+    selectedCondominium: stateSelectionCondominiumReducer
 })
 
 const store = createStore(rootReducer);

@@ -1,22 +1,22 @@
 import Alert from "components/messages";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteLessee } from "services/lessee";
-import { selectLesseeTableAction, setStateFormLesseeAction, updateLesseeTableAction } from "store/Lessees/lessees.actions";
-import { selectAllLessees } from "store/Lessees/lessees.selector";
+import { deleteCondominium } from "services/condominium";
+import { selectCondominiumTableAction, setStateFormCondominiumAction, updateCondominiumTableAction } from "store/Condominium/condiminiums.actions";
+import { selectAllCondominiums } from "store/Condominium/condiminiums.selectors";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
-import { Lessee, PaginationLessee } from "types/lessee";
-const TableLessee = () => {
+import { Condominium, PaginationCondominium } from "types/condominium";
+const TableCondominium = () => {
   const dispatch = useDispatch();
-  const page: PaginationLessee = useSelector(selectAllLessees);
-  async function clickButtonUpdate(selected: Lessee | undefined) {
+  const page: PaginationCondominium = useSelector(selectAllCondominiums);
+  async function clickButtonUpdate(selected: Condominium | undefined) {
     let form = document.querySelector(".content-form");
     if (form != null && selected) {
       if (!form.classList.contains('active')) {
         form.classList.toggle('active')
       }
-      dispatch(selectLesseeTableAction(selected))
-      dispatch(setStateFormLesseeAction(StateFormEnum.UPDATE))
+      dispatch(selectCondominiumTableAction(selected))
+      dispatch(setStateFormCondominiumAction(StateFormEnum.UPDATE))
     }
   }
 
@@ -31,9 +31,9 @@ const TableLessee = () => {
 
     if (result.isConfirmed) {
       try {
-        const data = await deleteLessee(ID)
+        const data = await deleteCondominium(ID)
         Swal.fire('Êbaa!', '' + data, 'success')
-        dispatch(updateLesseeTableAction())
+        dispatch(updateCondominiumTableAction())
       } catch (error: any) {
         if (!error.response) {
           Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
@@ -58,16 +58,18 @@ const TableLessee = () => {
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Nome</th>
-                <th scope="col">RG</th>
-                <th scope="col">CPF</th>
-                <th scope="col">E-mail</th>
-                <th scope="col">Nº contato</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Nº apartamentos</th>
+                <th scope="col">Cep</th>
+                <th scope="col">Rua</th>
+                <th scope="col">Bairro</th>
+                <th scope="col">Número</th>
                 <th scope="col">#</th>
               </tr>
             </thead>
             <tbody>
               {
-                page?.content?.map((item: Lessee) => {
+                page?.content?.map((item: Condominium) => {
                   return <ItemTable key={item.id} item={item} toogleClass={clickButtonUpdate} clickButtonDelete={clickButtonDelete} />;
                 })
               }
@@ -77,7 +79,14 @@ const TableLessee = () => {
     </div> // end table-responsive
   )
 }
-const ItemTable = (props: { item: Lessee, toogleClass: Function, clickButtonDelete: Function }) => {
+
+interface IPropsItemTable {
+  item: Condominium, 
+  toogleClass: Function, 
+  clickButtonDelete: Function
+}
+
+const ItemTable = (props: IPropsItemTable) => {
   let item = props.item;
   return (
     <tr>
@@ -85,14 +94,18 @@ const ItemTable = (props: { item: Lessee, toogleClass: Function, clickButtonDele
       <td>{item.id}</td>
       <th className="thead-min">Nome</th>
       <td>{item.name}</td>
-      <th className="thead-min">RG</th>
-      <td>{item.rg}</td>
-      <th className="thead-min">CPF</th>
-      <td>{item.cpf}</td>
-      <th className="thead-min">E-mail</th>
-      <td>{item.email}</td>
-      <th className="thead-min">Nº contato</th>
-      <td>{item.contactNumber}</td>
+      <th className="thead-min">Descrição</th>
+      <td>{item.description}</td>
+      <th className="thead-min">Nº apartamentos</th>
+      <td>{item.numberApartments}</td>
+      <th className="thead-min">Cep</th>
+      <td>{item.localization.localization.zipCode}</td>
+      <th className="thead-min">Rua</th>
+      <td>{item.localization.localization.road}</td>
+      <th className="thead-min">Bairro</th>
+      <td>{item.localization.localization.name}</td>
+      <th className="thead-min">Número</th>
+      <td>{item.localization.number}</td>
       <th className="thead-min">Opções</th>
       <td>
         <button
@@ -108,4 +121,4 @@ const ItemTable = (props: { item: Lessee, toogleClass: Function, clickButtonDele
   )
 }
 
-export default TableLessee;
+export default TableCondominium;

@@ -2,7 +2,7 @@ import AccountInformation from "components/AccountInformation";
 import { useSelector } from "react-redux";
 import { selectSelectedSubMenuAside } from "store/Aside/aside.selector";
 import { TEXT_MENU_ITEM_ID_CONDOMINIUM, TEXT_MENU_ITEM_ID_EMPLOYEE, TEXT_MENU_ITEM_ID_HOME, TEXT_MENU_ITEM_ID_LESSEE } from "utils/menu-items";
-import { EMPLOYEES_HOME_URL, HOME_URL, LESSEES_HOME_URL } from "utils/urls";
+import { CONDOMINIUMS_HOME_URL, EMPLOYEES_HOME_URL, HOME_URL, LESSEES_HOME_URL } from "utils/urls";
 import ItemMenu from "./ItemMenu";
 import SubMenu from "./SubMenu";
 
@@ -11,8 +11,6 @@ const Aside = () => {
   function clickColapseMenu() {
     document.getElementById('header-aside')?.classList.toggle('open');
   }
-
-  // <i class="bi bi-house"></i>
   return (
     <aside>
       <div className="aside-header">
@@ -58,7 +56,7 @@ const Aside = () => {
               key={1}
               id={TEXT_MENU_ITEM_ID_CONDOMINIUM}
               idSelectedMenu={idSelectedMenu}
-              to=""
+              to={CONDOMINIUMS_HOME_URL}
             />,
             <SubMenu
               iconSubMenu="bi bi-person-badge"
@@ -85,7 +83,7 @@ const Aside = () => {
         <AccountInformation />
       </div>
     </aside>
-  );
-};
+  )
+}
 
 export default Aside;

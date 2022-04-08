@@ -39,7 +39,7 @@ export function updateLesseeTableAction() {
 
 export function selectLesseeTableAction(lessee: Lessee) {
     let action: SelectedLesseeAction = {
-        type: TypeEnumActionTables.SELECTED,
+        type: TypeEnumActionTables.SELECTED_LESSEE,
         payload: lessee
     }
     return action
@@ -47,7 +47,7 @@ export function selectLesseeTableAction(lessee: Lessee) {
 
 export function removeSelectedLesseeTableAction() {
     let action: SelectedLesseeAction = {
-        type: TypeEnumActionTables.REMOVED
+        type: TypeEnumActionTables.REMOVING_LESSEE
     }
     return action
 }

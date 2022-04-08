@@ -1,8 +1,9 @@
 import { CurrentStateForm, StateFormAction, StateFormEnum, TableAction, TypeEnumActionTables } from "types/action";
-import { ActionLessee, Lessee, PaginationLessee, SelectedLesseeAction } from "types/lessee";
+import { ActionCondominium, Condominium, PaginationCondominium, SelectedCondominiumAction } from "types/condominium"
 import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
 
-let initPagination : PaginationLessee = {
+
+let initPagination : PaginationCondominium = {
     pageNumber: 0,
     paged: false,
     totalElements: 0,
@@ -12,26 +13,29 @@ let initPagination : PaginationLessee = {
     empty: true
 }
 
-let initLessee : Lessee = {
+let initCondominium : Condominium = {
     name: '',
-    rg: '',
-    cpf: '',
-    birthDate: '',
-    email: '',
-    contactNumber: '',
+    description: '',
+    numberApartments: 0,
     status: {
         name: ''
     },
-    password: ''
+    localization: {
+        number: '0',
+        localization: {
+            name: '',
+            road: '',
+            zipCode: ''
+        }
+    }
 } 
 
-
-export default function getAllLesseesReducer(state: PaginationLessee = initPagination, action: ActionLessee) {
+export default function getAllCondominiumsReducer(state: PaginationCondominium = initPagination, action: ActionCondominium) {
     switch(action.type)
     {
-        case 'GET-ALL-LESSEES':
+        case 'GET-ALL-CONDOMINIUMS':
             return state;
-        case 'UPDATE-TABLE-LESSEE':
+        case 'UPDATE-TABLE-CONDOMINIUMS':
             if (action.payload?.pagination) {
                 return action.payload?.pagination;
             }
@@ -41,9 +45,9 @@ export default function getAllLesseesReducer(state: PaginationLessee = initPagin
     }
 }
 
-export function setStateFormLesseeReducer(currentStateForm: CurrentStateForm = {activity: StateFormEnum.NOACTION, active: false} , action: StateFormAction ) {
+export function setStateFormCondominiumReducer(currentStateForm: CurrentStateForm = {activity: StateFormEnum.NOACTION, active: false} , action: StateFormAction ) {
     switch(action.type) {
-        case 'SET-STATE-FORM-LESSEE':
+        case 'SET-STATE-FORM-CONDOMINIUM':
             if(action.activity ===  StateFormEnum.NOACTION) {
                 let stateCurrent: CurrentStateForm = {
                     activity: StateFormEnum.NOACTION,
@@ -69,28 +73,28 @@ export function setStateFormLesseeReducer(currentStateForm: CurrentStateForm = {
     }
 }
 
-export function setCurrentPaginationLesseeReducer(state: PaginationTableAction = {type: StatePaginationEnum.SETCURRENTPAGINATIONTABLELESSEES, currentPage: 1, search: undefined }, action: PaginationTableAction) {
+export function setCurrentPaginationCondominiumReducer(state: PaginationTableAction = {type: StatePaginationEnum.SETCURRENTPAGINATIONTABLECONDOMINIUMS, currentPage: 1, search: undefined }, action: PaginationTableAction) {
     switch(action.type) {
-        case StatePaginationEnum.SETCURRENTPAGINATIONTABLELESSEES:
+        case StatePaginationEnum.SETCURRENTPAGINATIONTABLECONDOMINIUMS:
             return action;
         default:
             return state;
     }
 }
 
-export function stateSelectionLesseeReducer(state: Lessee = initLessee, action: SelectedLesseeAction) {
+
+export function stateSelectionCondominiumReducer(state: Condominium = initCondominium, action: SelectedCondominiumAction) {
     switch (action.type) {
-        case TypeEnumActionTables.SELECTED_LESSEE:
-            console.log('lesssee')
+        case TypeEnumActionTables.SELECTED_CONDOMINIUM:
             return action.payload
-        case TypeEnumActionTables.REMOVING_LESSEE:
-            return initLessee
+        case TypeEnumActionTables.REMOVING_CONDOMINIUM:
+            return initCondominium
         default:
             return state
     }
 }
 
-export function updateTableLesseeReducer(state: boolean = false, action: TableAction) {
+export function updateTableCondominiumReducer(state: boolean = false, action: TableAction) {
     switch (action.type) {
         case TypeEnumActionTables.UPDATE:
             return !state 

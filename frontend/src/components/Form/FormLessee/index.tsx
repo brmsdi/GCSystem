@@ -3,7 +3,14 @@ import { StateFormEnum } from "types/action";
 import { Lessee } from "types/lessee";
 import { formatDate } from "utils/textFormt";
 
-const FormTemplate = (props: { initForm: Lessee, stateForm: StateFormEnum, submit: Function, isActivedFieldPassword: boolean, isNewRegisterForm: boolean}) => {
+interface IProps { 
+  initForm: Lessee, 
+  stateForm: StateFormEnum, 
+  submit: Function, 
+  isActivedFieldPassword: boolean, 
+  isNewRegisterForm: boolean}
+
+const FormTemplate = (props: IProps) => {
   const [form, setForm] = useState<Lessee>(props.initForm)
 
   function changeInput(value: any) {
@@ -93,6 +100,19 @@ const FormTemplate = (props: { initForm: Lessee, stateForm: StateFormEnum, submi
             required
           />
         </div>
+        <div className="form-container l2">
+            <label htmlFor="inputContactNumber">Nº contato</label>
+            <input
+              type="number"
+              id="inputContactNumber"
+              placeholder="Número"
+              name="contactNumber"
+              value={form.contactNumber}
+              onChange={(e) => changeInput({ contactNumber: e.target.value })}
+              required
+              minLength={11}
+            />
+          </div>
         {props.isActivedFieldPassword === true ? (
           <div className="form-container l2">
             <label htmlFor="inputPassword">Senha de acesso</label>

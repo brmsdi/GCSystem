@@ -8,7 +8,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import system.gc.dtos.*;
 import system.gc.entities.ActivityType;
@@ -118,8 +117,8 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     new RoleDTO(roles.get(0)),
                     null,
                     new StatusDTO(status.get(0))));
-            LocalizationDTO localizationDTO = localizationService.save(new LocalizationDTO("Flores", "920", "69058200"));
-            LocalizationDTO localizationDTO1 = localizationService.save(new LocalizationDTO("Parque 10", "Nov H", "69058223"));
+            LocalizationDTO localizationDTO = localizationService.save(new LocalizationDTO("Flores", "920", 69058200));
+            LocalizationDTO localizationDTO1 = localizationService.save(new LocalizationDTO("Parque 10", "Nov H", 69058201));
             CondominiumDTO condominiumDTO = new CondominiumDTO("Villa Lobos",
                     "A30",
                     20,

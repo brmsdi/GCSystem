@@ -16,8 +16,7 @@ import java.util.Set;
 public class Localization implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int zipCode;
 
     @NotNull
     @NotBlank
@@ -27,14 +26,10 @@ public class Localization implements Serializable {
     @NotBlank
     private String road;
 
-    @NotNull
-    @NotBlank
-    private String zipCode;
-
     public Localization() {
     }
 
-    public Localization(String name, String road, String zipCode) {
+    public Localization(String name, String road, int zipCode) {
         setName(name);
         setRoad(road);
         setZipCode(zipCode);
