@@ -6,8 +6,8 @@ export const getAllCondominiums = (page: number = 0, size: number = 5) => {
     return http.get<PaginationCondominium>(`${REQUEST_CONDOMINIUM}?page=${(page - 1)}&size=${size}`)
 }
 
-export const findByNameService = (CPF: string, page: number = 0, size: number = 5) => {
-    return http.get<PaginationCondominium>(`${REQUEST_CONDOMINIUM + REQUEST_CONDOMINIUM_SEARCH}?cpf=${CPF}&page=${page}&size=${size}`)
+export const findByNameService = (name: string, page: number = 0, size: number = 5) => {
+    return http.get<PaginationCondominium>(`${REQUEST_CONDOMINIUM + REQUEST_CONDOMINIUM_SEARCH}?name=${name}&page=${page}&size=${size}`)
 }
 
 export const saveCondominium = async (data: Condominium) => {

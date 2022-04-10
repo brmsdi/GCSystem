@@ -31,7 +31,6 @@ const SearchCondominium = () => {
   function submit(event: any) {
     event.preventDefault();
     dispatch(paginationCondominiumTableAction(paginationState));
-   
   }
   return (
     <form onSubmit={submit}>
@@ -40,7 +39,7 @@ const SearchCondominium = () => {
           type="text"
           id="inputName"
           placeholder="Nome"
-          name='name'
+          name="name"
           value={name}
           onChange={(e) => changeSearchValue(e.target.value)}
           required
