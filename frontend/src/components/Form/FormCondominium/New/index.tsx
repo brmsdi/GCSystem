@@ -11,7 +11,7 @@ let initForm: Condominium = {
   description: '',
   numberApartments: 0,
   status: {
-      id: 1,
+      id: 0,
       name: ''
   },
   localization: {

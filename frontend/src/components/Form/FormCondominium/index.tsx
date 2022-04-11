@@ -189,7 +189,7 @@ const FormTemplate = (props: IProps) => {
           >
             {
               status.map(status => (
-                <option key={status.id} value={status.id}>{status.name}</option>
+                <option selected={ status.id === props.initForm.status.id ? true : false } key={status.id} value={status.id}>{status.name}</option>
               ))
             }
           </select>

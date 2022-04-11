@@ -152,7 +152,7 @@ const FormTemplate = (props: IProps) => {
           >
             {
               roles.map(role => (
-                <option key={role.id} value={role.id}>{role.name}</option>
+                <option selected={props.initForm.role.id === role.id ? true : false} key={role.id} value={role.id}>{role.name}</option>
               ))
             }
           </select>

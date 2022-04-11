@@ -3,7 +3,7 @@ import { ActionCondominium, Condominium, PaginationCondominium, SelectedCondomin
 import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
 
 
-let initPagination : PaginationCondominium = {
+let initPagination: PaginationCondominium = {
     pageNumber: 0,
     paged: false,
     totalElements: 0,
@@ -13,7 +13,7 @@ let initPagination : PaginationCondominium = {
     empty: true
 }
 
-let initCondominium : Condominium = {
+let initCondominium: Condominium = {
     name: '',
     description: '',
     numberApartments: 0,
@@ -28,11 +28,10 @@ let initCondominium : Condominium = {
             zipCode: ''
         }
     }
-} 
+}
 
 export default function getAllCondominiumsReducer(state: PaginationCondominium = initPagination, action: ActionCondominium) {
-    switch(action.type)
-    {
+    switch (action.type) {
         case 'GET-ALL-CONDOMINIUMS':
             return state;
         case 'UPDATE-TABLE-CONDOMINIUMS':
@@ -45,22 +44,22 @@ export default function getAllCondominiumsReducer(state: PaginationCondominium =
     }
 }
 
-export function setStateFormCondominiumReducer(currentStateForm: CurrentStateForm = {activity: StateFormEnum.NOACTION, active: false} , action: StateFormAction ) {
-    switch(action.type) {
+export function setStateFormCondominiumReducer(currentStateForm: CurrentStateForm = { activity: StateFormEnum.NOACTION, active: false }, action: StateFormAction) {
+    switch (action.type) {
         case 'SET-STATE-FORM-CONDOMINIUM':
-            if(action.activity ===  StateFormEnum.NOACTION) {
+            if (action.activity === StateFormEnum.NOACTION) {
                 let stateCurrent: CurrentStateForm = {
                     activity: StateFormEnum.NOACTION,
                     active: false
                 }
                 return stateCurrent;
-            } else if(action.activity ===  StateFormEnum.SAVING ) {
+            } else if (action.activity === StateFormEnum.SAVING) {
                 let stateCurrent: CurrentStateForm = {
                     activity: StateFormEnum.NEW,
                     active: true
                 }
                 return stateCurrent;
-            } else if(action.activity ===  StateFormEnum.UPDATE ) {
+            } else if (action.activity === StateFormEnum.UPDATE) {
                 let stateCurrent: CurrentStateForm = {
                     activity: StateFormEnum.UPDATE,
                     active: true
@@ -73,8 +72,8 @@ export function setStateFormCondominiumReducer(currentStateForm: CurrentStateFor
     }
 }
 
-export function setCurrentPaginationCondominiumReducer(state: PaginationTableAction = {type: StatePaginationEnum.SETCURRENTPAGINATIONTABLECONDOMINIUMS, currentPage: 1, search: undefined }, action: PaginationTableAction) {
-    switch(action.type) {
+export function setCurrentPaginationCondominiumReducer(state: PaginationTableAction = { type: StatePaginationEnum.SETCURRENTPAGINATIONTABLECONDOMINIUMS, currentPage: 1, search: undefined }, action: PaginationTableAction) {
+    switch (action.type) {
         case StatePaginationEnum.SETCURRENTPAGINATIONTABLECONDOMINIUMS:
             return action;
         default:
@@ -97,7 +96,7 @@ export function stateSelectionCondominiumReducer(state: Condominium = initCondom
 export function updateTableCondominiumReducer(state: boolean = false, action: TableAction) {
     switch (action.type) {
         case TypeEnumActionTables.UPDATE:
-            return !state 
+            return !state
         default:
             return state
     }

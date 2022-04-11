@@ -114,7 +114,7 @@ const FormTemplate = (props: IProps) => {
             />
           </div>
         {props.isActivedFieldPassword === true ? (
-          <div className="form-container l2">
+          <div className="form-container l4">
             <label htmlFor="inputPassword">Senha de acesso</label>
             <input
               type="password"
