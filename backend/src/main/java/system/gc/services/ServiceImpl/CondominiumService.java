@@ -4,14 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.CondominiumDTO;
+import system.gc.dtos.RoleDTO;
 import system.gc.entities.Condominium;
 import system.gc.entities.Employee;
 import system.gc.repositories.CondominiumRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,6 +43,10 @@ public class CondominiumService {
         Page<Condominium> pageCondominium = condominiumRepository.findAll(pageable);
         condominiumRepository.loadLazyCondominiums(pageCondominium.toList());
         return pageCondominium.map(CondominiumDTO::new);
+    }
+
+    public List<CondominiumDTO> findAll(Sort sort) {
+            return condominiumRepository.findAll(sort).stream().map(CondominiumDTO::new).toList();
     }
 
     @Transactional

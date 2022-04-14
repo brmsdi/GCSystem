@@ -35,3 +35,16 @@ export type SelectedLesseeAction = {
     type: string,
     payload?: Lessee 
 }
+
+export const LesseeEmpty : Lessee = {
+    name: '',
+    rg: '',
+    cpf: '',
+    birthDate: '',
+    email: '',
+    contactNumber: '',
+    status: {
+        name: ''
+    },
+    password: ''
+} 

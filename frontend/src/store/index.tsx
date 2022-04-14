@@ -1,7 +1,8 @@
 import { combineReducers, createStore } from 'redux';
 import { changeSelectedSubMenuAsideReducer } from './Aside/aside.reducer';
 import updateAuthenticationChangeStateReducer, { userAuthenticatedViewReducer } from './Authentication/authentication.reducer';
-import getAllCondominiumsReducer, { setCurrentPaginationCondominiumReducer, setStateFormCondominiumReducer, stateSelectionCondominiumReducer, updateTableCondominiumReducer } from './Condominium/condiminiums.reducer';
+import getAllCondominiumsReducer, { setCurrentPaginationCondominiumReducer, setStateFormCondominiumReducer, stateSelectionCondominiumReducer, updateTableCondominiumReducer } from './Condominiums/condiminiums.reducer';
+import getAllContractsReducer, { setCurrentPaginationContractReducer, setStateFormContractReducer, stateSelectionContractReducer, updateTableContractReducer } from './Contracts/contracts.reducer';
 import getAllEmployeesReducer, { setCurrentPaginationEmployeeReducer, setStateFormEmployeeReducer, stateSelectionEmployeeReducer, updateTableEmployeeReducer } from './Employees/employees.reducer';
 import getAllLesseesReducer, { setCurrentPaginationLesseeReducer, setStateFormLesseeReducer, stateSelectionLesseeReducer, updateTableLesseeReducer } from './Lessees/lessees.reducer';
 
@@ -29,7 +30,14 @@ const rootReducer = combineReducers({
     stateFormCondominium: setStateFormCondominiumReducer,
     currentPaginationTableCondominiums: setCurrentPaginationCondominiumReducer,
     updateTableCondominiumCurrentState: updateTableCondominiumReducer,
-    selectedCondominium: stateSelectionCondominiumReducer
+    selectedCondominium: stateSelectionCondominiumReducer,
+
+    // CONTRACT REDUCER
+    contracts: getAllContractsReducer,
+    stateFormContract: setStateFormContractReducer,
+    currentPaginationTableContracts: setCurrentPaginationContractReducer,
+    updateTableContractCurrentState: updateTableContractReducer,
+    selectedContract: stateSelectionContractReducer
 })
 
 const store = createStore(rootReducer);

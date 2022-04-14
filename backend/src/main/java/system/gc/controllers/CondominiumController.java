@@ -10,9 +10,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.CondominiumDTO;
+import system.gc.dtos.RoleDTO;
 import system.gc.services.ServiceImpl.CondominiumService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/condominiums")
@@ -32,6 +34,12 @@ public class CondominiumController {
             @RequestParam(name = "sort", defaultValue = "name") String sort) {
         log.info("Listando condominios");
         return ResponseEntity.ok(condominiumService.listPaginationCondominium(PageRequest.of(page, size, Sort.by(sort))));
+    }
+
+    @GetMapping( value = "list")
+    public ResponseEntity<List<CondominiumDTO>> findAll(@RequestParam(name = "sort", defaultValue = "name") String sort) {
+        log.info("Listando condominios");
+        return ResponseEntity.ok(condominiumService.findAll(Sort.by(sort)));
     }
 
     @PostMapping

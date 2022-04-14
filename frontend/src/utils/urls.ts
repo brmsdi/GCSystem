@@ -6,3 +6,4 @@ export const EMPLOYEES_HOME_URL = "/employees";
 export const LESSEES_HOME_URL = "/lessees";
 export const HOME_URL = "/";
 export const CONDOMINIUMS_HOME_URL = "/condominiums";
+export const CONTRACTS_HOME_URL = "/contracts";

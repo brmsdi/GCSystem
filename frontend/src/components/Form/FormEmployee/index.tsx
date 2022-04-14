@@ -148,11 +148,14 @@ const FormTemplate = (props: IProps) => {
           <select
             id="inputOffice"
             name="role"
+            value={form.role.id ? form.role.id : 0}
             onChange={(e) => changeRole(parseInt(e.target.value))}
           >
             {
               roles.map(role => (
-                <option selected={props.initForm.role.id === role.id ? true : false} key={role.id} value={role.id}>{role.name}</option>
+                <option 
+                key={role.id} 
+                value={role.id}>{role.name}</option>
               ))
             }
           </select>

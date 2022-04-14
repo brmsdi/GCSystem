@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { paginationLesseeTableAction } from "store/Lessees/lessees.actions";
 import Swal from "sweetalert2";
 import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
-import { isValidFieldSearchCPF } from "utils/verifications";
+import { isValidFieldCPF } from "utils/verifications";
 
 const SearchLessee = () => {
   const dispatch = useDispatch()
@@ -32,7 +32,7 @@ const SearchLessee = () => {
   
   function submit(event: any) {
     event.preventDefault();
-    if (isValidFieldSearchCPF(CPF))
+    if (isValidFieldCPF(CPF))
     {
       dispatch(paginationLesseeTableAction(paginationState))
     } else {

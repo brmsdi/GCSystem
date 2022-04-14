@@ -1,36 +1,20 @@
 import { useDispatch } from "react-redux";
-import { saveCondominium } from "services/condominium";
-import { updateCondominiumTableAction } from "store/Condominiums/condiminiums.actions";
+import { saveContract } from "services/contract";
+import { updateContractTableAction } from "store/Contracts/contracts.actions";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
-import { Condominium } from "types/condominium";
+import { Contract, ContractEmpty } from "types/contract";
 import FormTemplate from "..";
 
-let initForm: Condominium = {
-  name: '',
-  description: '',
-  numberApartments: 0,
-  status: {
-      id: 0,
-      name: ''
-  },
-  localization: {
-      number: '',
-      localization: {
-          name: '',
-          road: '',
-          zipCode: ''
-      }
-  }
-}
+let initForm: Contract = ContractEmpty;
 
-const FormNewCondominium = () => {
+const FormNewContract = () => {
   const dispatch = useDispatch();
-  async function submit(form: Condominium) {
+  async function submit(form: Contract) {
     try {
-      const result = await saveCondominium(form);
+      const result = await saveContract(form);
       await Swal.fire('Ebaa!', result, 'success')
-      dispatch(updateCondominiumTableAction())
+      dispatch(updateContractTableAction())
       return true
     } catch (error: any) {
       const errors = error.response.data.errors
@@ -55,4 +39,4 @@ const FormNewCondominium = () => {
   )
 }
 
-export default FormNewCondominium;
+export default FormNewContract;

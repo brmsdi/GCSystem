@@ -1,20 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
-import { updateCondominium } from "services/condominium";
-import { updateCondominiumTableAction } from "store/Condominiums/condiminiums.actions";
-import { selectStateSelectedCondominium } from "store/Condominiums/condiminiums.selectors";
+import { updateContract } from "services/contract";
+import { updateContractTableAction } from "store/Contracts/contracts.actions";
+import { selectStateSelectedContract } from "store/Contracts/contracts.selector";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
-import { Condominium } from "types/condominium";
+import { Contract } from "types/contract";
 import FormTemplate from "..";
 
-const FormUpdateCondominium = () => {
+const FormUpdateContract = () => {
   const dispatch = useDispatch()
-  const selectedCondominium: Condominium = useSelector(selectStateSelectedCondominium)
-  async function submit(form: Condominium) {
+  const selectedContract: Contract = useSelector(selectStateSelectedContract)
+  async function submit(form: Contract) {
     try {
-      const result = await updateCondominium(form);
+      const result = await updateContract(form);
       await Swal.fire('Ebaa!', result, 'success')
-      dispatch(updateCondominiumTableAction())
+      dispatch(updateContractTableAction())
       return true
     } catch (error: any) {
       const errors = error.response.data.errors
@@ -31,7 +31,7 @@ const FormUpdateCondominium = () => {
   }
   return (
     <FormTemplate
-      initForm={selectedCondominium}
+      initForm={selectedContract}
       stateForm={StateFormEnum.EDITING}
       submit={submit}
       isActivedFieldPassword={false}
@@ -39,4 +39,4 @@ const FormUpdateCondominium = () => {
   )
 }
 
-export default FormUpdateCondominium;
+export default FormUpdateContract;

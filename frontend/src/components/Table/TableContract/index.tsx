@@ -1,22 +1,22 @@
 import Alert from "components/messages";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCondominium } from "services/condominium";
-import { selectCondominiumTableAction, setStateFormCondominiumAction, updateCondominiumTableAction } from "store/Condominiums/condiminiums.actions";
-import { selectAllCondominiums } from "store/Condominiums/condiminiums.selectors";
+import { deleteContract } from "services/contract";
+import { selectContractTableAction, setStateFormContractAction, updateContractTableAction } from "store/Contracts/contracts.actions";
+import { selectAllContracts } from "store/Contracts/contracts.selector";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
-import { Condominium, PaginationCondominium } from "types/condominium";
-const TableCondominium = () => {
+import { Contract, PaginationContract } from "types/contract";
+const TableContract= () => {
   const dispatch = useDispatch();
-  const page: PaginationCondominium = useSelector(selectAllCondominiums);
-  async function clickButtonUpdate(selected: Condominium | undefined) {
+  const page: PaginationContract = useSelector(selectAllContracts);
+  async function clickButtonUpdate(selected: Contract | undefined) {
     let form = document.querySelector(".content-form");
     if (form != null && selected) {
       if (!form.classList.contains('active')) {
         form.classList.toggle('active')
       }
-      dispatch(selectCondominiumTableAction(selected))
-      dispatch(setStateFormCondominiumAction(StateFormEnum.UPDATE))
+      dispatch(selectContractTableAction(selected))
+      dispatch(setStateFormContractAction(StateFormEnum.UPDATE))
     }
   }
 
@@ -31,9 +31,9 @@ const TableCondominium = () => {
 
     if (result.isConfirmed) {
       try {
-        const data = await deleteCondominium(ID)
+        const data = await deleteContract(ID)
         Swal.fire('Êbaa!', '' + data, 'success')
-        dispatch(updateCondominiumTableAction())
+        dispatch(updateContractTableAction())
       } catch (error: any) {
         if (!error.response) {
           Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
@@ -57,19 +57,21 @@ const TableCondominium = () => {
             <thead className="thead-max">
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">Nº apartamentos</th>
-                <th scope="col">Cep</th>
-                <th scope="col">Rua</th>
-                <th scope="col">Bairro</th>
-                <th scope="col">Número</th>
+                <th scope="col">Locatário</th>
+                <th scope="col">Condominio</th>
+                <th scope="col">ID Contrato</th>
+                <th scope="col">DT. Contrato</th>
+                <th scope="col">DT. Pagamento/Mês</th>
+                <th scope="col">DT. Vencimento</th>
+                <th scope="col">DT. Validade</th>
+                <th scope="col">Nº APT</th>
+                <th scope="col">Status</th>
                 <th scope="col">#</th>
               </tr>
             </thead>
             <tbody>
               {
-                page?.content?.map((item: Condominium) => {
+                page?.content?.map((item: Contract) => {
                   return <ItemTable key={item.id} item={item} toogleClass={clickButtonUpdate} clickButtonDelete={clickButtonDelete} />;
                 })
               }
@@ -80,32 +82,35 @@ const TableCondominium = () => {
   )
 }
 
-interface IPropsItemTable {
-  item: Condominium, 
+interface IProps {
+  item: Contract, 
   toogleClass: Function, 
   clickButtonDelete: Function
 }
-
-const ItemTable = (props: IPropsItemTable) => {
+const ItemTable = (props: IProps) => {
   let item = props.item;
   return (
     <tr>
       <th className="thead-min">ID</th>
       <td>{item.id}</td>
-      <th className="thead-min">Nome</th>
-      <td>{item.name}</td>
-      <th className="thead-min">Descrição</th>
-      <td>{item.description}</td>
-      <th className="thead-min">Nº apartamentos</th>
-      <td>{item.numberApartments}</td>
-      <th className="thead-min">Cep</th>
-      <td>{item.localization.localization.zipCode}</td>
-      <th className="thead-min">Rua</th>
-      <td>{item.localization.localization.road}</td>
-      <th className="thead-min">Bairro</th>
-      <td>{item.localization.localization.name}</td>
-      <th className="thead-min">Número</th>
-      <td>{item.localization.number}</td>
+      <th className="thead-min">Locatário</th>
+      <td>{item.lessee.name}</td>
+      <th className="thead-min">Condominio</th>
+      <td>{item.condominium.name}</td>
+      <th className="thead-min">ID Contrato</th>
+      <td>{item.id}</td>
+      <th className="thead-min">DT. Contrato</th>
+      <td>{item.contractDate}</td>
+      <th className="thead-min">DT. Pagamento/Mês</th>
+      <td>{item.monthlyPaymentDate}</td>
+      <th className="thead-min">DT. Vencimento</th>
+      <td>{item.monthlyDueDate}</td>
+      <th className="thead-min">DT. Validade</th>
+      <td>{item.contractExpirationDate}</td>
+      <th className="thead-min">Nº APT</th>
+      <td>{item.apartmentNumber}</td>
+      <th className="thead-min">Status</th>
+      <td>{item.status.name}</td>
       <th className="thead-min">Opções</th>
       <td>
         <button
@@ -121,4 +126,4 @@ const ItemTable = (props: IPropsItemTable) => {
   )
 }
 
-export default TableCondominium;
+export default TableContract;

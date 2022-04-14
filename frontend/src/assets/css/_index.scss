@@ -31,18 +31,19 @@ span + span {
 }
 
 label {
-  padding-bottom: .1875rem;
+  padding-bottom: .1900rem;
   border: none;
   font-weight: 600;
   letter-spacing: 0.01rem;
-  color: $--clr;
+  color: $--color-v10;
 }
 
 input,
 select {
   border-radius: 0.25rem;
   width: 100%;
-  padding: 0.675rem 0.75rem;
+  //padding: 0.675rem 0.75rem;
+  padding: 0.600rem 0.75rem;
   font-size: 1rem;
   border: 1px solid #ced4da;
   background-color: #fff;
@@ -90,7 +91,7 @@ a {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: $--clr;
+      background-color: $--color-v10;
       height: 0;
       width: 0;
       z-index: $z-index-aside;
@@ -115,7 +116,7 @@ a {
           button {
             height: 100%;
             width: 100%;
-            background-color: $--clr;
+            background-color: $--color-v10;
             color: #fff;
             border-style: solid;
             border-radius: 0.8rem;
@@ -304,6 +305,11 @@ a {
       }
     }
   } // end bar-home
+
+  #bar-home-btn-new {
+    color: #fff;
+    background-color: $--color-v11;
+  }
   .pagination {
     height: 2.7rem;
   }

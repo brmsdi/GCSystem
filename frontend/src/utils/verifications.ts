@@ -1,4 +1,4 @@
-export const isValidFieldSearchCPF = (value: any) => {
+export const isValidFieldCPF = (value: any) => {
     return (value.length === 11)
 }
 

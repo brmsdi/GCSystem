@@ -33,3 +33,21 @@ export type SelectedCondominiumAction = {
     type: string,
     payload?: Condominium 
 }
+
+
+export const CondominiumEmpty: Condominium = {
+    name: '',
+    description: '',
+    numberApartments: 0,
+    status: {
+        name: ''
+    },
+    localization: {
+        number: '0',
+        localization: {
+            name: '',
+            road: '',
+            zipCode: ''
+        }
+    }
+}

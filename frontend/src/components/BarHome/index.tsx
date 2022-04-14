@@ -29,7 +29,7 @@ const BarHome = (props: IProps) => {
     <div className="bar-home">
       <button
         id="bar-home-btn-new"
-        className="btn btn-success btn-new-employee"
+        className="btn btn-new-employee"
         onClick={() => toogleClass()}>
         { stateForm.activity === StateFormEnum.NOACTION ? 'Novo' : 'Voltar' }
       </button>

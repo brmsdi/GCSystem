@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { paginationCondominiumTableAction } from "store/Condominium/condiminiums.actions";
+import { paginationCondominiumTableAction } from "store/Condominiums/condiminiums.actions";
 import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
 
 const SearchCondominium = () => {

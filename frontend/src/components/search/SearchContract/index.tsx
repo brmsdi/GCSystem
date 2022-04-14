@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { paginationEmployeeTableAction } from "store/Employees/employees.actions";
+import { paginationContractTableAction } from "store/Contracts/contracts.actions";
 import Swal from "sweetalert2";
 import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
 import { isValidFieldCPF } from "utils/verifications";
 
-const SearchEmployee = () => {
+const SearchContracts = () => {
   const dispatch = useDispatch()
   const[CPF, setCPF] = useState('')
   const[paginationState, setPaginationState] = useState<PaginationTableAction>({
-    type: StatePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES,
+    type: StatePaginationEnum.SETCURRENTPAGINATIONTABLECONTRACTS,
     currentPage: 1,
     search: undefined
   })
@@ -23,7 +23,7 @@ const SearchEmployee = () => {
       })
 
     } else if (CPF.length === 0) {
-      dispatch(paginationEmployeeTableAction({
+      dispatch(paginationContractTableAction({
         ...paginationState,
         search: undefined
       }))             
@@ -34,7 +34,7 @@ const SearchEmployee = () => {
     event.preventDefault();
     if (isValidFieldCPF(CPF))
     {
-      dispatch(paginationEmployeeTableAction(paginationState))
+      dispatch(paginationContractTableAction(paginationState))
     } else {
       Swal.fire('Ooop!', 'Digite um CPF válido.', 'error')
       document.getElementById('inputCPFSearch')?.focus();
@@ -60,4 +60,4 @@ const SearchEmployee = () => {
   )
 }
 
-export default SearchEmployee;
+export default SearchContracts;

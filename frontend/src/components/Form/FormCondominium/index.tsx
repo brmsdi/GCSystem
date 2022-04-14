@@ -10,135 +10,153 @@ import { Status } from "types/status";
 import { isValidZipCode } from "utils/verifications";
 
 interface IProps {
-  initForm: Condominium,
-  stateForm: StateFormEnum,
-  submit: Function,
-  isActivedFieldPassword: boolean,
-  isNewRegisterForm: boolean
+  initForm: Condominium;
+  stateForm: StateFormEnum;
+  submit: Function;
+  isActivedFieldPassword: boolean;
+  isNewRegisterForm: boolean;
 }
 
 const FormTemplate = (props: IProps) => {
-  const [form, setForm] = useState<Condominium>(props.initForm)
-  const [status, setStatus] = useState<Status[]>([])
-  const [localization, setLocalization] = useState<Localization>(props.initForm.localization.localization);
+  const [form, setForm] = useState<Condominium>(props.initForm);
+  const [status, setStatus] = useState<Status[]>([]);
+  const [localization, setLocalization] = useState<Localization>(
+    props.initForm.localization.localization
+  );
   const [localizationNumber, setLocalizationNumber] = useState<LocalizationCondominium>(props.initForm.localization);
-  const [zipCode, setZipCode] = useState('');
-  const [zipCodeProcessing, setZipCodeProcessing] = useState(false)
+  const [zipCode, setZipCode] = useState("");
+  const [zipCodeProcessing, setZipCodeProcessing] = useState(false);
   function changeInput(value: any) {
-    setForm(form => ({ ...form, ...value }))
+    setForm((form) => ({ ...form, ...value }));
   }
 
   function changeStatus(value: number) {
     for (var index = 0; index < status.length; index++) {
       let statusSelected = status.at(index);
       if (statusSelected?.id === value) {
-        setForm({ ...form, status: statusSelected })
-        break
+        setForm({ ...form, status: statusSelected });
+        break;
       }
     }
   }
 
   async function changeLocalization(value: any) {
-    setLocalization(localization => ({ ...localization, ...value }))
+    setLocalization((localization) => ({ ...localization, ...value }));
   }
 
   function changeLocalizationNumber(value: any) {
-    setLocalizationNumber(localizationNumber => ({ ...localizationNumber, ...value }))
+    setLocalizationNumber((localizationNumber) => ({
+      ...localizationNumber,
+      ...value,
+    }));
   }
 
   async function changeZipCode(value: any) {
     if (value.length <= 8) {
-      setZipCode(value)
+      setZipCode(value);
       if (isValidZipCode(value)) {
-        getZipCodeInformation(value)
+        getZipCodeInformation(value);
       } else {
-        clearFieldsLocalization()
+        clearFieldsLocalization();
       }
     }
   }
 
   useEffect(() => {
-    setForm(form => ({ ...form, ...props.initForm }))
-    setLocalization(props.initForm.localization.localization)
-    setLocalizationNumber(props.initForm.localization)
-    setZipCode(props.initForm.localization.localization.zipCode === '' ? '' : props.initForm.localization.localization.zipCode)
-  }, [props.initForm])
+    setForm((form) => ({ ...form, ...props.initForm }));
+    setLocalization(props.initForm.localization.localization);
+    setLocalizationNumber(props.initForm.localization);
+    setZipCode(
+      props.initForm.localization.localization.zipCode === ""
+        ? ""
+        : props.initForm.localization.localization.zipCode
+    );
+  }, [props.initForm]);
 
   function getZipCodeInformation(zipCode: any) {
-    setZipCodeProcessing(true)
+    setZipCodeProcessing(true);
     getZipCodeService(zipCode)
-      .then(response => {
+      .then((response) => {
         if (response.data.erro) {
-          setZipCode('')
-          Swal.fire('Oops!', 'CEP invalido. Tente novamente!', 'error')
-          setZipCodeProcessing(false)
-          return
+          setZipCode("");
+          Swal.fire("Oops!", "CEP invalido. Tente novamente!", "error");
+          setZipCodeProcessing(false);
+          return;
         }
         let newLocalization = {
           ...localization,
           zipCode: zipCode,
           road: response.data.logradouro,
-          name: response.data.bairro
-        }
-        setLocalization({ ...newLocalization })
-        setZipCodeProcessing(false)
+          name: response.data.bairro,
+        };
+        setLocalization({ ...newLocalization });
+        setZipCodeProcessing(false);
       })
-      .catch(error => {
-        console.log(error)
-        setZipCodeProcessing(false)
-      })
+      .catch((error) => {
+        console.log(error);
+        setZipCodeProcessing(false);
+      });
   }
   useEffect(() => {
     try {
-      getAllStatus()
-        .then(response => {
-          setStatus(response.data)
-        })
-
+      getAllStatus().then((response) => {
+        setStatus(response.data);
+      });
     } catch (error: any) {
       if (!error.response) {
-        Swal.fire('Oops!', 'Sem conexão com o servidor!', 'error')
+        Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
       }
     }
-  }, [])
+  }, []);
 
   async function submit(event: any) {
     event.preventDefault();
-    setLocalizationNumber({ ...localizationNumber, localization: localization })
-    let newLocalizationCondominium: LocalizationCondominium = { ...localizationNumber, localization: localization }
-    let newForm: Condominium = { ...form, localization: newLocalizationCondominium }
-    setForm({ ...newForm })
-    const result = await props.submit(newForm)
+    setLocalizationNumber({
+      ...localizationNumber,
+      localization: localization,
+    });
+    let newLocalizationCondominium: LocalizationCondominium = {
+      ...localizationNumber,
+      localization: localization,
+    };
+    let newForm: Condominium = {
+      ...form,
+      localization: newLocalizationCondominium,
+    };
+    setForm({ ...newForm });
+    const result = await props.submit(newForm);
     if (result === true) {
       if (props.isNewRegisterForm === true) {
-        clearForm()
-        clearFieldsLocalizationCondominium()
-        clearFieldsLocalization()
-        setZipCode('')
+        clearForm();
+        clearFieldsLocalizationCondominium();
+        clearFieldsLocalization();
+        setZipCode("");
       } else {
-        setForm({ ...form })
+        setForm({ ...form });
       }
     }
   }
 
   async function clearField() {
-    clearForm()
-    clearFieldsLocalizationCondominium()
-    clearFieldsLocalization()
+    clearForm();
+    clearFieldsLocalizationCondominium();
+    clearFieldsLocalization();
   }
 
   function clearForm() {
-    setForm({ ...props.initForm })
+    setForm({ ...props.initForm });
   }
 
   function clearFieldsLocalizationCondominium() {
-    let initLocalizationCondominium: LocalizationCondominium = props.initForm.localization;
-    setLocalizationNumber({ ...initLocalizationCondominium })
+    let initLocalizationCondominium: LocalizationCondominium =
+      props.initForm.localization;
+    setLocalizationNumber({ ...initLocalizationCondominium });
   }
 
   function clearFieldsLocalization() {
-    let initLocalization: Localization = props.initForm.localization.localization;
-    setLocalization({ ...initLocalization })
+    let initLocalization: Localization =
+      props.initForm.localization.localization;
+    setLocalization({ ...initLocalization });
   }
 
   return (
@@ -185,13 +203,14 @@ const FormTemplate = (props: IProps) => {
           <select
             id="inputStatus"
             name="status"
+            value={form.status.id ? form.status.id : 0}
             onChange={(e) => changeStatus(parseInt(e.target.value))}
           >
-            {
-              status.map(status => (
-                <option selected={ status.id === props.initForm.status.id ? true : false } key={status.id} value={status.id}>{status.name}</option>
-              ))
-            }
+            {status.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -243,7 +262,9 @@ const FormTemplate = (props: IProps) => {
             placeholder="Número"
             name="number"
             value={localizationNumber.number}
-            onChange={(e) => changeLocalizationNumber({ number: e.target.value })}
+            onChange={(e) =>
+              changeLocalizationNumber({ number: e.target.value })
+            }
             required
           />
         </div>
@@ -253,14 +274,17 @@ const FormTemplate = (props: IProps) => {
           <button type="submit" className="btn btn-success">
             Salvar
           </button>
-          <button type="button" className="btn btn-secondary"
-            onClick={clearField}>
-            {props.isActivedFieldPassword === true ? 'Limpar' : 'Restaurar'}
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={clearField}
+          >
+            {props.isActivedFieldPassword === true ? "Limpar" : "Restaurar"}
           </button>
         </div>
       </div>
     </form>
-  )
-}
+  );
+};
 
 export default FormTemplate;

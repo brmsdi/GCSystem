@@ -8,8 +8,8 @@ import TableCondominium from "components/Table/TableCondominium"
 import { ReactElement, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { changeSelectedSubMenuAsideAction } from "store/Aside/aside.action"
-import { removeSelectedCondominiumTableAction, setStateFormCondominiumAction } from "store/Condominium/condiminiums.actions"
-import { selectStateFormCondominium } from "store/Condominium/condiminiums.selectors"
+import { removeSelectedCondominiumTableAction, setStateFormCondominiumAction } from "store/Condominiums/condiminiums.actions"
+import { selectStateFormCondominium } from "store/Condominiums/condiminiums.selectors"
 import { StateFormEnum } from "types/action"
 import { TEXT_MENU_ITEM_ID_CONDOMINIUM } from "utils/menu-items"
 
@@ -18,33 +18,33 @@ const CondominiumsView = () => {
     dispatch(changeSelectedSubMenuAsideAction(TEXT_MENU_ITEM_ID_CONDOMINIUM))
     const pagination = <PaginationTableCondominium />
     var stateForm = useSelector(selectStateFormCondominium);
-    const [currentForm, setCurrentForm] = useState<ReactElement>(); 
+    const [currentForm, setCurrentForm] = useState<ReactElement>();
 
     useEffect(() => {
         switch (stateForm.activity) {
             case StateFormEnum.UPDATE:
                 setCurrentForm(<FormUpdateCondominium />)
-            break
+                break
             case StateFormEnum.NEW:
                 setCurrentForm(<FormNewCondominium />)
-            break
+                break
             default:
-                
+
         }
     }, [stateForm])
-    
+
     return (
         <main className="content-main animate-right">
             <div className="home-header">
                 <h1>{"Condominios"}</h1>
             </div>
             <MenuRouterActivity />
-            <BarHome search={<SearchCondominium />} 
-            removeSelectedContextTableAction={removeSelectedCondominiumTableAction} 
-            setStateFormContextAction={setStateFormCondominiumAction} 
-            selectStateFormContext={selectStateFormCondominium}/>
+            <BarHome search={<SearchCondominium />}
+                removeSelectedContextTableAction={removeSelectedCondominiumTableAction}
+                setStateFormContextAction={setStateFormCondominiumAction}
+                selectStateFormContext={selectStateFormCondominium} />
             <div className={stateForm.activity !== StateFormEnum.NOACTION ? 'content-form active' : 'content-form'}>
-                { currentForm }
+                {currentForm}
             </div>
             <div className="content-table">
                 {pagination}

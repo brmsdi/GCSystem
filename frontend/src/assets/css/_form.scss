@@ -16,6 +16,29 @@
     width: 94%;
   }
 
+  fieldset {
+    padding: .9rem .8rem;
+    legend {
+      font-size: 1.2rem;
+      font-weight: 450;
+    }
+
+    hr {
+      background-color: black;
+    }
+  }
+
+  .fieldset-ok {
+    color: $--color-v9;
+    input, label {
+      color: $--color-v9;
+    }
+  }
+
+  .legend-icon {
+    font-size: 1.5rem;
+  }
+
   .row-form-1 {
     display: flex;
     width: 100%;
@@ -40,13 +63,32 @@
   width: 30%;
 }
 
-
 .form-container.l4 {
   width: 40%;
 }
 
 .form-container.f4 {
   width: 25%;
+}
+
+.div-search-form {
+  display: flex;
+  input {
+    width: 80%;
+    margin: 0;
+    border-radius: 0.25rem 0px 0px 0.25rem;
+    margin: 0;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  button {
+    width: 20%;
+    border-radius: 0px 0.25rem 0.25rem 0px;
+    margin: 0;
+    font-size: 0.89rem;
+  }
 }
 
 @media (max-width: 44.56em) {

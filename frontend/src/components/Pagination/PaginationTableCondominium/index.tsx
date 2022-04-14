@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { findByNameService, getAllCondominiums } from "services/condominium";
-import { paginationCondominiumTableAction, updateCondominiumTable } from "store/Condominium/condiminiums.actions";
-import { selectCurrentPaginationTableCondominiums, selectUpdateTableCondominiumCurrentState } from "store/Condominium/condiminiums.selectors";
+import { paginationCondominiumTableAction, updateCondominiumTable } from "store/Condominiums/condiminiums.actions";
+import { selectCurrentPaginationTableCondominiums, selectUpdateTableCondominiumCurrentState } from "store/Condominiums/condiminiums.selectors";
 import Swal from "sweetalert2";
 import { PaginationTableAction, PropsPagination } from "types/pagination";
 import PaginationItem from "../pagination-item";
