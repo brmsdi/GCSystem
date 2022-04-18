@@ -1,30 +1,9 @@
 import { CurrentStateForm, StateFormAction, StateFormEnum, TableAction, TypeEnumActionTables } from "types/action";
-import { ActionLessee, Lessee, PaginationLessee, SelectedLesseeAction } from "types/lessee";
+import { ActionLessee, Lessee, LesseeEmpty, PaginationLessee, PaginationLesseeEmpty, SelectedLesseeAction } from "types/lessee";
 import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
 
-let initPagination : PaginationLessee = {
-    pageNumber: 0,
-    paged: false,
-    totalElements: 0,
-    totalPages: 0,
-    size: 0,
-    number: -1,
-    empty: true
-}
-
-let initLessee : Lessee = {
-    name: '',
-    rg: '',
-    cpf: '',
-    birthDate: '',
-    email: '',
-    contactNumber: '',
-    status: {
-        name: ''
-    },
-    password: ''
-} 
-
+let initPagination : PaginationLessee = PaginationLesseeEmpty;
+let initLessee : Lessee = LesseeEmpty;
 
 export default function getAllLesseesReducer(state: PaginationLessee = initPagination, action: ActionLessee) {
     switch(action.type)

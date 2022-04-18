@@ -1,19 +1,9 @@
 import { CurrentStateForm, StateFormAction, StateFormEnum, TableAction, TypeEnumActionTables } from "types/action";
-import { ActionContract, Contract, ContractEmpty, PaginationContract, SelectedContractAction } from "types/contract";
+import { ActionContract, Contract, ContractEmpty, PaginationContract, PaginationContractEmpty, SelectedContractAction } from "types/contract";
 import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
 
-let initPagination : PaginationContract = {
-    pageNumber: 0,
-    paged: false,
-    totalElements: 0,
-    totalPages: 0,
-    size: 0,
-    number: -1,
-    empty: true
-}
-
+let initPagination : PaginationContract = PaginationContractEmpty;
 let initContract : Contract = ContractEmpty;
-
 
 export default function getAllContractsReducer(state: PaginationContract = initPagination, action: ActionContract) {
     switch(action.type)

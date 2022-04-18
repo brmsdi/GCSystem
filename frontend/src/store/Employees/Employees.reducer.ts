@@ -1,32 +1,10 @@
 import { getAllEmployeesMock } from 'mocks/EmployeesMock'; 
 import { CurrentStateForm, StateFormEnum, StateFormAction, TypeEnumActionTables, TableAction } from 'types/action';
-import { ActionEmployee, Employee, PaginationEmployee, SelectedEmployeeAction } from "types/employee";
+import { ActionEmployee, Employee, EmployeeEmpty, PaginationEmployee, PaginationEmployeeEmpty, SelectedEmployeeAction } from "types/employee";
 import { PaginationTableAction, StatePaginationEnum } from 'types/pagination';
-let initPagination : PaginationEmployee = {
-    pageNumber: 0,
-    paged: false,
-    totalElements: 0,
-    totalPages: 0,
-    size: 0,
-    number: -1,
-    empty: true
-}
 
-let initEmployee : Employee = {
-    name: '',
-    rg: '',
-    cpf: '',
-    birthDate: '',
-    email: '',
-    hiringDate: '',
-    role: {
-        name: ''
-    },
-    status: {
-        name: ''
-    },
-    password: ''
-} 
+let initPagination : PaginationEmployee = PaginationEmployeeEmpty
+let initEmployee : Employee = EmployeeEmpty;
 
 export function getAll(state: Employee[] = getAllEmployeesMock(1), action: ActionEmployee) {
     switch(action.type)

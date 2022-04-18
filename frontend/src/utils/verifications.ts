@@ -3,8 +3,17 @@ export const isValidFieldCPF = (value: any) => {
 }
 
 export const isValidZipCode = (value: string) => {
-    if(value.length === 8) {
-        return true
-    } 
-    return false
+    return (value.length === 8)
+}
+
+export const isValidFieldText = (value: string | undefined) => {
+    return (value !== undefined && value.length > 0)
+}
+
+export const isValidFieldNumber = (value: number | undefined) => {
+    return (value !== undefined && value > 0)
+}
+
+export const isValidFieldDay = (value: number | undefined) => {
+    return (value !== undefined && value > 0 && value < 31)
 }

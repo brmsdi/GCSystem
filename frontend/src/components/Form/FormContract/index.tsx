@@ -8,8 +8,8 @@ import { Condominium } from "types/condominium";
 import { Contract } from "types/contract";
 import { Lessee } from "types/lessee";
 import { Status } from "types/status";
-import { formatLocalizationViewInformation } from "utils/textFormt";
-import { isValidFieldCPF } from "utils/verifications";
+import { formatDate, formatLocalizationViewInformation } from "utils/textFormt";
+import { isValidFieldCPF, isValidFieldDay, isValidFieldNumber, isValidFieldText } from "utils/verifications";
 
 interface IProps {
   initForm: Contract;
@@ -19,11 +19,6 @@ interface IProps {
   isNewRegisterForm: boolean;
 }
 
-type StageFields = {
-  OneIsOK: boolean,
-  twoIsOK: boolean,
-  ThreeIsOK: boolean
-}
 
 const FormTemplate = (props: IProps) => {
   const [form, setForm] = useState<Contract>(props.initForm);
@@ -32,12 +27,6 @@ const FormTemplate = (props: IProps) => {
     formatLocalizationViewInformation(form.condominium.localization)
   );
   const [status, setStatus] = useState<Status[]>([]);
-  const [stageFields, setStageFields] = useState<StageFields>({
-    OneIsOK: true,
-    twoIsOK: false,
-    ThreeIsOK: false
-  })
-
   const [lessee, setLessee] = useState<Lessee>(props.initForm.lessee)
   function changeInput(value: any) {
     setForm((form) => ({ ...form, ...value }));
@@ -82,22 +71,41 @@ const FormTemplate = (props: IProps) => {
     });
   }, [props.initForm]);
 
-  /*
+  
+
+  useEffect(() => {
+    checkLegend('fieldset-lessee', 
+    isValidFieldNumber(lessee.id))
+
+    checkLegend('fieldset-condominium', 
+    isValidFieldNumber(form.condominium.id) 
+    && isValidFieldText(form.apartmentNumber))
+
+    checkLegend('fieldset-contract', isValidFieldNumber(form.contractValue) 
+    && isValidFieldDay(form.monthlyPaymentDate) 
+    && isValidFieldDay(form.monthlyDueDate)
+    && isValidFieldText(form.contractDate)
+    && isValidFieldText(form.contractExpirationDate) 
+    && isValidFieldNumber(form.status.id))
+  },[form, lessee])
+
   async function submit(event: any) {
     event.preventDefault();
-    const result = await props.submit(form);
+    let newForm: Contract = {
+      ...form,
+      lessee: lessee
+    }
+    setForm({...newForm})
+    const result = await props.submit(newForm)
     if (result === true) {
       if (props.isNewRegisterForm === true) {
-        setForm({ ...props.initForm });
+        clearForm();
+        clearLesseeFields()
+        clearCondominiumSelectedView();
       } else {
         setForm({ ...form });
       }
     }
-  } */
-
-  async function submit(event: any) {
-    event.preventDefault();
-    console.log('ok')
   }
 
   async function getLesseeForCPF () {
@@ -107,41 +115,29 @@ const FormTemplate = (props: IProps) => {
         if (response.data.content && response.data.content?.length > 0)
         {
           setLessee(response.data.content[0])
-          setStageFields({
-            OneIsOK: true,
-            twoIsOK: true,
-            ThreeIsOK: false
-          })
           checkLegend("fieldset-lessee", true)
         } else {
           Swal.fire('Oops!', 'Nenhum registro encontrado com o CPF: ' + lessee.cpf, 'error')
-          setStageFields({
-            OneIsOK: true,
-            twoIsOK: false,
-            ThreeIsOK: false
-          })
-          clearLesseeFields()
           checkLegend("fieldset-lessee", false)
         }
       })
     } else {
       Swal.fire('Oops!', 'Digite um cpf valido', 'error')
-      setStageFields({
-        OneIsOK: true,
-        twoIsOK: false,
-        ThreeIsOK: false
-      })
       clearLesseeFields()
       checkLegend("fieldset-lessee", false)
     }
   }
 
-  async function clearField() {
+  async function clearForm() {
     setForm({ ...props.initForm });
   }
 
   async function clearLesseeFields() {
     setLessee({ ...props.initForm.lessee });
+  }
+
+  async function clearCondominiumSelectedView() {
+    setCondominiumSelectedView('')
   }
 
   function checkLegend(ID: string, active: boolean) {
@@ -152,6 +148,8 @@ const FormTemplate = (props: IProps) => {
       component?.classList.remove('fieldset-ok')
     }
   }
+
+
   return (
     <form onSubmit={submit}>
       <fieldset id="fieldset-lessee">
@@ -168,9 +166,7 @@ const FormTemplate = (props: IProps) => {
                 name="cpf"
                 value={lessee.cpf}
                 onChange={(e) => changeInputLessee({cpf: e.target.value})}
-                disabled={!stageFields.OneIsOK}
-                required
-              />
+                required/>
               <button 
               type="button"
               className="btn btn-secondary"
@@ -188,8 +184,7 @@ const FormTemplate = (props: IProps) => {
               name="name"
               value={lessee.name}
               disabled
-              required
-            />
+              required/>
           </div>
           <div className="form-container l2">
             <label htmlFor="inputRG">RG</label>
@@ -200,13 +195,12 @@ const FormTemplate = (props: IProps) => {
               name="rg"
               value={lessee.rg}
               disabled
-              required
-            />
+              required/>
           </div>
         </div>
       </fieldset>
-      <fieldset>
-        <legend>Info. condomínio</legend>
+      <fieldset id="fieldset-condominium">
+        <legend><i className="bi bi-card-checklist legend-icon"></i> Condomínio</legend>
         <hr />
         <div className="row-form-1">
           <div className="form-container l2">
@@ -215,9 +209,7 @@ const FormTemplate = (props: IProps) => {
               id="inputCondominium"
               name="condominium"
               value={form.condominium.id ? form.condominium.id : 0}
-              onChange={(e) => changeCondominium(parseInt(e.target.value))}
-              disabled={!stageFields.twoIsOK}
-            >
+              onChange={(e) => changeCondominium(parseInt(e.target.value))}>
               <option key={0} value={0}></option>
               {condominiums.map((item) => (
                 <option key={item.id} value={item.id}>
@@ -234,28 +226,25 @@ const FormTemplate = (props: IProps) => {
               placeholder="Endereço"
               name="name"
               value={condominiumSelectedView}
-              disabled
-            />
+              disabled/>
           </div>
           <div className="form-container l2">
-            <label htmlFor="inputNumberApartments">Nº apartamento</label>
+            <label htmlFor="inputApartmentNumber">Nº apartamento</label>
             <input
-              type="text"
-              id="inputNumberApartments"
+              type="number"
+              id="inputApartmentNumber"
               placeholder="Nº apartamento"
-              name="numberApartments"
+              name="apartmentNumber"
               value={form.apartmentNumber}
               onChange={(e) =>
-                changeInput({ numberApartments: e.target.value })
+                changeInput({ apartmentNumber: e.target.value })
               }
-              disabled={!stageFields.twoIsOK}
-              required
-            />
+              required/>
           </div>
         </div>
       </fieldset>
-      <fieldset>
-        <legend>Info. contrato</legend>
+      <fieldset id="fieldset-contract">
+        <legend><i className="bi bi-card-checklist legend-icon"></i> Contrato</legend>
         <hr />
         <div className="row-form-1">
           <div className="form-container f4">
@@ -266,9 +255,8 @@ const FormTemplate = (props: IProps) => {
               placeholder="Valor do contrato"
               name="contractValue"
               value={form.contractValue}
-              disabled={!stageFields.ThreeIsOK}
-              required
-            />
+              onChange={(e) => changeInput({contractValue: e.target.value})}
+              required/>
           </div>
           <div className="form-container f4">
             <label htmlFor="inputMonthlyPaymentDate">Dia de pagamento</label>
@@ -278,9 +266,8 @@ const FormTemplate = (props: IProps) => {
               placeholder="Dia de pagamento mensal"
               name="monthlyPaymentDate"
               value={form.monthlyPaymentDate}
-              disabled={!stageFields.ThreeIsOK}
-              required
-            />
+              onChange={(e) => changeInput({monthlyPaymentDate: e.target.value})}
+              required/>
           </div>
           <div className="form-container f4">
             <label htmlFor="inputMonthlyDueDate">Dia de vencimento</label>
@@ -290,9 +277,8 @@ const FormTemplate = (props: IProps) => {
               placeholder="Dia de vencimento mensal"
               name="monthlyDueDate"
               value={form.monthlyDueDate}
-              disabled={!stageFields.ThreeIsOK}
-              required
-            />
+              onChange={(e) => changeInput({monthlyDueDate: e.target.value})}
+              required />
           </div>
           <div className="form-container f4">
             <label htmlFor="inputContractDate">Data do contrato</label>
@@ -300,10 +286,9 @@ const FormTemplate = (props: IProps) => {
               type="date"
               id="inputContractDate"
               name="contractDate"
-              value={form.contractDate}
-              disabled={!stageFields.ThreeIsOK}
-              required
-            />
+              value={form.contractDate.length > 0 ? formatDate(form.contractDate) : form.contractDate}
+              onChange={(e) => changeInput({contractDate: e.target.value })}
+              required />
           </div>
         </div>
         <div className="row-form-1">
@@ -315,10 +300,9 @@ const FormTemplate = (props: IProps) => {
               type="date"
               id="inputContractExpirationDate"
               name="contractExpirationDate"
-              value={form.contractExpirationDate}
-              disabled={!stageFields.ThreeIsOK}
-              required
-            />
+              value={form.contractExpirationDate.length > 0 ? formatDate(form.contractExpirationDate) : form.contractExpirationDate}
+              onChange={(e) => changeInput({contractExpirationDate: e.target.value })}
+              required />
           </div>
           <div className="form-container f4">
             <label htmlFor="inputStatus">Status</label>
@@ -326,9 +310,8 @@ const FormTemplate = (props: IProps) => {
               id="inputStatus"
               name="status"
               value={form.status.id ? form.status.id : 0}
-              onChange={(e) => changeStatus(parseInt(e.target.value))}
-              disabled={!stageFields.ThreeIsOK}
-            >
+              onChange={(e) => changeStatus(parseInt(e.target.value))}>
+              <option key={0} value={0}></option>
               {status.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.name}
@@ -346,8 +329,7 @@ const FormTemplate = (props: IProps) => {
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={clearField}
-          >
+            onClick={clearForm}>
             Limpar
           </button>
         </div>

@@ -1,34 +1,9 @@
 import { CurrentStateForm, StateFormAction, StateFormEnum, TableAction, TypeEnumActionTables } from "types/action";
-import { ActionCondominium, Condominium, PaginationCondominium, SelectedCondominiumAction } from "types/condominium"
+import { ActionCondominium, Condominium, CondominiumEmpty, PaginationCondominium, PaginationCondominiumEmpty, SelectedCondominiumAction } from "types/condominium"
 import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
 
-
-let initPagination: PaginationCondominium = {
-    pageNumber: 0,
-    paged: false,
-    totalElements: 0,
-    totalPages: 0,
-    size: 0,
-    number: -1,
-    empty: true
-}
-
-let initCondominium: Condominium = {
-    name: '',
-    description: '',
-    numberApartments: 0,
-    status: {
-        name: ''
-    },
-    localization: {
-        number: '0',
-        localization: {
-            name: '',
-            road: '',
-            zipCode: ''
-        }
-    }
-}
+let initPagination: PaginationCondominium = PaginationCondominiumEmpty;
+let initCondominium: Condominium = CondominiumEmpty;
 
 export default function getAllCondominiumsReducer(state: PaginationCondominium = initPagination, action: ActionCondominium) {
     switch (action.type) {

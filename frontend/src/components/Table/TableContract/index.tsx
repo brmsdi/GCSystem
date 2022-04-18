@@ -6,6 +6,7 @@ import { selectAllContracts } from "store/Contracts/contracts.selector";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { Contract, PaginationContract } from "types/contract";
+import { formatDateForView } from "utils/textFormt";
 const TableContract= () => {
   const dispatch = useDispatch();
   const page: PaginationContract = useSelector(selectAllContracts);
@@ -61,7 +62,7 @@ const TableContract= () => {
                 <th scope="col">Condominio</th>
                 <th scope="col">ID Contrato</th>
                 <th scope="col">DT. Contrato</th>
-                <th scope="col">DT. Pagamento/Mês</th>
+                <th scope="col">Dia Pagamento/Mês</th>
                 <th scope="col">DT. Vencimento</th>
                 <th scope="col">DT. Validade</th>
                 <th scope="col">Nº APT</th>
@@ -100,13 +101,13 @@ const ItemTable = (props: IProps) => {
       <th className="thead-min">ID Contrato</th>
       <td>{item.id}</td>
       <th className="thead-min">DT. Contrato</th>
-      <td>{item.contractDate}</td>
-      <th className="thead-min">DT. Pagamento/Mês</th>
+      <td>{formatDateForView(item.contractDate)}</td>
+      <th className="thead-min">Dia Pagamento/Mês</th>
       <td>{item.monthlyPaymentDate}</td>
       <th className="thead-min">DT. Vencimento</th>
       <td>{item.monthlyDueDate}</td>
       <th className="thead-min">DT. Validade</th>
-      <td>{item.contractExpirationDate}</td>
+      <td>{formatDateForView(item.contractExpirationDate)}</td>
       <th className="thead-min">Nº APT</th>
       <td>{item.apartmentNumber}</td>
       <th className="thead-min">Status</th>

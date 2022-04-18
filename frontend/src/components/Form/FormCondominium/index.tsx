@@ -206,6 +206,7 @@ const FormTemplate = (props: IProps) => {
             value={form.status.id ? form.status.id : 0}
             onChange={(e) => changeStatus(parseInt(e.target.value))}
           >
+            <option key={0} value={0}></option>
             {status.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.name}

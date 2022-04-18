@@ -37,3 +37,29 @@ export type SelectedEmployeeAction = {
     type: string,
     payload?: Employee 
 }
+
+export const PaginationEmployeeEmpty : PaginationEmployee = {
+    pageNumber: 0,
+    paged: false,
+    totalElements: 0,
+    totalPages: 0,
+    size: 0,
+    number: -1,
+    empty: true
+}
+
+export const EmployeeEmpty : Employee = {
+    name: '',
+    rg: '',
+    cpf: '',
+    birthDate: '',
+    email: '',
+    hiringDate: '',
+    role: {
+        name: ''
+    },
+    status: {
+        name: ''
+    },
+    password: ''
+}

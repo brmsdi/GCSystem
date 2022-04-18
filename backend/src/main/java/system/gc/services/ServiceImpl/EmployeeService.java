@@ -134,7 +134,7 @@ public class EmployeeService {
         Status waitingStatus = statusService.findByName("Aguardando");
         Status cancelStatus = statusService.findByName("Cancelado");
         Employee employeeResult = employeeAuthenticationServiceImpl.verifyEmail(email, employeeRepository);
-        Optional<Employee> employeeOptional = employeeAuthenticationServiceImpl.CheckIfThereISAnOpenRequest(employeeResult.getId(), employeeRepository, waitingStatus.getId());
+        Optional<Employee> employeeOptional = employeeAuthenticationServiceImpl.checkIfThereISAnOpenRequest(employeeResult.getId(), employeeRepository, waitingStatus.getId());
         if (employeeOptional.isPresent()) {
             employeeOptional.get().getLogChangePassword().forEach(it -> it.setStatus(cancelStatus));
             logPasswordCodeService.updateStatusCode(employeeOptional.get().getLogChangePassword());

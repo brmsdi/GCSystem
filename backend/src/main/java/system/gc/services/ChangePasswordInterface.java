@@ -12,13 +12,15 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Random;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @param <E> Entity
+ * @param <REPOSITORY> Entity repository
+ */
 public interface ChangePasswordInterface<E, REPOSITORY extends ChangePasswordEntity<E>> {
-     default E verifyEmail(String email, REPOSITORY repository) {
-          return repository.findByEMAIL(email).orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com esse E-mail"));
-     }
 
-     default Optional<E> CheckIfThereISAnOpenRequest(Integer ID, REPOSITORY repository, Integer statusID) {
-          return repository.CheckIfThereISAnOpenRequest(ID, statusID);
+     default Optional<E> checkIfThereISAnOpenRequest(Integer ID, REPOSITORY repository, Integer statusID) {
+          return repository.checkIfThereISAnOpenRequest(ID, statusID);
      }
 
      default String generateCode() {
@@ -47,5 +49,9 @@ public interface ChangePasswordInterface<E, REPOSITORY extends ChangePasswordEnt
           } catch (JWTVerificationException | NumberFormatException exception) {
                throw new CodeChangePasswordInvalidException(exception.getMessage());
           }
+     }
+
+     default E verifyEmail(String email, REPOSITORY repository) {
+          return repository.findByEMAIL(email).orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com esse E-mail"));
      }
 }

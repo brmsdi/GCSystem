@@ -40,7 +40,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>, Au
             "JOIN FETCH employee.logChangePassword logChangePassword " +
             "JOIN FETCH logChangePassword.status status " +
             "WHERE employee.id = :ID AND status.id = :statusID")
-    Optional<Employee> CheckIfThereISAnOpenRequest(Integer ID, Integer statusID);
+    Optional<Employee> checkIfThereISAnOpenRequest(Integer ID, Integer statusID);
 
     @Override
     @Query("SELECT employee FROM Employee employee " +

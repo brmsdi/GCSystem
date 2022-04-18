@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.configuration.exceptions.DuplicatedFieldException;
 import system.gc.dtos.DebtDTO;
-import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.LesseeDTO;
-import system.gc.entities.Employee;
 import system.gc.entities.Lessee;
 import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
@@ -145,7 +143,7 @@ public class LesseeService {
         Status waitingStatus = statusService.findByName("Aguardando");
         Status cancelStatus = statusService.findByName("Cancelado");
         Lessee lesseeResult = lesseeAuthenticationServiceImpl.verifyEmail(email, lesseeRepository);
-        Optional<Lessee> lesseeOptional = lesseeAuthenticationServiceImpl.CheckIfThereISAnOpenRequest(lesseeResult.getId(), lesseeRepository, waitingStatus.getId());
+        Optional<Lessee> lesseeOptional = lesseeAuthenticationServiceImpl.checkIfThereISAnOpenRequest(lesseeResult.getId(), lesseeRepository, waitingStatus.getId());
         if (lesseeOptional.isPresent()) {
             lesseeOptional.get().getLogChangePassword().forEach(it -> it.setStatus(cancelStatus));
             logPasswordCodeService.updateStatusCode(lesseeOptional.get().getLogChangePassword());

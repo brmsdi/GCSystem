@@ -39,6 +39,16 @@ export type SelectedContractAction = {
     payload?: Contract 
 }
 
+export const PaginationContractEmpty : PaginationContract = {
+    pageNumber: 0,
+    paged: false,
+    totalElements: 0,
+    totalPages: 0,
+    size: 0,
+    number: -1,
+    empty: true
+}
+
 export const ContractEmpty : Contract = {
     contractDate: '',
     contractValue: 0,
