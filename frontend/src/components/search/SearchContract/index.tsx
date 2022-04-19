@@ -4,6 +4,7 @@ import { paginationContractTableAction } from "store/Contracts/contracts.actions
 import Swal from "sweetalert2";
 import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
 import { isValidFieldCPF } from "utils/verifications";
+import SearchItem from "../search-item";
 
 const SearchContracts = () => {
   const dispatch = useDispatch()
@@ -30,8 +31,7 @@ const SearchContracts = () => {
     }
   }
   
-  function submit(event: any) {
-    event.preventDefault();
+  function submit() {
     if (isValidFieldCPF(CPF))
     {
       dispatch(paginationContractTableAction(paginationState))
@@ -41,22 +41,7 @@ const SearchContracts = () => {
     }
   }
   return (
-    <form onSubmit={submit}>
-      <div className="div-search">
-        <input
-          type="number"
-          id="inputCPFSearch"
-          placeholder="CPF"
-          name='cpf'
-          value={CPF}
-          onChange={(e) => changeCPFValue(e.target.value)}
-          required
-        />
-        <button type="submit" className="btn btn-secondary">
-          <i className="bi bi-search"></i>
-        </button>
-      </div>
-    </form>
+    <SearchItem typeValue="number" placeHolder="Digite o cpf" value={CPF} submit={submit} changeSearchValue={changeCPFValue} />
   )
 }
 

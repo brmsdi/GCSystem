@@ -23,7 +23,7 @@ export default function getAllContractsReducer(state: PaginationContract = initP
 export function setStateFormContractReducer(currentStateForm: CurrentStateForm = {activity: StateFormEnum.NOACTION, active: false} , action: StateFormAction ) {
     switch(action.type) {
         case 'SET-STATE-FORM-CONTRACT':
-            if(action.activity ===  StateFormEnum.NOACTION) {
+            if(action.activity === StateFormEnum.NOACTION) {
                 let stateCurrent: CurrentStateForm = {
                     activity: StateFormEnum.NOACTION,
                     active: false

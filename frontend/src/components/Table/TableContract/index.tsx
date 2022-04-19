@@ -59,13 +59,13 @@ const TableContract= () => {
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Locatário</th>
-                <th scope="col">Condominio</th>
-                <th scope="col">ID Contrato</th>
-                <th scope="col">DT. Contrato</th>
-                <th scope="col">Dia Pagamento/Mês</th>
-                <th scope="col">DT. Vencimento</th>
-                <th scope="col">DT. Validade</th>
-                <th scope="col">Nº APT</th>
+                <th scope="col">Condomínio</th>
+                <th scope="col">ID contrato</th>
+                <th scope="col">Data contrato</th>
+                <th scope="col">Dia pagamento</th>
+                <th scope="col">Dia vencimento</th>
+                <th scope="col">Data validade</th>
+                <th scope="col">Nº apartamento</th>
                 <th scope="col">Status</th>
                 <th scope="col">#</th>
               </tr>
@@ -96,32 +96,48 @@ const ItemTable = (props: IProps) => {
       <td>{item.id}</td>
       <th className="thead-min">Locatário</th>
       <td>{item.lessee.name}</td>
-      <th className="thead-min">Condominio</th>
+      <th className="thead-min">Condomínio</th>
       <td>{item.condominium.name}</td>
-      <th className="thead-min">ID Contrato</th>
+      <th className="thead-min">ID contrato</th>
       <td>{item.id}</td>
-      <th className="thead-min">DT. Contrato</th>
+      <th className="thead-min">Data contrato</th>
       <td>{formatDateForView(item.contractDate)}</td>
-      <th className="thead-min">Dia Pagamento/Mês</th>
+      <th className="thead-min">Dia pagamento</th>
       <td>{item.monthlyPaymentDate}</td>
-      <th className="thead-min">DT. Vencimento</th>
+      <th className="thead-min">Dia vencimento</th>
       <td>{item.monthlyDueDate}</td>
-      <th className="thead-min">DT. Validade</th>
+      <th className="thead-min">Data validade</th>
       <td>{formatDateForView(item.contractExpirationDate)}</td>
-      <th className="thead-min">Nº APT</th>
+      <th className="thead-min">Nº apartamento</th>
       <td>{item.apartmentNumber}</td>
       <th className="thead-min">Status</th>
       <td>{item.status.name}</td>
       <th className="thead-min">Opções</th>
       <td>
         <button
+          id="btn-table-contract-update"
+          type="button"
+          aria-label="Atualizar esse contrato"
+          title="Atualizar esse contrato"
           className="btn btn-primary btn-table-options"
-          onClick={(e) => props.toogleClass(item)}><span><i className="bi bi-clipboard-data"></i></span>
+          onClick={(e) => props.toogleClass(item)}><span aria-hidden="true" ><i className="bi bi-clipboard-data"></i></span>
         </button>
         <button
-          className="btn btn-danger btn-table-options"
-          onClick={() => props.clickButtonDelete(item.id)}><span><i className="bi bi-trash"></i></span>
+          id="btn-table-contract-pdf"
+          type="button"
+          aria-label="Gerar arquivo pdf do contrato"
+          title="Gerar arquivo pdf do contrato"
+          className="btn btn-secondary btn-table-options"><span aria-hidden="true"><i className="bi bi-file-earmark-pdf"></i></span>
         </button>
+        <button
+          id="btn-table-contract-delete"
+          type="button"
+          aria-label="Deletar esse contrato"
+          title="Deletar esse contrato"
+          className="btn btn-danger btn-table-options"
+          onClick={() => props.clickButtonDelete(item.id)}><span aria-hidden="true"><i className="bi bi-trash"></i></span>
+        </button>
+        
       </td>
     </tr>
   )

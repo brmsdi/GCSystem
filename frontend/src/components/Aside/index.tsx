@@ -19,7 +19,9 @@ const Aside = () => {
         </span>
         <span className="text animate-right">SYSTEM</span>
         <div className="btn-co">
-          <button onClick={() => clickColapseMenu()}>
+          <button 
+            id="btn-close-open-aside"
+            onClick={() => clickColapseMenu()}>
             <i className="bi bi-list"></i>
           </button>
         </div>

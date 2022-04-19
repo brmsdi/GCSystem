@@ -38,8 +38,10 @@ const ContractsView = () => {
             <div className="home-header">
                 <h1>{"Contratos"}</h1>
             </div>
-            <MenuRouterActivity />
-            <BarHome search={<SearchContracts />}
+            <MenuRouterActivity stateForm={selectStateFormContract} />
+            <BarHome 
+                titleButtonNew="Novo registro de contrato" 
+                search={<SearchContracts />}
                 removeSelectedContextTableAction={removeSelectedContractTableAction}
                 setStateFormContextAction={setStateFormContractAction}
                 selectStateFormContext={selectStateFormContract} />

@@ -5,7 +5,8 @@ interface IProps {
   search: any,
   removeSelectedContextTableAction: Function,
   setStateFormContextAction: Function,
-  selectStateFormContext: any
+  selectStateFormContext: any,
+  titleButtonNew: string
 }
 
 // VERIFICAR
@@ -29,6 +30,9 @@ const BarHome = (props: IProps) => {
     <div className="bar-home">
       <button
         id="bar-home-btn-new"
+        type="button"
+        title={props.titleButtonNew}
+        aria-label={props.titleButtonNew}
         className="btn btn-new-employee"
         onClick={() => toogleClass()}>
         { stateForm.activity === StateFormEnum.NOACTION ? 'Novo' : 'Voltar' }

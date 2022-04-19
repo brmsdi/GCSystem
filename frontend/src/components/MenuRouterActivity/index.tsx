@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
-import { selectStateFormEmployee } from "store/Employees/employees.selectors";
-import { StateFormEnum } from "types/action";
-const MenuRouterActivity = () => {
-    var stateForm = useSelector(selectStateFormEmployee);
+import { CurrentStateForm, StateFormEnum } from "types/action";
+interface IProps {
+  stateForm: any
+}
+const MenuRouterActivity = (props: IProps) => {
+    var stateForm: CurrentStateForm = useSelector(props.stateForm);
     let activity = stateForm.activity !== StateFormEnum.NOACTION ? stateForm.activity : "Home";
     return(
         <div className="menu-router-activity">
@@ -13,6 +15,5 @@ const MenuRouterActivity = () => {
         </div>
     )
 }
-
 
 export default MenuRouterActivity;

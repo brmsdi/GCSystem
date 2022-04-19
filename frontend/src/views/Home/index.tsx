@@ -1,4 +1,3 @@
-import MenuRouterActivity from "components/MenuRouterActivity";
 import { useDispatch } from "react-redux";
 import { changeSelectedSubMenuAsideAction } from "store/Aside/aside.action";
 import { TEXT_MENU_ITEM_ID_HOME } from "utils/menu-items";
@@ -11,7 +10,7 @@ const HomeView = () => {
     <div className="home-header">
         <h1>{"GCSystem"}</h1>
     </div>
-    <MenuRouterActivity />
+    
     <div>
       <p>home</p>
     </div>

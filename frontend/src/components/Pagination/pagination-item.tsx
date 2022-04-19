@@ -16,7 +16,7 @@ const PaginationItem = (props: { propsPagination: PropsPagination, changeNumberP
         id="page-link-previous" 
         className= {first === true ?  "page-item disabled" : "page-item"}
         onClick={() => changeNumberPage(previousPage)} >
-          <Link className="page-link" to="#">
+          <Link title="Página anterior" className="page-link" to="#">
             <span aria-hidden="true">&laquo;</span>
           </Link>
         </li>
@@ -25,7 +25,7 @@ const PaginationItem = (props: { propsPagination: PropsPagination, changeNumberP
             key={number}
             className={activePage === number ? "page-item active" : "page-item"}
             onClick={() => changeNumberPage(number)}>
-            <Link className="page-link" to="#">
+            <Link title={`Página ${number}`} className="page-link" to="#">
               {number}
             </Link>
           </li>
@@ -34,7 +34,7 @@ const PaginationItem = (props: { propsPagination: PropsPagination, changeNumberP
         id="page-link-next" 
         className= {next === true ? "page-item" : "page-item disabled"} 
         onClick={() => changeNumberPage(nextPage)}>
-          <Link className="page-link" to="#">
+          <Link title="Próxima página" className="page-link" to="#">
             <span aria-hidden="true">&raquo;</span>
           </Link>
         </li>

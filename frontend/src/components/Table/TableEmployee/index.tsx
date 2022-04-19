@@ -100,12 +100,20 @@ const ItemTable = (props: { item: Employee, toogleClass: Function, clickButtonDe
       <th className="thead-min">Opções</th>
       <td>
         <button
+          id="btn-table-employee-update"
+          type="button"
+          aria-label="Atualizar esse funcionário"
+          title="Atualizar esse funcionário"
           className="btn btn-primary btn-table-options"
-          onClick={(e) => props.toogleClass(item)}><span><i className="bi bi-clipboard-data"></i></span>
+          onClick={(e) => props.toogleClass(item)}><span aria-hidden="true"><i className="bi bi-clipboard-data"></i></span>
         </button>
         <button
+          id="btn-table-employee-delete"
+          type="button"
+          aria-label="Deletar esse funcionário"
+          title="Deletar esse funcionário"
           className="btn btn-danger btn-table-options"
-          onClick={() => props.clickButtonDelete(item.id)}><span><i className="bi bi-trash"></i></span>
+          onClick={() => props.clickButtonDelete(item.id)}><span aria-hidden="true"><i className="bi bi-trash"></i></span>
         </button>
       </td>
     </tr>

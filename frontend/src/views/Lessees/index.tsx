@@ -37,8 +37,8 @@ const LesseeView = () => {
             <div className="home-header">
                 <h1>{"Locatários"}</h1>
             </div>
-            <MenuRouterActivity />
-            <BarHome search={<SearchLessee />} 
+            <MenuRouterActivity stateForm={selectStateFormLessee} />
+            <BarHome titleButtonNew="Novo registro de locatário" search={<SearchLessee />} 
             removeSelectedContextTableAction={removeSelectedLesseeTableAction} 
             setStateFormContextAction={setStateFormLesseeAction}
             selectStateFormContext={selectStateFormLessee}/>

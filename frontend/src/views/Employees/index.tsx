@@ -37,8 +37,8 @@ const EmployeesView = () => {
             <div className="home-header">
                 <h1>{"Funcionários"}</h1>
             </div>
-            <MenuRouterActivity />
-            <BarHome search={<SearchEmployee />} 
+            <MenuRouterActivity stateForm={selectStateFormEmployee} />
+            <BarHome titleButtonNew="Novo registro de funcionário" search={<SearchEmployee />} 
             removeSelectedContextTableAction={removeSelectedEmployeeTableAction} 
             setStateFormContextAction={setStateFormEmployeeAction} 
             selectStateFormContext={selectStateFormEmployee}/>

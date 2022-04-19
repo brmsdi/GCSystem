@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { paginationCondominiumTableAction } from "store/Condominiums/condiminiums.actions";
 import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
+import SearchItem from "../search-item";
 
 const SearchCondominium = () => {
   const dispatch = useDispatch()
@@ -28,11 +29,12 @@ const SearchCondominium = () => {
     }
   }
   
-  function submit(event: any) {
-    event.preventDefault();
+  function submit() {
     dispatch(paginationCondominiumTableAction(paginationState));
   }
   return (
+    <SearchItem typeValue="text" placeHolder="Buscar condomínio" value={name} submit={submit} changeSearchValue={changeSearchValue} />
+    /*
     <form onSubmit={submit}>
       <div className="div-search">
         <input
@@ -49,6 +51,7 @@ const SearchCondominium = () => {
         </button>
       </div>
     </form>
+    */
   )
 }
 

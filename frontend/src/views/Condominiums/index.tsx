@@ -36,10 +36,10 @@ const CondominiumsView = () => {
     return (
         <main className="content-main animate-right">
             <div className="home-header">
-                <h1>{"Condominios"}</h1>
+                <h1>{"Condomínios"}</h1>
             </div>
-            <MenuRouterActivity />
-            <BarHome search={<SearchCondominium />}
+            <MenuRouterActivity stateForm={selectStateFormCondominium} />
+            <BarHome titleButtonNew="Novo registro de condomínio" search={<SearchCondominium />}
                 removeSelectedContextTableAction={removeSelectedCondominiumTableAction}
                 setStateFormContextAction={setStateFormCondominiumAction}
                 selectStateFormContext={selectStateFormCondominium} />

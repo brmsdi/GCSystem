@@ -96,12 +96,20 @@ const ItemTable = (props: { item: Lessee, toogleClass: Function, clickButtonDele
       <th className="thead-min">Opções</th>
       <td>
         <button
+          id="btn-table-lessee-update"
+          type="button"
+          aria-label="Atualizar esse locatário"
+          title="Atualizar esse locatário"
           className="btn btn-primary btn-table-options"
-          onClick={(e) => props.toogleClass(item)}><span><i className="bi bi-clipboard-data"></i></span>
+          onClick={(e) => props.toogleClass(item)}><span aria-hidden="true"><i className="bi bi-clipboard-data"></i></span>
         </button>
         <button
+          id="btn-table-lessee-delete"
+          type="button"
+          aria-label="Deletar esse locatário"
+          title="Deletar esse locatário"
           className="btn btn-danger btn-table-options"
-          onClick={() => props.clickButtonDelete(item.id)}><span><i className="bi bi-trash"></i></span>
+          onClick={() => props.clickButtonDelete(item.id)}><span aria-hidden="true"><i className="bi bi-trash"></i></span>
         </button>
       </td>
     </tr>

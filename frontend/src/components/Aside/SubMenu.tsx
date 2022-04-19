@@ -17,7 +17,9 @@ const SubMenu = (props: IProps) => {
   }
   return (
     <div id={props.id} className={`sub-menu ${props.id === props.idSelectedMenu ? 'active' : ''} animate-right`} onClick={() => changeSelectedMenu(props.id)}>
-      <NavLink to={props.to}>
+      <NavLink 
+      title={props.subMenuToolTip}
+      to={props.to}>
         <span className="sub-menu-icon">
           <i className={props.iconSubMenu}></i>
         </span>
