@@ -6,9 +6,12 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import system.gc.dtos.ContractDTO;
 import system.gc.dtos.DebtDTO;
+import system.gc.dtos.LesseeDTO;
 import system.gc.services.ServiceImpl.DebtService;
 
 import javax.validation.Valid;
@@ -51,6 +54,14 @@ public class DebtController {
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
+    }
+
+    @GetMapping(value = "search")
+    public ResponseEntity<Page<DebtDTO>> search(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                @RequestParam(name = "size", defaultValue = "5") Integer size,
+                                                @RequestParam(name = "cpf") String cpf) {
+        log.info("Localizando débitos");
+        return ResponseEntity.ok(debtService.searchDebts(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
     }
 
     @DeleteMapping

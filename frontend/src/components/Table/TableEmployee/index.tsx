@@ -63,7 +63,7 @@ const TableEmployee = () => {
                 <th scope="col">CPF</th>
                 <th scope="col">E-mail</th>
                 <th scope="col">Cargo</th>
-                <th scope="col">Contratação</th>
+                <th scope="col">Data de contratação</th>
                 <th scope="col">#</th>
               </tr>
             </thead>
@@ -95,7 +95,7 @@ const ItemTable = (props: { item: Employee, toogleClass: Function, clickButtonDe
       <td>{item.email}</td>
       <th className="thead-min">Cargo</th>
       <td>{item.role.name}</td>
-      <th className="thead-min">Contratação</th>
+      <th className="thead-min">Data de contratação</th>
       <td>{formatDateForView(item.hiringDate)}</td>
       <th className="thead-min">Opções</th>
       <td>

@@ -26,9 +26,6 @@ public class MovementDTO implements ConvertEntityAndDTO<MovementDTO, Movement> {
     private double previousValue;
 
     @NotNull(message = "{required.validation}")
-    private DebtDTO debt;
-
-    @NotNull(message = "{required.validation}")
     private ActivityTypeDTO activityType;
 
     @NotNull(message = "{required.validation}")
@@ -37,11 +34,10 @@ public class MovementDTO implements ConvertEntityAndDTO<MovementDTO, Movement> {
     public MovementDTO() {
     }
 
-    public MovementDTO(Date moveDateAndTime, Date dueDate, double previousValue, DebtDTO debt, ActivityTypeDTO activityType, EmployeeDTO employee) {
+    public MovementDTO(Date moveDateAndTime, Date dueDate, double previousValue, ActivityTypeDTO activityType, EmployeeDTO employee) {
         setMoveDateAndTime(moveDateAndTime);
         setDueDate(dueDate);
         setPreviousValue(previousValue);
-        setDebt(debt);
         setActivityType(activityType);
         setEmployee(employee);
     }
@@ -65,7 +61,6 @@ public class MovementDTO implements ConvertEntityAndDTO<MovementDTO, Movement> {
         Movement movement = new Movement(movementDTO.getMoveDateAndTime(),
                 movementDTO.getDueDate(),
                 movementDTO.getPreviousValue(),
-                new DebtDTO().toEntity(movementDTO.getDebt()),
                 new ActivityTypeDTO().toEntity(movementDTO.getActivityType()),
                 new EmployeeDTO().toEntity(movementDTO.getEmployee()));
         if (movementDTO.getId() != null) {

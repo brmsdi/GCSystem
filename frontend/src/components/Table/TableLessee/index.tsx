@@ -61,7 +61,7 @@ const TableLessee = () => {
                 <th scope="col">RG</th>
                 <th scope="col">CPF</th>
                 <th scope="col">E-mail</th>
-                <th scope="col">Nº contato</th>
+                <th scope="col">Nº para contato</th>
                 <th scope="col">#</th>
               </tr>
             </thead>
@@ -91,7 +91,7 @@ const ItemTable = (props: { item: Lessee, toogleClass: Function, clickButtonDele
       <td>{item.cpf}</td>
       <th className="thead-min">E-mail</th>
       <td>{item.email}</td>
-      <th className="thead-min">Nº contato</th>
+      <th className="thead-min">Nº para contato</th>
       <td>{item.contactNumber}</td>
       <th className="thead-min">Opções</th>
       <td>

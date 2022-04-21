@@ -6,6 +6,7 @@ import { selectAllContracts } from "store/Contracts/contracts.selector";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { Contract, PaginationContract } from "types/contract";
+import { formatCoinPTBRForView } from "utils/coin-format";
 import { formatDateForView } from "utils/textFormt";
 const TableContract= () => {
   const dispatch = useDispatch();
@@ -58,14 +59,14 @@ const TableContract= () => {
             <thead className="thead-max">
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Locatário</th>
-                <th scope="col">Condomínio</th>
-                <th scope="col">ID contrato</th>
-                <th scope="col">Data contrato</th>
-                <th scope="col">Dia pagamento</th>
-                <th scope="col">Dia vencimento</th>
-                <th scope="col">Data validade</th>
-                <th scope="col">Nº apartamento</th>
+                <th scope="col">Nome do locatário</th>
+                <th scope="col">Nome do condomínio</th>
+                <th scope="col">Valor do contrato</th>
+                <th scope="col">Data do contrato</th>
+                <th scope="col">Dia de pagamento</th>
+                <th scope="col">Dia de vencimento</th>
+                <th scope="col">Data de validade</th>
+                <th scope="col">Nº do apartamento</th>
                 <th scope="col">Status</th>
                 <th scope="col">#</th>
               </tr>
@@ -94,21 +95,21 @@ const ItemTable = (props: IProps) => {
     <tr>
       <th className="thead-min">ID</th>
       <td>{item.id}</td>
-      <th className="thead-min">Locatário</th>
+      <th className="thead-min">Nome do locatário</th>
       <td>{item.lessee.name}</td>
-      <th className="thead-min">Condomínio</th>
+      <th className="thead-min">Nome do condmínio</th>
       <td>{item.condominium.name}</td>
-      <th className="thead-min">ID contrato</th>
-      <td>{item.id}</td>
-      <th className="thead-min">Data contrato</th>
+      <th className="thead-min">Valor do contrato</th>
+      <td>{formatCoinPTBRForView(item.contractValue)}</td>
+      <th className="thead-min">Data do contrato</th>
       <td>{formatDateForView(item.contractDate)}</td>
-      <th className="thead-min">Dia pagamento</th>
+      <th className="thead-min">Dia de pagamento</th>
       <td>{item.monthlyPaymentDate}</td>
-      <th className="thead-min">Dia vencimento</th>
+      <th className="thead-min">Dia de vencimento</th>
       <td>{item.monthlyDueDate}</td>
-      <th className="thead-min">Data validade</th>
+      <th className="thead-min">Data de validade</th>
       <td>{formatDateForView(item.contractExpirationDate)}</td>
-      <th className="thead-min">Nº apartamento</th>
+      <th className="thead-min">Nº do apartamento</th>
       <td>{item.apartmentNumber}</td>
       <th className="thead-min">Status</th>
       <td>{item.status.name}</td>

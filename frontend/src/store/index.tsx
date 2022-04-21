@@ -3,6 +3,7 @@ import { changeSelectedSubMenuAsideReducer } from './Aside/aside.reducer';
 import updateAuthenticationChangeStateReducer, { userAuthenticatedViewReducer } from './Authentication/authentication.reducer';
 import getAllCondominiumsReducer, { setCurrentPaginationCondominiumReducer, setStateFormCondominiumReducer, stateSelectionCondominiumReducer, updateTableCondominiumReducer } from './Condominiums/condiminiums.reducer';
 import getAllContractsReducer, { setCurrentPaginationContractReducer, setStateFormContractReducer, stateSelectionContractReducer, updateTableContractReducer } from './Contracts/contracts.reducer';
+import getAllDebtsReducer, { setCurrentPaginationDebtReducer, setStateFormDebtReducer, stateSelectionDebtReducer, updateTableDebtReducer } from './Debts/debts.reducer';
 import getAllEmployeesReducer, { setCurrentPaginationEmployeeReducer, setStateFormEmployeeReducer, stateSelectionEmployeeReducer, updateTableEmployeeReducer } from './Employees/employees.reducer';
 import getAllLesseesReducer, { setCurrentPaginationLesseeReducer, setStateFormLesseeReducer, stateSelectionLesseeReducer, updateTableLesseeReducer } from './Lessees/lessees.reducer';
 
@@ -37,7 +38,14 @@ const rootReducer = combineReducers({
     stateFormContract: setStateFormContractReducer,
     currentPaginationTableContracts: setCurrentPaginationContractReducer,
     updateTableContractCurrentState: updateTableContractReducer,
-    selectedContract: stateSelectionContractReducer
+    selectedContract: stateSelectionContractReducer,
+
+    // DEBT REDUCER
+    debts: getAllDebtsReducer,
+    stateFormDebt: setStateFormDebtReducer,
+    currentPaginationTableDebts: setCurrentPaginationDebtReducer,
+    updateTableDebtCurrentState: updateTableDebtReducer,
+    selectedDebt: stateSelectionDebtReducer
 })
 
 const store = createStore(rootReducer);

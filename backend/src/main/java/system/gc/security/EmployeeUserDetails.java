@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class EmployeeUserDetails implements UserDetailsConvert {
+public class EmployeeUserDetails implements UserDetailsConvert, UserAuthenticated<Employee> {
     private final Employee userDetail;
 
     public EmployeeUserDetails(Employee employeeDTOUser) {
@@ -53,7 +53,12 @@ public class EmployeeUserDetails implements UserDetailsConvert {
     }
 
     @Override
-    public UserAuthenticatedView getUser() {
+    public UserAuthenticatedView getNameAndRoleUser() {
         return new UserAuthenticatedView(userDetail.getName(), userDetail.getRole().getName());
+    }
+
+    @Override
+    public Employee getUserAuthenticated() {
+        return userDetail;
     }
 }

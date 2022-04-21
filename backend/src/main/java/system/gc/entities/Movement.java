@@ -50,4 +50,12 @@ public class Movement implements Serializable {
         setActivityType(activityType);
         setEmployee(employee);
     }
+
+    public Movement(Date moveDateAndTime, Date dueDate, double previousValue, ActivityType activityType, Employee employee) {
+        setMoveDateAndTime(moveDateAndTime);
+        setDueDate(dueDate);
+        setPreviousValue(previousValue);
+        setActivityType(activityType);
+        setEmployee(employee);
+    }
 }

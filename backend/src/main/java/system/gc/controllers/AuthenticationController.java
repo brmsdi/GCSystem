@@ -87,6 +87,6 @@ public class AuthenticationController {
     public ResponseEntity<UserAuthenticatedView> validateToken() {
         log.info("Token valido");
         UserDetailsConvert user = (UserDetailsConvert) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        return ResponseEntity.ok(user.getUser());
+        return ResponseEntity.ok(user.getNameAndRoleUser());
     }
 }

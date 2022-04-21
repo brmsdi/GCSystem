@@ -14,4 +14,5 @@ public class UserAuthenticatedView {
         setName(name);
         setRole(role);
     }
+
 }

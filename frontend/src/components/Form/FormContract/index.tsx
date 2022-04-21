@@ -61,6 +61,10 @@ const FormTemplate = (props: IProps) => {
 
   useEffect(() => {
     setForm((form) => ({ ...form, ...props.initForm }));
+    setLessee(props.initForm.lessee)
+    setCondominiumSelectedView(
+      formatLocalizationViewInformation(props.initForm.condominium.localization)
+    );
     listAllCondominiums()
     .then((response) => {
       setCondominiums(response.data);

@@ -4,10 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.*;
 import system.gc.entities.*;
 import system.gc.repositories.DebtRepository;
+import system.gc.security.EmployeeUserDetails;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -45,10 +47,12 @@ public class DebtService {
             log.warn("Erro ao salvar!");
             return null;
         }
+        ActivityType activityTypeRegister = activityTypeService.findByName("Registrado");
         log.info("Débito registrado com o id: " + registeredDebt.getId());
         // MODIFICAR
         // List<ActivityType> activitiesType =  new ActivityTypeDTO().convertListEntityDTOFromListEntity(activityTypeService.findAll());
-        registerMovementDebt(registeredDebt, activityTypeService.findByName("Registrado"));
+        EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        registerMovementDebt(registeredDebt, activityTypeRegister, employeeUserDetails.getUserAuthenticated());
         return registeredDebt;
     }
 
@@ -67,23 +71,23 @@ public class DebtService {
         log.info("Atualizando registro do débito");
         Optional<Debt> debt = debtRepository.findById(updateDebtDTO.getId());
         debt.orElseThrow(() -> new EntityNotFoundException("Débito inexistente: "));
+        ActivityType activityTypeUpdate = activityTypeService.findByName("Atualizado");
         DebtDTO previousDebt = new DebtDTO().toDTO(debt.get());
         Debt updatedDebt = debtRepository.save(new DebtDTO().toEntity(updateDebtDTO));
         log.info("Atualizado com sucesso");
         //List<ActivityType> activitiesType = new ActivityTypeDTO().convertListEntityDTOFromListEntity(activityTypeService.findAll());
-        registerMovementDebt(previousDebt, updatedDebt, activityTypeService.findByName("Atualizado"));
+        EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        registerMovementDebt(previousDebt, updatedDebt, activityTypeUpdate, employeeUserDetails.getUserAuthenticated());
     }
 
     @Transactional
     public Page<DebtDTO> searchDebts(Pageable pageable, LesseeDTO lesseeDTO) {
         log.info("Buscando débitos");
-        /*
         LesseeDTO lessee = lesseeService.findByCPF(lesseeDTO);
         if(lessee == null) {
             log.warn("Locatário com o CPF: " + lesseeDTO.getCpf() + " não foi localizado");
             return Page.empty();
         }
-         */
         Page<Debt> pageDebts = debtRepository.findDebtsForLessee(pageable, lesseeDTO.getId());
         debtRepository.loadLazyDebts(pageDebts.toList());
         return pageDebts.map(DebtDTO::new);
@@ -95,18 +99,21 @@ public class DebtService {
         Optional<Debt> debt = debtRepository.findById(ID);
         debt.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         DebtDTO previousDebt = new DebtDTO().toDTO(debt.get());
-        debt.get().setStatus(statusService.findByName("Desativado"));
+        Status statusDisable = statusService.findByName("Deletado");
+        ActivityType activityTypeDisable = activityTypeService.findByName("Deletado");
+        debt.get().setStatus(statusDisable);
         Debt disabledDebt = debtRepository.save(debt.get());
         //List<ActivityType> activitiesType = new ActivityTypeDTO().convertListEntityDTOFromListEntity(activityTypeService.findAll());
-        registerMovementDebt(previousDebt, disabledDebt, activityTypeService.findByName("Desativado"));
+        EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        registerMovementDebt(previousDebt, disabledDebt, activityTypeDisable, employeeUserDetails.getUserAuthenticated());
         log.info("Registro desativado com sucesso");
     }
 
-    private void registerMovementDebt(Debt debt, ActivityType activityType) {
-        movementService.registerMovement(debt, activityType, employeeService.findByID(1));
+    private void registerMovementDebt(Debt debt, ActivityType activityType, Employee employee) {
+        movementService.registerMovement(debt, activityType, employee);
     }
 
-    private void registerMovementDebt(DebtDTO previousDebtDTO, Debt debt, ActivityType activityType) {
-        movementService.registerMovement(previousDebtDTO, debt, activityType, employeeService.findByID(1));
+    private void registerMovementDebt(DebtDTO previousDebtDTO, Debt debt, ActivityType activityType, Employee employee) {
+        movementService.registerMovement(previousDebtDTO, debt, activityType, employee);
     }
 }

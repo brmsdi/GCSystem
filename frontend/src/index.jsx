@@ -10,7 +10,7 @@ import Login from 'views/Login';
 import RecoverPasswordSendCodeEmail from 'views/Login/RecoverPasswordSendCodeEmail';
 import RecoverPasswordSendCode from 'views/Login/RecoverPasswordSendCode';
 import RecoverPasswordChange from 'views/Login/RecoverPasswordChange';
-import { LESSEES_HOME_URL, EMPLOYEES_HOME_URL, HOME_URL, LOGIN_URL, RECOVER_PASSWORD_CHANGE_URL, RECOVER_PASSWORD_SEND_CODE_URL, RECOVER_PASSWORD_URL, CONDOMINIUMS_HOME_URL, CONTRACTS_HOME_URL} from 'utils/urls';
+import { LESSEES_HOME_URL, EMPLOYEES_HOME_URL, HOME_URL, LOGIN_URL, RECOVER_PASSWORD_CHANGE_URL, RECOVER_PASSWORD_SEND_CODE_URL, RECOVER_PASSWORD_URL, CONDOMINIUMS_HOME_URL, CONTRACTS_HOME_URL, DEBTS_HOME_URL} from 'utils/urls';
 import PrivateRoute from 'routes/PrivateRoutes';
 import TemplateApp from 'views/TemplateApp';
 import EmployeesView from 'views/Employees';
@@ -18,6 +18,7 @@ import HomeView from 'views/Home';
 import LesseeView from 'views/Lessees';
 import CondominiumsView from 'views/Condominiums';
 import ContractsView from 'views/Contracts';
+import DebtsView from 'views/Debts';
 
 reactDom.render(
         <Provider store={store}>
@@ -28,6 +29,7 @@ reactDom.render(
                     <Route path={LESSEES_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<LesseeView />}/>} failRedirect={LOGIN_URL} />} />
                     <Route path={CONDOMINIUMS_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<CondominiumsView />}/>} failRedirect={LOGIN_URL} />} />
                     <Route path={CONTRACTS_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<ContractsView />}/>} failRedirect={LOGIN_URL} />} />
+                    <Route path={DEBTS_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<DebtsView />}/>} failRedirect={LOGIN_URL} />} />
                     <Route path={LOGIN_URL}>
                         <Route path="" element={<App children={<Login />}/>} />
                         <Route path={RECOVER_PASSWORD_URL} element={<App children={<RecoverPasswordSendCodeEmail />}/>}/>
