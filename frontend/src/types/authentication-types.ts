@@ -40,3 +40,7 @@ export type UserAuthenticatedViewTypeAction = {
 export enum UserAuthenticatedViewTypesEnum {
     UPDATE="UPDATE-USER-AUTH"
 }
+
+export const ROLE_ADMINISTRATOR = "ADMINISTRADOR";
+export const ROLE_ADMINISTRATIVE_ASSISTANT = "ASSISTENTE ADMINISTRATIVO";
+export const ROLE_COUNTER = "CONTADOR";

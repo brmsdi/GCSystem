@@ -5,8 +5,9 @@ import insertRequestCodeInfo, { setUserAuthenticated } from "store/Authenticatio
 import Swal from "sweetalert2";
 import { AuthCpfAndPassword, StateAuthenticationChange, UserAuthenticatedViewTypesEnum } from "types/authentication-types";
 import { clearAuth, setAuthorization } from "utils/http";
-import { EMPLOYEES_HOME_URL, RECOVER_PASSWORD_URL } from "utils/urls";
+import { HOME_URL, RECOVER_PASSWORD_URL } from "utils/urls";
 import { autheticate, clearToken, setToken } from "services/authentication";
+import PageLoading from "components/Loader/PageLoading";
 
 const Login = () => {
   let nav = useNavigate();
@@ -21,6 +22,8 @@ const Login = () => {
     cpf: "",
     password: "",
   })
+  const [isLoading, setIsLoading] = useState(false);
+
   function changeInput(value: any) {
     setAuth((auth) => ({ ...auth, ...value }));
   }
@@ -28,11 +31,14 @@ const Login = () => {
   async function submit(event: any) {
     event.preventDefault();
     try {
+      setIsLoading(true)
       const result = await autheticate(auth);
+      setIsLoading(false)
       setToken(result);
       setAuthorization(result)
-      nav(EMPLOYEES_HOME_URL)
+      nav(HOME_URL)
     } catch (error: any) {
+      
       if (!error.response) {
         Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
       } else if (
@@ -43,9 +49,14 @@ const Login = () => {
       } else {
         Swal.fire("oops!", "" + error.response.status, "error");
       }
+      setIsLoading(false)
     }
   }
-  return (
+  return isLoading === true ? (
+    <PageLoading title="Autenticando" />
+  )
+  : 
+  (
     <div className="content-login animate-down">
       <form onSubmit={submit}>
         <div>
@@ -78,7 +89,9 @@ const Login = () => {
           <Link to={RECOVER_PASSWORD_URL}>Esqueci minha senha</Link>
         </div>
         <div>
-          <button type="submit" className="btn btn-sm btn-outline-secondary">
+          <button 
+          type="submit" 
+          className="btn btn-sm btn-outline-secondary">
             <i data-feather="log-in"></i> ENTRAR
           </button>
         </div>

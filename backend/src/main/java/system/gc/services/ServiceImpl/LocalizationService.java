@@ -9,6 +9,7 @@ import system.gc.entities.Localization;
 import system.gc.repositories.LocalizationRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -27,7 +28,21 @@ public class LocalizationService {
         return localizationDTOService.toDTO(localization);
     }
 
+    @Transactional
+    public Localization save(Localization newLocalization) {
+        log.info("Inserindo registro de localização no banco de dados: " + newLocalization.getName());
+        Localization localization = localizationRepository.save(newLocalization);;
+        log.info("Salvo com sucesso. ID: " + localization.getZipCode());
+        return localization;
+    }
+
     public List<LocalizationDTO> findAll() {
         return localizationRepository.findAll().stream().map(LocalizationDTO::new).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Localization findByZipCode(int ID) {
+        Optional<Localization> localizationOptional = localizationRepository.findById(ID);
+        return localizationOptional.orElse(null);
     }
 }

@@ -88,14 +88,14 @@ public class DebtService {
             log.warn("Locatário com o CPF: " + lesseeDTO.getCpf() + " não foi localizado");
             return Page.empty();
         }
-        Page<Debt> pageDebts = debtRepository.findDebtsForLessee(pageable, lesseeDTO.getId());
+        Page<Debt> pageDebts = debtRepository.findDebtsForLessee(pageable, lessee.getId());
         debtRepository.loadLazyDebts(pageDebts.toList());
         return pageDebts.map(DebtDTO::new);
     }
 
     @Transactional
     public void delete(Integer ID) throws EntityNotFoundException {
-        log.info("Desativando registro com o ID: " + ID);
+        log.info("Deletando registro com o ID: " + ID);
         Optional<Debt> debt = debtRepository.findById(ID);
         debt.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         DebtDTO previousDebt = new DebtDTO().toDTO(debt.get());

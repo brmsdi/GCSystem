@@ -12,6 +12,7 @@ import system.gc.repositories.ContractRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -63,6 +64,15 @@ public class ContractService {
         Page<Contract> pageContract = contractRepository.findContractsForLessee(pageable, lessee.getId());
         contractRepository.loadLazyContracts(pageContract.toList());
         return pageContract.map(ContractDTO::new);
+    }
+
+    @Transactional
+    public ContractDTO findByID(Integer ID) {
+        log.info("Buscando registro de contrato com o id: " + ID);
+        Optional<Contract> contract = contractRepository.findById(ID);
+        contract.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        contractRepository.loadLazyContracts(List.of(contract.get()));
+        return new ContractDTO(contract.get());
     }
 
     @Transactional

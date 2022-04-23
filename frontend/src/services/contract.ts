@@ -1,6 +1,6 @@
 import { Contract, PaginationContract } from "types/contract"
 import http from "utils/http"
-import { REQUEST_CONTRACTS, REQUEST_CONTRACT_SEARCH } from "utils/requests"
+import { REQUEST_CONTRACTS, REQUEST_CONTRACTS_PRINTOUT, REQUEST_CONTRACT_SEARCH } from "utils/requests"
 
 export const getAllContracts = (page: number = 0, size: number = 5) => {
     return http.get<PaginationContract>(`${REQUEST_CONTRACTS}?page=${(page - 1)}&size=${size}`)
@@ -18,6 +18,10 @@ export const saveContract = async (data: Contract) => {
 export const updateContract = async (data: Contract) => {
     const response = await http.put(`${REQUEST_CONTRACTS}`, data)
     return response.data
+}
+
+export const printoutContract = (ID: number) => {
+    return http.get<Contract>(`${REQUEST_CONTRACTS_PRINTOUT}?id=${ID}`)
 }
 
 export const deleteContract = async (ID: number) => {

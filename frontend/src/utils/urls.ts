@@ -7,4 +7,5 @@ export const LESSEES_HOME_URL = "/lessees";
 export const HOME_URL = "/";
 export const CONDOMINIUMS_HOME_URL = "/condominiums";
 export const CONTRACTS_HOME_URL = "/contracts";
-export const DEBTS_HOME_URL = "/debts";
+export const CONTRACTS_PRINTOUT_URL = CONTRACTS_HOME_URL + "/printout/:id";
+export const DEBTS_HOME_URL = "/debts"; 

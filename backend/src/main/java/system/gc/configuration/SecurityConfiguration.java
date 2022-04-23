@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -22,8 +21,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import system.gc.security.EmployeeUserDetailsService;
 import system.gc.security.Filter.*;
 import system.gc.security.LesseeUserDetailsService;
+import system.gc.utils.TextUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -33,9 +32,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    @Autowired
-    Environment environment;
 
     final EmployeeUserDetailsService employeeUserDetailsService;
 
@@ -69,6 +65,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/change-password/request-code").permitAll()
                 .antMatchers(HttpMethod.POST, "/change-password/receive-code").permitAll()
                 .antMatchers(HttpMethod.POST, "/change-password/change").permitAll()
+                .antMatchers("/employees/**").hasAnyRole(TextUtils.ROLE_ADMINISTRATOR)
+                .antMatchers("/lessees/**").hasAnyRole(TextUtils.ROLE_ADMINISTRATOR, TextUtils.ROLE_ADMINISTRATIVE_ASSISTANT)
+                .antMatchers("/debts/**").hasAnyRole(TextUtils.ROLE_ADMINISTRATOR, TextUtils.ROLE_COUNTER)
+                .antMatchers("/condominiums/**").hasAnyRole(TextUtils.ROLE_ADMINISTRATOR, TextUtils.ROLE_ADMINISTRATIVE_ASSISTANT)
+                .antMatchers("/contracts/**").hasAnyRole(TextUtils.ROLE_ADMINISTRATOR, TextUtils.ROLE_ADMINISTRATIVE_ASSISTANT)
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -1,12 +1,11 @@
 import PageLoading from "components/Loader/PageLoading";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { requestCode } from "services/authentication";
 import insertRequestCodeInfo from "store/Authentication/authentication.actions";
 import Swal from "sweetalert2";
 import { EmailRequestCode, StateAuthenticationChange } from "types/authentication-types";
-import { REQUEST_LOGIN } from "utils/requests";
 import { LOGIN_URL, RECOVER_PASSWORD_SEND_CODE_URL } from "utils/urls";
 
 const RecoverPasswordSendCodeEmail = () => {
@@ -21,25 +20,6 @@ const RecoverPasswordSendCodeEmail = () => {
   function changeForm(value: any) {
     setForm((form) => ({ ...form, ...value }))
   }
-  /*
-    function submit(event : any) {
-      event.preventDefault();
-      requestCode(form)
-      .then(() => {
-        form.state = stateAuthenticationChange.WAITINGCODE; 
-        dispatch(insertRequestCodeInfo(stateAuthenticationChange.INSERTINFO, form));
-        nav(LOGIN_URL + RECOVER_PASSWORD_SEND_CODE_URL);
-      })
-      .catch(error => {
-        if (error.response) {
-          const errors = error.response.data.errors;
-          Swal.fire('oops!', errors[0].message, 'error')
-        } else {
-          Swal.fire("oops!", "Sem conexão com o servidor!", "error");
-        }
-      })
-    }
-  */
 
   async function submit(event: any) {
     event.preventDefault();
@@ -94,9 +74,10 @@ const RecoverPasswordSendCodeEmail = () => {
           </button>
         </div>
         <div>
-          <Link to={REQUEST_LOGIN} className="btn btn-sm btn-outline-secondary">
+          <button className="btn btn-sm btn-outline-secondary" 
+          onClick={() => nav(-1)} >
             <i data-feather="log-in"></i> Cancelar
-          </Link>
+          </button>
         </div>
       </form>
     </div>

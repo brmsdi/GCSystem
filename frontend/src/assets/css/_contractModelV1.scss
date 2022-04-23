@@ -1,0 +1,46 @@
+.content-contract-model {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    font-family: Arial;
+    font-size: 14px;
+    text-align: justify;
+    h1 {
+        font-size: 14px;
+    }
+    header {
+        position: initial;
+        display: flex;
+        width: 100%;
+        height: auto;
+        line-height: 0.5;
+    }
+}
+
+.content-principal-contract-model {
+    width: 100%;
+    legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+}
+
+.footer-ass {
+    text-align: center;
+    align-items: center;
+    p {
+        padding-bottom: 30px;
+        margin-top: 0px;
+      }
+
+      hr {
+        width: 60%;
+        background-color: black;
+        margin-bottom: 0px;
+        margin: 0 auto;
+      }
+  }

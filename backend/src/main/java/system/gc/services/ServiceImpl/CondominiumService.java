@@ -7,9 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.CondominiumDTO;
+import system.gc.dtos.LocalizationDTO;
 import system.gc.dtos.RoleDTO;
 import system.gc.entities.Condominium;
 import system.gc.entities.Employee;
+import system.gc.entities.Localization;
 import system.gc.repositories.CondominiumRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -24,9 +26,17 @@ public class CondominiumService {
     @Autowired
     private CondominiumRepository condominiumRepository;
 
+    @Autowired
+    private LocalizationService localizationService;
+
     @Transactional
     public CondominiumDTO save(CondominiumDTO condominiumDTO) {
         log.info("Salvando novo registro de condomínio no banco de dados: " + condominiumDTO.getName());
+        Localization localization = localizationService.findByZipCode(condominiumDTO.getLocalization().getLocalization().getZipCode());
+        if (localization == null) {
+            localization = localizationService.save(new LocalizationDTO().toEntity(condominiumDTO.getLocalization().getLocalization()));
+            condominiumDTO.getLocalization().setLocalization(new LocalizationDTO(localization));
+        }
         CondominiumDTO condominiumDTOService = new CondominiumDTO();
         Condominium registeredCondominium = condominiumRepository.save(condominiumDTOService.toEntity(condominiumDTO));
         if (registeredCondominium.getId() == null) {

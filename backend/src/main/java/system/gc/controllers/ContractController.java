@@ -62,6 +62,11 @@ public class ContractController {
         return ResponseEntity.ok(contractService.searchContract(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
     }
 
+    @GetMapping(value = "printout")
+    public ResponseEntity<ContractDTO> findByID(@RequestParam(name = "id", defaultValue = "0") Integer id) {
+        return ResponseEntity.ok(contractService.findByID(id));
+    }
+
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam(name = "id") Integer ID) {
         contractService.delete(ID);

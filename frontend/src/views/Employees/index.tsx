@@ -33,27 +33,34 @@ const EmployeesView = () => {
     }, [stateForm])
     
     return (
-        <main className="content-main animate-right">
-            <div className="home-header">
-                <h1>{"Funcionários"}</h1>
-            </div>
-            <MenuRouterActivity stateForm={selectStateFormEmployee} />
-            <BarHome titleButtonNew="Novo registro de funcionário" search={<SearchEmployee />} 
-            removeSelectedContextTableAction={removeSelectedEmployeeTableAction} 
-            setStateFormContextAction={setStateFormEmployeeAction} 
-            selectStateFormContext={selectStateFormEmployee}/>
-            <div className={stateForm.activity !== StateFormEnum.NOACTION ? 'content-form active' : 'content-form'} >
-                { currentForm }
-            </div>
-            <div className="content-table">
-                {pagination}
-                <TableEmployee />
-                <div className="pagination-mobile">
-                    { }
-                </div>
-            </div>
-        </main>
-    )
+      <main className="content-main animate-right">
+        <div className="home-header">
+          <h1>{"Funcionários"}</h1>
+        </div>
+        <MenuRouterActivity stateForm={selectStateFormEmployee} />
+        <BarHome
+          titleButtonNew="Novo registro de funcionário"
+          search={<SearchEmployee />}
+          removeSelectedContextTableAction={removeSelectedEmployeeTableAction}
+          setStateFormContextAction={setStateFormEmployeeAction}
+          selectStateFormContext={selectStateFormEmployee}
+        />
+        <div
+          className={
+            stateForm.activity !== StateFormEnum.NOACTION
+              ? "content-form active"
+              : "content-form"
+          }
+        >
+          {currentForm}
+        </div>
+        <div className="content-table">
+          {pagination}
+          <TableEmployee />
+          <div className="pagination-mobile">{}</div>
+        </div>
+      </main>
+    );
 }
 
 export default EmployeesView;

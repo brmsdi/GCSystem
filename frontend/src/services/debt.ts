@@ -4,7 +4,7 @@ import { REQUEST_DEBTS, REQUEST_DEBT_SEARCH } from "utils/requests"
 
 export const getAllDebts = (page: number = 0, size: number = 5) => {
     return http.get<PaginationDebt>(`${REQUEST_DEBTS}?page=${(page - 1)}&size=${size}`)
-}
+} 
 
 export const findByCPFService = (CPF: string, page: number = 0, size: number = 5) => {
     return http.get<PaginationDebt>(`${REQUEST_DEBTS + REQUEST_DEBT_SEARCH}?cpf=${CPF}&page=${page}&size=${size}`)
