@@ -1,4 +1,4 @@
-import PageLoading from "components/Loader/PageLoading";
+import PageMessage from "components/Loader/PageLoading";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -40,7 +40,7 @@ const RecoverPasswordSendCodeEmail = () => {
       }
     }
   }
-  if (sending) return <PageLoading title="Enviando código para o E-mail" />
+  if (sending) return <PageMessage title="Enviando código para o E-mail" />
 
   return (
     <div className="content-login animate-down">

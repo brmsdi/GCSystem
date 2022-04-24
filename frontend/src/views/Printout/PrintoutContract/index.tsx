@@ -1,8 +1,11 @@
-import PageLoading from "components/Loader/PageLoading";
+import PageMessage from "components/Loader/PageLoading";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { printoutContract } from "services/contract";
 import { Contract, ContractEmpty } from "types/contract";
+import errorIMG from "assets/img/error.svg";
+import { formatDateForView } from "utils/textFormt";
+import { formatCoinPTBRForView, formatInFull } from "utils/coin-format";
 
 const PrintoutContract = () => {
   const [contract, setContract] = useState<Contract>(ContractEmpty);
@@ -24,10 +27,10 @@ const PrintoutContract = () => {
 
   }, [params.id])
 
-  if (fail === true) return (<div>Erro ao gerar contrato</div>)
+  if (fail === true) return <PageMessage title={"Oops! Erro ao gerar contrato, tente novamente."} imageForTitle={errorIMG}/>
 
   return contract.id === undefined ? (
-    <PageLoading title="Gerando contrato" />
+    <PageMessage title="Gerando contrato" />
   ) : (
     <div className="content-contract-model">
       <div>
@@ -48,36 +51,41 @@ const PrintoutContract = () => {
       <div className="content-principal-contract-model">
         <div>
           <p>
-            Locatário Wisley Bruno Marques Franca portador da cédula de
-            identidade R.G Nº 2787802-3 e CPF Nº 023.429.322-5, residirá em
-            condomínio-A1, 920, R. Barão de Suruí - Flores, Manaus - Amazonas.
+            {
+              `Locatário ${contract.lessee.name} portador da cédula de
+              identidade R.G Nº ${contract.lessee.rg} e CPF Nº ${contract.lessee.cpf}, residirá em
+              ${contract.condominium.name}, ${contract.condominium.localization.localization.road}, ${contract.condominium.localization.number} - ${contract.condominium.localization.localization.name}, Manaus - Amazonas.`
+            }
           </p>
         </div>
         <section className="clausulas section-clausulas-p1">
           <legend>CLÁUSULA PRIMEIRA – DO OBJETO DE LOCAÇÃO</legend>
           <div>
             <p>
-              1.1 O objeto relacionado a este contrato está localizado em rua
-              Barão de Suruí, 920, Flores, 69058-260, Manaus, Amazonas.
+              {
+                `1.1 O objeto relacionado a este contrato está localizado em rua
+                ${contract.condominium.localization.localization.road}, ${contract.condominium.localization.number} - ${contract.condominium.localization.localization.name}, ${contract.condominium.localization.localization.zipCode}, Manaus - Amazonas.`
+              }
             </p>
           </div>
           <legend>CLÁUSULA SEGUNDA – DO PRAZO DE CONTRATO</legend>
           <div>
             <p>
-              2.1 O prazo de locação é de no mínimo 03 meses, iniciando-se em
-              01/02/2021 com término em 01/05/2021, independentemente de
-              aviso, notificação ou interpelação judicial ou extrajudicial.
+              {
+                `2.1 O prazo de locação é de no mínimo 03 meses, iniciando-se em
+                ${formatDateForView(contract.contractDate)} com término em ${formatDateForView(contract.contractExpirationDate)}, independentemente de
+                aviso, notificação ou interpelação judicial ou extrajudicial.`
+              }
             </p>
           </div>
           <legend>CLÁUSULA TERCEIRA – DA FORMA DE PAGAMENTO</legend>
           <div>
             <p>
-              3.1 O aluguel mensal poderá ser pago a partir do dia 01 (um) até
-              o dia 05 (cinco) sem custos adicionais no valor deste contrato.
-              O pagamento será via boleto, no valor de R$ 1.500,00 (mil e
-              quinhentos reais), reajustados anualmente, pelo índice INCP,
+             {` 3.1 O aluguel mensal poderá ser pago a partir do dia ${contract.monthlyPaymentDate} (${formatInFull(contract.monthlyPaymentDate)}) até
+              o dia ${contract.monthlyDueDate} (${formatInFull(contract.monthlyDueDate)}) sem custos adicionais no valor deste contrato.
+              O pagamento será via boleto, no valor de ${formatCoinPTBRForView(contract.contractValue)} (${formatInFull(contract.contractValue)}), reajustados anualmente, pelo índice INCP,
               reajustamento estabelecido e calculado sobre o valor do último
-              aluguel pago no último mês do ano anterior.
+              aluguel pago no último mês do ano anterior.`}
             </p>
           </div>
         </section>

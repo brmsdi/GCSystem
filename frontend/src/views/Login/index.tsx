@@ -7,7 +7,7 @@ import { AuthCpfAndPassword, StateAuthenticationChange, UserAuthenticatedViewTyp
 import { clearAuth, setAuthorization } from "utils/http";
 import { HOME_URL, RECOVER_PASSWORD_URL } from "utils/urls";
 import { autheticate, clearToken, setToken } from "services/authentication";
-import PageLoading from "components/Loader/PageLoading";
+import PageMessage from "components/Loader/PageLoading";
 
 const Login = () => {
   let nav = useNavigate();
@@ -53,7 +53,7 @@ const Login = () => {
     }
   }
   return isLoading === true ? (
-    <PageLoading title="Autenticando" />
+    <PageMessage title="Autenticando" />
   )
   : 
   (

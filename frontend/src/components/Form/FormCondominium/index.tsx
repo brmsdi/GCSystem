@@ -7,7 +7,7 @@ import { Condominium } from "types/condominium";
 import { Localization } from "types/localization";
 import { LocalizationCondominium } from "types/LocalizationCondominium";
 import { Status } from "types/status";
-import { isValidZipCode } from "utils/verifications";
+import { isValidZipCode, statusIsSelected } from "utils/verifications";
 
 interface IProps {
   initForm: Condominium;
@@ -73,30 +73,6 @@ const FormTemplate = (props: IProps) => {
     );
   }, [props.initForm]);
 
-  function getZipCodeInformation(zipCode: any) {
-    setZipCodeProcessing(true);
-    getZipCodeService(zipCode)
-      .then((response) => {
-        if (response.data.erro) {
-          setZipCode("");
-          Swal.fire("Oops!", "CEP invalido. Tente novamente!", "error");
-          setZipCodeProcessing(false);
-          return;
-        }
-        let newLocalization = {
-          ...localization,
-          zipCode: zipCode,
-          road: response.data.logradouro,
-          name: response.data.bairro,
-        };
-        setLocalization({ ...newLocalization });
-        setZipCodeProcessing(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setZipCodeProcessing(false);
-      });
-  }
   useEffect(() => {
     try {
       getAllStatus().then((response) => {
@@ -111,6 +87,10 @@ const FormTemplate = (props: IProps) => {
 
   async function submit(event: any) {
     event.preventDefault();
+    if (!statusIsSelected(form.status)) {
+      Swal.fire('Oops!', 'Selecione o campo status', 'error')
+      return
+    } 
     setLocalizationNumber({
       ...localizationNumber,
       localization: localization,
@@ -137,10 +117,36 @@ const FormTemplate = (props: IProps) => {
     }
   }
 
+  function getZipCodeInformation(zipCode: any) {
+    setZipCodeProcessing(true);
+    getZipCodeService(zipCode)
+      .then((response) => {
+        if (response.data.erro) {
+          setZipCode("");
+          Swal.fire("Oops!", "CEP invalido. Tente novamente!", "error");
+          setZipCodeProcessing(false);
+          return;
+        }
+        let newLocalization = {
+          ...localization,
+          zipCode: zipCode,
+          road: response.data.logradouro,
+          name: response.data.bairro,
+        };
+        setLocalization({ ...newLocalization });
+        setZipCodeProcessing(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setZipCodeProcessing(false);
+      });
+  }
+
   async function clearField() {
     clearForm();
     clearFieldsLocalizationCondominium();
     clearFieldsLocalization();
+    clearFieldZipCode();
   }
 
   function clearForm() {
@@ -157,6 +163,10 @@ const FormTemplate = (props: IProps) => {
     let initLocalization: Localization =
       props.initForm.localization.localization;
     setLocalization({ ...initLocalization });
+  }
+
+  function clearFieldZipCode() {
+    setZipCode('')
   }
 
   return (

@@ -33,6 +33,8 @@ import CondominiumsView from 'views/Condominiums';
 import ContractsView from 'views/Contracts';
 import DebtsView from 'views/Debts';
 import PrintoutContract from 'views/Printout/PrintoutContract';
+import PageMessage from 'components/Loader/PageLoading';
+import errorIMG from "assets/img/error.svg";
 
 reactDom.render(
         <Provider store={store}>
@@ -51,15 +53,9 @@ reactDom.render(
                         <Route path={ RECOVER_PASSWORD_SEND_CODE_URL } element={<App children={<RecoverPasswordSendCode />}/>}/>
                         <Route path={ RECOVER_PASSWORD_CHANGE_URL } element={<App children={<RecoverPasswordChange />}/>}/>
                     </Route>
+                    <Route path="*" element={<App children={<PageMessage title={"Página não encontrada."} imageForTitle={errorIMG} />}/>} />
                 </Routes>
             </BrowserRouter>
         </Provider>,
    document.getElementById("root")
 );
-
-/*
-     <Route path="/login" element={<Login />} />
-                    <Route path={ RECOVER_PASSWORD_URL } element={<RecoverPasswordSendCodeEmail />}/>
-                    <Route path={ RECOVER_PASSWORD_SEND_CODE_URL } element={<RecoverPasswordSendCode />}/>
-                    <Route path={ RECOVER_PASSWORD_CHANGE_URL } element={<RecoverPasswordChange />}/>
- */

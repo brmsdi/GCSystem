@@ -68,7 +68,7 @@ public class CondominiumService {
 
     @Transactional
     public Page<CondominiumDTO> searchCondominium(Pageable pageable, CondominiumDTO condominiumDTO) {
-        log.info("Buscando registro de condiminios com o nome: " + condominiumDTO.getName());
+        log.info("Buscando registro de condimínios com o nome: " + condominiumDTO.getName());
         Page<Condominium> condominiums = condominiumRepository.findAllByName(pageable, condominiumDTO.getName());
         if (condominiums.isEmpty()) {
             log.warn("Registro não encontrado");

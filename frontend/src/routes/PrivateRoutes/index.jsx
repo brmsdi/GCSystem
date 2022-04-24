@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUserAuthenticated } from "store/Authentication/authentication.actions";
 import { UserAuthenticatedViewTypesEnum } from "types/authentication-types";
-import PageLoading from "components/Loader/PageLoading";
+import PageMessage from "components/Loader/PageLoading";
 import { TextInformationEnum } from "types/text-information";
 
 export default function PrivateRoute({ children, failRedirect }) {
@@ -24,6 +24,6 @@ export default function PrivateRoute({ children, failRedirect }) {
             setAuth(false);
         })
     }, [dispatch]);
-    if (auth === undefined) return <PageLoading title={TextInformationEnum.LOADING} />;
+    if (auth === undefined) return <PageMessage title={TextInformationEnum.LOADING} />;
     return auth === true ? children : <Navigate to={failRedirect} />;
 }

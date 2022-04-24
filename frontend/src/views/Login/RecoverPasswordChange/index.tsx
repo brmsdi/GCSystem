@@ -1,4 +1,4 @@
-import PageLoading from "components/Loader/PageLoading";
+import PageMessage from "components/Loader/PageLoading";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -56,7 +56,7 @@ const RecoverPasswordChange = () => {
     }
   }
 
-  if (sending) return <PageLoading title="Atualizando senha" />
+  if (sending) return <PageMessage title="Atualizando senha" />
   
   return (
     <div className="content-login animate-down">
