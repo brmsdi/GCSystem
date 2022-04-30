@@ -22,7 +22,8 @@ import
     CONDOMINIUMS_HOME_URL, 
     CONTRACTS_HOME_URL, 
     DEBTS_HOME_URL,
-    CONTRACTS_PRINTOUT_URL
+    CONTRACTS_PRINTOUT_URL,
+    REPAIR_REQUESTS_HOME_URL
 } from 'utils/urls';
 import PrivateRoute from 'routes/PrivateRoutes';
 import TemplateApp from 'views/TemplateApp';
@@ -35,6 +36,7 @@ import DebtsView from 'views/Debts';
 import PrintoutContract from 'views/Printout/PrintoutContract';
 import PageMessage from 'components/Loader/PageLoading';
 import errorIMG from "assets/img/error.svg";
+import RepairRequestsView from 'views/RepairRequests';
 
 reactDom.render(
         <Provider store={store}>
@@ -47,6 +49,7 @@ reactDom.render(
                     <Route path={CONTRACTS_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<ContractsView />}/>} failRedirect={LOGIN_URL} />}/>
                     <Route path={CONTRACTS_PRINTOUT_URL} element={<PrivateRoute children={<PrintoutContract />} failRedirect={LOGIN_URL} />} />
                     <Route path={DEBTS_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<DebtsView />}/>} failRedirect={LOGIN_URL} />} />
+                    <Route path={REPAIR_REQUESTS_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<RepairRequestsView />}/>} failRedirect={LOGIN_URL} />} />
                     <Route path={LOGIN_URL}>
                         <Route path="" element={<App children={<Login />}/>} />
                         <Route path={RECOVER_PASSWORD_URL} element={<App children={<RecoverPasswordSendCodeEmail />}/>}/>

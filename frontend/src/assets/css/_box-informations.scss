@@ -1,0 +1,51 @@
+
+.content-box-informations {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    flex-direction: column;
+    color: $--color-v4;
+    letter-spacing: 0.04rem;
+    width: 100%;
+    padding-top: 0.8rem;
+    padding-left: 1rem;
+}
+
+.box-informations {
+    font-style: italic;
+    font-size: 1rem;
+    font-weight: 450;
+    color: $--color-v12;
+    i {
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+     //background: linear-gradient(to right, rgb(127, 0, 255), rgb(225, 0, 255));
+    //background: linear-gradient(to right, rgb(58, 28, 113), rgb(215, 109, 119), rgb(255, 175, 123));
+    //background: linear-gradient(to right, rgb(32, 0, 44), rgb(203, 180, 212));
+    //background: linear-gradient(to right, rgb(195, 55, 100), rgb(29, 38, 113));
+    //background: linear-gradient(to right, rgb(232, 203, 192), rgb(99, 111, 164));
+    //background: linear-gradient(to right, rgb(65, 41, 90), rgb(47, 7, 67));
+    //background: linear-gradient(to right, rgb(189, 195, 199), rgb(44, 62, 80));
+    //background: linear-gradient(to right, rgb(66, 39, 90), rgb(115, 75, 109));
+    //box-shadow: 0 0 1em gold;
+}
+
+.box-informations .OPEN {
+    i {
+        color: $--color-v1;
+    }
+}
+
+
+.box-informations .PROGRESS {
+    i {
+        color: $--color-v11;
+    }
+}
+
+.box-informations .LATE {
+    i {
+        color: red;
+    }
+}

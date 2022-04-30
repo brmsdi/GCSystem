@@ -6,6 +6,7 @@ import getAllContractsReducer, { setCurrentPaginationContractReducer, setStateFo
 import getAllDebtsReducer, { setCurrentPaginationDebtReducer, setStateFormDebtReducer, stateSelectionDebtReducer, updateTableDebtReducer } from './Debts/debts.reducer';
 import getAllEmployeesReducer, { setCurrentPaginationEmployeeReducer, setStateFormEmployeeReducer, stateSelectionEmployeeReducer, updateTableEmployeeReducer } from './Employees/employees.reducer';
 import getAllLesseesReducer, { setCurrentPaginationLesseeReducer, setStateFormLesseeReducer, stateSelectionLesseeReducer, updateTableLesseeReducer } from './Lessees/lessees.reducer';
+import getAllRepairRequestReducer, { setCurrentPaginationRepairRequestReducer, setStateFormRepairRequestReducer, stateSelectionRepairRequestReducer, updateTableRepairRequestReducer } from './RepairRequests/repair-requests.reducer';
 
 const rootReducer = combineReducers({
     employees: getAllEmployeesReducer,
@@ -45,7 +46,14 @@ const rootReducer = combineReducers({
     stateFormDebt: setStateFormDebtReducer,
     currentPaginationTableDebts: setCurrentPaginationDebtReducer,
     updateTableDebtCurrentState: updateTableDebtReducer,
-    selectedDebt: stateSelectionDebtReducer
+    selectedDebt: stateSelectionDebtReducer,
+
+    // REPAIR REQUEST REDUCER
+    repairRequests: getAllRepairRequestReducer,
+    stateFormRepairRequest: setStateFormRepairRequestReducer,
+    currentPaginationTableRepairRequests: setCurrentPaginationRepairRequestReducer,
+    updateTableRepairRequestCurrentState: updateTableRepairRequestReducer,
+    selectedRepairRequest: stateSelectionRepairRequestReducer
 })
 
 const store = createStore(rootReducer);

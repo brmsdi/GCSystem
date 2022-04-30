@@ -112,10 +112,10 @@ a {
           width: 3.5rem;
           top: 0.35rem;
           left: 0.35rem;
-          font-size: 1.5rem;
+          font-size: 1.2rem;
           button {
-            height: 100%;
-            width: 100%;
+            height: 90%;
+            width: 90%;
             background-color: $--color-v10;
             color: #fff;
             border-style: solid;
@@ -138,29 +138,28 @@ a {
 
     .menu {
       margin: 0 1rem;
-      font-size: 1.2rem;
+      font-size: 1rem;
       font-weight: 450;
       color: $--color-v3;
     } // end menu
     .menu-title {
-      padding: 0.1rem;
       .menu-icon {
-        font-size: 1.3em;
+        font-size: 1em;
       }
       .menu-text {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
       }
     }
     .sub-menu {
-      width: 90%;
-      margin: 0.1rem 1.2rem;
       display: flex;
-      font-size: 1.2rem;
+      width: 90%;
+      margin: 0 1rem;
+      font-size: 1rem;
       a {
         width: 100%;
-        color: $--color-v3;
-        padding: 0.8rem;
+        padding: 0.7rem;
         border-radius: 1rem;
+        color: $--color-v3;
       }
       .tooltip-submenu {
         display: none;
@@ -169,6 +168,8 @@ a {
 
     .sub-menu.active {
       a {
+        font-size: 1.2rem;
+        padding: 1rem;
         background-color: #fff;
         color: $--clr;
         font-weight: 600;
@@ -321,9 +322,8 @@ a {
   header {
     aside {
       .btn-co {
-        height: 3.2rem;
-        width: 3.2rem;
-        font-size: 1.4rem;
+        height: 3.1rem;
+        width: 3.1rem;
       }
 
       hr {
@@ -439,9 +439,9 @@ a {
 
     .sub-menu {
       white-space: nowrap;
-      margin: 0;
+      margin: .5rem 0;
       font-size: 1.45rem;
-      padding: 0.3rem;
+      padding: 0;
       a {
         padding: 0;
         text-align: center;
@@ -467,6 +467,14 @@ a {
         transition-duration: 500ms;
       } // end tooltip-submenu
     } // end sub-menu
+
+    .sub-menu.active {
+      a {
+        font-size: 1.2rem;
+        padding: .4rem;
+      }
+    } //
+
   } // End header
 
   header.open {
@@ -522,12 +530,12 @@ a {
     .sub-menu {
       display: flex;
       width: 80%;
-      margin: 0 1.3rem;
-      font-size: 0.95rem;
+      margin: .15rem .8rem;
+      font-size: 1rem;
     } // end sub-menu
     a {
       width: 100%;
-      padding: 0.6rem;
+      padding: 0.5rem;
       border-radius: 1rem;
       text-align: start;
     }
@@ -547,7 +555,8 @@ a {
     .sub-menu.active {
       a {
         background-color: #fff;
-        color: $--clr;
+        padding: 0.53rem;
+        text-align: center;
       }
     }
   } // End header.open

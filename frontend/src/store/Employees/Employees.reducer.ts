@@ -60,9 +60,9 @@ export function setStateFormEmployeeReducer(currentStateForm: CurrentStateForm =
     }
 }
 
-export function setCurrentPaginationEmployeeReducer(state: PaginationTableAction = {type: StatePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES, currentPage: 1, search: undefined }, action: PaginationTableAction) {
+export function setCurrentPaginationEmployeeReducer(state: PaginationTableAction = {type: StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_EMPLOYEES, currentPage: 1, search: undefined }, action: PaginationTableAction) {
     switch(action.type) {
-        case StatePaginationEnum.SETCURRENTPAGINATIONTABLEEMPLOYEES:
+        case StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_EMPLOYEES:
             return action;
         default:
             return state;

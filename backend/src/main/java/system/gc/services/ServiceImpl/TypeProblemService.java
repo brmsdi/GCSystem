@@ -2,6 +2,7 @@ package system.gc.services.ServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.TypeProblemDTO;
@@ -21,8 +22,8 @@ public class TypeProblemService {
     }
 
     @Transactional(readOnly = true)
-    public List<TypeProblemDTO> findAll() {
-        return typeProblemRepository.findAll().stream().map(TypeProblemDTO::new).toList();
+    public List<TypeProblemDTO> findAll(Sort sort) {
+        return typeProblemRepository.findAll(sort).stream().map(TypeProblemDTO::new).toList();
     }
 
     @Transactional(readOnly = true)

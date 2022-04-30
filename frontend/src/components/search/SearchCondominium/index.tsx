@@ -8,7 +8,7 @@ const SearchCondominium = () => {
   const dispatch = useDispatch()
   const[name, setName] = useState('')
   const[paginationState, setPaginationState] = useState<PaginationTableAction>({
-    type: StatePaginationEnum.SETCURRENTPAGINATIONTABLECONDOMINIUMS,
+    type: StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_CONDOMINIUMS,
     currentPage: 1,
     search: undefined
   })

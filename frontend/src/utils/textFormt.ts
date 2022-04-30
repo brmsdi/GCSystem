@@ -1,4 +1,4 @@
-import { LocalizationCondominium } from "types/LocalizationCondominium";
+import { LocalizationCondominium } from "types/localization-condominium";
 
 export const formatDate = (value: string) => {
     let date = new Date(value),

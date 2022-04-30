@@ -1,4 +1,6 @@
+import { Condominium } from "types/condominium"
 import { Status } from "types/status"
+import { TypeProblem } from "types/type-problem"
 
 export const isValidFieldCPF = (value: any) => {
     return (value.length === 11)
@@ -20,6 +22,6 @@ export const isValidFieldDay = (value: number | undefined) => {
     return (value !== undefined && value > 0 && value < 31)
 }
 
-export const statusIsSelected = (status: Status) => {
-    return status.id !== undefined && status.id > 0 && status.name.length > 0; 
-  }
+export const isSelected = (combo: Status | TypeProblem | Condominium) => {
+    return combo.id !== undefined && combo.id > 0 && combo.name.length > 0; 
+}

@@ -61,7 +61,7 @@ const FormTemplate = (props: IProps) => {
     }
   }
 
-  async function clearField() {
+  async function clearForm() {
     setForm({...props.initForm})
   }
 
@@ -196,7 +196,7 @@ const FormTemplate = (props: IProps) => {
             Salvar
           </button>
           <button type="button" className="btn btn-secondary"
-          onClick={clearField}>
+          onClick={clearForm}>
              { props.isActivedFieldPassword === true ? 'Limpar' : 'Restaurar' }           
           </button>
         </div>

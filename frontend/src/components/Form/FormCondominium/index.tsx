@@ -5,9 +5,9 @@ import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { Condominium } from "types/condominium";
 import { Localization } from "types/localization";
-import { LocalizationCondominium } from "types/LocalizationCondominium";
+import { LocalizationCondominium } from "types/localization-condominium";
 import { Status } from "types/status";
-import { isValidZipCode, statusIsSelected } from "utils/verifications";
+import { isValidZipCode, isSelected } from "utils/verifications";
 
 interface IProps {
   initForm: Condominium;
@@ -87,7 +87,7 @@ const FormTemplate = (props: IProps) => {
 
   async function submit(event: any) {
     event.preventDefault();
-    if (!statusIsSelected(form.status)) {
+    if (!isSelected(form.status)) {
       Swal.fire('Oops!', 'Selecione o campo status', 'error')
       return
     } 

@@ -11,8 +11,8 @@ export type Contract = {
     contractExpirationDate: string;
     apartmentNumber: string;
     status: Status;
-    condominium: Condominium,
-    lessee: Lessee
+    condominium: Condominium;
+    lessee: Lessee;
 }
 
 export type PaginationContract = {

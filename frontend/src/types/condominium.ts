@@ -1,4 +1,4 @@
-import { LocalizationCondominium } from "./LocalizationCondominium"
+import { LocalizationCondominium } from "./localization-condominium"
 import { Status } from "./status"
 
 export type Condominium = {

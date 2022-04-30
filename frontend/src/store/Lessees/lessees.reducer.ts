@@ -48,9 +48,9 @@ export function setStateFormLesseeReducer(currentStateForm: CurrentStateForm = {
     }
 }
 
-export function setCurrentPaginationLesseeReducer(state: PaginationTableAction = {type: StatePaginationEnum.SETCURRENTPAGINATIONTABLELESSEES, currentPage: 1, search: undefined }, action: PaginationTableAction) {
+export function setCurrentPaginationLesseeReducer(state: PaginationTableAction = {type: StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_LESSEES, currentPage: 1, search: undefined }, action: PaginationTableAction) {
     switch(action.type) {
-        case StatePaginationEnum.SETCURRENTPAGINATIONTABLELESSEES:
+        case StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_LESSEES:
             return action;
         default:
             return state;

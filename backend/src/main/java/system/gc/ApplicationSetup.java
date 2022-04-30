@@ -8,19 +8,28 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import system.gc.dtos.*;
 import system.gc.entities.ActivityType;
+import system.gc.entities.Employee;
 import system.gc.entities.Role;
 import system.gc.entities.Status;
 import system.gc.repositories.ActivityTypeRepository;
 import system.gc.repositories.RoleRepository;
 import system.gc.repositories.StatusRepository;
+import system.gc.security.EmployeeUserDetails;
 import system.gc.services.ServiceImpl.*;
 import system.gc.utils.TextUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static system.gc.utils.TextUtils.ROLE_ADMINISTRATOR;
 
 @Component
 @Slf4j
@@ -106,6 +115,15 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     new RoleDTO(roles.get(0)),
                     null,
                     new StatusDTO(status.get(0))));
+
+            Employee auth = employeeService.authentication("1234567898");
+            UserDetails userDetails = new EmployeeUserDetails(auth);
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                    userDetails.getUsername(),
+                    userDetails.getPassword(),
+                    userDetails.getAuthorities());
+            usernamePasswordAuthenticationToken.setDetails(userDetails);
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
             employeeService.save(new EmployeeDTO("Amanda Silva",
                     "695854",
@@ -219,6 +237,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     typeProblemDTOEletric,
                     lesseeDTODEVSave,
                     condominiumDTO2Saved,
+                    "10",
                     new StatusDTO(satatusOpen));
 
             RepairRequestDTO repairRequestDTOSaved = repairRequestService.save(repairRequestDTO);

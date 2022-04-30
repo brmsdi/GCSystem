@@ -49,5 +49,9 @@ public class RepairRequest implements Serializable {
     @OneToMany(mappedBy = "repairRequest", fetch = FetchType.LAZY)
     private Set<Item> items;
 
+    @NotNull
+    @NotBlank
+    private String apartmentNumber;
+
     public RepairRequest() {}
 }

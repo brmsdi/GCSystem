@@ -48,9 +48,9 @@ export function setStateFormDebtReducer(currentStateForm: CurrentStateForm = {ac
     }
 }
 
-export function setCurrentPaginationDebtReducer(state: PaginationTableAction = {type: StatePaginationEnum.SETCURRENTPAGINATIONTABLEDEBTS, currentPage: 1, search: undefined }, action: PaginationTableAction) {
+export function setCurrentPaginationDebtReducer(state: PaginationTableAction = {type: StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_DEBTS, currentPage: 1, search: undefined }, action: PaginationTableAction) {
     switch(action.type) {
-        case StatePaginationEnum.SETCURRENTPAGINATIONTABLEDEBTS:
+        case StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_DEBTS:
             return action;
         default:
             return state;

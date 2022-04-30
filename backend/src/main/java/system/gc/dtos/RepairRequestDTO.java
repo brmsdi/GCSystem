@@ -33,15 +33,20 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
 
     private Set<ItemDTO> items;
 
+    @NotNull(message = "{required.validation}")
+    @NotBlank(message = "{required.validation}")
+    private String apartmentNumber;
+
     public RepairRequestDTO() {}
 
-    public RepairRequestDTO(String problemDescription, Date date, TypeProblemDTO typeProblem, LesseeDTO lessee, CondominiumDTO condominium, StatusDTO status) {
+    public RepairRequestDTO(String problemDescription, Date date, TypeProblemDTO typeProblem, LesseeDTO lessee, CondominiumDTO condominium, String apartmentNumber,  StatusDTO status) {
         setProblemDescription(problemDescription);
         setDate(date);
         setTypeProblem(typeProblem);
         setLessee(lessee);
         setCondominium(condominium);
         setStatus(status);
+        setApartmentNumber(apartmentNumber);
     }
 
     public RepairRequestDTO(RepairRequest repairRequest) {
@@ -59,6 +64,7 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         condominiumDTO.setId(repairRequest.getCondominium().getId());
         condominiumDTO.setName(repairRequest.getCondominium().getName());
         setCondominium(condominiumDTO);
+        setApartmentNumber(repairRequest.getApartmentNumber());
         setItems(new ItemDTO().convertSetEntityToSetEntityDTO(repairRequest.getItems()));
     }
 
@@ -82,6 +88,7 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         condominium.setId(repairRequestDTO.getCondominium().getId());
         condominium.setName(repairRequestDTO.getCondominium().getName());
         repairRequest.setCondominium(condominium);
+        repairRequest.setApartmentNumber(repairRequestDTO.getApartmentNumber());
         repairRequest.setStatus(new StatusDTO().toEntity(repairRequestDTO.getStatus()));
         repairRequest.setItems(new ItemDTO().convertSetEntityDTOFromSetEntity(repairRequestDTO.getItems()));
         if(repairRequestDTO.getId() != null ) {

@@ -47,9 +47,9 @@ export function setStateFormCondominiumReducer(currentStateForm: CurrentStateFor
     }
 }
 
-export function setCurrentPaginationCondominiumReducer(state: PaginationTableAction = { type: StatePaginationEnum.SETCURRENTPAGINATIONTABLECONDOMINIUMS, currentPage: 1, search: undefined }, action: PaginationTableAction) {
+export function setCurrentPaginationCondominiumReducer(state: PaginationTableAction = { type: StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_CONDOMINIUMS, currentPage: 1, search: undefined }, action: PaginationTableAction) {
     switch (action.type) {
-        case StatePaginationEnum.SETCURRENTPAGINATIONTABLECONDOMINIUMS:
+        case StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_CONDOMINIUMS:
             return action;
         default:
             return state;

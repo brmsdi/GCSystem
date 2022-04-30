@@ -1,5 +1,5 @@
 //export const REQUEST_BASE_URL = process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:8080';
-export const REQUEST_BASE_URL = 'http://localhost:8080';
+export const REQUEST_BASE_URL = 'http://192.168.15.2:8080';
 /** EMPLOYEES REQUEST */
 export const REQUEST_LOGIN_EMPLOYEES = process.env.REACT_APP_REQUEST_LOGIN_EMPLOYEES ?? ''
 export const REQUEST_EMPLOYEES = process.env.REACT_APP_REQUEST_EMPLOYEES ?? '';
@@ -30,3 +30,10 @@ export const REQUEST_CONTRACTS_PRINTOUT = process.env.REACT_APP_REQUEST_CONTRACT
 /* DEBT REQUEST */
 export const REQUEST_DEBTS = process.env.REACT_APP_REQUEST_DEBTS ?? '';
 export const REQUEST_DEBT_SEARCH = process.env.REACT_APP_REQUEST_DEBT_SEARCH ?? '';
+
+/* REPAIR-REQUEST REQUEST */
+export const REQUEST_REPAIR_REQUESTS = process.env.REACT_APP_REQUEST_REPAIR_REQUESTS ?? '';
+export const REQUEST_REPAIR_REQUESTS_SEARCH = process.env.REACT_APP_REQUEST_REPAIR_REQUESTS_SEARCH ?? '';
+
+/* TYPE-PROBLEM REQUEST */
+export const REQUEST_TYPE_PROBLEM = process.env.REACT_APP_REQUEST_TYPES_PROBLEM ?? '';

@@ -9,3 +9,4 @@ export const CONDOMINIUMS_HOME_URL = "/condominiums";
 export const CONTRACTS_HOME_URL = "/contracts";
 export const CONTRACTS_PRINTOUT_URL = CONTRACTS_HOME_URL + "/printout/:id";
 export const DEBTS_HOME_URL = "/debts"; 
+export const REPAIR_REQUESTS_HOME_URL = "/repairRequests"; 

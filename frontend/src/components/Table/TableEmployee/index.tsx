@@ -79,7 +79,13 @@ const TableEmployee = () => {
     </div> // end table-responsive
   )
 }
-const ItemTable = (props: { item: Employee, toogleClass: Function, clickButtonDelete: Function }) => {
+
+interface IProps {
+  item: Employee, 
+  toogleClass: Function, 
+  clickButtonDelete: Function 
+}
+const ItemTable = (props: IProps) => {
   let item = props.item;
   return (
     <tr>

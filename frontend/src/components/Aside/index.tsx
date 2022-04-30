@@ -37,7 +37,7 @@ const Aside = (props: IProps) => {
           subMenus={[
             <SubMenu
               iconSubMenu="bi bi-house"
-              subMenuText="Inicio"
+              subMenuText="Início"
               subMenuToolTip="Página inicial"
               key={90}
               id={TEXT_MENU_ITEM_ID_HOME}

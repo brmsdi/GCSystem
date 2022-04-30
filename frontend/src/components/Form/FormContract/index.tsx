@@ -153,7 +153,6 @@ const FormTemplate = (props: IProps) => {
     }
   }
 
-
   return (
     <form onSubmit={submit}>
       <fieldset id="fieldset-lessee">
@@ -235,7 +234,7 @@ const FormTemplate = (props: IProps) => {
           <div className="form-container l2">
             <label htmlFor="inputApartmentNumber">Nº apartamento</label>
             <input
-              type="number"
+              type="text"
               id="inputApartmentNumber"
               placeholder="Nº apartamento"
               name="apartmentNumber"
