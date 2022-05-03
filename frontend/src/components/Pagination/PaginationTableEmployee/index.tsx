@@ -5,6 +5,7 @@ import { paginationEmployeeTableAction, updateEmployeesTable } from "store/Emplo
 import { selectCurrentPaginationTableEmployees, selectUpdateTableEmployeeCurrentState } from "store/Employees/employees.selectors";
 import Swal from "sweetalert2";
 import { PaginationTableAction, PropsPagination } from "types/pagination";
+import { createNumberPages } from "../pagination-create-number-pages";
 import PaginationItem from "../pagination-item";
 
 const PaginationTableEmployee = () => {
@@ -17,14 +18,16 @@ const PaginationTableEmployee = () => {
     try {
       if (currentPaginationTable.search) {
         findByCPFService(currentPaginationTable.search)
-          .then((response) => {
-            createNumberPages(currentPaginationTable.currentPage, response.data.totalPages);
+          .then(async (response) => {
+            const paginationInformations = await createNumberPages(currentPaginationTable.currentPage, response.data.totalPages);
+            setPropsPagination(paginationInformations)
             dispatch(updateEmployeesTable(currentPaginationTable.currentPage, response.data));
           })
       } else {
         getAllEmployees(currentPaginationTable.currentPage)
-          .then((response) => {
-            createNumberPages(currentPaginationTable.currentPage, response.data.totalPages);
+          .then(async (response) => {
+            const paginationInformations = await createNumberPages(currentPaginationTable.currentPage, response.data.totalPages);
+            setPropsPagination(paginationInformations)
             dispatch(updateEmployeesTable(currentPaginationTable.currentPage, response.data));
           })
       }
@@ -44,42 +47,6 @@ const PaginationTableEmployee = () => {
     }));
   }
 
-  function createNumberPages(currentPage: number, totalPages: number, max: number = 5) {
-    const totalNumberPages = Math.ceil(totalPages / max);
-    for (var index = 1; index <= totalNumberPages; index++) {
-      let maxNumberOfPage = (index * 5);
-      let minNumberOfPage = maxNumberOfPage - 4;
-      let tempNumbers: number[] = [];
-      if (currentPage >= minNumberOfPage && currentPage <= maxNumberOfPage && !(maxNumberOfPage > totalPages)) {
-        for (let pageMin = minNumberOfPage; pageMin <= maxNumberOfPage; pageMin++) {
-          tempNumbers.push(pageMin)
-        }
-
-        setPropsPagination({
-          pagesNumbers: tempNumbers,
-          currentPage: currentPage,
-          next: maxNumberOfPage < totalPages ? true : false,
-          first: minNumberOfPage === 1 ? true : false,
-          nextPage: (maxNumberOfPage + 1),
-          previousPagination: (minNumberOfPage)
-        })
-        break
-      } else if (maxNumberOfPage > totalPages) {
-        for (let pageMin = minNumberOfPage; pageMin <= totalPages; pageMin++) {
-          tempNumbers.push(pageMin)
-        }
-        setPropsPagination({
-          pagesNumbers: tempNumbers,
-          currentPage: currentPage,
-          next: false,
-          first: minNumberOfPage === 1 ? true : false,
-          nextPage: totalPages,
-          previousPagination: (minNumberOfPage - 1)
-        })
-        break
-      }
-    } // end for index
-  }
 
   if (propsPagination === undefined) return null;
   return (

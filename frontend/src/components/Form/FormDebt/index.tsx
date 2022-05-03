@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { findByCPFService } from "services/lessee";
-import { getAllStatus } from "services/status";
+import { getAllStatusFromViewDebt } from "services/status";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { Debt } from "types/debt";
@@ -42,9 +42,7 @@ const FormDebt = (props: IProps) => {
   useEffect(() => {
     setForm((form) => ({ ...form, ...props.initForm }));
     setLessee(props.initForm.lessee)
-    getAllStatus().then((response) => {
-      setStatus(response.data);
-    });
+    getAllStatusFromViewDebt().then(response => setStatus(response.data));
   }, [props.initForm]);
 
   useEffect(() => {

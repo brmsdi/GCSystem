@@ -2,7 +2,7 @@ import TableItem from "components/Table/TableItem";
 import { useState, useEffect } from "react";
 import { listAllCondominiums } from "services/condominium";
 import { findByCPFService } from "services/lessee";
-import { getAllStatus } from "services/status";
+import { getAllStatusFromViewRepairRequest } from "services/status";
 import { getAllTypeProblem } from "services/type-problem";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
@@ -33,7 +33,6 @@ const FormTemplate = (props: IProps) => {
     quantity: 0,
     value: 0
   });
-
   const [addedItems, setAddedItems] = useState<Item[]>(props.initForm.items ? props.initForm.items : []);
 
   function changeInput(value: any) {
@@ -84,7 +83,7 @@ const FormTemplate = (props: IProps) => {
     setAddedItems(props.initForm.items ? props.initForm.items : [])
     listAllCondominiums().then(response => setCondominiums(response.data));
     getAllTypeProblem().then(response => setTypeProblems(response.data))
-    getAllStatus().then(response => setStatus(response.data));
+    getAllStatusFromViewRepairRequest().then(response => setStatus(response.data));
   }, [props.initForm]);
 
   useEffect(() => {
@@ -162,6 +161,7 @@ const FormTemplate = (props: IProps) => {
         clearForm();
         clearItem();
         clearAddedItems();
+        clearLesseeFields();
       } else {
         setForm({ ...form });
       }
@@ -172,8 +172,8 @@ const FormTemplate = (props: IProps) => {
     if (isValidFieldText(item.description) && isValidFieldNumber(item.quantity) && isValidFieldNumber(item.value)) {
       let currentItems : Item[]= addedItems;
       currentItems.unshift(item)
-      setAddedItems([...addedItems])
-      clearItem()      
+      setAddedItems([...addedItems])   
+      clearItem();
       return
     }
     Swal.fire('Oops!', "Preencha todos os campos relacionado a itens", 'error')

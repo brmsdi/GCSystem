@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getZipCodeService } from "services/cep";
-import { getAllStatus } from "services/status";
+import { getAllStatusFromViewCondominium } from "services/status";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { Condominium } from "types/condominium";
@@ -74,15 +74,7 @@ const FormTemplate = (props: IProps) => {
   }, [props.initForm]);
 
   useEffect(() => {
-    try {
-      getAllStatus().then((response) => {
-        setStatus(response.data);
-      });
-    } catch (error: any) {
-      if (!error.response) {
-        Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
-      }
-    }
+    getAllStatusFromViewCondominium().then(response => setStatus(response.data));
   }, []);
 
   async function submit(event: any) {

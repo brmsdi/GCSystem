@@ -10,6 +10,7 @@ import system.gc.entities.RepairRequest;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -57,6 +58,8 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         setStatus(new StatusDTO().toDTO(repairRequest.getStatus()));
         LesseeDTO lesseeDTO = new LesseeDTO();
         lesseeDTO.setId(repairRequest.getLessee().getId());
+        lesseeDTO.setCpf(repairRequest.getLessee().getCpf());
+        lesseeDTO.setRg(repairRequest.getLessee().getRg());
         lesseeDTO.setName(repairRequest.getLessee().getName());
         lesseeDTO.setContactNumber(repairRequest.getLessee().getContactNumber());
         setLessee(lesseeDTO);
@@ -82,6 +85,7 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         Lessee lessee = new Lessee();
         lessee.setId(repairRequestDTO.getLessee().getId());
         lessee.setName(repairRequestDTO.getLessee().getName());
+        lessee.setRg(repairRequestDTO.getLessee().getRg());
         lessee.setContactNumber(repairRequestDTO.getLessee().getContactNumber());
         repairRequest.setLessee(lessee);
         Condominium condominium = new Condominium();

@@ -25,4 +25,10 @@ public class StatusService {
     public Status findByName(String name) {
         return statusRepository.findByName(name).orElse(null);
     }
+
+    @Transactional(readOnly = true)
+    public List<StatusDTO> findAllFromView(List<String> params) {
+        List<Status> statusList = statusRepository.findAllFromViewCondominium(params);
+        return new StatusDTO().convertListEntityFromListDTO(statusList);
+    }
 }

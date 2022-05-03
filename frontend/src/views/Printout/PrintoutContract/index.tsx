@@ -34,7 +34,7 @@ const PrintoutContract = () => {
   ) : (
     <div className="content-contract-model">
       <div>
-        <h1>CONTRATO DE LOCAÇÃO DE IMÓVEL</h1>
+        <h1>CONTRATO DE LOCAÇÃO DE IMÓVEL(DADOS FICTÍCIOS)</h1>
       </div>
       <header>
         <div>

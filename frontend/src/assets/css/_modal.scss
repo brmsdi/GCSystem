@@ -1,0 +1,37 @@
+.modal-section {
+    margin-bottom: .7rem;
+}
+
+.modal-label {
+    font-style: italic;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.modal-section-item {
+    width: 100%;
+    div {
+        display: flex;
+        align-items: flex-start;
+        width: 100%;
+    }
+   
+} 
+
+.modal-item-description {
+    width: 60%;
+} 
+
+.modal-item-quantity {
+    width: 20%;
+} 
+
+.modal-item-value {
+    width: 20%;
+} 
+
+.modal-section-comand {
+    margin-top: 10px;
+}

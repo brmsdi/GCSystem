@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { listAllCondominiums } from "services/condominium";
 import { findByCPFService } from "services/lessee";
-import { getAllStatus } from "services/status";
+import { getAllStatusFromViewContract } from "services/status";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { Condominium } from "types/condominium";
@@ -28,6 +28,7 @@ const FormTemplate = (props: IProps) => {
   );
   const [status, setStatus] = useState<Status[]>([]);
   const [lessee, setLessee] = useState<Lessee>(props.initForm.lessee)
+  
   function changeInput(value: any) {
     setForm((form) => ({ ...form, ...value }));
   }
@@ -65,14 +66,8 @@ const FormTemplate = (props: IProps) => {
     setCondominiumSelectedView(
       formatLocalizationViewInformation(props.initForm.condominium.localization)
     );
-    listAllCondominiums()
-    .then((response) => {
-      setCondominiums(response.data);
-    });
-
-    getAllStatus().then((response) => {
-      setStatus(response.data);
-    });
+    listAllCondominiums().then(response => setCondominiums(response.data));
+    getAllStatusFromViewContract().then(response => setStatus(response.data));
   }, [props.initForm]);
 
   

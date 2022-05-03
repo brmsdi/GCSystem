@@ -7,8 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -46,12 +45,18 @@ public class RepairRequest implements Serializable {
     @JoinColumn(name = "fk_order_service", referencedColumnName = "id")
     private OrderService orderService;
 
-    @OneToMany(mappedBy = "repairRequest", fetch = FetchType.LAZY)
-    private Set<Item> items;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "fk_repair_request", referencedColumnName = "id")
+    private Set<Item> items = new HashSet<>();
 
     @NotNull
     @NotBlank
     private String apartmentNumber;
 
     public RepairRequest() {}
+
+    public void setItems(Set<Item> items) {
+        this.items.clear();
+        if (items != null) this.items.addAll(items);
+    }
 }

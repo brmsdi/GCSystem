@@ -9,8 +9,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -83,7 +81,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
         statusRepository.save(new Status("Ativo"));
         statusRepository.save(new Status("Inativo"));
-        Status satatusOpen = statusRepository.save(new Status("Aberto"));
+        Status statusOpen = statusRepository.save(new Status("Aberto"));
         statusRepository.save(new Status("Em andamento"));
         statusRepository.save(new Status("Desativado"));
         statusRepository.save(new Status("Aguardando"));
@@ -92,6 +90,16 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         statusRepository.save(new Status("Cancelado"));
         statusRepository.save(new Status("Resgatado"));
         statusRepository.save(new Status("Concluído"));
+        statusRepository.save(new Status("Deletado"));
+        Status statusAvailable = statusRepository.save(new Status("Disponível"));
+        statusRepository.save(new Status("Indisponível"));
+        statusRepository.save(new Status("Lotado"));
+        statusRepository.save(new Status("Encerrado"));
+        statusRepository.save(new Status("Expirado"));
+        statusRepository.save(new Status("Vencido"));
+        statusRepository.save(new Status("Atrasado"));
+        statusRepository.save(new Status("Pago"));
+
 
         activityTypeRepository.save(new ActivityType("Registrado"));
         activityTypeRepository.save(new ActivityType("Atualizado"));
@@ -140,12 +148,12 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
             CondominiumDTO condominiumDTO = new CondominiumDTO("Villa Lobos",
                     "A30",
                     20,
-                    new StatusDTO(status.get(0)),
+                    new StatusDTO(statusAvailable),
                     new LocalizationCondominiumDTO("500", localizationDTO));
             CondominiumDTO condominiumDTO1 = new CondominiumDTO("PTU",
                     "PTU30",
                     8,
-                    new StatusDTO(status.get(0)),
+                    new StatusDTO(statusAvailable),
                     new LocalizationCondominiumDTO("900", localizationDTO1));
 
             CondominiumDTO condominiumDTO2Saved = condominiumService.save(condominiumDTO);
@@ -155,7 +163,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                 CondominiumDTO condominiumDTO3 = new CondominiumDTO("PTU",
                         "PTU30" + i,
                         8 + i,
-                        new StatusDTO(status.get(0)),
+                        new StatusDTO(statusAvailable),
                         new LocalizationCondominiumDTO("900" + i, localizationDTO1));
                 condominiumService.save(condominiumDTO3);
             }
@@ -238,7 +246,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     lesseeDTODEVSave,
                     condominiumDTO2Saved,
                     "10",
-                    new StatusDTO(satatusOpen));
+                    new StatusDTO(statusOpen));
 
             RepairRequestDTO repairRequestDTOSaved = repairRequestService.save(repairRequestDTO);
             OrderServiceDTO orderServiceDTO = new OrderServiceDTO(
@@ -246,7 +254,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     new Date(System.currentTimeMillis() + TextUtils.TIME_TOKEN_AUTH_EXPIRATION),
                     Set.of(repairRequestDTOSaved),
                     Set.of(employeeDTOWisley),
-                    new StatusDTO().toDTO(satatusOpen)
+                    new StatusDTO().toDTO(statusOpen)
             );
             orderServiceService.save(orderServiceDTO);
 

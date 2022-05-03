@@ -17,9 +17,5 @@ public class Item {
     private int quantity;
     private double value;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_repair_request", referencedColumnName = "id")
-    private RepairRequest repairRequest;
-
     public Item() {}
 }

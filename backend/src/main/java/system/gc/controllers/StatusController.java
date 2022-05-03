@@ -26,4 +26,29 @@ public class StatusController {
         log.info("Listando status");
         return ResponseEntity.ok(statusService.findAll(Sort.by(sort)));
     }
+
+    @GetMapping(value = "condominium")
+    public ResponseEntity<List<StatusDTO>> findAllFromViewCondominium() {
+        log.info("Listando status");
+        return ResponseEntity.ok(statusService.findAllFromView(List.of("Disponível", "Indisponível", "Lotado")));
+    }
+
+
+    @GetMapping(value = "contract")
+    public ResponseEntity<List<StatusDTO>> findAllFromViewContract() {
+        log.info("Listando status");
+        return ResponseEntity.ok(statusService.findAllFromView(List.of("Ativo", "Encerrado", "Expirado", "Cancelado")));
+    }
+
+    @GetMapping(value = "debt")
+    public ResponseEntity<List<StatusDTO>> findAllFromViewDebt() {
+        log.info("Listando status");
+        return ResponseEntity.ok(statusService.findAllFromView(List.of("Aberto", "Vencido", "Cancelado", "Pago")));
+    }
+
+    @GetMapping(value = "repair-request")
+    public ResponseEntity<List<StatusDTO>> findAllFromViewRepairRequest() {
+        log.info("Listando status");
+        return ResponseEntity.ok(statusService.findAllFromView(List.of("Aberto", "Em andamento", "Concluído", "Atrasado")));
+    }
 }

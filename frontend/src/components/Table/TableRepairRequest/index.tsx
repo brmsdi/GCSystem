@@ -1,16 +1,20 @@
 import Alert from "components/messages";
+import ModalRepairRequest from "components/Modal/ModalRepairRequest";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteRepairRequest } from "services/repair-request";
 import { selectRepairRequestTableAction, setStateFormRepairRequestAction, updateRepairRequestTableAction } from "store/RepairRequests/repair-requests.actions";
 import { selectAllRepairRequests } from "store/RepairRequests/repair-requests.selector";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
-import { PaginationRepairRequest, RepairRequest } from "types/repair-request";
+import { PaginationRepairRequest, RepairRequest, RepairRequestEmpty } from "types/repair-request";
 import { formatDateForView } from "utils/textFormt";
 
 const TableRepairRequest= () => {
   const dispatch = useDispatch();
   const page: PaginationRepairRequest = useSelector(selectAllRepairRequests);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [repairRequestSelectedFromModal, setRepairRequestSelectedFromModal] = useState<RepairRequest>(RepairRequestEmpty);
 
   async function clickButtonUpdate(selected: RepairRequest | undefined) {
     let form = document.querySelector(".content-form");
@@ -48,9 +52,30 @@ const TableRepairRequest= () => {
     }
   }
 
+  function plusInformations(repairRequest: RepairRequest) {
+    changeModal()
+    setRepairRequestSelectedFromModal({...repairRequest})
+  }
+
+  function changeModal() {
+    setIsOpen(!modalIsOpen)
+    if (modalIsOpen === false) setRepairRequestSelectedFromModal(RepairRequestEmpty)
+  }
+
   return (
+    <>
+    {
+      modalIsOpen && repairRequestSelectedFromModal.id !== 0 ? (<ModalRepairRequest 
+        modalIsOpen={modalIsOpen}
+        openModal={changeModal}
+        closeModal={changeModal}
+        title={"Informações"}
+        item={repairRequestSelectedFromModal} />) : (null)
+    }
+    
     <div className="table-responsive">
       {
+        
         (page.empty === true) ?
           (
             (<Alert msg="Nenhum registro encontrado!" />)
@@ -76,21 +101,24 @@ const TableRepairRequest= () => {
                   key={item.id} 
                   item={item} 
                   toogleClass={clickButtonUpdate} 
-                  clickButtonDelete={clickButtonDelete} />;
+                  clickButtonDelete={clickButtonDelete} 
+                  plusInformations={plusInformations} />;
                 })
               }
             </tbody>
           </table>
       }
 
-    </div> // end table-responsive
+    </div>
+    </>
   )
 }
 
 interface IProps {
   item: RepairRequest, 
   toogleClass: Function, 
-  clickButtonDelete: Function
+  clickButtonDelete: Function,
+  plusInformations: Function
 }
 const ItemTable = (props: IProps) => {
   let item = props.item;
@@ -128,6 +156,14 @@ const ItemTable = (props: IProps) => {
           className="btn btn-danger btn-table-options"
           onClick={() => props.clickButtonDelete(item.id)}><span aria-hidden="true"><i className="bi bi-trash"></i></span>
         </button>        
+        <button
+          id="btn-table-repair-request-plus-info"
+          type="button"
+          aria-label="Mais informações dessa solicitação de reparo"
+          title="Mais informações dessa solicitação de reparo"
+          className="btn btn-secondary btn-table-options"
+          onClick={() => props.plusInformations(item)}><span aria-hidden="true"><i className="bi bi-three-dots"></i></span>
+        </button>    
       </td>
     </tr>
   )
