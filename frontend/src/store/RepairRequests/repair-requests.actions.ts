@@ -1,6 +1,6 @@
-import { StateFormAction, TableAction, TypeEnumActionTables } from "types/action";
+import { ModalStateInformations, StateFormAction, TableAction, TypeEnumActionTables } from "types/action";
 import { PaginationTableAction } from "types/pagination";
-import { ActionRepairRequest, PaginationRepairRequest, RepairRequest, SelectedRepairRequestAction } from "types/repair-request";
+import { ActionRepairRequest, PaginationRepairRequest, RepairRequest, SelectedRepairRequestAction, SelectedRepairRequestsOrderServiceAction, StateModalOrderServiceRepairRequestsAction } from "types/repair-request";
 
 export function updateRepairRequestTable(page = 1, pagination: PaginationRepairRequest) {
     let getAllRepairRequestAction: ActionRepairRequest = {
@@ -48,6 +48,22 @@ export function selectRepairRequestTableAction(repairRequest: RepairRequest) {
 export function removeSelectedRepairRequestTableAction() {
     let action: SelectedRepairRequestAction = {
         type: TypeEnumActionTables.REMOVING_REPAIR_REQUEST
+    }
+    return action
+}
+
+export function selectedRepairRequestsOrderServiceAction(selectedRepairRequests: RepairRequest[]) {
+    let action: SelectedRepairRequestsOrderServiceAction = {
+        type: 'UPDATE-SELECTED-REPAIR-REQUESTS-ORDER-SERVICE',
+        payload: selectedRepairRequests
+    }
+    return action
+}
+
+export function changeStateModalOrderServiceRepairRequests(state: ModalStateInformations) {
+    let action: StateModalOrderServiceRepairRequestsAction = {
+        type: 'CHANGE-STATE-MODAL-ORDER-SERVICE-REPAIR-REQUESTS',
+        payload: state
     }
     return action
 }

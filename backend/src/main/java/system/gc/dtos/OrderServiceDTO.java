@@ -14,12 +14,12 @@ import java.util.Set;
 public class OrderServiceDTO implements ConvertEntityAndDTO<OrderServiceDTO, OrderService> {
     private Integer id;
 
+    @NotNull(message = "{required.validation}")
     private Date generationDate;
 
-    @NotNull(message = "{required.validation}")
     private Date reservedDate;
 
-    private Date CompletationDate;
+    private Date completionDate;
 
     private Set<RepairRequestDTO> repairRequests;
 
@@ -41,7 +41,7 @@ public class OrderServiceDTO implements ConvertEntityAndDTO<OrderServiceDTO, Ord
         setId(orderService.getId());
         setGenerationDate(orderService.getGenerationDate());
         setReservedDate(orderService.getReservedDate());
-        setCompletationDate(orderService.getCompletationDate());
+        setCompletionDate(orderService.getCompletionDate());
         setRepairRequests(new HashSet<>());
         for (RepairRequest repairRequest : orderService.getRepairRequests()) {
             getRepairRequests().add(new RepairRequestDTO(repairRequest));
@@ -62,14 +62,16 @@ public class OrderServiceDTO implements ConvertEntityAndDTO<OrderServiceDTO, Ord
         orderServiceDTO.setId(orderService.getId());
         orderServiceDTO.setGenerationDate(orderService.getGenerationDate());
         orderServiceDTO.setReservedDate(orderService.getReservedDate());
-        orderServiceDTO.setCompletationDate(orderService.getCompletationDate());
+        orderServiceDTO.setCompletionDate(orderService.getCompletionDate());
         Set<EmployeeDTO> employeeDTOSet = new HashSet<>();
         EmployeeDTO employeeDTO;
         for (Employee employee : orderService.getEmployees()) {
             employeeDTO = new EmployeeDTO();
             employeeDTO.setId(employee.getId());
             employeeDTO.setName(employee.getName());
+            employeeDTO.setRole(new RoleDTO(employee.getRole()));
             employeeDTOSet.add(employeeDTO);
+
         }
         orderServiceDTO.setEmployees(employeeDTOSet);
         Set<RepairRequestDTO> repairRequestDTOSet = new HashSet<>();
@@ -80,6 +82,7 @@ public class OrderServiceDTO implements ConvertEntityAndDTO<OrderServiceDTO, Ord
             repairRequestDTO.setProblemDescription(repairRequest.getProblemDescription());
             repairRequestDTO.setTypeProblem(new TypeProblemDTO().toDTO(repairRequest.getTypeProblem()));
             repairRequestDTO.setDate(repairRequest.getDate());
+            repairRequestDTO.setApartmentNumber(repairRequest.getApartmentNumber());
             repairRequestDTO.setStatus(new StatusDTO().toDTO(repairRequest.getStatus()));
             if (repairRequest.getItems() != null || !repairRequest.getItems().isEmpty()) {
                 repairRequestDTO.setItems(new ItemDTO().convertSetEntityToSetEntityDTO(repairRequest.getItems()));
@@ -110,7 +113,7 @@ public class OrderServiceDTO implements ConvertEntityAndDTO<OrderServiceDTO, Ord
         OrderService orderService = new OrderService();
         orderService.setGenerationDate(orderServiceDTO.getGenerationDate());
         orderService.setReservedDate(orderServiceDTO.getReservedDate());
-        orderService.setCompletationDate(orderServiceDTO.getCompletationDate());
+        orderService.setCompletionDate(orderServiceDTO.getCompletionDate());
         orderService.setRepairRequests(new HashSet<>());
         for (RepairRequestDTO repairRequestDTO : orderServiceDTO.getRepairRequests()) {
             orderService.getRepairRequests().add(new RepairRequestDTO().toEntity(repairRequestDTO));

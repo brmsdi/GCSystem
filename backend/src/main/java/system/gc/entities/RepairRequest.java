@@ -25,7 +25,7 @@ public class RepairRequest implements Serializable {
     @NotNull
     private Date date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_typeProblem_id", referencedColumnName = "id")
     private TypeProblem typeProblem;
 

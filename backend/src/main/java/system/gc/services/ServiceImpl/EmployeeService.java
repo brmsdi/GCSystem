@@ -6,13 +6,16 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.configuration.exceptions.DuplicatedFieldException;
 import system.gc.dtos.EmployeeDTO;
+import system.gc.dtos.RepairRequestDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.LogChangePassword;
+import system.gc.entities.RepairRequest;
 import system.gc.entities.Status;
 import system.gc.repositories.EmployeeRepository;
 import javax.mail.internet.MimeMessage;
@@ -195,5 +198,11 @@ public class EmployeeService {
             log.warn("O E-MAIL não está disponível");
             throw new DuplicatedFieldException(messageSource.getMessage("TEXT_ERROR_INSERT_EMAIL_DUPLICATED", null, LocaleContextHolder.getLocale()));
         }
+    }
+
+    public List<EmployeeDTO> findAllToModalOrderService() {
+        List<Employee> employeeList = employeeRepository.findAll();
+        employeeRepository.loadLazyEmployees(employeeList);
+        return employeeList.stream().map(EmployeeDTO::new).toList();
     }
 }

@@ -4,15 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import system.gc.dtos.LesseeDTO;
-import system.gc.dtos.RepairRequestDTO;
+import org.springframework.transaction.annotation.Transactional;
+import system.gc.dtos.*;
 import system.gc.entities.RepairRequest;
 import system.gc.entities.Status;
 import system.gc.repositories.RepairRequestRepository;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
@@ -85,5 +85,36 @@ public class RepairRequestService {
         }
         List<RepairRequest> repairRequestListResult = repairRequestRepository.checkIfTheRequestIsOpen(repairRequestList, statusOpen.getId());
         return repairRequestList.size() == repairRequestListResult.size();
+    }
+
+    @Transactional(readOnly = true )
+    public OpenAndProgressAndLateRepairRequest openAndProgressAndLateRepairRequest(List<String> params) {
+        log.info("Buscando lista de status");
+        List<StatusDTO> statusDTOList = statusService.findAllToView(params);
+        List<RepairRequest> repairRequestList = repairRequestRepository.openAndProgressAndLateRepairRequest(statusDTOList.stream().map(StatusDTO::getId).toList());
+        log.info("Buscando reparos por status");
+        OpenAndProgressAndLateRepairRequest openAndProgressAndLateRepairRequest =
+                new OpenAndProgressAndLateRepairRequest(0, 0, 0, new HashMap<>());
+        openAndProgressAndLateRepairRequest.getValues().put("Aberto", 0);
+        openAndProgressAndLateRepairRequest.getValues().put("Em andamento", 0);
+        openAndProgressAndLateRepairRequest.getValues().put("Atrasado", 0);
+        for (RepairRequest repairRequest : repairRequestList) {
+            String key = repairRequest.getStatus().getName();
+            Integer newValue = openAndProgressAndLateRepairRequest.getValues().get(key) + 1;
+            openAndProgressAndLateRepairRequest.getValues().replace(key, newValue);
+        }
+        log.info("Gerando valores");
+        openAndProgressAndLateRepairRequest.generate("Aberto", "Em andamento", "Atrasado");
+        return openAndProgressAndLateRepairRequest;
+    }
+
+    public List<RepairRequestDTO> findAllToModalOrderService() {
+        List<RepairRequest> repairRequestList = repairRequestRepository.findAll();
+        repairRequestRepository.loadLazyRepairRequests(repairRequestList);
+        return repairRequestList.stream().map(RepairRequestDTO::new).toList();
+    }
+
+    public void modifyStatusRepairRequest(RepairRequest repairRequest, Status status) {
+        repairRequest.setStatus(status);
     }
 }

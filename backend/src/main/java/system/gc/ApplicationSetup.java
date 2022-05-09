@@ -27,8 +27,6 @@ import system.gc.utils.TextUtils;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static system.gc.utils.TextUtils.ROLE_ADMINISTRATOR;
-
 @Component
 @Slf4j
 public class ApplicationSetup implements ApplicationListener<ContextRefreshedEvent> {
@@ -99,7 +97,6 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         statusRepository.save(new Status("Vencido"));
         statusRepository.save(new Status("Atrasado"));
         statusRepository.save(new Status("Pago"));
-
 
         activityTypeRepository.save(new ActivityType("Registrado"));
         activityTypeRepository.save(new ActivityType("Atualizado"));
@@ -178,6 +175,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     "785452545",
                     new StatusDTO(status.get(0))
             );
+
             LesseeDTO lesseeDTODEVSave = lesseeService.save(lesseeDTODEV);
             for (int i = 0; i < 7; i++) {
                 LesseeDTO lesseeDTO = new LesseeDTO(

@@ -16,24 +16,24 @@ const AdministrativeAssistantAside = () => {
           subMenus={[
             <SubMenu
               iconSubMenu="bi bi-building"
-              subMenuText="Condomínio"
-              subMenuToolTip="Gerenciar condomínio"
+              subMenuText="Condomínios"
+              subMenuToolTip="Gerenciar condomínios"
               key={1}
               id={TEXT_MENU_ITEM_ID_CONDOMINIUM}
               idSelectedMenu={idSelectedMenu}
               to={CONDOMINIUMS_HOME_URL} />,
             <SubMenu
               iconSubMenu="bi bi-journal-bookmark-fill"
-              subMenuText="Contrato"
-              subMenuToolTip="Gerenciar contrato"
+              subMenuText="Contratos"
+              subMenuToolTip="Gerenciar contratos"
               key={4}
               id={TEXT_MENU_ITEM_ID_CONTRACT}
               idSelectedMenu={idSelectedMenu}
               to={CONTRACTS_HOME_URL} />,
             <SubMenu
               iconSubMenu="bi bi-people"
-              subMenuText="Locatário"
-              subMenuToolTip="Gerenciar locatário"
+              subMenuText="Locatários"
+              subMenuToolTip="Gerenciar locatários"
               key={3}
               id={TEXT_MENU_ITEM_ID_LESSEE}
               idSelectedMenu={idSelectedMenu}

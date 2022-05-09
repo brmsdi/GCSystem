@@ -6,13 +6,17 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.LesseeDTO;
+import system.gc.dtos.OpenAndProgressAndLateRepairRequest;
 import system.gc.dtos.RepairRequestDTO;
 import system.gc.services.ServiceImpl.RepairRequestService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/repair-requests")
@@ -69,5 +73,16 @@ public class RepairRequestController {
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
+    }
+
+    @GetMapping(value = "status-open-progress-late")
+    public ResponseEntity<OpenAndProgressAndLateRepairRequest> perStatusRepairRequest() {
+        return ResponseEntity.ok(repairRequestService.openAndProgressAndLateRepairRequest(List.of("Aberto", "Em andamento", "Atrasado")));
+    }
+
+    @GetMapping(value = "list/to-modal-order-service")
+    public ResponseEntity<List<RepairRequestDTO>> findAllToModalOrderService() {
+        log.info("Listando as solicitações de reparo em aberto");
+        return ResponseEntity.ok(repairRequestService.findAllToModalOrderService());
     }
 }

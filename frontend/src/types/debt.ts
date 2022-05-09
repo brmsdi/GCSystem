@@ -1,6 +1,6 @@
 import { Lessee, LesseeEmpty } from "./lessee";
 import { Movement } from "./movement";
-import { Status } from "./status";
+import { Status, StatusEmpty } from "./status";
 
 export type Debt = {
     id?: number;
@@ -48,8 +48,6 @@ export const PaginationDebtEmpty : PaginationDebt = {
 export const DebtEmpty : Debt = {
     dueDate: '',
     value: 0,
-    status: {
-        name: ''
-    },
+    status: StatusEmpty,
     lessee: LesseeEmpty
 }

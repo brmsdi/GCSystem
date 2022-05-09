@@ -17,7 +17,7 @@ public interface ConvertEntityAndDTO<DTO, E> {
         return convertedList;
     }
 
-    default Set<E> convertSetEntityDTOFromSetEntity(Set<DTO> setEntityDTO) {
+    default Set<E> convertSetEntityDTOToSetEntity(Set<DTO> setEntityDTO) {
         if (setEntityDTO == null || setEntityDTO.isEmpty()) {
             return null;
         }
@@ -26,7 +26,7 @@ public interface ConvertEntityAndDTO<DTO, E> {
         return convertedList;
     }
 
-    default List<DTO> convertListEntityFromListDTO(List<E> entityList) {
+    default List<DTO> convertListEntityToListDTO(List<E> entityList) {
         if (entityList == null || entityList.isEmpty()) {
             return null;
         }
@@ -35,7 +35,7 @@ public interface ConvertEntityAndDTO<DTO, E> {
         return convertedList;
     }
 
-    default List<E> convertListEntityDTOFromListEntity(List<DTO> listEntityDTO) {
+    default List<E> convertListEntityDTOToListEntity(List<DTO> listEntityDTO) {
         if (listEntityDTO == null || listEntityDTO.isEmpty()) {
             return null;
         }

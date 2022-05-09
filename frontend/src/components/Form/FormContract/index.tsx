@@ -19,7 +19,6 @@ interface IProps {
   isNewRegisterForm: boolean;
 }
 
-
 const FormTemplate = (props: IProps) => {
   const [form, setForm] = useState<Contract>(props.initForm);
   const [condominiums, setCondominiums] = useState<Condominium[]>([]);
@@ -69,8 +68,6 @@ const FormTemplate = (props: IProps) => {
     listAllCondominiums().then(response => setCondominiums(response.data));
     getAllStatusFromViewContract().then(response => setStatus(response.data));
   }, [props.initForm]);
-
-  
 
   useEffect(() => {
     checkLegend('fieldset-lessee', 
@@ -337,10 +334,3 @@ const FormTemplate = (props: IProps) => {
 };
 
 export default FormTemplate;
-
-/* 
-valor do contrato, 
-dia de pagamento mensal, 
-dia de vencimento mensal, 
-prazo de validade do contrato e status do contrato.
-*/

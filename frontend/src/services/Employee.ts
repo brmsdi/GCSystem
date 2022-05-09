@@ -1,6 +1,6 @@
 import { Employee, PaginationEmployee } from "types/employee"
 import http from "utils/http"
-import { REQUEST_EMPLOYEES, REQUEST_EMPLOYEE_SEARCH } from "utils/requests"
+import { REQUEST_EMPLOYEES, REQUEST_EMPLOYEES_TO_MODAL_ORDER_SERVICE, REQUEST_EMPLOYEE_SEARCH } from "utils/requests"
 
 export const getAllEmployees = (page: number = 0, size: number = 5) => {
     return http.get<PaginationEmployee>(`${REQUEST_EMPLOYEES}?page=${(page - 1)}&size=${size}`)
@@ -23,4 +23,8 @@ export const updateEmployee = async (data: Employee) => {
 export const deleteEmployee = async (ID: number) => {
     const response = await http.delete(`${REQUEST_EMPLOYEES}?id=${ID}`)
     return response.data
+}
+
+export const findAllToModalOrderService = () => {
+    return http.get<Employee[]>(`${REQUEST_EMPLOYEES_TO_MODAL_ORDER_SERVICE}`)
 }

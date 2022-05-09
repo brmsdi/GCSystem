@@ -10,7 +10,7 @@ const SearchRepairRequest = () => {
   const dispatch = useDispatch()
   const[CPF, setCPF] = useState('')
   const[paginationState, setPaginationState] = useState<PaginationTableAction>({
-    type: StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_REPAIR_REQUEST,
+    type: StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_REPAIR_REQUESTS,
     currentPage: 1,
     search: undefined
   })

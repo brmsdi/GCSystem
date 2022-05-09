@@ -27,8 +27,8 @@ public class StatusService {
     }
 
     @Transactional(readOnly = true)
-    public List<StatusDTO> findAllFromView(List<String> params) {
-        List<Status> statusList = statusRepository.findAllFromViewCondominium(params);
-        return new StatusDTO().convertListEntityFromListDTO(statusList);
+    public List<StatusDTO> findAllToView(List<String> params) {
+        List<Status> statusList = statusRepository.findAllToView(params);
+        return new StatusDTO().convertListEntityToListDTO(statusList);
     }
 }

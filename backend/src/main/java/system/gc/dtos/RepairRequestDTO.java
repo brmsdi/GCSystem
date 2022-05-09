@@ -3,14 +3,13 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Condominium;
-import system.gc.entities.Item;
+import system.gc.entities.Employee;
 import system.gc.entities.Lessee;
 import system.gc.entities.RepairRequest;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -94,10 +93,20 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         repairRequest.setCondominium(condominium);
         repairRequest.setApartmentNumber(repairRequestDTO.getApartmentNumber());
         repairRequest.setStatus(new StatusDTO().toEntity(repairRequestDTO.getStatus()));
-        repairRequest.setItems(new ItemDTO().convertSetEntityDTOFromSetEntity(repairRequestDTO.getItems()));
+        repairRequest.setItems(new ItemDTO().convertSetEntityDTOToSetEntity(repairRequestDTO.getItems()));
         if(repairRequestDTO.getId() != null ) {
             repairRequest.setId(repairRequestDTO.getId());
         }
         return repairRequest;
+    }
+
+    @Deprecated
+    public static RepairRequestDTO toModalOrderService(RepairRequest repairRequest) {
+        RepairRequestDTO repairRequestDTO = new RepairRequestDTO();
+        repairRequestDTO.setId(repairRequest.getId());
+        repairRequestDTO.setProblemDescription(repairRequest.getProblemDescription());
+        repairRequestDTO.setDate(repairRequest.getDate());
+        repairRequestDTO.setTypeProblem(new TypeProblemDTO(repairRequest.getTypeProblem()));
+        return repairRequestDTO;
     }
 }

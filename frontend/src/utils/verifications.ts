@@ -1,4 +1,6 @@
 import { Condominium } from "types/condominium"
+import { Employee } from "types/employee"
+import { RepairRequest } from "types/repair-request"
 import { Status } from "types/status"
 import { TypeProblem } from "types/type-problem"
 
@@ -24,4 +26,8 @@ export const isValidFieldDay = (value: number | undefined) => {
 
 export const isSelected = (combo: Status | TypeProblem | Condominium) => {
     return combo.id !== undefined && combo.id > 0 && combo.name.length > 0; 
+}
+
+export const isEmpty = (item: RepairRequest[] | Employee[]) => {
+    return item.length === 0
 }

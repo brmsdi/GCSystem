@@ -1,9 +1,11 @@
-import { CurrentStateForm, StateFormAction, StateFormEnum, TableAction, TypeEnumActionTables } from "types/action";
+import { CurrentStateForm, ModalStateInformations, StateFormAction, StateFormEnum, TableAction, TypeEnumActionTables } from "types/action";
+import { ModalStateInformationsInit } from "types/order-service";
 import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
-import { ActionRepairRequest, PaginationRepairRequest, PaginationRepairRequestEmpty, RepairRequest, RepairRequestEmpty, SelectedRepairRequestAction } from "types/repair-request";
+import { ActionRepairRequest, PaginationRepairRequest, PaginationRepairRequestEmpty, RepairRequest, RepairRequestEmpty, SelectedRepairRequestAction, SelectedRepairRequestsOrderServiceAction, StateModalOrderServiceRepairRequestsAction } from "types/repair-request";
 
 let initPagination : PaginationRepairRequest = PaginationRepairRequestEmpty;
 let initRepairRequest : RepairRequest = RepairRequestEmpty;
+let initStateModalOrderServiceRepairRequests : ModalStateInformations = ModalStateInformationsInit;
 
 export default function getAllRepairRequestReducer(state: PaginationRepairRequest = initPagination, action: ActionRepairRequest) {
     switch(action.type)
@@ -48,9 +50,9 @@ export function setStateFormRepairRequestReducer(currentStateForm: CurrentStateF
     }
 }
 
-export function setCurrentPaginationRepairRequestReducer(state: PaginationTableAction = {type: StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_CONTRACTS, currentPage: 1, search: undefined }, action: PaginationTableAction) {
+export function setCurrentPaginationRepairRequestReducer(state: PaginationTableAction = {type: StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_REPAIR_REQUESTS, currentPage: 1, search: undefined }, action: PaginationTableAction) {
     switch(action.type) {
-        case StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_REPAIR_REQUEST:
+        case StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_REPAIR_REQUESTS:
             return action;
         default:
             return state;
@@ -72,6 +74,24 @@ export function updateTableRepairRequestReducer(state: boolean = false, action: 
     switch (action.type) {
         case TypeEnumActionTables.UPDATE:
             return !state 
+        default:
+            return state
+    }
+}
+
+export function selectedRepairRequestsOrderServiceReducer(selectedRepairRequests: RepairRequest[] = [], action: SelectedRepairRequestsOrderServiceAction) {
+    switch (action.type) {
+        case 'UPDATE-SELECTED-REPAIR-REQUESTS-ORDER-SERVICE':
+            return action.payload
+        default:
+            return selectedRepairRequests
+    }
+}
+
+export function changeStateModalOrderServiceRepairRequestsReducer(state: ModalStateInformations = initStateModalOrderServiceRepairRequests, action: StateModalOrderServiceRepairRequestsAction) {
+    switch(action.type) {
+        case 'CHANGE-STATE-MODAL-ORDER-SERVICE-REPAIR-REQUESTS':
+            return action.payload
         default:
             return state
     }

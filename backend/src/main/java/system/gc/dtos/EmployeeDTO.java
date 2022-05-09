@@ -79,8 +79,6 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
         setEmail(employee.getEmail());
         setHiringDate(employee.getHiringDate());
         setRole(new RoleDTO(employee.getRole()));
-        //MovementDTO movementDTO = new MovementDTO();
-        //setMovements(movementDTO.convertSetEntityToSetEntityDTO(employee.getMovements()));
         setStatus(new StatusDTO(employee.getStatus()));
     }
 
@@ -99,7 +97,7 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
                 employeeDTO.getHiringDate(),
                 employeeDTO.getPassword(),
                 new RoleDTO().toEntity(employeeDTO.getRole()),
-                new MovementDTO().convertSetEntityDTOFromSetEntity(employeeDTO.getMovements()),
+                new MovementDTO().convertSetEntityDTOToSetEntity(employeeDTO.getMovements()),
                 new StatusDTO().toEntity(employeeDTO.getStatus()));
         if (employeeDTO.getId() != null) {
             employee.setId(employeeDTO.getId());
@@ -120,5 +118,15 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
         result.setStatus(new StatusDTO(employee.getStatus()));
         result.setPassword(employee.getPassword());
         return result;
+    }
+
+    @Deprecated
+    public static EmployeeDTO toModalOrderService(Employee employee) {
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(employee.getId());
+        employeeDTO.setName(employee.getName());
+        employeeDTO.setCpf(employee.getCpf());
+        employeeDTO.setRole(new RoleDTO(employee.getRole()));
+        return employeeDTO;
     }
 }

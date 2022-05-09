@@ -27,4 +27,8 @@ public interface RepairRequestRepository extends JpaRepository<RepairRequest, In
             "WHERE repairRequest IN :repairRequests AND status.id = :statusID")
     List<RepairRequest> checkIfTheRequestIsOpen(List<RepairRequest> repairRequests, Integer statusID);
 
+    @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
+            "JOIN FETCH repairRequest.status status " +
+            "WHERE status.id IN :statusID")
+    List<RepairRequest> openAndProgressAndLateRepairRequest(List<Integer> statusID);
 }

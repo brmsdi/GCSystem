@@ -87,7 +87,6 @@ const FormTemplate = (props: IProps) => {
   }, [props.initForm]);
 
   useEffect(() => {
-    
     checkLegend('fieldset-lessee', 
     isValidFieldNumber(lessee.id))
 
@@ -196,7 +195,6 @@ const FormTemplate = (props: IProps) => {
             break
           }
         }
-        
     }
   }
 

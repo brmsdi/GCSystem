@@ -3,12 +3,7 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Debt;
-import system.gc.entities.Lessee;
-import system.gc.entities.Movement;
-import system.gc.entities.Status;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
@@ -74,7 +69,7 @@ public class DebtDTO implements ConvertEntityAndDTO<DebtDTO, Debt> {
         Debt debt = new Debt(debtDTO.getDueDate(),
                 debtDTO.getValue(),
                 new StatusDTO().toEntity(debtDTO.getStatus()),
-                new MovementDTO().convertSetEntityDTOFromSetEntity(debtDTO.getMovements()),
+                new MovementDTO().convertSetEntityDTOToSetEntity(debtDTO.getMovements()),
                 new LesseeDTO().toEntity(debtDTO.getLessee()));
         if (debtDTO.getId() != null) {
             debt.setId(debtDTO.getId());

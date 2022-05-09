@@ -1,5 +1,35 @@
+.ReactModal__Content--after-open {
+    max-height: 90vh;
+}
+
+.modal-h2 {
+    font-size: 1.7rem;
+    color: $--color-v3;
+}
+
 .modal-section {
     margin-bottom: .7rem;
+    
+    .modal-status-open {
+        color: $--color-v1;
+    }
+
+    .modal-status-progress {
+        color: $--color-v11;
+    }
+
+    .modal-status-late {
+        color: $--color-v7;
+    }
+
+    .modal-status-concluded {
+        color: $--color-v1;
+    }
+
+    .span-value {
+        font-weight: 500;
+        font-style: italic;
+    }
 }
 
 .modal-label {
@@ -10,15 +40,20 @@
     font-weight: 600;
 }
 
-.modal-section-item {
+.modal-section-item, .modal-expenditure {
     width: 100%;
     div {
         display: flex;
         align-items: flex-start;
         width: 100%;
     }
-   
 } 
+
+.modal-header-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
 
 .modal-item-description {
     width: 60%;
@@ -30,8 +65,50 @@
 
 .modal-item-value {
     width: 20%;
-} 
+}
+
+.modal-expenditure {
+    margin: .5rem 0;
+
+    .modal-item-description {
+        width: 80%;
+    }
+
+    .modal-item-value {
+        font-weight: 500;
+    }
+}
 
 .modal-section-comand {
     margin-top: 10px;
+    button {
+        margin: .5rem;
+    }
 }
+
+//ReactModal__Content ReactModal__Content--after-open
+
+
+
+// RESPONSIVE
+@media screen and (min-width: 20em) {
+    // 320px
+    .ReactModal__Content--after-open {
+        margin-right: -50%!important;
+    }
+}
+
+@media screen and (min-width: 50em) {
+    //800px
+    .ReactModal__Content--after-open {
+        margin-right: -20%!important;
+    }
+}
+
+@media screen and (min-width: 70em) {
+    //1120px
+    .ReactModal__Content--after-open {
+        margin-right: -15%!important;
+    }
+}
+

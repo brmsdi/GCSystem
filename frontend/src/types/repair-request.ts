@@ -1,7 +1,8 @@
+import { ModalStateInformations } from "./action";
 import { Condominium, CondominiumEmpty } from "./condominium";
 import { Item } from "./item";
 import { Lessee, LesseeEmpty } from "./lessee";
-import { Status } from "./status";
+import { Status, StatusEmpty } from "./status";
 import { TypeProblem, TypeProblemEmpty } from "./type-problem";
 
 export type RepairRequest = {
@@ -53,11 +54,19 @@ export const PaginationRepairRequestEmpty : PaginationRepairRequest = {
 export const RepairRequestEmpty : RepairRequest = {
     problemDescription: '',
     date: '',
-    status: {
-        name: ''
-    },
+    status: StatusEmpty,
     condominium: CondominiumEmpty,
     lessee: LesseeEmpty,
     typeProblem: TypeProblemEmpty,
     apartmentNumber: ''
+}
+
+export type SelectedRepairRequestsOrderServiceAction = {
+    type: string;
+    payload: RepairRequest[]
+}
+
+export type StateModalOrderServiceRepairRequestsAction = {
+    type: string,
+    payload: ModalStateInformations
 }

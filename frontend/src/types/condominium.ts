@@ -1,5 +1,5 @@
 import { LocalizationCondominium } from "./localization-condominium"
-import { Status } from "./status"
+import { Status, StatusEmpty } from "./status"
 
 export type Condominium = {
     id?: number,
@@ -48,9 +48,7 @@ export const CondominiumEmpty: Condominium = {
     name: '',
     description: '',
     numberApartments: 0,
-    status: {
-        name: ''
-    },
+    status: StatusEmpty,
     localization: {
         number: '0',
         localization: {

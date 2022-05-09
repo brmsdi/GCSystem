@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/order-services")
 @Slf4j
-public class OrderServiceontroller {
+public class OrderServiceController {
 
     @Autowired
     private OrderServiceService orderServiceService;
@@ -51,11 +51,20 @@ public class OrderServiceontroller {
         return ResponseEntity.ok(orderServiceService.searchOrderService(ID));
     }
 
-    @PostMapping(value = "order-service")
+    @PostMapping(value = "order-service/close")
     public ResponseEntity<String> closeOrderService(@RequestBody  OrderServiceDTO orderServiceDTO)
     {
         orderServiceService.closeOrderService(orderServiceDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_CLOSE_ORDER_SUCCESS",
+                null,
+                LocaleContextHolder.getLocale()));
+    }
+
+    @PostMapping(value = "order-service/cancel")
+    public ResponseEntity<String> cancelOrderService(@RequestBody  OrderServiceDTO orderServiceDTO)
+    {
+        orderServiceService.cancelOrderService(orderServiceDTO);
+        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_CANCELED_ORDER_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
     }

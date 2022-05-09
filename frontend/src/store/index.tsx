@@ -6,7 +6,8 @@ import getAllContractsReducer, { setCurrentPaginationContractReducer, setStateFo
 import getAllDebtsReducer, { setCurrentPaginationDebtReducer, setStateFormDebtReducer, stateSelectionDebtReducer, updateTableDebtReducer } from './Debts/debts.reducer';
 import getAllEmployeesReducer, { setCurrentPaginationEmployeeReducer, setStateFormEmployeeReducer, stateSelectionEmployeeReducer, updateTableEmployeeReducer } from './Employees/employees.reducer';
 import getAllLesseesReducer, { setCurrentPaginationLesseeReducer, setStateFormLesseeReducer, stateSelectionLesseeReducer, updateTableLesseeReducer } from './Lessees/lessees.reducer';
-import getAllRepairRequestReducer, { setCurrentPaginationRepairRequestReducer, setStateFormRepairRequestReducer, stateSelectionRepairRequestReducer, updateTableRepairRequestReducer } from './RepairRequests/repair-requests.reducer';
+import getAllOrderServiceReducer, { changeStateModalOrderServiceEmployeesReducer, selectedEmployeesOrderServiceReducer, setCurrentPaginationOrderServiceReducer, setStateFormOrderServiceReducer, stateSelectionOrderServiceReducer, updateTableOrderServiceReducer } from './OrderServices/order-services.reducer';
+import getAllRepairRequestReducer, { changeStateModalOrderServiceRepairRequestsReducer, selectedRepairRequestsOrderServiceReducer, setCurrentPaginationRepairRequestReducer, setStateFormRepairRequestReducer, stateSelectionRepairRequestReducer, updateTableRepairRequestReducer } from './RepairRequests/repair-requests.reducer';
 
 const rootReducer = combineReducers({
     employees: getAllEmployeesReducer,
@@ -53,7 +54,18 @@ const rootReducer = combineReducers({
     stateFormRepairRequest: setStateFormRepairRequestReducer,
     currentPaginationTableRepairRequests: setCurrentPaginationRepairRequestReducer,
     updateTableRepairRequestCurrentState: updateTableRepairRequestReducer,
-    selectedRepairRequest: stateSelectionRepairRequestReducer
+    selectedRepairRequest: stateSelectionRepairRequestReducer,
+    selectedRepairRequestsOrderService: selectedRepairRequestsOrderServiceReducer,
+    stateModalOrderServiceRepairRequests: changeStateModalOrderServiceRepairRequestsReducer,
+
+    // ORDER SERVICE REDUCER
+    orderServices: getAllOrderServiceReducer,
+    stateFormOrderService: setStateFormOrderServiceReducer,
+    currentPaginationTableOrderServices: setCurrentPaginationOrderServiceReducer,
+    updateTableOrderServiceCurrentState: updateTableOrderServiceReducer,
+    selectedOrderService: stateSelectionOrderServiceReducer,
+    selectedEmployeesOrderService: selectedEmployeesOrderServiceReducer,
+    stateModalOrderServiceEmployees: changeStateModalOrderServiceEmployeesReducer
 })
 
 const store = createStore(rootReducer);

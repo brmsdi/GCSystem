@@ -10,6 +10,7 @@ import { formatDateForView } from "utils/textFormt";
 const TableEmployee = () => {
   const dispatch = useDispatch();
   const page: PaginationEmployee = useSelector(selectAllEmployees);
+  
   async function clickButtonUpdate(selected: Employee | undefined) {
     let form = document.querySelector(".content-form");
     if (form != null && selected) {

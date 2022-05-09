@@ -14,6 +14,7 @@ import system.gc.services.ServiceImpl.EmployeeService;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/employees")
@@ -70,5 +71,11 @@ public class EmployeeController {
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
+    }
+
+    @GetMapping(value = "list/to-modal-order-service")
+    public ResponseEntity<List<EmployeeDTO>> findAllToModalOrderService() {
+        log.info("Listando funcionários");
+        return ResponseEntity.ok(employeeService.findAllToModalOrderService());
     }
 }

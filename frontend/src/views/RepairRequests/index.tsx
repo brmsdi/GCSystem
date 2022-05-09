@@ -8,10 +8,12 @@ import SearchRepairRequest from "components/search/SearchRepairRequest";
 import TableRepairRequest from "components/Table/TableRepairRequest";
 import { ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { perStatusRepairRequestService } from "services/repair-request";
 import { changeSelectedSubMenuAsideAction } from "store/Aside/aside.action";
 import { removeSelectedRepairRequestTableAction, setStateFormRepairRequestAction } from "store/RepairRequests/repair-requests.actions";
 import { selectStateFormRepairRequest } from "store/RepairRequests/repair-requests.selector";
 import { StateFormEnum } from "types/action";
+import { OpenAndProgressAndLateRepairRequest, OpenAndProgressAndLateRepairRequestEmpty } from "types/open-progress-late-repair-request";
 import { TypeActivityText } from "types/text-information";
 import { TEXT_MENU_ITEM_ID_REPAIR_REQUEST } from "utils/menu-items";
 
@@ -21,9 +23,10 @@ const RepairRequestsView = () => {
     const pagination = <PaginationTableRepairRequest />
     var stateForm = useSelector(selectStateFormRepairRequest);
     const [currentForm, setCurrentForm] = useState<ReactElement>();
+    const [openAndProgressAndLateRepairRequest, setOpenAndProgressAndLateRepairRequest] = useState<OpenAndProgressAndLateRepairRequest>({...OpenAndProgressAndLateRepairRequestEmpty});
     
     useEffect(() => {
-        
+        perStatusRepairRequestService().then(response => setOpenAndProgressAndLateRepairRequest(response.data))
         switch (stateForm.activity) {
             case StateFormEnum.UPDATE:
                 setCurrentForm(<FormUpdateRepairRequest />)
@@ -32,7 +35,6 @@ const RepairRequestsView = () => {
                 setCurrentForm(<FormNewRepairRequest />)
                 break
             default:
-
         }
     }, [stateForm])
     
@@ -55,18 +57,18 @@ const RepairRequestsView = () => {
             <div className="content-table">
                 <div className="content-box-informations">
                     <BoxInformations 
-                    quantity={1} 
+                    quantity={openAndProgressAndLateRepairRequest.openRepairRequest} 
                     message="Solicitado" 
                     format 
                     icon="bi bi-file-plus" 
                     activity={TypeActivityText.ACTIVITY_OPEN } />
                     <BoxInformations 
-                    quantity={20} 
+                    quantity={openAndProgressAndLateRepairRequest.progressRepairRequest} 
                     message="Em andamento" 
                     icon="bi bi-activity"
                     activity={TypeActivityText.ACTIVITY_PROGRESS }/>
                     <BoxInformations 
-                    quantity={20} 
+                    quantity={openAndProgressAndLateRepairRequest.lateRepairRequest} 
                     message="Atrasado" 
                     format 
                     icon="bi bi-exclamation-triangle-fill"

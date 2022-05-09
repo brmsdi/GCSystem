@@ -28,27 +28,27 @@ public class StatusController {
     }
 
     @GetMapping(value = "condominium")
-    public ResponseEntity<List<StatusDTO>> findAllFromViewCondominium() {
+    public ResponseEntity<List<StatusDTO>> findAllToViewCondominium() {
         log.info("Listando status");
-        return ResponseEntity.ok(statusService.findAllFromView(List.of("Disponível", "Indisponível", "Lotado")));
+        return ResponseEntity.ok(statusService.findAllToView(List.of("Disponível", "Indisponível", "Lotado")));
     }
 
 
     @GetMapping(value = "contract")
-    public ResponseEntity<List<StatusDTO>> findAllFromViewContract() {
+    public ResponseEntity<List<StatusDTO>> findAllToViewContract() {
         log.info("Listando status");
-        return ResponseEntity.ok(statusService.findAllFromView(List.of("Ativo", "Encerrado", "Expirado", "Cancelado")));
+        return ResponseEntity.ok(statusService.findAllToView(List.of("Ativo", "Encerrado", "Expirado", "Cancelado")));
     }
 
     @GetMapping(value = "debt")
-    public ResponseEntity<List<StatusDTO>> findAllFromViewDebt() {
+    public ResponseEntity<List<StatusDTO>> findAllToViewDebt() {
         log.info("Listando status");
-        return ResponseEntity.ok(statusService.findAllFromView(List.of("Aberto", "Vencido", "Cancelado", "Pago")));
+        return ResponseEntity.ok(statusService.findAllToView(List.of("Aberto", "Vencido", "Cancelado", "Pago")));
     }
 
     @GetMapping(value = "repair-request")
-    public ResponseEntity<List<StatusDTO>> findAllFromViewRepairRequest() {
+    public ResponseEntity<List<StatusDTO>> findAllToViewRepairRequest() {
         log.info("Listando status");
-        return ResponseEntity.ok(statusService.findAllFromView(List.of("Aberto", "Em andamento", "Concluído", "Atrasado")));
+        return ResponseEntity.ok(statusService.findAllToView(List.of("Aberto", "Em andamento", "Concluído", "Atrasado")));
     }
 }

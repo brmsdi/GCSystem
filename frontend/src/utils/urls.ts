@@ -10,3 +10,4 @@ export const CONTRACTS_HOME_URL = "/contracts";
 export const CONTRACTS_PRINTOUT_URL = CONTRACTS_HOME_URL + "/printout/:id";
 export const DEBTS_HOME_URL = "/debts"; 
 export const REPAIR_REQUESTS_HOME_URL = "/repairRequests"; 
+export const ORDER_SERVICE_HOME_URL = "/orderServices"; 

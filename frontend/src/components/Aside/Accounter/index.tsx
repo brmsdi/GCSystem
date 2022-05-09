@@ -16,8 +16,8 @@ const CounterAside = () => {
           subMenus={[
             <SubMenu
               iconSubMenu="bi bi-cash"
-              subMenuText="Débito"
-              subMenuToolTip="Gerenciar débito"
+              subMenuText="Débitos"
+              subMenuToolTip="Gerenciar débitos"
               key={5}
               id={TEXT_MENU_ITEM_ID_DEBT}
               idSelectedMenu={idSelectedMenu}
