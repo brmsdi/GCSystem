@@ -65,6 +65,7 @@ hr {
 a {
   text-decoration: none;
 }
+
   // RESPONSIVE
 @media screen and (min-width: 20em) {
   // 320px
@@ -168,7 +169,6 @@ a {
 
     .sub-menu.active {
       a {
-        font-size: 1.2rem;
         padding: 1rem;
         background-color: #fff;
         color: $--clr;

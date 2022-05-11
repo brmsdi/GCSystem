@@ -1,3 +1,7 @@
+.table-responsive-order {
+    height: 70vh
+}
+
 .content-table {
     a {
         color: $--clr;
@@ -35,13 +39,10 @@ table {
     }
 }
 
-
-
 //BREAKPOINT
 @media (max-width: 56.25em) {
     table {
         display: flex;
-
         .thead-max {
             display: none;
         }
@@ -72,4 +73,5 @@ table {
             display: block;
         }
     }
+
 }

@@ -1,3 +1,4 @@
+import ButtonDropDown from "components/Button/ButtonDropDown";
 import Alert from "components/messages";
 import ModalOrderService from "components/Modal/ModalOrderService";
 import { useState } from "react";
@@ -76,7 +77,7 @@ const TableOrderService= () => {
         item={orderServiceSelectedFromModal} />) : (null)
     }
     
-    <div className="table-responsive">
+    <div className="table-responsive table-responsive-order">
       {
         
         (page.empty === true) ?
@@ -136,32 +137,12 @@ const ItemTable = (props: IProps) => {
       <td>{item.status.name}</td>
       <th className="thead-min">Opções</th>
       <td>
-        <button
-          id="btn-table-order-service-update"
-          type="button"
-          aria-label="Atualizar essa ordem de serviço"
-          title="Atualizar essa ordem de serviço"
-          className="btn btn-primary btn-table-options"
-          onClick={() => props.toogleClass(item)}><span aria-hidden="true" ><i className="bi bi-clipboard-data"></i></span>
-        </button>
-        <button
-          id="btn-table-order-service-delete"
-          type="button"
-          aria-label="Deletar essa ordem de serviço"
-          title="Deletar essa ordem de serviço"
-          className="btn btn-danger btn-table-options"
-          onClick={() => props.clickButtonDelete(item.id)}><span aria-hidden="true"><i className="bi bi-trash"></i></span>
-        </button>        
-        <button
-          id="btn-table-order-service-plus-info"
-          type="button"
-          aria-label="Mais informações dessa ordem de serviço"
-          title="Mais informações dessa ordem de serviço"
-          className="btn btn-secondary btn-table-options"
-          onClick={() => props.plusInformations(item)}><span aria-hidden="true"><i className="bi bi-three-dots"></i></span>
-        </button>    
+        <ButtonDropDown ulID={`drop-menu-order-service-${item.id}`} item={[ { key: 1, title: 'Mais informações', action: () => {} },
+        { key: 2, title: 'Mais informações 2', action: () => {} } ]} />
       </td>
+      
     </tr>
+    
   )
 }
 

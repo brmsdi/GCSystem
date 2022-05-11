@@ -30,5 +30,10 @@ public interface RepairRequestRepository extends JpaRepository<RepairRequest, In
     @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
             "JOIN FETCH repairRequest.status status " +
             "WHERE status.id IN :statusID")
-    List<RepairRequest> openAndProgressAndLateRepairRequest(List<Integer> statusID);
+    List<RepairRequest> perStatusRepairRequest(List<Integer> statusID);
+
+    @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
+            "JOIN FETCH repairRequest.status status " +
+            "WHERE (repairRequest.orderService.id = :ID) OR status.id IN :statusID")
+    List<RepairRequest>  findAllPerOrderServiceAndStatus(Integer ID, List<Integer> statusID);
 }

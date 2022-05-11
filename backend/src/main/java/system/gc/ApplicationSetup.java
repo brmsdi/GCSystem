@@ -247,6 +247,27 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     new StatusDTO(statusOpen));
 
             RepairRequestDTO repairRequestDTOSaved = repairRequestService.save(repairRequestDTO);
+
+            RepairRequestDTO repairRequestDTO2 = new RepairRequestDTO("Problema de energia",
+                    new Date(),
+                    typeProblemDTOEletric,
+                    lesseeDTODEVSave,
+                    condominiumDTO2Saved,
+                    "20",
+                    new StatusDTO(statusOpen));
+
+            repairRequestService.save(repairRequestDTO2);
+
+            RepairRequestDTO repairRequestDTO3 = new RepairRequestDTO("problema nas tomadas",
+                    new Date(),
+                    typeProblemDTOEletric,
+                    lesseeDTODEVSave,
+                    condominiumDTO2Saved,
+                    "30",
+                    new StatusDTO(statusOpen));
+
+            repairRequestService.save(repairRequestDTO3);
+
             OrderServiceDTO orderServiceDTO = new OrderServiceDTO(
                     new Date(),
                     new Date(System.currentTimeMillis() + TextUtils.TIME_TOKEN_AUTH_EXPIRATION),

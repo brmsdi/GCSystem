@@ -82,7 +82,14 @@ public class RepairRequestController {
 
     @GetMapping(value = "list/to-modal-order-service")
     public ResponseEntity<List<RepairRequestDTO>> findAllToModalOrderService() {
-        log.info("Listando as solicitações de reparo em aberto");
-        return ResponseEntity.ok(repairRequestService.findAllToModalOrderService());
+        log.info("Listando as solicitações de reparo");
+        return ResponseEntity.ok(repairRequestService.findAllToModalOrderService(List.of("Aberto")));
     }
+
+    @GetMapping(value = "list/order-service/to-modal-order-service")
+    public ResponseEntity<List<RepairRequestDTO>> findAllPerOrderServiceAndStatus(@RequestParam(name = "id") Integer ID) {
+        log.info("Listando as solicitações de reparo");
+        return ResponseEntity.ok(repairRequestService.findAllPerOrderServiceAndStatus(ID, List.of("Aberto")));
+    }
+
 }

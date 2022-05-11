@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.OrderServiceDTO;
+import system.gc.dtos.RepairRequestDTO;
 import system.gc.services.ServiceImpl.OrderServiceService;
 
 import javax.validation.Valid;
@@ -43,6 +44,15 @@ public class OrderServiceController {
                 LocaleContextHolder.getLocale()));
     }
 
+    @PutMapping
+    public ResponseEntity<String> update(@Valid @RequestBody OrderServiceDTO orderServiceDTO) {
+        log.info("Atualizando registro");
+        orderServiceService.update(orderServiceDTO);
+        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
+                null,
+                LocaleContextHolder.getLocale()));
+    }
+
     @GetMapping(value = "search")
     public ResponseEntity<Page<OrderServiceDTO>> search(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                     @RequestParam(name = "size", defaultValue = "5") Integer size,
@@ -65,6 +75,24 @@ public class OrderServiceController {
     {
         orderServiceService.cancelOrderService(orderServiceDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_CANCELED_ORDER_SUCCESS",
+                null,
+                LocaleContextHolder.getLocale()));
+    }
+
+    @PostMapping(value = "order-service/repair-requests/change")
+    public ResponseEntity<String> updateRepairRequestsFromOrderService(@Valid @RequestBody OrderServiceDTO orderServiceDTO) {
+        log.info("Atualizando solicitações de reparo da OS");
+        orderServiceService.updateRepairRequestsFromOrderService(orderServiceDTO);
+        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
+                null,
+                LocaleContextHolder.getLocale()));
+    }
+
+    @PostMapping(value = "order-service/employees/change")
+    public ResponseEntity<String> updateEmployeesFromOrderService(@Valid @RequestBody OrderServiceDTO orderServiceDTO) {
+        log.info("Atualizando solicitações de reparo da OS");
+        orderServiceService.updateEmployeesFromOrderService(orderServiceDTO);
+        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
     }

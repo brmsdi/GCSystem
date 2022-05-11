@@ -1,0 +1,107 @@
+
+// RESPONSIVE
+@media screen and (min-width: 20em) {
+    // 320px
+    .menu-drop {
+        position: relative;
+        width: 100%;
+        height: 2.5rem;
+        button {
+            width: 18%;   
+            height: 100%; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .menu-drop-list {
+        position: relative;
+        display: none;
+        margin-top: .5rem;
+        white-space: nowrap;
+        list-style: none;
+        border-radius: .25rem;
+        border: 1px solid rgba(0,0,0,.15);
+        background-color: #fff;
+        padding: .76rem 0;        
+        li {
+            padding: .8rem;
+            cursor: pointer;
+            &:hover {
+                background-color: $--color-v14;
+            }
+        }
+    
+    }
+    
+    .menu-drop-list.show {
+        display: block;
+    }
+    
+    .menu-drop-item {
+        position: relative;
+        width: 100%;
+        font-size: 1.06rem;
+        margin: 0 1rem;
+        color: $--clr;
+        font-weight: 400;
+    }
+
+}
+
+@media screen and (min-width: 31.25em) {
+    .menu-drop {
+        button {
+            width: 12%;
+        }
+    }
+}
+
+@media screen and (min-width: 39em) {
+    // 624px
+    .menu-drop {
+        button {
+            width: 10%;
+        }
+    }
+}
+
+@media screen and (min-width: 50em) {
+    //800px
+
+    .menu-drop {
+        button {
+            width: 8%;
+        }
+    }    
+}
+
+@media screen and (min-width: 56.3em) {
+    //901px
+
+    .menu-drop {
+        button {
+            width: 50%;
+        }
+    }    
+
+    .menu-drop-list {
+        position: absolute;
+        right: 50%;
+    }
+}
+
+@media screen and (min-width: 78em) {
+    //1248px
+    .menu-drop {
+        button {
+            width: 40%;
+        }
+    }   
+    
+    .menu-drop-list {
+        right: 60%;
+    }
+
+}
