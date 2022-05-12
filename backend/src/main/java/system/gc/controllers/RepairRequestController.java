@@ -91,5 +91,4 @@ public class RepairRequestController {
         log.info("Listando as solicitações de reparo");
         return ResponseEntity.ok(repairRequestService.findAllPerOrderServiceAndStatus(ID, List.of("Aberto")));
     }
-
 }

@@ -6,6 +6,7 @@
         position: relative;
         width: 100%;
         height: 2.5rem;
+        z-index: $z-index-dropdown-menu;
         button {
             width: 18%;   
             height: 100%; 
@@ -13,6 +14,21 @@
             align-items: center;
             justify-content: center;
         }
+    }
+
+    .menu-drop-open-and-close {
+        position: fixed;
+        display: none;
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        left: 0rem;
+        top: 0rem;
+        z-index: $z-index-div-open-and-close-dropdown-table-order-service;
+    }
+
+    .menu-drop-open-and-close.open {
+        display: block;
     }
 
     .menu-drop-list {
@@ -24,7 +40,8 @@
         border-radius: .25rem;
         border: 1px solid rgba(0,0,0,.15);
         background-color: #fff;
-        padding: .76rem 0;        
+        padding: .76rem 0;      
+        z-index: 200!important;  
         li {
             padding: .8rem;
             cursor: pointer;

@@ -68,3 +68,11 @@ export function changeStateModalOrderServiceEmployees(state: ModalStateInformati
     }
     return action
 }
+
+export function detailsModalOrderService(orderService: OrderService) {
+    let action: SelectedOrderServiceAction = {
+        type: 'DETAILS-MODAL-ORDER-SERVICE',
+        payload: orderService
+    }
+    return action
+}

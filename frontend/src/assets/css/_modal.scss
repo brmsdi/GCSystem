@@ -1,3 +1,4 @@
+
 .ReactModal__Content--after-open {
     max-height: 90vh;
 }
@@ -7,9 +8,12 @@
     color: $--color-v3;
 }
 
+section {
+    margin-bottom: 1.5rem;
+}
+
 .modal-section {
-    margin-bottom: .7rem;
-    
+   
     .modal-status-open {
         color: $--color-v1;
     }
@@ -55,15 +59,15 @@
     justify-content: space-around;
 }
 
-.modal-item-description {
+.modal-item-1 {
     width: 60%;
 } 
 
-.modal-item-quantity {
+.modal-item-2 {
     width: 20%;
 } 
 
-.modal-item-value {
+.modal-item-3 {
     width: 20%;
 }
 
@@ -87,8 +91,6 @@
 }
 
 //ReactModal__Content ReactModal__Content--after-open
-
-
 
 // RESPONSIVE
 @media screen and (min-width: 20em) {

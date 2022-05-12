@@ -96,3 +96,13 @@ export function changeStateModalOrderServiceEmployeesReducer(state: ModalStateIn
             return state
     }
 }
+
+
+export function detailsModalOrderServiceReducer(state: OrderService = initOrderService, action: SelectedOrderServiceAction) {
+    switch(action.type) {
+        case 'DETAILS-MODAL-ORDER-SERVICE':
+            return action.payload
+        default:
+            return state
+    }
+}

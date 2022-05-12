@@ -1,30 +1,40 @@
 import { Link } from "react-router-dom";
-
-export type Item = {
-    key: number;
-    title: string;
-    action: Function;
-} 
+import { DropDownMenuItem } from "types/dropdown";
 
 interface IProps {
-    ulID: string;
-    item: Item[]
+  ulID: string;
+  itemsMenu: DropDownMenuItem[]
 }
 
 const ButtonDropDown = (props: IProps) => {
 
-    function openAndCloseDrop() {
-        document.getElementById(props.ulID)?.classList.toggle('show')
-        document.getElementById('menu-drop-' + props.ulID)?.classList.toggle('show')
+  function openAndCloseDrop() {
+    const element = document.getElementById(props.ulID)
+    if (element) {
+      element.classList.toggle('show')
+      document.getElementById('menu-drop-' + props.ulID)?.classList.toggle('show')
+      if (element.classList.contains('show')) {
+        document.getElementById('menu-drop-open-and-close-' + props.ulID)?.classList.toggle('open')
+      } else {
+        document.getElementById('menu-drop-open-and-close-' + props.ulID)?.classList.remove('open')
+      }
     }
+  }
 
-    function blurDrop() 
-    {
-        document.getElementById(props.ulID)?.classList.remove('show')
-        document.getElementById('menu-drop-' + props.ulID)?.classList.remove('show')
-    }
+  function clickItemList(action: Function)
+  {
+    openAndCloseDrop();
+    action();
+  }
 
-    return (
+
+  return (
+    <>
+      <div
+        id={`menu-drop-open-and-close-${props.ulID}`}
+        className="menu-drop-open-and-close"
+        onClick={openAndCloseDrop}
+      ></div>
       <div id={`menu-drop-${props.ulID}`} className="menu-drop">
         <button
           className="btn btn-secondary"
@@ -34,23 +44,23 @@ const ButtonDropDown = (props: IProps) => {
           aria-label="Opções"
           title="Opções"
           onClick={openAndCloseDrop}
-          onBlur={blurDrop}
-        ><span aria-hidden="true"><i className="bi bi-three-dots"></i></span>
-        </button>
-        <ul
-            id={`${props.ulID}`}
-            className="menu-drop-list"
         >
-          {props.item.map((item) => (
-            <li key={item.key}>
-              <Link className="menu-drop-item" to="#">
+          <span aria-hidden="true">
+            <i className="bi bi-three-dots"></i>
+          </span>
+        </button>
+        <ul id={`${props.ulID}`} className="menu-drop-list">
+          {props.itemsMenu.map((item) => (
+            <li key={item.key} onClick={() => clickItemList(item.action)}>
+              <Link className="menu-drop-item" to={""}>
                 {item.title}
               </Link>
             </li>
           ))}
         </ul>
       </div>
-    );
+    </>
+  );
 }
 
 export default ButtonDropDown;

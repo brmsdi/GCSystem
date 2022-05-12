@@ -1,21 +1,18 @@
-import ButtonDropDown from "components/Button/ButtonDropDown";
+import ButtonMenuOrderServiceTable from "components/Button/ButtonMenuOrderServiceTable";
 import Alert from "components/messages";
 import ModalOrderService from "components/Modal/ModalOrderService";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOrderService } from "services/order-service";
 import { selectOrderServiceTableAction, setStateFormOrderServiceAction, updateOrderServiceTableAction } from "store/OrderServices/order-services.actions";
 import { selectAllOrderServices } from "store/OrderServices/order-services.selector";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
-import { OrderService, OrderServiceEmpty, PaginationOrderService } from "types/order-service";
+import { OrderService, PaginationOrderService } from "types/order-service";
 import { formatDateForView } from "utils/textFormt";
 
 const TableOrderService= () => {
   const dispatch = useDispatch();
   const page: PaginationOrderService = useSelector(selectAllOrderServices);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [orderServiceSelectedFromModal, setOrderServiceSelectedFromModal] = useState<OrderService>(OrderServiceEmpty);
 
   async function clickButtonUpdate(selected: OrderService | undefined) {
     let form = document.querySelector(".content-form");
@@ -55,6 +52,7 @@ const TableOrderService= () => {
     }
   }
 
+  /*
   function plusInformations(orderService: OrderService) {
     changeModal()
     setOrderServiceSelectedFromModal({...orderService})
@@ -64,17 +62,20 @@ const TableOrderService= () => {
     setIsOpen(!modalIsOpen)
     if (modalIsOpen === false) setOrderServiceSelectedFromModal(OrderServiceEmpty)
   }
+*/
 
   return (
     <>
+      <ModalOrderService title="Detalhes" />
     {
+      /*
       modalIsOpen && orderServiceSelectedFromModal.id !== 0 ? 
       (<ModalOrderService 
         modalIsOpen={modalIsOpen}
         openModal={changeModal}
         closeModal={changeModal}
         title={"Informações"}
-        item={orderServiceSelectedFromModal} />) : (null)
+        item={orderServiceSelectedFromModal} />) : (null) */
     }
     
     <div className="table-responsive table-responsive-order">
@@ -103,12 +104,12 @@ const TableOrderService= () => {
                   key={item.id} 
                   item={item} 
                   toogleClass={clickButtonUpdate} 
-                  clickButtonDelete={clickButtonDelete} 
-                  plusInformations={plusInformations} />;
+                  clickButtonDelete={clickButtonDelete} />;
                 })
               }
             </tbody>
           </table>
+          
       }
     </div>
     </>
@@ -118,11 +119,12 @@ const TableOrderService= () => {
 interface IProps {
   item: OrderService, 
   toogleClass: Function, 
-  clickButtonDelete: Function,
-  plusInformations: Function
+  clickButtonDelete: Function
 }
+
 const ItemTable = (props: IProps) => {
   let item = props.item;
+
   return (
     <tr>
       <th className="thead-min">ID</th>
@@ -137,13 +139,12 @@ const ItemTable = (props: IProps) => {
       <td>{item.status.name}</td>
       <th className="thead-min">Opções</th>
       <td>
-        <ButtonDropDown ulID={`drop-menu-order-service-${item.id}`} item={[ { key: 1, title: 'Mais informações', action: () => {} },
-        { key: 2, title: 'Mais informações 2', action: () => {} } ]} />
+        <ButtonMenuOrderServiceTable item={item} />
       </td>
-      
     </tr>
-    
   )
 }
 
 export default TableOrderService;
+
+

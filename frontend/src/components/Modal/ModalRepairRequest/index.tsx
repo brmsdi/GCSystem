@@ -77,15 +77,15 @@ const ModalRepairRequest = (props: IProps) => {
           </div>
           {item.items?.map((item) => (
             <div key={item.id}>
-              <span className="modal-item-description">{item.description}</span>
-              <span className="modal-item-quantity">{item.quantity}</span>
-              <span className="modal-item-value">
+              <span className="modal-item-1">{item.description}</span>
+              <span className="modal-item-2">{item.quantity}</span>
+              <span className="modal-item-3">
                 {formatCoinPTBRForView(item.value)}
               </span>
             </div>
           ))}
           <div className="modal-expenditure">
-            <span className="modal-item-description modal-title">
+            <span className="modal-item-1 modal-title">
               Despesas:{" "}
             </span>
             <span className="modal-item-value">
