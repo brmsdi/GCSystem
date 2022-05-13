@@ -62,6 +62,11 @@ export function setCurrentPaginationOrderServiceReducer(state: PaginationTableAc
 export function stateSelectionOrderServiceReducer(state: OrderService = initOrderService, action: SelectedOrderServiceAction) {
     switch (action.type) {
         case TypeEnumActionTables.SELECTED_ORDER_SERVICE:
+            let pay = action.payload;
+            if (pay)
+            {
+                pay.completionDate = pay.completionDate ? pay.completionDate : '';
+            }          
             return action.payload
         case TypeEnumActionTables.REMOVING_ORDER_SERVICE:
             return initOrderService

@@ -14,6 +14,8 @@ const SubMenu = (props: IProps) => {
   const dispatch = useDispatch();
   function changeSelectedMenu(id: any) {
     dispatch(changeSelectedSubMenuAsideAction(id))
+    var width = window.innerWidth;
+    if (width < 800) document.getElementById('header-aside')?.classList.toggle('open');
   }
   return (
     <div id={props.id} className={`sub-menu ${props.id === props.idSelectedMenu ? 'active' : ''} animate-right`} onClick={() => changeSelectedMenu(props.id)}>

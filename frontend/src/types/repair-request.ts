@@ -63,7 +63,7 @@ export const RepairRequestEmpty : RepairRequest = {
 
 export type SelectedRepairRequestsOrderServiceAction = {
     type: string;
-    payload: RepairRequest[]
+    payload: RepairRequest[];
 }
 
 export type StateModalOrderServiceRepairRequestsAction = {

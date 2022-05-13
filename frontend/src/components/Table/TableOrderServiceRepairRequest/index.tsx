@@ -44,11 +44,11 @@ const ItemTable = (props: IPropsRepairRequestTable) => {
     return (
       <tr>
         <th className="thead-min">ID</th>
-        <td>{item.id}</td>
+        <td className="td-column-simple">{item.id}</td>
         <th className="thead-min">Descrição</th>
-        <td>{item.problemDescription}</td>
+        <td className="td-column-simple">{item.problemDescription}</td>
         <th className="thead-min">Tipo de problema</th>
-        <td>{item.typeProblem.name}</td>
+        <td className="td-column-simple">{item.typeProblem.name}</td>
       </tr>
     );
   }

@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
-import { detailsModalOrderService } from "store/OrderServices/order-services.actions";
+import { detailsModalOrderService, selectOrderServiceTableAction, setStateFormOrderServiceAction } from "store/OrderServices/order-services.actions";
+import { StateFormEnum } from "types/action";
 import { DropDownMenuItem } from "types/dropdown";
 import { OrderService } from "types/order-service";
 import ButtonDropDown from "../ButtonDropDown";
@@ -9,7 +10,18 @@ interface IProps {
 }
 
 const ButtonMenuOrderServiceTable = (props: IProps) => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
+
+  async function clickButtonUpdate() {
+    let form = document.querySelector(".content-form");
+    if (form != null && props.item) {
+      if (!form.classList.contains('active')) {
+        form.classList.toggle('active')
+      }
+      dispatch(selectOrderServiceTableAction(props.item))
+      dispatch(setStateFormOrderServiceAction(StateFormEnum.UPDATE))
+    }
+  }
   // Alterar 
   // Alterar funcionários
   // Alterar reparos
@@ -19,7 +31,7 @@ const ButtonMenuOrderServiceTable = (props: IProps) => {
   [{
     key: 1,
     title: 'Atualizar OS',
-    action: () => {} 
+    action: () => clickButtonUpdate()
   },
   {
     key: 2,

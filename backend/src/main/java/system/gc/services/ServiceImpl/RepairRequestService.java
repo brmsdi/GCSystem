@@ -49,6 +49,12 @@ public class RepairRequestService {
     public void update(RepairRequestDTO repairRequestDTO) throws EntityNotFoundException {
         Optional<RepairRequest> repairRequest = repairRequestRepository.findById(repairRequestDTO.getId());
         repairRequest.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        // IMPEDE QUE O STATUS DE SOLICITAÇÕES EM ANDAMENTO SEJAM ATUALIZADAS.
+        // SOLICITAÇÕES VÍNCULADAS À UMA ORDEM DE SERVIÇO NÃO PODERÁ TER O STATUS MODIFICADO.
+        if (repairRequest.get().getStatus().getName().equalsIgnoreCase("Em andamento"))
+        {
+            repairRequestDTO.setStatus(new StatusDTO().toDTO(repairRequest.get().getStatus()));
+        }
         repairRequestRepository.save(new RepairRequestDTO().toEntity(repairRequestDTO));
     }
 
@@ -72,6 +78,13 @@ public class RepairRequestService {
         repairRequestOptional.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         repairRequestRepository.delete(repairRequestOptional.get());
         log.info("Registro deletado com sucesso");
+    }
+
+    @Transactional
+    public void delete(List<Integer> IDS) throws EntityNotFoundException {
+        log.info("Deletando solicitações de reparo");
+        repairRequestRepository.deleteAllById(IDS);
+        log.info("Registros deletados com sucesso");
     }
 
     @Transactional

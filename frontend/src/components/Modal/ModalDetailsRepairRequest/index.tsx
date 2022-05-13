@@ -14,7 +14,7 @@ interface IProps {
     title: string;
     item: RepairRequest
 }
-const ModalRepairRequest = (props: IProps) => {
+const ModalDetailsRepairRequest = (props: IProps) => {
     let item = props.item;
     function afterOpenModal() {
         // references are now sync'd and can be accessed.
@@ -23,7 +23,7 @@ const ModalRepairRequest = (props: IProps) => {
 
     function calculateExpenses() : number {
       if (!item.items) return 0
-      return item.items.map(item => item.value).reduce((previous, current) => previous + current, 0);
+      return item.items?.reduce((previous, item) => (item.quantity * item.value) + previous, 0)
     }
 
     function closeModal() {
@@ -85,7 +85,7 @@ const ModalRepairRequest = (props: IProps) => {
             </div>
           ))}
           <div className="modal-expenditure">
-            <span className="modal-item-1 modal-title">
+            <span className="modal-item-description modal-title">
               Despesas:{" "}
             </span>
             <span className="modal-item-value">
@@ -102,4 +102,4 @@ const ModalRepairRequest = (props: IProps) => {
     ) : null;
 }
 
-export default ModalRepairRequest;
+export default ModalDetailsRepairRequest;

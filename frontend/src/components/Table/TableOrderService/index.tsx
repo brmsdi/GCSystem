@@ -1,29 +1,17 @@
 import ButtonMenuOrderServiceTable from "components/Button/ButtonMenuOrderServiceTable";
 import Alert from "components/messages";
-import ModalOrderService from "components/Modal/ModalOrderService";
+import ModalDetailsOrderService from "components/Modal/ModalDetailsOrderService";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOrderService } from "services/order-service";
-import { selectOrderServiceTableAction, setStateFormOrderServiceAction, updateOrderServiceTableAction } from "store/OrderServices/order-services.actions";
+import { updateOrderServiceTableAction } from "store/OrderServices/order-services.actions";
 import { selectAllOrderServices } from "store/OrderServices/order-services.selector";
 import Swal from "sweetalert2";
-import { StateFormEnum } from "types/action";
 import { OrderService, PaginationOrderService } from "types/order-service";
 import { formatDateForView } from "utils/textFormt";
 
-const TableOrderService= () => {
+const TableOrderService = () => {
   const dispatch = useDispatch();
   const page: PaginationOrderService = useSelector(selectAllOrderServices);
-
-  async function clickButtonUpdate(selected: OrderService | undefined) {
-    let form = document.querySelector(".content-form");
-    if (form != null && selected) {
-      if (!form.classList.contains('active')) {
-        form.classList.toggle('active')
-      }
-      dispatch(selectOrderServiceTableAction(selected))
-      dispatch(setStateFormOrderServiceAction(StateFormEnum.UPDATE))
-    }
-  }
 
   async function clickButtonDelete(ID: number) {
     const result = await Swal.fire({
@@ -52,79 +40,51 @@ const TableOrderService= () => {
     }
   }
 
-  /*
-  function plusInformations(orderService: OrderService) {
-    changeModal()
-    setOrderServiceSelectedFromModal({...orderService})
-  }
-
-  function changeModal() {
-    setIsOpen(!modalIsOpen)
-    if (modalIsOpen === false) setOrderServiceSelectedFromModal(OrderServiceEmpty)
-  }
-*/
-
   return (
     <>
-      <ModalOrderService title="Detalhes" />
-    {
-      /*
-      modalIsOpen && orderServiceSelectedFromModal.id !== 0 ? 
-      (<ModalOrderService 
-        modalIsOpen={modalIsOpen}
-        openModal={changeModal}
-        closeModal={changeModal}
-        title={"Informações"}
-        item={orderServiceSelectedFromModal} />) : (null) */
-    }
-    
-    <div className="table-responsive table-responsive-order">
-      {
-        
-        (page.empty === true) ?
-          (
-            (<Alert msg="Nenhum registro encontrado!" />)
-          )
-          :
-          <table className="table table-striped">
-            <thead className="thead-max">
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Data</th>
-                <th scope="col">Data reservada</th>
-                <th scope="col">Data de finalização</th>
-                <th scope="col">Status</th>
-                <th scope="col">#</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                page?.content?.map((item: OrderService) => {
-                  return <ItemTable 
-                  key={item.id} 
-                  item={item} 
-                  toogleClass={clickButtonUpdate} 
-                  clickButtonDelete={clickButtonDelete} />;
-                })
-              }
-            </tbody>
-          </table>
-          
-      }
-    </div>
+      <ModalDetailsOrderService title="Detalhes" />
+      <div className="table-responsive table-responsive-order">
+        {
+          (page.empty === true) ?
+            (
+              (<Alert msg="Nenhum registro encontrado!" />)
+            )
+            :
+            <table className="table table-striped">
+              <thead className="thead-max">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Data</th>
+                  <th scope="col">Data reservada</th>
+                  <th scope="col">Data de finalização</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">#</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  page?.content?.map((item: OrderService) => {
+                    return <ItemTable
+                      key={item.id}
+                      item={item}
+                      clickButtonDelete={clickButtonDelete} />;
+                  })
+                }
+              </tbody>
+            </table>
+        }
+      </div>
     </>
   )
 }
 
 interface IProps {
-  item: OrderService, 
-  toogleClass: Function, 
+  item: OrderService,
   clickButtonDelete: Function
 }
 
 const ItemTable = (props: IProps) => {
   let item = props.item;
-
   return (
     <tr>
       <th className="thead-min">ID</th>
@@ -138,7 +98,7 @@ const ItemTable = (props: IProps) => {
       <th className="thead-min">Status</th>
       <td>{item.status.name}</td>
       <th className="thead-min">Opções</th>
-      <td>
+      <td className="td-options">
         <ButtonMenuOrderServiceTable item={item} />
       </td>
     </tr>

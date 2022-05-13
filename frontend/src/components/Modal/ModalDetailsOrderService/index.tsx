@@ -13,8 +13,7 @@ interface IProps {
     title: string;
 }
 
-const ModalOrderService = (props: IProps) => {
-    //const [orderServiceSelectedFromModal, setOrderServiceSelectedFromModal] = useState<OrderService>(OrderServiceEmpty);
+const ModalDetailsOrderService = (props: IProps) => {
     const dispatch = useDispatch()
     const orderServiceSelectedFromModal : OrderService = useSelector(selectDetailsModalOrderService)
     function afterOpenModal() {
@@ -82,4 +81,4 @@ const ModalOrderService = (props: IProps) => {
     ) : null
 }
 
-export default ModalOrderService;
+export default ModalDetailsOrderService;

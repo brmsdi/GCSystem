@@ -61,15 +61,23 @@ public class OrderServiceController {
         return ResponseEntity.ok(orderServiceService.searchOrderService(ID));
     }
 
+    @DeleteMapping
+    public ResponseEntity<String> delete(@RequestParam(name = "id") Integer ID) {
+        orderServiceService.delete(ID);
+        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
+                null,
+                LocaleContextHolder.getLocale()));
+    }
+
     @PostMapping(value = "order-service/close")
-    public ResponseEntity<String> closeOrderService(@RequestBody  OrderServiceDTO orderServiceDTO)
+    public ResponseEntity<String> closeOrderService(@RequestBody OrderServiceDTO orderServiceDTO)
     {
         orderServiceService.closeOrderService(orderServiceDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_CLOSE_ORDER_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
     }
-
+/*
     @PostMapping(value = "order-service/cancel")
     public ResponseEntity<String> cancelOrderService(@RequestBody  OrderServiceDTO orderServiceDTO)
     {
@@ -96,4 +104,6 @@ public class OrderServiceController {
                 null,
                 LocaleContextHolder.getLocale()));
     }
+
+ */
 }

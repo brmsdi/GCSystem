@@ -24,14 +24,9 @@ const GetAside = (props: IProps ) => {
 const TemplateApp = (props: { page: any }) => {
   const userAuthenticatedView : UserAuthenticatedView = useSelector(selectUserAuthenticated)
 
-  function headerOpenOrClose() {
-    document.getElementById('header-aside')?.classList.toggle('open')
-  }
-
   return (
     <div className="content">
       <header id="header-aside">
-        <div id="headerEvent" onClick={() => headerOpenOrClose()}></div>
           <GetAside role={ userAuthenticatedView.role } />      
       </header>
       {props.page}
@@ -39,3 +34,5 @@ const TemplateApp = (props: { page: any }) => {
   );
 }
 export default TemplateApp;
+
+//  <div id="headerEvent" onClick={() => headerOpenOrClose()}></div>

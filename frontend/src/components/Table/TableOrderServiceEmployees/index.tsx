@@ -44,11 +44,11 @@ const ItemTable = (props: IPropsItemTable) => {
     return (
       <tr>
         <th className="thead-min">ID</th>
-        <td>{item.id}</td>
+        <td className="td-column-simple">{item.id}</td>
         <th className="thead-min">Nome do funcionário</th>
-        <td>{item.name}</td>
+        <td className="td-column-simple">{item.name}</td>
         <th className="thead-min">Cargo</th>
-        <td>{item.role.name}</td>
+        <td className="td-column-simple">{item.role.name}</td>
       </tr>
     );
   }

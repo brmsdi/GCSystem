@@ -4,7 +4,7 @@ import TableOrderServiceEmployees from "components/Table/TableOrderServiceEmploy
 import TableOrderServiceRepairRequest from "components/Table/TableOrderServiceRepairRequest";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllStatusFromViewRepairRequest } from "services/status";
+import { getAllStatusFromViewOrderService } from "services/status";
 import { changeStateModalOrderServiceEmployees, selectedEmployeesOrderServiceAction } from "store/OrderServices/order-services.actions";
 import { selectSelectedEmployeesOrderService, selectStateModalOrderServiceEmployees } from "store/OrderServices/order-services.selector";
 import { changeStateModalOrderServiceRepairRequests, selectedRepairRequestsOrderServiceAction } from "store/RepairRequests/repair-requests.actions";
@@ -33,7 +33,7 @@ const FormTemplate = (props: IProps) => {
   const selectedEmployees : Employee[] = useSelector(selectSelectedEmployeesOrderService)
   const stateModalOrderServiceEmployees : ModalStateInformations = useSelector(selectStateModalOrderServiceEmployees);
   const stateModalOrderServiceRepairRequests : ModalStateInformations = useSelector(selectStateModalOrderServiceRepairRequests);
-  console.log(props.initForm.employees)
+ 
   function changeInput(value: any) {
     setForm((form) => ({ ...form, ...value }));
   }
@@ -50,7 +50,7 @@ const FormTemplate = (props: IProps) => {
 
   useEffect(() => {
     setForm((form) => ({ ...form, ...props.initForm }));
-    getAllStatusFromViewRepairRequest().then(response => setStatus(response.data));
+    getAllStatusFromViewOrderService().then(response => setStatus(response.data));
     dispatch(selectedRepairRequestsOrderServiceAction(props.initForm.repairRequests))
     dispatch(selectedEmployeesOrderServiceAction(props.initForm.employees))
   }, [props.initForm, dispatch]);
@@ -133,9 +133,9 @@ const FormTemplate = (props: IProps) => {
   function changeModalSelectEmployees() {
     dispatch(changeStateModalOrderServiceEmployees({ isOpen: !stateModalOrderServiceEmployees.isOpen}))
   }
-
   return (
   <>
+  
     {
        <ModalSelectRepairRequests 
        title={"Reparos"} 
@@ -156,13 +156,13 @@ const FormTemplate = (props: IProps) => {
         <hr />
         <div className="row-form-1">
           <div className="form-container f4">
-            <label htmlFor="inputGenerateDate">
+            <label htmlFor="inputGenerationDate">
               Data
             </label>
             <input
               type="date"
-              id="inputGenerateDate"
-              name="generateDate"
+              id="inputGenerationDate"
+              name="generationDate"
               value={form.generationDate.length > 0 ? formatDate(form.generationDate) : form.generationDate}
               onChange={(e) => changeInput({ generationDate: e.target.value })}
               required

@@ -1,3 +1,6 @@
+.ReactModal__Overlay, .ReactModal__Overlay--after-open {
+    z-index: 65;
+}
 
 .ReactModal__Content--after-open {
     max-height: 90vh;

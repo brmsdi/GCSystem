@@ -49,6 +49,12 @@ public class StatusController {
     @GetMapping(value = "repair-request")
     public ResponseEntity<List<StatusDTO>> findAllToViewRepairRequest() {
         log.info("Listando status");
-        return ResponseEntity.ok(statusService.findAllToView(List.of("Aberto", "Em andamento", "Concluído", "Atrasado")));
+        return ResponseEntity.ok(statusService.findAllToView(List.of("Aberto", "Cancelado", "Concluído", "Em andamento")));
+    }
+
+    @GetMapping(value = "order-service")
+    public ResponseEntity<List<StatusDTO>> findAllToViewOrderService() {
+        log.info("Listando status");
+        return ResponseEntity.ok(statusService.findAllToView(List.of("Aberto", "Cancelado", "Concluído")));
     }
 }

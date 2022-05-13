@@ -5,11 +5,11 @@
     .menu-drop {
         position: relative;
         width: 100%;
-        height: 2.5rem;
+        height: 100%;
         z-index: $z-index-dropdown-menu;
         button {
-            width: 18%;   
-            height: 100%; 
+            width: 4.5rem;   
+            height: 2.6rem; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -23,7 +23,8 @@
         width: 100vw;
         height: 100vh;
         left: 0rem;
-        top: 0rem;
+        top: -1rem;
+        bottom: 10rem;
         z-index: $z-index-div-open-and-close-dropdown-table-order-service;
     }
 
@@ -40,8 +41,7 @@
         border-radius: .25rem;
         border: 1px solid rgba(0,0,0,.15);
         background-color: #fff;
-        padding: .76rem 0;      
-        z-index: 200!important;  
+        padding: .76rem 0;   
         li {
             padding: .8rem;
             cursor: pointer;
@@ -67,58 +67,36 @@
 
 }
 
-@media screen and (min-width: 31.25em) {
+@media screen and (min-width: 20em) {
     .menu-drop {
         button {
-            width: 12%;
+            width: 4rem;
         }
     }
 }
 
-@media screen and (min-width: 39em) {
-    // 624px
-    .menu-drop {
-        button {
-            width: 10%;
-        }
-    }
-}
-
-@media screen and (min-width: 50em) {
-    //800px
-
-    .menu-drop {
-        button {
-            width: 8%;
-        }
-    }    
-}
 
 @media screen and (min-width: 56.3em) {
     //901px
+    .td-options {
+        max-width: 10rem;
+    }
 
     .menu-drop {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end;
         button {
-            width: 50%;
+            width: 3.1rem;
         }
     }    
-
-    .menu-drop-list {
-        position: absolute;
-        right: 50%;
-    }
 }
 
-@media screen and (min-width: 78em) {
-    //1248px
-    .menu-drop {
-        button {
-            width: 40%;
-        }
-    }   
-    
-    .menu-drop-list {
-        right: 60%;
+@media screen and (min-width: 61em) {
+    //976px
+    .td-options {
+        max-width: 6rem;
     }
 
 }

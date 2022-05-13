@@ -1,5 +1,5 @@
 import Alert from "components/messages";
-import ModalRepairRequest from "components/Modal/ModalRepairRequest";
+import ModalDetailsRepairRequest from "components/Modal/ModalDetailsRepairRequest";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteRepairRequest } from "services/repair-request";
@@ -65,7 +65,7 @@ const TableRepairRequest= () => {
   return (
     <>
     {
-      modalIsOpen && repairRequestSelectedFromModal.id !== 0 ? (<ModalRepairRequest 
+      modalIsOpen && repairRequestSelectedFromModal.id !== 0 ? (<ModalDetailsRepairRequest 
         modalIsOpen={modalIsOpen}
         openModal={changeModal}
         closeModal={changeModal}

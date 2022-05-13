@@ -1,5 +1,5 @@
 .table-responsive-order {
-    height: 70vh
+    height: auto;
 }
 
 .content-table {
@@ -23,6 +23,7 @@ table {
 .btn-table-options {
     margin: .3rem;
 }
+
 
 #btn-table-contract-pdf {
     color: #fff;
@@ -66,8 +67,15 @@ table {
                 margin: .6rem 0;
             }
         }
+
+        .td-column-simple 
+        {
+            width: 100%!important;
+            max-width: 100%!important;
+        }
     }
-    
+
+
     .content-table {
         .pagination-mobile {
             display: block;

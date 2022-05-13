@@ -75,7 +75,7 @@ public class RepairRequestController {
                 LocaleContextHolder.getLocale()));
     }
 
-    @GetMapping(value = "status-open-progress-late")
+    @GetMapping(value = "list/status-open-progress-late")
     public ResponseEntity<OpenAndProgressAndLateRepairRequest> perStatusRepairRequest() {
         return ResponseEntity.ok(repairRequestService.openAndProgressAndLateRepairRequest(List.of("Aberto", "Em andamento", "Atrasado")));
     }

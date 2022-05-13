@@ -1,21 +1,29 @@
 import Alert from "components/messages";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { findAllToModalOrderService } from "services/repair-request";
+import { findAllPerOrderServiceAndStatus, findAllToModalOrderService } from "services/repair-request";
+import { selectStateSelectedOrderService } from "store/OrderServices/order-services.selector";
 import { changeStateModalOrderServiceRepairRequests, selectedRepairRequestsOrderServiceAction } from "store/RepairRequests/repair-requests.actions";
 import { selectSelectedRepairRequestsOrderService } from "store/RepairRequests/repair-requests.selector";
+import { OrderService } from "types/order-service";
 import { RepairRequest } from "types/repair-request";
 import { formatDateForView } from "utils/textFormt";
 
 const ModalTableRepairRequests = () => {
   const dispatch = useDispatch()
   const selectedRepairRequestsOld : RepairRequest[] = useSelector(selectSelectedRepairRequestsOrderService)
+  const orderServiceSelected: OrderService = useSelector(selectStateSelectedOrderService);
   const [listRepairRequests, setListRepairRequests] = useState<RepairRequest[]>([]);
   const [selectedRepairRequests, setSelectedRepairRequests] = useState<RepairRequest[]>([...selectedRepairRequestsOld]);
   
   useEffect(() => {
-    findAllToModalOrderService().then(response => setListRepairRequests(response.data))
-  }, [])
+    if (orderServiceSelected.id)
+    {
+      findAllPerOrderServiceAndStatus(orderServiceSelected.id).then(response => setListRepairRequests(response.data))
+    } else {
+      findAllToModalOrderService().then(response => setListRepairRequests(response.data))
+    }
+  }, [orderServiceSelected])
 
   function addSelectedRepairRequests(_repairRequests: RepairRequest) {
     if (_repairRequests.id) {

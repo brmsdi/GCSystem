@@ -17,6 +17,7 @@ import system.gc.repositories.OrderServiceRepository;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -50,13 +51,26 @@ public class OrderServiceService {
     }
 
     @Transactional
-    public void update(OrderServiceDTO orderServiceDTO) {
+    public void update(OrderServiceDTO updateOrderServiceDTO) {
         log.info("Atualizando registro da ordem de serviço");
-        Optional<OrderService> optionalOrderService = orderServiceRepository.findById(orderServiceDTO.getId());
+        Optional<OrderService> optionalOrderService = orderServiceRepository.findById(updateOrderServiceDTO.getId());
         optionalOrderService.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         OrderService orderService = optionalOrderService.get();
-        orderService.setGenerationDate(orderServiceDTO.getGenerationDate());
-        orderService.setReservedDate(orderServiceDTO.getReservedDate());
+        orderServiceRepository.loadLazyOrders(List.of(orderService));
+
+        if (updateOrderServiceDTO.getStatus().getName().equalsIgnoreCase("Concluído"))
+        {
+            closeOrderService(orderService);
+        } else if(updateOrderServiceDTO.getStatus().getName().equalsIgnoreCase("Cancelado"))
+        {
+            cancelOrderService(orderService);
+        } else {
+            updateRepairRequestsFromOrderService(orderService, updateOrderServiceDTO);
+            updateEmployeesFromOrderService(orderService, updateOrderServiceDTO);
+        }
+
+        orderService.setGenerationDate(updateOrderServiceDTO.getGenerationDate());
+        orderService.setReservedDate(updateOrderServiceDTO.getReservedDate());
         orderService.setCompletionDate(orderService.getCompletionDate());
         orderServiceRepository.save(orderService);
     }
@@ -81,28 +95,30 @@ public class OrderServiceService {
     }
 
     @Transactional
-    public void closeOrderService(OrderServiceDTO orderServiceDTO) {
+    public void closeOrderService(OrderService orderService) {
         log.info("Registrando conclusão da ordem de serviço");
-        Optional<OrderService> optionalOrderService = orderServiceRepository.findById(orderServiceDTO.getId());
-        optionalOrderService.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
-        OrderService orderService = optionalOrderService.get();
-        orderServiceRepository.loadLazyOrders(List.of(orderService));
         Status statusConcluded = statusService.findByName("Concluído");
         orderService.getRepairRequests().forEach(repairRequestDTO -> repairRequestDTO.setStatus(statusConcluded));
         orderService.setStatus(statusConcluded);
         orderService.setCompletionDate(new Date());
-        orderServiceRepository.save(orderService);
+       // orderServiceRepository.save(orderService);
         log.info("Atualizando o status das solicitações de reparo");
         repairRequestService.update(orderService.getRepairRequests());
     }
 
     @Transactional
-    public void cancelOrderService(OrderServiceDTO orderServiceDTO) {
-        log.info("Registrando cancelamento da ordem de serviço");
+    public void closeOrderService(OrderServiceDTO orderServiceDTO)
+    {
         Optional<OrderService> optionalOrderService = orderServiceRepository.findById(orderServiceDTO.getId());
         optionalOrderService.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         OrderService orderService = optionalOrderService.get();
-        orderServiceRepository.loadLazyOrders(List.of(orderService));
+        closeOrderService(orderService);
+        orderServiceRepository.save(orderService);
+    }
+
+    @Transactional
+    public void cancelOrderService(OrderService orderService) {
+        log.info("Registrando cancelamento da ordem de serviço");
         List<StatusDTO> listStatus = statusService.findAllToView(List.of("Aberto", "Cancelado"));
         StatusDTO openStatus = new StatusDTO();
         StatusDTO canceledStatus = new StatusDTO();
@@ -123,16 +139,50 @@ public class OrderServiceService {
         log.info("Atualizando o status das solicitações de reparo");
         repairRequestService.update(orderService.getRepairRequests());
         orderService.setRepairRequests(null);
-        orderServiceRepository.save(orderService);
     } /// end cancelOrderService
 
-    public void updateRepairRequestsFromOrderService(OrderServiceDTO orderServiceDTO) {
-        log.info("Atualizando solicitações de reparo da ordem de serviço");
-        Optional<OrderService> optionalOrderService = orderServiceRepository.findById(orderServiceDTO.getId());
+    @Transactional
+    public void delete(Integer ID)
+    {
+        log.info("Deletando registro da ordem de serviço");
+        Optional<OrderService> optionalOrderService = orderServiceRepository.findById(ID);
         optionalOrderService.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         OrderService orderService = optionalOrderService.get();
-        OrderService updateOrderService = new OrderServiceDTO().toEntity(orderServiceDTO);
         orderServiceRepository.loadLazyOrders(List.of(orderService));
+        List<StatusDTO> listStatus = statusService.findAllToView(List.of("Aberto", "Em andamento"));
+        StatusDTO openStatus = new StatusDTO();
+        StatusDTO progressStatus = new StatusDTO();
+        for (StatusDTO statusDTO : listStatus)
+        {
+            if (statusDTO.getName().equalsIgnoreCase("Aberto")) {
+                openStatus = statusDTO;
+            } else if (statusDTO.getName().equalsIgnoreCase("Em andamento")) {
+                progressStatus = statusDTO;
+            }
+        } // end for
+        StatusDTO finalOpenStatus = openStatus;
+        StatusDTO finalProgressStatus = progressStatus;
+        for (RepairRequest repairRequest : orderService.getRepairRequests())
+        {
+            if (repairRequest.getStatus().getId().equals(finalProgressStatus.getId()))
+            {
+                repairRequest.setStatus(new StatusDTO().toEntity(finalOpenStatus));
+                repairRequest.setOrderService(null);
+            }
+        }
+        repairRequestService.update(orderService.getRepairRequests());
+        orderService.getRepairRequests().removeIf(repairRequest -> repairRequest.getStatus().getId().equals(finalOpenStatus.getId()));
+        if (!orderService.getRepairRequests().isEmpty())
+        {
+            repairRequestService.delete(orderService.getRepairRequests().stream().map(RepairRequest::getId).toList());
+        }
+        orderService.getRepairRequests().clear();
+        orderServiceRepository.delete(orderService);
+    }
+
+    public void updateRepairRequestsFromOrderService(OrderService orderService, OrderServiceDTO updateOrderServiceDTO) {
+        log.info("Atualizando solicitações de reparo da ordem de serviço");
+        OrderService updateOrderService = new OrderServiceDTO().toEntity(updateOrderServiceDTO);
         List<StatusDTO> listStatus = statusService.findAllToView(List.of("Aberto", "Em andamento"));
         StatusDTO openStatus = new StatusDTO();
         StatusDTO progressStatus = new StatusDTO();
@@ -149,7 +199,7 @@ public class OrderServiceService {
         addOrRemoveRepairRequests(orderService, updateOrderService, finalOpenStatus, finalProgressStatus);
         repairRequestService.update(orderService.getRepairRequests());
         orderService.getRepairRequests().removeIf(repairRequest -> repairRequest.getStatus().getId().equals(finalOpenStatus.getId()));
-        orderServiceRepository.save(orderService);
+        //orderServiceRepository.save(orderService);
     }
 
     /**
@@ -208,15 +258,11 @@ public class OrderServiceService {
         } // end for external
     }
 
-    public void updateEmployeesFromOrderService(OrderServiceDTO orderServiceDTO) {
+    public void updateEmployeesFromOrderService(OrderService orderService, OrderServiceDTO updateOrderServiceDTO) {
         log.info("Atualizando solicitações de reparo da ordem de serviço");
-        Optional<OrderService> optionalOrderService = orderServiceRepository.findById(orderServiceDTO.getId());
-        optionalOrderService.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
-        OrderService orderService = optionalOrderService.get();
-        OrderService updateOrderService = new OrderServiceDTO().toEntity(orderServiceDTO);
-        orderServiceRepository.loadLazyOrders(List.of(orderService));
+        OrderService updateOrderService = new OrderServiceDTO().toEntity(updateOrderServiceDTO);
         addOrRemoveEmployees(orderService, updateOrderService);
-        orderServiceRepository.save(orderService);
+        //orderServiceRepository.save(orderService);
     }
 
     private void addOrRemoveEmployees(OrderService orderService, OrderService updateOrderService)

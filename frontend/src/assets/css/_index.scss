@@ -79,7 +79,6 @@ a {
     height: calc(3.5vh + 3.5vw);
     width: calc(3.5vh + 3.5vw);
     z-index: $z-index-aside-header;
-
     #headerEvent {
       position: absolute;
       display: none;
@@ -211,7 +210,6 @@ a {
   header.open {
     height: 100vh;
     width: 100vw;
-
     aside {
       height: 100%;
       width: 100%;
@@ -478,7 +476,7 @@ a {
   } // End header
 
   header.open {
-    width: 100vw;
+    width: 16rem;
     #headerEvent {
       display: block;
       left: 16rem;
