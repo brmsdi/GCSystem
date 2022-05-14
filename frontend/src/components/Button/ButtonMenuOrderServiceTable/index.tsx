@@ -1,5 +1,7 @@
 import { useDispatch } from "react-redux";
-import { detailsModalOrderService, selectOrderServiceTableAction, setStateFormOrderServiceAction } from "store/OrderServices/order-services.actions";
+import { deleteOrderService } from "services/order-service";
+import { detailsModalOrderService, selectOrderServiceTableAction, setStateFormOrderServiceAction, updateOrderServiceTableAction } from "store/OrderServices/order-services.actions";
+import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { DropDownMenuItem } from "types/dropdown";
 import { OrderService } from "types/order-service";
@@ -22,6 +24,35 @@ const ButtonMenuOrderServiceTable = (props: IProps) => {
       dispatch(setStateFormOrderServiceAction(StateFormEnum.UPDATE))
     }
   }
+
+  async function clickButtonDelete() {
+    if (!props.item.id) return 
+    const result = await Swal.fire({
+      title: 'Você deseja deletar esse registro?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar'
+    })
+
+    if (result.isConfirmed) {
+      try {
+        const data = await deleteOrderService(props.item.id)
+        Swal.fire('Êbaa!', '' + data, 'success')
+        dispatch(updateOrderServiceTableAction())
+      } catch (error: any) {
+        if (!error.response) {
+          Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
+        } else if (error.response.data.errors) {
+          let message = error.response.data.errors[0].message;
+          Swal.fire("Oops!", "" + message, "error");
+        } else {
+          Swal.fire("Oops!", "Erro desconhecido. Consulte o log", "error");
+        }
+      }
+    }
+  }
+
   // Alterar 
   // Alterar funcionários
   // Alterar reparos
@@ -51,7 +82,7 @@ const ButtonMenuOrderServiceTable = (props: IProps) => {
   {
     key: 5,
     title: 'Excluir',
-    action: () => {}
+    action: () => clickButtonDelete()
   }
   ]
     return <ButtonDropDown ulID={`drop-menu-order-service-${props.item.id}`} itemsMenu={dropMenus} />

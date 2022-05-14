@@ -1,44 +1,13 @@
 import ButtonMenuOrderServiceTable from "components/Button/ButtonMenuOrderServiceTable";
 import Alert from "components/messages";
 import ModalDetailsOrderService from "components/Modal/ModalDetailsOrderService";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteOrderService } from "services/order-service";
-import { updateOrderServiceTableAction } from "store/OrderServices/order-services.actions";
+import { useSelector } from "react-redux";
 import { selectAllOrderServices } from "store/OrderServices/order-services.selector";
-import Swal from "sweetalert2";
 import { OrderService, PaginationOrderService } from "types/order-service";
 import { formatDateForView } from "utils/textFormt";
 
 const TableOrderService = () => {
-  const dispatch = useDispatch();
   const page: PaginationOrderService = useSelector(selectAllOrderServices);
-
-  async function clickButtonDelete(ID: number) {
-    const result = await Swal.fire({
-      title: 'Você deseja deletar esse registro?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Confirmar',
-      cancelButtonText: 'Cancelar'
-    })
-
-    if (result.isConfirmed) {
-      try {
-        const data = await deleteOrderService(ID)
-        Swal.fire('Êbaa!', '' + data, 'success')
-        dispatch(updateOrderServiceTableAction())
-      } catch (error: any) {
-        if (!error.response) {
-          Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
-        } else if (error.response.data.errors) {
-          let message = error.response.data.errors[0].message;
-          Swal.fire("Oops!", "" + message, "error");
-        } else {
-          Swal.fire("Oops!", "Erro desconhecido. Consulte o log", "error");
-        }
-      }
-    }
-  }
 
   return (
     <>
@@ -66,8 +35,7 @@ const TableOrderService = () => {
                   page?.content?.map((item: OrderService) => {
                     return <ItemTable
                       key={item.id}
-                      item={item}
-                      clickButtonDelete={clickButtonDelete} />;
+                      item={item} />;
                   })
                 }
               </tbody>
@@ -79,8 +47,7 @@ const TableOrderService = () => {
 }
 
 interface IProps {
-  item: OrderService,
-  clickButtonDelete: Function
+  item: OrderService
 }
 
 const ItemTable = (props: IProps) => {

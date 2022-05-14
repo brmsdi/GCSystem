@@ -77,6 +77,11 @@ const FormTemplate = (props: IProps) => {
     setItem(item => ({...item, ...value}))
   }
 
+  function repairRequestIsProgress()
+  {
+    return props.initForm.status.name.toLocaleUpperCase() !== "EM ANDAMENTO";
+  }
+
   useEffect(() => {
     setForm((form) => ({ ...form, ...props.initForm }));
     setLessee(props.initForm.lessee)
@@ -227,6 +232,9 @@ const FormTemplate = (props: IProps) => {
     }
   }
 
+  console.log('ok ' + repairRequestIsProgress())
+  console.log('ok ' + form.status.name)
+
   return (
     <form onSubmit={submit}>
       <fieldset id="fieldset-repair-informations">
@@ -278,22 +286,25 @@ const FormTemplate = (props: IProps) => {
               ))}
             </select>
           </div>
-          <div className="form-container l2">
-            <label htmlFor="inputStatus">Status</label>
-            <select
-              id="inputStatus"
-              name="status"
-              value={form.status.id ? form.status.id : 0}
-              onChange={(e) => changeStatus(parseInt(e.target.value))}
-            >
-              <option key={0} value={0}></option>
-              {status.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          { repairRequestIsProgress() ? (
+             <div className="form-container l2">
+             <label htmlFor="inputStatus">Status</label>
+             <select
+               id="inputStatus"
+               name="status"
+               value={form.status.id ? form.status.id : 0}
+               onChange={(e) => changeStatus(parseInt(e.target.value))}
+             >
+               <option key={0} value={0}></option>
+               {status.map((item) => (
+                 <option key={item.id} value={item.id}>
+                   {item.name}
+                 </option>
+               ))}
+             </select>
+           </div>) : null
+          }
+         
         </div>
       </fieldset>
       <fieldset id="fieldset-lessee">

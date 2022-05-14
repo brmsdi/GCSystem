@@ -103,13 +103,11 @@ public class RepairRequestService {
     public OpenAndProgressAndLateRepairRequest openAndProgressAndLateRepairRequest(List<String> params) {
         log.info("Buscando lista de status");
         List<StatusDTO> statusDTOList = statusService.findAllToView(params);
-        List<RepairRequest> repairRequestList = repairRequestRepository.perStatusRepairRequest(statusDTOList.stream().map(StatusDTO::getId).toList());
         log.info("Buscando reparos por status");
+        List<RepairRequest> repairRequestList = repairRequestRepository.perStatusRepairRequest(statusDTOList.stream().map(StatusDTO::getId).toList());
         OpenAndProgressAndLateRepairRequest openAndProgressAndLateRepairRequest =
                 new OpenAndProgressAndLateRepairRequest(0, 0, 0, new HashMap<>());
-        openAndProgressAndLateRepairRequest.getValues().put("Aberto", 0);
-        openAndProgressAndLateRepairRequest.getValues().put("Em andamento", 0);
-        openAndProgressAndLateRepairRequest.getValues().put("Atrasado", 0);
+        statusDTOList.forEach(statusDTO ->  openAndProgressAndLateRepairRequest.getValues().put(statusDTO.getName(), 0));
         for (RepairRequest repairRequest : repairRequestList) {
             String key = repairRequest.getStatus().getName();
             Integer newValue = openAndProgressAndLateRepairRequest.getValues().get(key) + 1;

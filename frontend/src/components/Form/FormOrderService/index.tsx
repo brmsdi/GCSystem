@@ -48,11 +48,13 @@ const FormTemplate = (props: IProps) => {
     }
   }
 
+
   useEffect(() => {
     setForm((form) => ({ ...form, ...props.initForm }));
     getAllStatusFromViewOrderService().then(response => setStatus(response.data));
     dispatch(selectedRepairRequestsOrderServiceAction(props.initForm.repairRequests))
     dispatch(selectedEmployeesOrderServiceAction(props.initForm.employees))
+
   }, [props.initForm, dispatch]);
 
   useEffect(() => {
@@ -133,6 +135,7 @@ const FormTemplate = (props: IProps) => {
   function changeModalSelectEmployees() {
     dispatch(changeStateModalOrderServiceEmployees({ isOpen: !stateModalOrderServiceEmployees.isOpen}))
   }
+
   return (
   <>
   
