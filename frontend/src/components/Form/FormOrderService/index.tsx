@@ -94,6 +94,7 @@ const FormTemplate = (props: IProps) => {
       employees: selectedEmployees
     }
 
+   
     setForm({...newForm})
     const result = await props.submit(newForm);
     if (result === true) {
@@ -136,6 +137,7 @@ const FormTemplate = (props: IProps) => {
     dispatch(changeStateModalOrderServiceEmployees({ isOpen: !stateModalOrderServiceEmployees.isOpen}))
   }
 
+  
   return (
   <>
   

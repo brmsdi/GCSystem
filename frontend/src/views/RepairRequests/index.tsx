@@ -58,8 +58,7 @@ const RepairRequestsView = () => {
                 <div className="content-box-informations">
                     <BoxInformations 
                     quantity={openAndProgressAndLateRepairRequest.openRepairRequest} 
-                    message="Solicitado" 
-                    format 
+                    message="Em aberto"  
                     icon="bi bi-file-plus" 
                     activity={TypeActivityText.ACTIVITY_OPEN } />
                     <BoxInformations 

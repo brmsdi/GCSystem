@@ -13,19 +13,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import system.gc.dtos.*;
-import system.gc.entities.ActivityType;
-import system.gc.entities.Employee;
-import system.gc.entities.Role;
-import system.gc.entities.Status;
-import system.gc.repositories.ActivityTypeRepository;
+import system.gc.entities.*;
 import system.gc.repositories.RoleRepository;
 import system.gc.repositories.StatusRepository;
+import system.gc.repositories.TypeProblemRepository;
 import system.gc.security.EmployeeUserDetails;
 import system.gc.services.ServiceImpl.*;
-import system.gc.utils.TextUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
+
+import static java.time.DayOfWeek.*;
 
 @Component
 @Slf4j
@@ -41,7 +42,13 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     StatusRepository statusRepository;
 
     @Autowired
-    ActivityTypeRepository activityTypeRepository;
+    StatusService statusService;
+
+    @Autowired
+    RoleService roleService;
+
+    @Autowired
+    ActivityTypeService activityTypeService;
 
     @Autowired
     LocalizationService localizationService;
@@ -59,6 +66,8 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     DebtService debtService;
 
     @Autowired
+    TypeProblemRepository typeProblemRepository;
+    @Autowired
     TypeProblemService typeProblemService;
 
     @Autowired
@@ -70,58 +79,78 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     @Autowired
     Environment environment;
 
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    LocalDate today = LocalDate.now();
+    LocalDate tomorrow = today.plusDays(today.getDayOfWeek() == FRIDAY ? 2 : 1 );
+    LocalDate sixMonths = today.plusMonths(6);
 
     @SneakyThrows
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) return;
-        roleRepository.save(new Role("Administrador"));
+        // ROLE
+        List<Role> roleList = new ArrayList<>();
+        Role roleADM = roleRepository.save(new Role("Administrador"));
+        Role roleCounter = roleRepository.save(new Role("Contador"));
+        Role roleAssistant = roleRepository.save(new Role("Assistente administrativo"));
+        Role electrician = roleRepository.save(new Role("Eletricista"));
+        Role plumber = roleRepository.save(new Role("Encanador"));
+        Role generalServices = roleRepository.save(new Role("Serviços gerais"));
+        //roleService.save(roleList);
 
-        statusRepository.save(new Status("Ativo"));
-        statusRepository.save(new Status("Inativo"));
+        // Status
+        List<Status> statusList = new ArrayList<>();
+        Status statusActive = statusRepository.save(new Status("Ativo"));
+        statusList.add(new Status("Inativo"));
         Status statusOpen = statusRepository.save(new Status("Aberto"));
-        statusRepository.save(new Status("Em andamento"));
-        statusRepository.save(new Status("Desativado"));
-        statusRepository.save(new Status("Aguardando"));
-        statusRepository.save(new Status("Valido"));
-        statusRepository.save(new Status("Invalido"));
-        statusRepository.save(new Status("Cancelado"));
-        statusRepository.save(new Status("Resgatado"));
-        statusRepository.save(new Status("Concluído"));
-        statusRepository.save(new Status("Deletado"));
+        statusList.add(new Status("Em andamento"));
+        statusList.add(new Status("Desativado"));
+        statusList.add(new Status("Aguardando"));
+        statusList.add(new Status("Valido"));
+        statusList.add(new Status("Invalido"));
+        statusList.add(new Status("Cancelado"));
+        statusList.add(new Status("Resgatado"));
+        statusList.add(new Status("Concluído"));
+        statusList.add(new Status("Deletado"));
         Status statusAvailable = statusRepository.save(new Status("Disponível"));
-        statusRepository.save(new Status("Indisponível"));
-        statusRepository.save(new Status("Lotado"));
-        statusRepository.save(new Status("Encerrado"));
-        statusRepository.save(new Status("Expirado"));
-        statusRepository.save(new Status("Vencido"));
-        statusRepository.save(new Status("Atrasado"));
-        statusRepository.save(new Status("Pago"));
+        statusList.add(new Status("Indisponível"));
+        statusList.add(new Status("Lotado"));
+        statusList.add(new Status("Encerrado"));
+        statusList.add(new Status("Expirado"));
+        statusList.add(new Status("Vencido"));
+        statusList.add(new Status("Atrasado"));
+        statusList.add(new Status("Pago"));
+        statusService.save(statusList);
 
-        activityTypeRepository.save(new ActivityType("Registrado"));
-        activityTypeRepository.save(new ActivityType("Atualizado"));
-        activityTypeRepository.save(new ActivityType("Desativado"));
+        // ACTIVITY TYPE
+        List<ActivityType> activityTypeList = new ArrayList<>();
+        activityTypeList.add(new ActivityType("Registrado"));
+        activityTypeList.add(new ActivityType("Atualizado"));
+        activityTypeList.add(new ActivityType("Desativado"));
+        activityTypeList.add(new ActivityType("Deletado"));
+        activityTypeService.save(activityTypeList);
 
-        typeProblemService.save(new TypeProblemDTO("Elétrico"));
-        typeProblemService.save(new TypeProblemDTO("Hidráulico"));
-        typeProblemService.save(new TypeProblemDTO("Outros"));
+        List<TypeProblem> typeProblemList = new ArrayList<>();
+        TypeProblem typeProblemDTOElectric = typeProblemRepository.save(new TypeProblem("Elétrico"));
+        typeProblemList.add(new TypeProblem("Hidráulico"));
+        typeProblemList.add(new TypeProblem("Outros"));
+        typeProblemService.save(typeProblemList);
 
-        List<Role> roles = roleRepository.findAll();
-        List<Status> status = statusRepository.findAll();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
+        try
+        {
+            // EMPLOYEE
             EmployeeDTO employeeDTOWisley = employeeService.save(new EmployeeDTO("Wisley Bruno Marques França",
                     "2343435",
-                    "1234567898",
+                    "12345678910",
                     simpleDateFormat.parse("1995-12-06"),
                     "srmarquesms@gmail.com",
-                    new Date(),
+                    simpleDateFormat.parse("2022-01-01"),
                     "admin",
-                    new RoleDTO(roles.get(0)),
+                    new RoleDTO(roleADM),
                     null,
-                    new StatusDTO(status.get(0))));
-
-            Employee auth = employeeService.authentication("1234567898");
+                    new StatusDTO(statusActive)));
+            Employee auth = employeeService.authentication("12345678910");
             UserDetails userDetails = new EmployeeUserDetails(auth);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails.getUsername(),
@@ -130,152 +159,165 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
             usernamePasswordAuthenticationToken.setDetails(userDetails);
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
-            employeeService.save(new EmployeeDTO("Amanda Silva",
+            initializeEmployee(
+                    "Eliza Maciel",
+                    "6658578",
+                    "62578672380",
+                    "2000-04-07",
+                    "eliza.exemple@gmail.com",
+                    "2022-01-04",
+                    "eliza123",
+                    roleCounter,
+                    null,
+                    statusActive);
+
+            initializeEmployee(
+                    "Amanda Silva",
                     "695854",
                     "12578678980",
-                    simpleDateFormat.parse("2000-12-06"),
-                    "exemple@gmail.com",
-                    new Date(),
-                    "67896755656",
-                    new RoleDTO(roles.get(0)),
+                    "2000-12-07",
+                    "amanda.exemple@gmail.com",
+                    "2022-01-04",
+                    "amanda123",
+                    roleAssistant,
                     null,
-                    new StatusDTO(status.get(0))));
+                    statusActive);
+
+            initializeEmployee(
+                    "Rafael Almeida",
+                    "6958534",
+                    "12578678342",
+                    "2000-12-08",
+                    "rafael.exemple@gmail.com",
+                    "2022-01-04",
+                    "rafael123",
+                    electrician,
+                    null,
+                    statusActive);
+
+            initializeEmployee(
+                    "Antonio Junior",
+                    "3951534",
+                    "72558678342",
+                    "2000-09-08",
+                    "antonio.exemple@gmail.com",
+                    "2022-01-04",
+                    "antonio123",
+                    plumber,
+                    null,
+                    statusActive);
+
+            initializeEmployee(
+                    "Jeferson da Silva",
+                    "59678534",
+                    "90358178342",
+                    "2000-01-08",
+                    "jeferson.exemple@gmail.com",
+                    "2022-01-04",
+                    "jeferson123",
+                    generalServices,
+                    null,
+                    statusActive);
+
+            //LOCALIZATION
             LocalizationDTO localizationDTO = localizationService.save(new LocalizationDTO("Flores", "920", 69058200));
-            LocalizationDTO localizationDTO1 = localizationService.save(new LocalizationDTO("Parque 10", "Nov H", 69058201));
+            LocalizationDTO localizationDTO1 = localizationService.save(new LocalizationDTO("Parque 10 de Novembro", "Dom Diogo de souza",  69054641));
+
+            // CONDOMINIUM
             CondominiumDTO condominiumDTO = new CondominiumDTO("Villa Lobos",
-                    "A30",
+                    "Desc-1",
                     20,
                     new StatusDTO(statusAvailable),
                     new LocalizationCondominiumDTO("500", localizationDTO));
-            CondominiumDTO condominiumDTO1 = new CondominiumDTO("PTU",
-                    "PTU30",
-                    8,
-                    new StatusDTO(statusAvailable),
-                    new LocalizationCondominiumDTO("900", localizationDTO1));
-
             CondominiumDTO condominiumDTO2Saved = condominiumService.save(condominiumDTO);
-            condominiumService.save(condominiumDTO1);
-
-            for (int i = 5; i < 10; i++) {
-                CondominiumDTO condominiumDTO3 = new CondominiumDTO("PTU",
-                        "PTU30" + i,
-                        8 + i,
-                        new StatusDTO(statusAvailable),
-                        new LocalizationCondominiumDTO("900" + i, localizationDTO1));
-                condominiumService.save(condominiumDTO3);
+            for (int i = 2; i < 8; i++) {
+                initializeCondominium(
+                        "CONDOMÍNIO-" + i,
+                        "Desc-" + i,
+                        6 + i,
+                        statusAvailable,
+                        new LocalizationCondominiumDTO("900" + i, localizationDTO1)
+                );
             }
 
+            // LESSEE
             LesseeDTO lesseeDTODEV = new LesseeDTO(
-                    "Dev",
+                    "Rafael da Silva Monteiro",
                     "63598623",
                     "12563256347",
                     simpleDateFormat.parse("2003-06-02"),
                     "brmarques.dev@gmail.com",
-                    "9298863526",
-                    "785452545",
-                    new StatusDTO(status.get(0))
+                    "92991071491",
+                    "dev123456789",
+                    new StatusDTO(statusActive)
             );
 
             LesseeDTO lesseeDTODEVSave = lesseeService.save(lesseeDTODEV);
             for (int i = 0; i < 7; i++) {
-                LesseeDTO lesseeDTO = new LesseeDTO(
-                        "Daniel" + i,
+                initializeLessee(
+                        "Locatário " + i,
                         "635986" + i,
                         "1256325667" + i,
-                        simpleDateFormat.parse("2003-06-02"),
-                        i + "daniel@gmail.com",
+                        "2003-06-02",
+                        String.format("example-%d@gmail.com", i),
                         "9298863526" + i,
                         "785452545" + i,
-                        new StatusDTO(status.get(0))
+                        statusActive
                 );
-                lesseeService.save(lesseeDTO);
             }
 
             Page<CondominiumDTO> condominiumDTOPage = condominiumService.listPaginationCondominium(PageRequest.of(0, 5));
             Page<LesseeDTO> lesseeDTOPage = lesseeService.listPaginationLessees(PageRequest.of(0, 5));
-            ContractDTO contractDTO = new ContractDTO(simpleDateFormat.parse("2022-02-05"),
+
+            // CONTRACT
+            initializeContract(
                     1200.00,
                     5,
-                    15,
-                    simpleDateFormat.parse("2022-07-05"),
+                    10,
                     60,
-                    new StatusDTO(status.get(0)),
-                    condominiumDTOPage.toList().get(0),
-                    lesseeDTOPage.toList().get(0));
-
-            ContractDTO contractDTO2 = new ContractDTO(simpleDateFormat.parse("2022-02-10"),
-                    1100.00,
-                    10,
-                    20,
-                    simpleDateFormat.parse("2022-07-05"),
-                    10,
-                    new StatusDTO(status.get(0)),
+                    statusOpen,
                     condominiumDTOPage.toList().get(1),
                     lesseeDTOPage.toList().get(1));
-            contractService.save(contractDTO);
-            contractService.save(contractDTO);
-            contractService.save(contractDTO2);
 
-            DebtDTO debtDTO = new DebtDTO(simpleDateFormat.parse("2022-03-07"),
-                    2000,
-                    new StatusDTO().toDTO(status.get(2)),
-                    null,
-                    lesseeDTOPage.toList().get(0));
-            debtService.save(debtDTO);
+            initializeContract(
+                    1100.00,
+                    10,
+                    15,
+                    10,
+                    statusOpen,
+                    condominiumDTOPage.toList().get(1),
+                    lesseeDTOPage.toList().get(1));
 
-/*
-            employeeService.update(new EmployeeDTO("Amanda2 Silva",
-                    "695854",
-                    "12578678980",
-                    simpleDateFormat.parse("2000-12-06"),
-                    "exemple@gmail.com",
-                    new Date(),
-                    new RoleDTO(roles.get(0)),
-                    spEmployee,
-                    null,
-                    new StatusDTO(status.get(0))));
-                    */
+            // DEBTS
+            initializeDebt(1200.00, statusOpen, lesseeDTOPage.toList().get(1));
 
-
-            TypeProblemDTO typeProblemDTOEletric = new TypeProblemDTO(typeProblemService.findByName("Elétrico"));
-            RepairRequestDTO repairRequestDTO = new RepairRequestDTO("Troca de fios eletricos",
-                    new Date(),
-                    typeProblemDTOEletric,
+            // REPAIR REQUESTS
+            RepairRequestDTO repairRequestDTOSaved = initializeRepairRequests("Troca de fios eletricos",
+                    new TypeProblemDTO(typeProblemDTOElectric),
                     lesseeDTODEVSave,
                     condominiumDTO2Saved,
                     "10",
-                    new StatusDTO(statusOpen));
+                    statusOpen);
 
-            RepairRequestDTO repairRequestDTOSaved = repairRequestService.save(repairRequestDTO);
-
-            RepairRequestDTO repairRequestDTO2 = new RepairRequestDTO("Problema de energia",
-                    new Date(),
-                    typeProblemDTOEletric,
+            initializeRepairRequests("Problema de energia",
+                    new TypeProblemDTO(typeProblemDTOElectric),
                     lesseeDTODEVSave,
                     condominiumDTO2Saved,
-                    "20",
-                    new StatusDTO(statusOpen));
+                    "08",
+                    statusOpen);
 
-            repairRequestService.save(repairRequestDTO2);
-
-            RepairRequestDTO repairRequestDTO3 = new RepairRequestDTO("problema nas tomadas",
-                    new Date(),
-                    typeProblemDTOEletric,
+            initializeRepairRequests("Problema nas tomadas",
+                    new TypeProblemDTO(typeProblemDTOElectric),
                     lesseeDTODEVSave,
                     condominiumDTO2Saved,
                     "30",
-                    new StatusDTO(statusOpen));
+                    statusOpen);
 
-            repairRequestService.save(repairRequestDTO3);
+            // ORDER SERVICE
+            initializeOrderService(repairRequestDTOSaved,
+                    employeeDTOWisley,
+                    statusOpen);
 
-            OrderServiceDTO orderServiceDTO = new OrderServiceDTO(
-                    new Date(),
-                    new Date(System.currentTimeMillis() + TextUtils.TIME_TOKEN_AUTH_EXPIRATION),
-                    Set.of(repairRequestDTOSaved),
-                    Set.of(employeeDTOWisley),
-                    new StatusDTO().toDTO(statusOpen)
-            );
-            orderServiceService.save(orderServiceDTO);
 
         } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());
@@ -283,314 +325,158 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         }
 
     }
-}
 
-/*
-Hibernate:
-    select
-        employee0_.id as id1_4_,
-        employee0_.birth_date as birth_da2_4_,
-        employee0_.cpf as cpf3_4_,
-        employee0_.email as email4_4_,
-        employee0_.hiring_date as hiring_d5_4_,
-        employee0_.name as name6_4_,
-        employee0_.rg as rg7_4_,
-        employee0_.fk_role_id as fk_role_8_4_,
-        employee0_.fk_status_id as fk_statu9_4_
-    from
-        employee employee0_ limit ?
-Hibernate:
-    select
-        role0_.id as id1_10_0_,
-        role0_.name as name2_10_0_
-    from
-        role role0_
-    where
-        role0_.id=?
-Hibernate:
-    select
-        status0_.id as id1_12_0_,
-        status0_.name as name2_12_0_
-    from
-        status status0_
-    where
-        status0_.id=?
-Hibernate:
-    select
-        specialtie0_.employee_id as employee1_5_0_,
-        specialtie0_.specialty_id as specialt2_5_0_,
-        specialty1_.id as id1_11_1_,
-        specialty1_.name as name2_11_1_
-    from
-        employee_specialty specialtie0_
-    inner join
-        specialty specialty1_
-            on specialtie0_.specialty_id=specialty1_.id
-    where
-        specialtie0_.employee_id=?
-Hibernate:
-    select
-        movements0_.fk_employee_id as fk_emplo7_9_0_,
-        movements0_.id as id1_9_0_,
-        movements0_.id as id1_9_1_,
-        movements0_.fk_activity_type_id as fk_activ5_9_1_,
-        movements0_.fk_debt_id as fk_debt_6_9_1_,
-        movements0_.due_date as due_date2_9_1_,
-        movements0_.fk_employee_id as fk_emplo7_9_1_,
-        movements0_.move_date_and_time as move_dat3_9_1_,
-        movements0_.previous_value as previous4_9_1_,
-        activityty1_.id as id1_0_2_,
-        activityty1_.name as name2_0_2_,
-        debt2_.id as id1_3_3_,
-        debt2_.due_date as due_date2_3_3_,
-        debt2_.fk_lessee_id as fk_lesse4_3_3_,
-        debt2_.fk_status_id as fk_statu5_3_3_,
-        debt2_.value as value3_3_3_,
-        lessee3_.id as id1_6_4_,
-        lessee3_.birth_date as birth_da2_6_4_,
-        lessee3_.contact_number as contact_3_6_4_,
-        lessee3_.cpf as cpf4_6_4_,
-        lessee3_.email as email5_6_4_,
-        lessee3_.name as name6_6_4_,
-        lessee3_.rg as rg7_6_4_,
-        lessee3_.fk_status_id as fk_statu8_6_4_,
-        status4_.id as id1_12_5_,
-        status4_.name as name2_12_5_,
-        status5_.id as id1_12_6_,
-        status5_.name as name2_12_6_
-    from
-        movement movements0_
-    left outer join
-        activity_type activityty1_
-            on movements0_.fk_activity_type_id=activityty1_.id
-    left outer join
-        debt debt2_
-            on movements0_.fk_debt_id=debt2_.id
-    left outer join
-        lessee lessee3_
-            on debt2_.fk_lessee_id=lessee3_.id
-    left outer join
-        status status4_
-            on lessee3_.fk_status_id=status4_.id
-    left outer join
-        status status5_
-            on debt2_.fk_status_id=status5_.id
-    where
-        movements0_.fk_employee_id=?
-Hibernate:
-    select
-        specialtie0_.employee_id as employee1_5_0_,
-        specialtie0_.specialty_id as specialt2_5_0_,
-        specialty1_.id as id1_11_1_,
-        specialty1_.name as name2_11_1_
-    from
-        employee_specialty specialtie0_
-    inner join
-        specialty specialty1_
-            on specialtie0_.specialty_id=specialty1_.id
-    where
-        specialtie0_.employee_id=?
-Hibernate:
-    select
-        movements0_.fk_employee_id as fk_emplo7_9_0_,
-        movements0_.id as id1_9_0_,
-        movements0_.id as id1_9_1_,
-        movements0_.fk_activity_type_id as fk_activ5_9_1_,
-        movements0_.fk_debt_id as fk_debt_6_9_1_,
-        movements0_.due_date as due_date2_9_1_,
-        movements0_.fk_employee_id as fk_emplo7_9_1_,
-        movements0_.move_date_and_time as move_dat3_9_1_,
-        movements0_.previous_value as previous4_9_1_,
-        activityty1_.id as id1_0_2_,
-        activityty1_.name as name2_0_2_,
-        debt2_.id as id1_3_3_,
-        debt2_.due_date as due_date2_3_3_,
-        debt2_.fk_lessee_id as fk_lesse4_3_3_,
-        debt2_.fk_status_id as fk_statu5_3_3_,
-        debt2_.value as value3_3_3_,
-        lessee3_.id as id1_6_4_,
-        lessee3_.birth_date as birth_da2_6_4_,
-        lessee3_.contact_number as contact_3_6_4_,
-        lessee3_.cpf as cpf4_6_4_,
-        lessee3_.email as email5_6_4_,
-        lessee3_.name as name6_6_4_,
-        lessee3_.rg as rg7_6_4_,
-        lessee3_.fk_status_id as fk_statu8_6_4_,
-        status4_.id as id1_12_5_,
-        status4_.name as name2_12_5_,
-        status5_.id as id1_12_6_,
-        status5_.name as name2_12_6_
-    from
-        movement movements0_
-    left outer join
-        activity_type activityty1_
-            on movements0_.fk_activity_type_id=activityty1_.id
-    left outer join
-        debt debt2_
-            on movements0_.fk_debt_id=debt2_.id
-    left outer join
-        lessee lessee3_
-            on debt2_.fk_lessee_id=lessee3_.id
-    left outer join
-        status status4_
-            on lessee3_.fk_status_id=status4_.id
-    left outer join
-        status status5_
-            on debt2_.fk_status_id=status5_.id
-    where
-        movements0_.fk_employee_id=?
-2022-01-22 19:49:40.466  INFO 33508 --- [nio-8080-exec-2] system.gc.services.ServiceImpl.EmployeeService       : Listando funcionários
-Hibernate:
-    select
-        employee0_.id as id1_4_,
-        employee0_.birth_date as birth_da2_4_,
-        employee0_.cpf as cpf3_4_,
-        employee0_.email as email4_4_,
-        employee0_.hiring_date as hiring_d5_4_,
-        employee0_.name as name6_4_,
-        employee0_.rg as rg7_4_,
-        employee0_.fk_role_id as fk_role_8_4_,
-        employee0_.fk_status_id as fk_statu9_4_
-    from
-        employee employee0_ limit ?
-Hibernate:
-    select
-        role0_.id as id1_10_0_,
-        role0_.name as name2_10_0_
-    from
-        role role0_
-    where
-        role0_.id=?
-Hibernate:
-    select
-        status0_.id as id1_12_0_,
-        status0_.name as name2_12_0_
-    from
-        status status0_
-    where
-        status0_.id=?
-Hibernate:
-    select
-        specialtie0_.employee_id as employee1_5_0_,
-        specialtie0_.specialty_id as specialt2_5_0_,
-        specialty1_.id as id1_11_1_,
-        specialty1_.name as name2_11_1_
-    from
-        employee_specialty specialtie0_
-    inner join
-        specialty specialty1_
-            on specialtie0_.specialty_id=specialty1_.id
-    where
-        specialtie0_.employee_id=?
-Hibernate:
-    select
-        movements0_.fk_employee_id as fk_emplo7_9_0_,
-        movements0_.id as id1_9_0_,
-        movements0_.id as id1_9_1_,
-        movements0_.fk_activity_type_id as fk_activ5_9_1_,
-        movements0_.fk_debt_id as fk_debt_6_9_1_,
-        movements0_.due_date as due_date2_9_1_,
-        movements0_.fk_employee_id as fk_emplo7_9_1_,
-        movements0_.move_date_and_time as move_dat3_9_1_,
-        movements0_.previous_value as previous4_9_1_,
-        activityty1_.id as id1_0_2_,
-        activityty1_.name as name2_0_2_,
-        debt2_.id as id1_3_3_,
-        debt2_.due_date as due_date2_3_3_,
-        debt2_.fk_lessee_id as fk_lesse4_3_3_,
-        debt2_.fk_status_id as fk_statu5_3_3_,
-        debt2_.value as value3_3_3_,
-        lessee3_.id as id1_6_4_,
-        lessee3_.birth_date as birth_da2_6_4_,
-        lessee3_.contact_number as contact_3_6_4_,
-        lessee3_.cpf as cpf4_6_4_,
-        lessee3_.email as email5_6_4_,
-        lessee3_.name as name6_6_4_,
-        lessee3_.rg as rg7_6_4_,
-        lessee3_.fk_status_id as fk_statu8_6_4_,
-        status4_.id as id1_12_5_,
-        status4_.name as name2_12_5_,
-        status5_.id as id1_12_6_,
-        status5_.name as name2_12_6_
-    from
-        movement movements0_
-    left outer join
-        activity_type activityty1_
-            on movements0_.fk_activity_type_id=activityty1_.id
-    left outer join
-        debt debt2_
-            on movements0_.fk_debt_id=debt2_.id
-    left outer join
-        lessee lessee3_
-            on debt2_.fk_lessee_id=lessee3_.id
-    left outer join
-        status status4_
-            on lessee3_.fk_status_id=status4_.id
-    left outer join
-        status status5_
-            on debt2_.fk_status_id=status5_.id
-    where
-        movements0_.fk_employee_id=?
-Hibernate:
-    select
-        specialtie0_.employee_id as employee1_5_0_,
-        specialtie0_.specialty_id as specialt2_5_0_,
-        specialty1_.id as id1_11_1_,
-        specialty1_.name as name2_11_1_
-    from
-        employee_specialty specialtie0_
-    inner join
-        specialty specialty1_
-            on specialtie0_.specialty_id=specialty1_.id
-    where
-        specialtie0_.employee_id=?
-Hibernate:
-    select
-        movements0_.fk_employee_id as fk_emplo7_9_0_,
-        movements0_.id as id1_9_0_,
-        movements0_.id as id1_9_1_,
-        movements0_.fk_activity_type_id as fk_activ5_9_1_,
-        movements0_.fk_debt_id as fk_debt_6_9_1_,
-        movements0_.due_date as due_date2_9_1_,
-        movements0_.fk_employee_id as fk_emplo7_9_1_,
-        movements0_.move_date_and_time as move_dat3_9_1_,
-        movements0_.previous_value as previous4_9_1_,
-        activityty1_.id as id1_0_2_,
-        activityty1_.name as name2_0_2_,
-        debt2_.id as id1_3_3_,
-        debt2_.due_date as due_date2_3_3_,
-        debt2_.fk_lessee_id as fk_lesse4_3_3_,
-        debt2_.fk_status_id as fk_statu5_3_3_,
-        debt2_.value as value3_3_3_,
-        lessee3_.id as id1_6_4_,
-        lessee3_.birth_date as birth_da2_6_4_,
-        lessee3_.contact_number as contact_3_6_4_,
-        lessee3_.cpf as cpf4_6_4_,
-        lessee3_.email as email5_6_4_,
-        lessee3_.name as name6_6_4_,
-        lessee3_.rg as rg7_6_4_,
-        lessee3_.fk_status_id as fk_statu8_6_4_,
-        status4_.id as id1_12_5_,
-        status4_.name as name2_12_5_,
-        status5_.id as id1_12_6_,
-        status5_.name as name2_12_6_
-    from
-        movement movements0_
-    left outer join
-        activity_type activityty1_
-            on movements0_.fk_activity_type_id=activityty1_.id
-    left outer join
-        debt debt2_
-            on movements0_.fk_debt_id=debt2_.id
-    left outer join
-        lessee lessee3_
-            on debt2_.fk_lessee_id=lessee3_.id
-    left outer join
-        status status4_
-            on lessee3_.fk_status_id=status4_.id
-    left outer join
-        status status5_
-            on debt2_.fk_status_id=status5_.id
-    where
-        movements0_.fk_employee_id=?
-* */
+    public void initializeEmployee(
+            String name,
+            String rg,
+            String cpf,
+            String birthDate,
+            String email,
+            String hiringDate,
+            String password,
+            Role role,
+            Set<MovementDTO> movements,
+            Status status
+    ) throws ParseException {
+        EmployeeDTO employeeDTO = new EmployeeDTO(
+                name,
+                rg,
+                cpf,
+                simpleDateFormat.parse(birthDate),
+                email,
+                simpleDateFormat.parse(hiringDate),
+                password,
+                new RoleDTO(role),
+                movements,
+                new StatusDTO(status));
+        employeeService.save(employeeDTO);
+    }
+
+    public void initializeCondominium(
+            String name,
+            String description,
+            int numberApartments,
+            Status status,
+            LocalizationCondominiumDTO localization
+    )
+    {
+        CondominiumDTO condominiumDTO = new CondominiumDTO(
+                name,
+                description,
+                numberApartments,
+                new StatusDTO(status),
+                localization);
+        condominiumService.save(condominiumDTO);
+    }
+
+    public void initializeLessee(
+            String name,
+            String rg,
+            String cpf,
+            String birthDate,
+            String email,
+            String contactNumber,
+            String password,
+            Status status
+    ) throws ParseException {
+        LesseeDTO lesseeDTO = new LesseeDTO(
+                name,
+                rg,
+                cpf,
+                simpleDateFormat.parse(birthDate),
+                email,
+                contactNumber,
+                password,
+                new StatusDTO(status)
+        );
+        lesseeService.save(lesseeDTO);
+    }
+
+    public void initializeContract(
+            double contractValue,
+            int monthlyPaymentDate,
+            int monthlyDueDate,
+            int apartmentNumber,
+            Status status,
+            CondominiumDTO condominium,
+            LesseeDTO lessee) throws ParseException {
+        ContractDTO contractDTO = new ContractDTO(simpleDateFormat.parse(tomorrow.toString()),
+                contractValue,
+                monthlyPaymentDate,
+                monthlyDueDate,
+                simpleDateFormat.parse(sixMonths.toString()),
+                apartmentNumber,
+                new StatusDTO(status),
+                condominium,
+                lessee);
+        contractService.save(contractDTO);
+    }
+
+    public void initializeDebt(double value, Status status, LesseeDTO lesseeDTO) throws ParseException {
+        // Prazo de validade
+        int days = getDueDate(1, 7, today);
+        DebtDTO debtDTO = new DebtDTO(simpleDateFormat.parse(today.plusDays(days).toString()),
+                value,
+                new StatusDTO().toDTO(status),
+                null,
+                lesseeDTO);
+        debtService.save(debtDTO);
+    }
+
+    /**
+     *
+     * @param quantityDays  // Quantidade de dias contanto a parti do dia de amanhã
+     * @param length       // Quantidade em dias úteis.
+     * @param today        // Data atual
+     * @return             // quantidade de dias necessário para o prazo de validade
+     */
+    public static int getDueDate(int quantityDays, int length, LocalDate today)
+    {
+        while(quantityDays <= length) {
+            DayOfWeek current = today.plusDays(quantityDays).getDayOfWeek();
+            if (current == SATURDAY || current == SUNDAY)
+            {
+                length++;
+            }
+            if (quantityDays == length)
+            {
+                break;
+            }
+            quantityDays++;
+        }
+
+        return quantityDays;
+    }
+
+    public RepairRequestDTO initializeRepairRequests(
+            String problemDescription,
+            TypeProblemDTO typeProblemDTO,
+            LesseeDTO lesseeDTO,
+            CondominiumDTO condominiumDTO,
+            String apartmentNumber,
+            Status status) throws ParseException {
+        RepairRequestDTO repairRequestDTO = new RepairRequestDTO(problemDescription,
+                simpleDateFormat.parse(today.toString()),
+                typeProblemDTO,
+                lesseeDTO,
+                condominiumDTO,
+                apartmentNumber,
+                new StatusDTO(status));
+
+        return repairRequestService.save(repairRequestDTO);
+    }
+
+    public void initializeOrderService(
+            RepairRequestDTO repairRequestDTO,
+            EmployeeDTO employeeDTO,
+            Status status) throws ParseException {
+        OrderServiceDTO orderServiceDTO = new OrderServiceDTO(
+                simpleDateFormat.parse(today.toString()),
+                simpleDateFormat.parse(tomorrow.toString()),
+                Set.of(repairRequestDTO),
+                Set.of(employeeDTO),
+                new StatusDTO(status)
+        );
+        orderServiceService.save(orderServiceDTO);
+    }
+}

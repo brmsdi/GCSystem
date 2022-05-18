@@ -5,12 +5,13 @@ import system.gc.utils.TextUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public interface CreateTokenSuccessFulAuthentication {
     default void createTokenSuccessFulAuthentication(HttpServletResponse response,
                                                      final Map<String, String> params) throws Exception, IOException {
-        writeToken(JWTService.createTokenJWT(params, TextUtils.TIME_TOKEN_AUTH_EXPIRATION), response);
+        writeToken(JWTService.createTokenJWT(params, LocalDateTime.now(), 8), response);
     }
 
     private void writeToken(String token, HttpServletResponse response) throws IOException {

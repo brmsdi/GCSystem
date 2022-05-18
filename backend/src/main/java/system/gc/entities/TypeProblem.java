@@ -25,5 +25,7 @@ public class TypeProblem implements Serializable {
     private String name;
 
     public TypeProblem(){}
-
+    public TypeProblem(String name){
+        setName(name);
+    }
 }

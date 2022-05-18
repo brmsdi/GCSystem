@@ -16,6 +16,7 @@ import system.gc.repositories.OrderServiceRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.sql.Time;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -101,6 +102,8 @@ public class OrderServiceService {
         orderService.getRepairRequests().forEach(repairRequestDTO -> repairRequestDTO.setStatus(statusConcluded));
         orderService.setStatus(statusConcluded);
         orderService.setCompletionDate(new Date());
+        System.out.println("=================== " + orderService.getCompletionDate());
+        System.out.println("=================== " + new Date());
        // orderServiceRepository.save(orderService);
         log.info("Atualizando o status das solicitações de reparo");
         repairRequestService.update(orderService.getRepairRequests());

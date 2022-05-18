@@ -1,5 +1,6 @@
 package system.gc.services.ServiceImpl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,18 @@ import system.gc.repositories.StatusRepository;
 import java.util.List;
 
 @Service
+@Slf4j
 public class StatusService {
 
     @Autowired
     private StatusRepository statusRepository;
+
+    @Transactional
+    public void save(List<Status> statusList)
+    {
+        log.info("Inserindo todos os status no banco de dados");
+        statusRepository.saveAll(statusList);
+    }
 
     @Transactional(readOnly = true)
     public List<StatusDTO> findAll(Sort sort) {

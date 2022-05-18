@@ -37,7 +37,7 @@ const ModalDetailsOrderService = (props: IProps) => {
         <section className="modal-section">
           <label className="modal-label">Ordem de serviço</label>
           <div>
-            <span className="modal-title">Data: </span>
+            <span className="modal-title">Data de abertura: </span>
             <span>{formatDateForView(orderServiceSelectedFromModal.generationDate)}</span>
           </div> 
           <div>

@@ -7,6 +7,9 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
 
@@ -25,14 +28,21 @@ public class JWTService {
                 .withExpiresAt(new Date(System.currentTimeMillis() + TIME_TOKEN));
         claims.forEach(builder::withClaim);
         return builder.sign(Algorithm.HMAC256(System.getenv("PRIVATE_KEY_TOKEN")));
-        /*
-        return JWT
-                .create()
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + TextUtils.TIME_TOKE_EXPIRATION))
-                .withClaim("USERNAME", authentication.getName())
-                .withClaim("TYPE", TYPE)
-                .sign(Algorithm.HMAC256(System.getenv("PRIVATE_KEY_TOKEN"))); */
+    }
+
+    /**
+     * @param claims Parametros para compor a chave autenticada
+     * @param localDateTimeNow  Data e hora inicial
+     * @param TIME        Validade do token. Quantidade de horas para o token expirar
+     * @return 'String'         Token criado
+     */
+    public static String createTokenJWT(final Map<String, String> claims, LocalDateTime localDateTimeNow, final int TIME) {
+        log.info("Criando token");
+        JWTCreator.Builder builder = JWT.create()
+                .withIssuedAt(Date.from(localDateTimeNow.atZone(ZoneId.systemDefault()).toInstant()))
+                .withExpiresAt(Date.from(localDateTimeNow.plusHours(TIME).atZone(ZoneId.systemDefault()).toInstant()));
+        claims.forEach(builder::withClaim);
+        return builder.sign(Algorithm.HMAC256(System.getenv("PRIVATE_KEY_TOKEN")));
     }
 
     public static DecodedJWT isValid(String token) throws JWTVerificationException {

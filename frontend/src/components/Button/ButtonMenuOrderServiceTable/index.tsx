@@ -65,16 +65,6 @@ const ButtonMenuOrderServiceTable = (props: IProps) => {
     action: () => clickButtonUpdate()
   },
   {
-    key: 2,
-    title: 'Alterar funcionários',
-    action: () => {}
-  },
-  {
-    key: 3,
-    title: 'Alterar reparos',
-    action: () => {}
-  },
-  {
     key: 4,
     title: 'Detalhes',
     action: () => dispatch(detailsModalOrderService({...props.item}))

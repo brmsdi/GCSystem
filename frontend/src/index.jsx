@@ -5,6 +5,7 @@ import store from 'store';
 import 'bootstrap/dist/css/bootstrap.css'
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'assets/css/styles.scss';
+import "react-datepicker/dist/react-datepicker.css";
 import App from 'components/App';
 import Login from 'views/Login';
 import RecoverPasswordSendCodeEmail from 'views/Login/RecoverPasswordSendCodeEmail';

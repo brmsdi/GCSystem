@@ -137,13 +137,12 @@ a {
     } // End aside
 
     .menu {
-      //margin: 0 1rem;
       font-size: 1rem;
       font-weight: 450;
       color: $--color-v3;
     } // end menu
     .menu-title {
-      margin:  0 1rem;
+      margin:  .5rem 1rem;
       .menu-icon {
         font-size: 1em;
         //margin: 0 1rem;
@@ -157,6 +156,7 @@ a {
       width: 100%;
      // margin: 0 1rem;
       font-size: 1rem;
+      position: relative;
       a {
         width: 100%;
         padding: 1rem 2rem;
@@ -434,19 +434,19 @@ a {
       .menu-icon {
         position: absolute;
         transform: translateX(-500%);
-
       }
     } // end menu-title
 
     .sub-menu {
       white-space: nowrap;
-      margin: .5rem 0;
+      margin: 1.3rem 0;
       font-size: 1.45rem;
       padding: 0;
       a {
         padding: 0;
         text-align: center;
       }
+
       .text-submenu {
         display: none;
       }
@@ -462,29 +462,22 @@ a {
         border-radius: 0 1rem 1rem 0;
         width: auto;
         padding: 0.7rem 0.6rem;
-        transform: translateX(-200%);
+        transform: translateX(-500%);
         transition-property: transform;
         transition-duration: 500ms;
       } // end tooltip-submenu
     } // end sub-menu
 
-    .sub-menu.active {
-      a {
-        font-size: 1.45rem;
-        padding: .4rem;
-      }
-    } //
-
   } // End header
 
   header.open {
-    width: 16rem;
+    width: 17rem;
     #headerEvent {
       display: block;
-      left: 16rem;
+      left: 17rem;
     }
     aside {
-      width: 16rem;
+      width: 17rem;
       .aside-header {
         .icon,
         .text {
@@ -569,8 +562,8 @@ a {
   }
 
   header.open ~ .content-main {
-    left: 16rem;
-    width: calc(100% - 16rem);
+    left: 17rem;
+    width: calc(100% - 17rem);
   }
 
   .home-header {

@@ -24,6 +24,7 @@ const SearchOrderService = () => {
       })
 
     } else {
+      setID('' + ID)
       dispatch(paginationOrderServiceTableAction({
         ...paginationState,
         search: undefined
