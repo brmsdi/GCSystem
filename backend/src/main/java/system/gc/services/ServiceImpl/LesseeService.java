@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.configuration.exceptions.DuplicatedFieldException;
+import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.DebtDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.entities.Lessee;
@@ -25,7 +26,7 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class LesseeService {
+public class LesseeService implements ControllerPermission {
     @Autowired
     private LesseeRepository lesseeRepository;
 

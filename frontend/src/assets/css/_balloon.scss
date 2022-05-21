@@ -1,0 +1,54 @@
+.footer-balloons {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: .5rem 0;
+}
+
+.balloon 
+{
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: .1rem solid $--color-v3;
+    margin: 0 .8rem;
+    transition: all ease-in-out 200ms;
+    a {
+        //color: #fff;
+        color: $--color-v10;
+        font-size: 1.6rem;
+
+        &:hover {
+            animation-play-state: paused;
+        }
+    }   
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+#balloon-wpp {
+    border: .1rem solid $--color-v9;
+    a {
+        color: $--color-v9;
+    }
+}
+
+
+#balloon-email {
+    border: .1rem solid $--color-v7;
+    a {
+        color: $--color-v7;
+    }
+}
+
+#balloon-github {
+    border: .1rem solid $--color-v10;
+    a {
+        color: $--color-v10;
+    }
+}

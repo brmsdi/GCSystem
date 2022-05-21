@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/lessees")
 @Slf4j
-public class LesseeController {
+public class LesseeController implements ControllerPermission {
     @Autowired
     private LesseeService lesseeService;
 

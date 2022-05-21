@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/debts")
 @Slf4j
-public class DebtController {
+public class DebtController implements ControllerPermission {
 
     @Autowired
     private DebtService debtService;

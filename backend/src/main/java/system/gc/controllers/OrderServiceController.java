@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/order-services")
 @Slf4j
-public class OrderServiceController {
+public class OrderServiceController implements ControllerPermission {
 
     @Autowired
     private OrderServiceService orderServiceService;

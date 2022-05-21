@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { selectSelectedSubMenuAside } from "store/Aside/aside.selector";
-import { TEXT_MENU_ITEM_ID_CONDOMINIUM, TEXT_MENU_ITEM_ID_CONTRACT, TEXT_MENU_ITEM_ID_LESSEE } from "utils/menu-items";
-import { CONDOMINIUMS_HOME_URL, CONTRACTS_HOME_URL, LESSEES_HOME_URL } from "utils/urls";
+import { TEXT_MENU_ITEM_ID_CONDOMINIUM, TEXT_MENU_ITEM_ID_CONTRACT, TEXT_MENU_ITEM_ID_LESSEE, TEXT_MENU_ITEM_ID_ORDER_SERVICE, TEXT_MENU_ITEM_ID_REPAIR_REQUEST } from "utils/menu-items";
+import { CONDOMINIUMS_HOME_URL, CONTRACTS_HOME_URL, LESSEES_HOME_URL, ORDER_SERVICE_HOME_URL, REPAIR_REQUESTS_HOME_URL } from "utils/urls";
 import Aside from "..";
 import ItemMenu from "../ItemMenu";
 import SubMenu from "../SubMenu";
@@ -38,7 +38,30 @@ const AdministrativeAssistantAside = () => {
               id={TEXT_MENU_ITEM_ID_LESSEE}
               idSelectedMenu={idSelectedMenu}
               to={LESSEES_HOME_URL} />,
-          ]} /></>
+          ]} />
+          <ItemMenu
+          menuIcon="bi bi-stack"
+          menuText="Serviços"
+          key={2}
+          subMenus={[
+            <SubMenu
+              iconSubMenu="bi bi-wrench"
+              subMenuText="Reparos"
+              subMenuToolTip="Gerenciar reparos"
+              key={4}
+              id={TEXT_MENU_ITEM_ID_REPAIR_REQUEST}
+              idSelectedMenu={idSelectedMenu}
+              to={REPAIR_REQUESTS_HOME_URL} />,
+              <SubMenu
+              iconSubMenu="bi bi-file-earmark-zip-fill"
+              subMenuText="OS"
+              subMenuToolTip="Gerenciar ordens de serviço"
+              key={5}
+              id={TEXT_MENU_ITEM_ID_ORDER_SERVICE}
+              idSelectedMenu={idSelectedMenu}
+              to={ORDER_SERVICE_HOME_URL} />
+            ]} /> 
+          </>
     return <Aside childrean={data} idSelectedMenu={idSelectedMenu}/>
 }
 

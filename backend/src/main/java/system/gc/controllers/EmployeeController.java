@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/employees")
 @Slf4j
-public class EmployeeController {
+public class EmployeeController implements ControllerPermission {
     @Autowired
     private EmployeeService employeeService;
 

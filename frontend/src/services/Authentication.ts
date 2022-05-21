@@ -13,8 +13,12 @@ export const requestCode = (data : EmailRequestCode) => {
     .then()
 } 
 
-export const tokenValidate = () => {
-    return http.get<UserAuthenticatedView>(REQUEST_VALIDATE_TOKEN)
+export const tokenValidate = async () => {
+    return await http.get<UserAuthenticatedView>(REQUEST_VALIDATE_TOKEN).then(response => response.data)
+} 
+
+export const checkPermissionView = async (path : string) => {
+    return await http.get(path).then(response => response.data)
 } 
 
 export const validateCode = (data: EmailRequestCode ) =>  {

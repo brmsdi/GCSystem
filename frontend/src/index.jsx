@@ -27,7 +27,7 @@ import
     REPAIR_REQUESTS_HOME_URL,
     ORDER_SERVICE_HOME_URL
 } from 'utils/urls';
-import PrivateRoute from 'routes/PrivateRoutes';
+import ElementVerified from 'routes/PrivateRoutes';
 import TemplateApp from 'views/TemplateApp';
 import EmployeesView from 'views/Employees';
 import HomeView from 'views/Home';
@@ -40,29 +40,131 @@ import PageMessage from 'components/Loader/PageLoading';
 import errorIMG from "assets/img/error.svg";
 import RepairRequestsView from 'views/RepairRequests';
 import OrderServiceView from 'views/OrderServices';
+import { REQUEST_CONDOMINIUMS, REQUEST_CONTRACTS, REQUEST_DEBTS, REQUEST_EMPLOYEES, REQUEST_LESSEES, REQUEST_ORDER_SERVICES, REQUEST_REPAIR_REQUESTS } from 'utils/requests';
 
 reactDom.render(
-        <Provider store={store}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path={HOME_URL} element={<PrivateRoute children={<TemplateApp page={<HomeView />}/>} failRedirect={LOGIN_URL} />} />
-                    <Route path={EMPLOYEES_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<EmployeesView />}/>} failRedirect={LOGIN_URL} />} />
-                    <Route path={LESSEES_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<LesseeView />}/>} failRedirect={LOGIN_URL} />} />
-                    <Route path={CONDOMINIUMS_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<CondominiumsView />}/>} failRedirect={LOGIN_URL} />} />
-                    <Route path={CONTRACTS_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<ContractsView />}/>} failRedirect={LOGIN_URL} />}/>
-                    <Route path={CONTRACTS_PRINTOUT_URL} element={<PrivateRoute children={<PrintoutContract />} failRedirect={LOGIN_URL} />} />
-                    <Route path={DEBTS_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<DebtsView />}/>} failRedirect={LOGIN_URL} />} />
-                    <Route path={REPAIR_REQUESTS_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<RepairRequestsView />}/>} failRedirect={LOGIN_URL} />} />
-                    <Route path={ORDER_SERVICE_HOME_URL} element={<PrivateRoute children={<TemplateApp page={<OrderServiceView />}/>} failRedirect={LOGIN_URL} />} />
-                    <Route path={LOGIN_URL}>
-                        <Route path="" element={<App children={<Login />}/>} />
-                        <Route path={RECOVER_PASSWORD_URL} element={<App children={<RecoverPasswordSendCodeEmail />}/>}/>
-                        <Route path={ RECOVER_PASSWORD_SEND_CODE_URL } element={<App children={<RecoverPasswordSendCode />}/>}/>
-                        <Route path={ RECOVER_PASSWORD_CHANGE_URL } element={<App children={<RecoverPasswordChange />}/>}/>
-                    </Route>
-                    <Route path="*" element={<App children={<PageMessage title={"Página não encontrada."} imageForTitle={errorIMG} />}/>} />
-                </Routes>
-            </BrowserRouter>
-        </Provider>,
-   document.getElementById("root")
+  <Provider store={store}>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path={HOME_URL}
+          element={
+            <ElementVerified
+              children={<TemplateApp page={<HomeView />} />}
+              failRedirect={LOGIN_URL}
+            />
+          }
+        />
+        <Route
+          path={EMPLOYEES_HOME_URL}
+          element={
+            <ElementVerified
+              children={<TemplateApp page={<EmployeesView />} />}
+              permissionCheck={REQUEST_EMPLOYEES}
+              failRedirect={LOGIN_URL}
+            />
+          }
+        />
+        <Route
+          path={LESSEES_HOME_URL}
+          element={
+            <ElementVerified
+              children={<TemplateApp page={<LesseeView />} />}
+              permissionCheck={REQUEST_LESSEES}
+              failRedirect={LOGIN_URL}
+            />
+          }
+        />
+        <Route
+          path={CONDOMINIUMS_HOME_URL}
+          element={
+            <ElementVerified
+              children={<TemplateApp page={<CondominiumsView />} />}
+              permissionCheck={REQUEST_CONDOMINIUMS}
+              failRedirect={LOGIN_URL}
+            />
+          }
+        />
+        <Route
+          path={CONTRACTS_HOME_URL}
+          element={
+            <ElementVerified
+              children={<TemplateApp page={<ContractsView />} />}
+              permissionCheck={REQUEST_CONTRACTS}
+              failRedirect={LOGIN_URL}
+            />
+          }
+        />
+        <Route
+          path={CONTRACTS_PRINTOUT_URL}
+          element={
+            <ElementVerified
+              children={<PrintoutContract />}
+              permissionCheck={REQUEST_CONTRACTS}
+              failRedirect={LOGIN_URL}
+            />
+          }
+        />
+        <Route
+          path={DEBTS_HOME_URL}
+          element={
+            <ElementVerified
+              children={<TemplateApp page={<DebtsView />} />}
+              permissionCheck={REQUEST_DEBTS}
+              failRedirect={LOGIN_URL}
+            />
+          }
+        />
+        <Route
+          path={REPAIR_REQUESTS_HOME_URL}
+          element={
+            <ElementVerified
+              children={<TemplateApp page={<RepairRequestsView />} />}
+              permissionCheck={REQUEST_REPAIR_REQUESTS}
+              failRedirect={LOGIN_URL}
+            />
+          }
+        />
+        <Route
+          path={ORDER_SERVICE_HOME_URL}
+          element={
+            <ElementVerified
+              children={<TemplateApp page={<OrderServiceView />} />}
+              permissionCheck={REQUEST_ORDER_SERVICES}
+              failRedirect={LOGIN_URL}
+            />
+          }
+        />
+        <Route path={LOGIN_URL}>
+          <Route path="" element={<App children={<Login />} />} />
+          <Route
+            path={RECOVER_PASSWORD_URL}
+            element={<App children={<RecoverPasswordSendCodeEmail />} />}
+          />
+          <Route
+            path={RECOVER_PASSWORD_SEND_CODE_URL}
+            element={<App children={<RecoverPasswordSendCode />} />}
+          />
+          <Route
+            path={RECOVER_PASSWORD_CHANGE_URL}
+            element={<App children={<RecoverPasswordChange />} />}
+          />
+        </Route>
+        <Route
+          path="*"
+          element={
+            <App
+              children={
+                <PageMessage
+                  title={"Página não encontrada."}
+                  imageForTitle={errorIMG}
+                />
+              }
+            />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  </Provider>,
+  document.getElementById("root")
 );

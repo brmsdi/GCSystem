@@ -17,7 +17,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/contracts")
 @Slf4j
-public class ContractController {
+public class ContractController implements ControllerPermission {
 
     @Autowired
     private ContractService contractService;

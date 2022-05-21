@@ -3,15 +3,6 @@
     animation-duration: 400ms;
 }
 
-.animate-down {
-    animation: down;
-    animation-duration: 400ms;
-}
-
-.animate-opac {
-    animation: opac 2s;
-}
-
 @keyframes right {
     from {
         transform: translateX(-100%);
@@ -19,6 +10,11 @@
     } to {
         transform: translateX(0);
     }
+}
+
+.animate-down {
+    animation: down;
+    animation-duration: 400ms;
 }
 
 @keyframes down {
@@ -29,6 +25,9 @@
     }
 }
 
+.animate-opac {
+    animation: opac 2s;
+}
 
 @keyframes opac {
     from {
@@ -36,4 +35,18 @@
     } to {
         opacity: 1;
     }
+}
+
+.animate-shake {
+    animation: shake .2s;
+    animation-iteration-count: 1;
+    animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+    0% {margin-left: 0;}
+    25% {margin-left: 1px;}
+    50% {margin-left: 0;}
+    75% {margin-left: -1px;}
+    100% {margin-left: 0;}
 }

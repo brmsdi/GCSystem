@@ -84,6 +84,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     LocalDate today = LocalDate.now();
     LocalDate tomorrow = today.plusDays(today.getDayOfWeek() == FRIDAY ? 2 : 1 );
     LocalDate sixMonths = today.plusMonths(6);
+    LocalDate oneMonthAgo = today.minusDays(30);
 
     @SneakyThrows
     @Override
@@ -183,7 +184,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     null,
                     statusActive);
 
-            initializeEmployee(
+            EmployeeDTO employeeElectrician = initializeEmployee(
                     "Rafael Almeida",
                     "6958534",
                     "12578678342",
@@ -247,12 +248,26 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     "12563256347",
                     simpleDateFormat.parse("2003-06-02"),
                     "brmarques.dev@gmail.com",
-                    "92991071491",
-                    "dev123456789",
+                    "92941571491",
+                    "rafael123",
                     new StatusDTO(statusActive)
             );
 
             LesseeDTO lesseeDTODEVSave = lesseeService.save(lesseeDTODEV);
+
+            LesseeDTO lesseeDTODEV2 = new LesseeDTO(
+                    "Juliana Costa da Silva",
+                    "78598423",
+                    "45565625634",
+                    simpleDateFormat.parse("1992-06-02"),
+                    "example-juliana@gmail.com",
+                    "92991471431",
+                    "juliana123",
+                    new StatusDTO(statusActive)
+            );
+
+            LesseeDTO lesseeDTODEV2Save = lesseeService.save(lesseeDTODEV2);
+
             for (int i = 0; i < 7; i++) {
                 initializeLessee(
                         "Locatário " + i,
@@ -267,55 +282,43 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
             }
 
             Page<CondominiumDTO> condominiumDTOPage = condominiumService.listPaginationCondominium(PageRequest.of(0, 5));
-            Page<LesseeDTO> lesseeDTOPage = lesseeService.listPaginationLessees(PageRequest.of(0, 5));
+            //Page<LesseeDTO> lesseeDTOPage = lesseeService.listPaginationLessees(PageRequest.of(0, 5));
 
             // CONTRACT
             initializeContract(
-                    1200.00,
-                    5,
-                    10,
-                    60,
-                    statusOpen,
-                    condominiumDTOPage.toList().get(1),
-                    lesseeDTOPage.toList().get(1));
-
-            initializeContract(
-                    1100.00,
-                    10,
-                    15,
+                    oneMonthAgo,
+                    3000.00,
+                    today.getDayOfMonth(),
+                    today.plusDays(5).getDayOfMonth(),
+                    oneMonthAgo.plusMonths(6),
                     10,
                     statusOpen,
-                    condominiumDTOPage.toList().get(1),
-                    lesseeDTOPage.toList().get(1));
+                    condominiumDTOPage.toList().get(2),
+                    lesseeDTODEV2Save);
 
             // DEBTS
-            initializeDebt(1200.00, statusOpen, lesseeDTOPage.toList().get(1));
+            Page<ContractDTO> contractDTOPage = contractService.searchContract(PageRequest.of(0, 5), lesseeDTODEV2Save);
+            ContractDTO contractDTO = contractDTOPage.toList().get(0);
+            initializeDebt(contractDTO.getContractValue(), statusOpen, lesseeDTODEV2Save, today);
 
             // REPAIR REQUESTS
             RepairRequestDTO repairRequestDTOSaved = initializeRepairRequests("Troca de fios eletricos",
                     new TypeProblemDTO(typeProblemDTOElectric),
-                    lesseeDTODEVSave,
-                    condominiumDTO2Saved,
+                    lesseeDTODEV2Save,
+                    condominiumDTOPage.toList().get(2),
                     "10",
                     statusOpen);
 
             initializeRepairRequests("Problema de energia",
                     new TypeProblemDTO(typeProblemDTOElectric),
-                    lesseeDTODEVSave,
-                    condominiumDTO2Saved,
-                    "08",
-                    statusOpen);
-
-            initializeRepairRequests("Problema nas tomadas",
-                    new TypeProblemDTO(typeProblemDTOElectric),
-                    lesseeDTODEVSave,
-                    condominiumDTO2Saved,
-                    "30",
+                    lesseeDTODEV2Save,
+                    condominiumDTOPage.toList().get(2),
+                    "10",
                     statusOpen);
 
             // ORDER SERVICE
             initializeOrderService(repairRequestDTOSaved,
-                    employeeDTOWisley,
+                    employeeElectrician,
                     statusOpen);
 
 
@@ -326,7 +329,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
     }
 
-    public void initializeEmployee(
+    public EmployeeDTO initializeEmployee(
             String name,
             String rg,
             String cpf,
@@ -349,7 +352,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                 new RoleDTO(role),
                 movements,
                 new StatusDTO(status));
-        employeeService.save(employeeDTO);
+        return employeeService.save(employeeDTO);
     }
 
     public void initializeCondominium(
@@ -400,7 +403,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
             Status status,
             CondominiumDTO condominium,
             LesseeDTO lessee) throws ParseException {
-        ContractDTO contractDTO = new ContractDTO(simpleDateFormat.parse(tomorrow.toString()),
+        ContractDTO contractDTO = new ContractDTO(simpleDateFormat.parse(today.toString()),
                 contractValue,
                 monthlyPaymentDate,
                 monthlyDueDate,
@@ -412,10 +415,32 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         contractService.save(contractDTO);
     }
 
-    public void initializeDebt(double value, Status status, LesseeDTO lesseeDTO) throws ParseException {
+    public void initializeContract(
+            LocalDate contractDate,
+            double contractValue,
+            int monthlyPaymentDate,
+            int monthlyDueDate,
+            LocalDate contractExpirationDate,
+            int apartmentNumber,
+            Status status,
+            CondominiumDTO condominium,
+            LesseeDTO lessee) throws ParseException {
+        ContractDTO contractDTO = new ContractDTO(simpleDateFormat.parse(contractDate.toString()),
+                contractValue,
+                monthlyPaymentDate,
+                monthlyDueDate,
+                simpleDateFormat.parse(contractExpirationDate.toString()),
+                apartmentNumber,
+                new StatusDTO(status),
+                condominium,
+                lessee);
+        contractService.save(contractDTO);
+    }
+
+    public void initializeDebt(double value, Status status, LesseeDTO lesseeDTO, LocalDate openDate) throws ParseException {
         // Prazo de validade
-        int days = getDueDate(1, 7, today);
-        DebtDTO debtDTO = new DebtDTO(simpleDateFormat.parse(today.plusDays(days).toString()),
+        int days = getDueDate(1, 7, openDate);
+        DebtDTO debtDTO = new DebtDTO(simpleDateFormat.parse(openDate.plusDays(days).toString()),
                 value,
                 new StatusDTO().toDTO(status),
                 null,

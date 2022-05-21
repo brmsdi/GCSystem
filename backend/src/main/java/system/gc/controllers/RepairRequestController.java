@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/repair-requests")
 @Slf4j
-public class RepairRequestController {
+public class RepairRequestController implements ControllerPermission {
 
     @Autowired
     private RepairRequestService repairRequestService;

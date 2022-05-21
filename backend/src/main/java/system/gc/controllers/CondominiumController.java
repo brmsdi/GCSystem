@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/condominiums")
 @Slf4j
-public class CondominiumController {
+public class CondominiumController implements ControllerPermission {
 
     @Autowired
     private CondominiumService condominiumService;

@@ -27,11 +27,11 @@ h1 {
 }
 
 span + span {
-  padding-left: .4rem;
+  padding-left: 0.4rem;
 }
 
 label {
-  padding-bottom: .1900rem;
+  padding-bottom: 0.19rem;
   border: none;
   font-weight: 600;
   letter-spacing: 0.01rem;
@@ -42,8 +42,7 @@ input,
 select {
   border-radius: 0.25rem;
   width: 100%;
-  //padding: 0.675rem 0.75rem;
-  padding: 0.600rem 0.75rem;
+  padding: 0.6rem 0.75rem;
   font-size: 1rem;
   border: 1px solid #ced4da;
   background-color: #fff;
@@ -66,10 +65,9 @@ a {
   text-decoration: none;
 }
 
-  // RESPONSIVE
+// RESPONSIVE
 @media screen and (min-width: 20em) {
   // 320px
-
   header {
     position: fixed;
     display: flex;
@@ -101,7 +99,7 @@ a {
         font-size: 1.3rem;
         height: 4rem;
         width: 100%;
-        color: #DCDCDC;
+        color: #dcdcdc;
         .text,
         .icon {
           display: none;
@@ -142,7 +140,7 @@ a {
       color: $--color-v3;
     } // end menu
     .menu-title {
-      margin:  .5rem 1rem;
+      margin: 0.5rem 1rem;
       .menu-icon {
         font-size: 1em;
         //margin: 0 1rem;
@@ -154,7 +152,7 @@ a {
     .sub-menu {
       display: flex;
       width: 100%;
-     // margin: 0 1rem;
+      // margin: 0 1rem;
       font-size: 1rem;
       position: relative;
       a {
@@ -178,35 +176,35 @@ a {
     } // end sub-menu.active
 
     .aside-info-user {
-        display: none;
-        width: 100%;
-        color: #DCDCDC;
-      }
+      display: none;
+      width: 100%;
+      color: #dcdcdc;
+    }
 
-      .account-info {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        font-size: 1rem;
-        font-weight: 500;
-        .account-info-user {
-          width: 96%;
-          text-align: center;
-          white-space: nowrap;
-          .account-info-user-icon {
-            font-size: 1.9em;
-          }
-          .account-info-role {
-            font-style: italic;
-          }
-        } // end account-info-user
-        .account-info-options {
-          width: 96%;
-          text-align: center;
-          font-size: 2em;
-          margin: 0.5rem;
+    .account-info {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      font-size: 1rem;
+      font-weight: 500;
+      .account-info-user {
+        width: 96%;
+        text-align: center;
+        white-space: nowrap;
+        .account-info-user-icon {
+          font-size: 1.9em;
         }
-      } // end account-info
+        .account-info-role {
+          font-style: italic;
+        }
+      } // end account-info-user
+      .account-info-options {
+        width: 96%;
+        text-align: center;
+        font-size: 2em;
+        margin: 0.5rem;
+      }
+    } // end account-info
   } // end header
 
   header.open {
@@ -240,10 +238,11 @@ a {
 
   .content-main {
     position: absolute;
+    height: 100vh;
     width: 100%;
     padding: 0.6rem;
-    transition-property: left;
-    transition-duration: 100ms;
+    //transition-property: left;
+    //transition-duration: 500ms;
   }
 
   .home-header {
@@ -254,6 +253,44 @@ a {
     h1 {
       font-size: 1.5rem;
       padding: 0 1rem;
+    }
+  }
+
+  .home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    height: 75vh;
+
+    .icon-condominium {
+      margin: 0.5rem;
+      img {
+        height: 6.5rem;
+        width: 6.5rem;
+      }
+    }
+
+    .text-title-gc {
+      letter-spacing: 0.02rem;
+      font-weight: 500;
+    }
+  }
+
+  .footer-home {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    //background-color: $--color-v10;
+    height: 20vh;
+    // color: $--color-v3;
+    color: $--color-v10;
+    font-weight: 500;
+    font-size: 0.85rem;
+    p {
+      margin: 0.2rem 0;
     }
   }
 
@@ -318,9 +355,12 @@ a {
 
 @media screen and (min-width: 31.25em) {
   //500
-
   header {
+    transition-property: width;
+    transition-duration: 0ms;
     aside {
+      transition-property: width;
+      transition-duration: 0ms;
       .btn-co {
         height: 3.1rem;
         width: 3.1rem;
@@ -376,12 +416,14 @@ a {
   //800px
   header {
     height: 100vh;
+    transition-property: width;
+    transition-duration: 500ms;
     aside {
-      height: 100%;
+      height: 100vh;
       width: calc(3.5vh + 3.5vw);
-      justify-content: flex-start;
       transition-property: width;
       transition-duration: 500ms;
+      justify-content: flex-start;
       .aside-header {
         margin-top: 0.2rem;
         width: 90%;
@@ -467,7 +509,6 @@ a {
         transition-duration: 500ms;
       } // end tooltip-submenu
     } // end sub-menu
-
   } // End header
 
   header.open {

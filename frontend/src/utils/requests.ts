@@ -1,5 +1,6 @@
 //export const REQUEST_BASE_URL = process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:8080';
 export const REQUEST_BASE_URL = 'http://192.168.15.2:8080';
+export const PERMISSION_URL = 'permission'
 
 /** EMPLOYEES REQUEST */
 export const REQUEST_LOGIN_EMPLOYEES = process.env.REACT_APP_REQUEST_LOGIN_EMPLOYEES ?? ''
