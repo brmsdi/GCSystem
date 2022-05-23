@@ -3,30 +3,33 @@ import { DropDownMenuItem } from "types/dropdown";
 
 interface IProps {
   ulID: string;
-  itemsMenu: DropDownMenuItem[]
+  itemsMenu: DropDownMenuItem[];
 }
 
 const ButtonDropDown = (props: IProps) => {
-
   function openAndCloseDrop() {
-    const element = document.getElementById(props.ulID)
+    const element = document.getElementById(props.ulID);
     if (element) {
-      element.classList.toggle('show')
-      document.getElementById('menu-drop-' + props.ulID)?.classList.toggle('show')
-      if (element.classList.contains('show')) {
-        document.getElementById('menu-drop-open-and-close-' + props.ulID)?.classList.toggle('open')
+      element.classList.toggle("show");
+      document
+        .getElementById("menu-drop-" + props.ulID)
+        ?.classList.toggle("show");
+      if (element.classList.contains("show")) {
+        document
+          .getElementById("menu-drop-open-and-close-" + props.ulID)
+          ?.classList.toggle("open");
       } else {
-        document.getElementById('menu-drop-open-and-close-' + props.ulID)?.classList.remove('open')
+        document
+          .getElementById("menu-drop-open-and-close-" + props.ulID)
+          ?.classList.remove("open");
       }
     }
   }
 
-  function clickItemList(action: Function)
-  {
+  function clickItemList(action: Function) {
     openAndCloseDrop();
     action();
   }
-
 
   return (
     <>
@@ -61,6 +64,6 @@ const ButtonDropDown = (props: IProps) => {
       </div>
     </>
   );
-}
+};
 
 export default ButtonDropDown;

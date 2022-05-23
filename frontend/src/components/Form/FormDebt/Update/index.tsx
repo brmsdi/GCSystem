@@ -8,23 +8,21 @@ import { Debt } from "types/debt";
 import FormDebt from "..";
 
 const FormUpdateDebt = () => {
-  const dispatch = useDispatch()
-  const selectedDebt: Debt = useSelector(selectStateSelectedDebt)
+  const dispatch = useDispatch();
+  const selectedDebt: Debt = useSelector(selectStateSelectedDebt);
   async function submit(form: Debt) {
     try {
       const result = await updateDebt(form);
-      await Swal.fire('Ebaa!', result, 'success')
-      dispatch(updateDebtTableAction())
-      return true
+      await Swal.fire("Ebaa!", result, "success");
+      dispatch(updateDebtTableAction());
+      return true;
     } catch (error: any) {
-      const errors = error.response.data.errors
+      const errors = error.response.data.errors;
       if (!error.response) {
         Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
-      } 
-      else if (errors) {
-        Swal.fire('oops!', errors[0].message, 'error')
-      } 
-      else {
+      } else if (errors) {
+        Swal.fire("oops!", errors[0].message, "error");
+      } else {
         Swal.fire("Oops!", "" + error.response.data, "error");
       }
     }
@@ -35,8 +33,9 @@ const FormUpdateDebt = () => {
       stateForm={StateFormEnum.EDITING}
       submit={submit}
       isActivedFieldPassword={false}
-      isNewRegisterForm={false} />
-  )
-}
+      isNewRegisterForm={false}
+    />
+  );
+};
 
 export default FormUpdateDebt;

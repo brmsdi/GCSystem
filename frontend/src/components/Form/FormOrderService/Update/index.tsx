@@ -8,24 +8,24 @@ import { OrderService } from "types/order-service";
 import FormTemplate from "..";
 
 const FormUpdateOrderService = () => {
-  const dispatch = useDispatch()
-  const selectedOrderService: OrderService = useSelector(selectStateSelectedOrderService)
-  
+  const dispatch = useDispatch();
+  const selectedOrderService: OrderService = useSelector(
+    selectStateSelectedOrderService
+  );
+
   async function submit(form: OrderService) {
     try {
       const result = await updateOrderService(form);
-      await Swal.fire('Ebaa!', result, 'success')
-      dispatch(updateOrderServiceTableAction())
-      return true
+      await Swal.fire("Ebaa!", result, "success");
+      dispatch(updateOrderServiceTableAction());
+      return true;
     } catch (error: any) {
-      const errors = error.response.data.errors
+      const errors = error.response.data.errors;
       if (!error.response) {
         Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
-      } 
-      else if (errors) {
-        Swal.fire('oops!', errors[0].message, 'error')
-      } 
-      else {
+      } else if (errors) {
+        Swal.fire("oops!", errors[0].message, "error");
+      } else {
         Swal.fire("Oops!", "" + error.response.data, "error");
       }
     }
@@ -35,8 +35,9 @@ const FormUpdateOrderService = () => {
       initForm={selectedOrderService}
       stateForm={StateFormEnum.EDITING}
       submit={submit}
-      isNewRegisterForm={false} />
-  )
-}
+      isNewRegisterForm={false}
+    />
+  );
+};
 
 export default FormUpdateOrderService;

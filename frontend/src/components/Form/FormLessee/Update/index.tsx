@@ -8,23 +8,21 @@ import { Lessee } from "types/lessee";
 import FormTemplate from "..";
 
 const FormUpdateLessee = () => {
-  const dispatch = useDispatch()
-  const selectedLessee: Lessee = useSelector(selectStateSelectedLessee)
+  const dispatch = useDispatch();
+  const selectedLessee: Lessee = useSelector(selectStateSelectedLessee);
   async function submit(form: Lessee) {
     try {
       const result = await updateLessee(form);
-      await Swal.fire('Ebaa!', result, 'success')
-      dispatch(updateLesseeTableAction())
-      return true
+      await Swal.fire("Ebaa!", result, "success");
+      dispatch(updateLesseeTableAction());
+      return true;
     } catch (error: any) {
-      const errors = error.response.data.errors
+      const errors = error.response.data.errors;
       if (!error.response) {
         Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
-      } 
-      else if (errors) {
-        Swal.fire('oops!', errors[0].message, 'error')
-      } 
-      else {
+      } else if (errors) {
+        Swal.fire("oops!", errors[0].message, "error");
+      } else {
         Swal.fire("Oops!", "" + error.response.data, "error");
       }
     }
@@ -35,8 +33,9 @@ const FormUpdateLessee = () => {
       stateForm={StateFormEnum.EDITING}
       submit={submit}
       isActivedFieldPassword={false}
-      isNewRegisterForm={false} />
-  )
-}
+      isNewRegisterForm={false}
+    />
+  );
+};
 
 export default FormUpdateLessee;

@@ -1,58 +1,53 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { paginationCondominiumTableAction } from "store/Condominiums/condiminiums.actions";
-import { PaginationTableAction, StatePaginationEnum } from "types/pagination";
+import { selectCurrentPaginationTableCondominiums } from "store/Condominiums/condiminiums.selectors";
+import { PaginationTableAction } from "types/pagination";
 import SearchItem from "../search-item";
 
 const SearchCondominium = () => {
-  const dispatch = useDispatch()
-  const[name, setName] = useState('')
-  const[paginationState, setPaginationState] = useState<PaginationTableAction>({
-    type: StatePaginationEnum.SET_CURRENT_PAGINATION_TABLE_CONDOMINIUMS,
-    currentPage: 1,
-    search: undefined
-  })
+  const dispatch = useDispatch();
+  const currentPaginationTable: PaginationTableAction = useSelector(
+    selectCurrentPaginationTableCondominiums
+  );
+
+  const [paginationState, setPaginationState] = useState<PaginationTableAction>(
+    { ...currentPaginationTable }
+  );
+
+  const [name, setName] = useState(
+    paginationState.search ? paginationState.search : ""
+  );
 
   async function changeSearchValue(name: string) {
-    await setName(name)
+    await setName(name);
     if (name.length > 0) {
       setPaginationState({
         ...paginationState,
-        search: name
-      })
-
+        search: name,
+      });
     } else {
-      dispatch(paginationCondominiumTableAction({
-        ...paginationState,
-        search: undefined
-      }))             
+      dispatch(
+        paginationCondominiumTableAction({
+          ...paginationState,
+          search: undefined,
+        })
+      );
     }
   }
-  
+
   function submit() {
     dispatch(paginationCondominiumTableAction(paginationState));
   }
   return (
-    <SearchItem typeValue="text" placeHolder="Buscar condomínio" value={name} submit={submit} changeSearchValue={changeSearchValue} />
-    /*
-    <form onSubmit={submit}>
-      <div className="div-search">
-        <input
-          type="text"
-          id="inputName"
-          placeholder="Nome"
-          name="name"
-          value={name}
-          onChange={(e) => changeSearchValue(e.target.value)}
-          required
-        />
-        <button type="submit" className="btn btn-secondary">
-          <i className="bi bi-search"></i>
-        </button>
-      </div>
-    </form>
-    */
-  )
-}
+    <SearchItem
+      typeValue="text"
+      placeHolder="Buscar condomínio"
+      value={name}
+      submit={submit}
+      changeSearchValue={changeSearchValue}
+    />
+  );
+};
 
 export default SearchCondominium;

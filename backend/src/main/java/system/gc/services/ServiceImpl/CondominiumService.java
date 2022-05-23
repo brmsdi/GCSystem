@@ -32,11 +32,13 @@ public class CondominiumService {
     @Transactional
     public CondominiumDTO save(CondominiumDTO condominiumDTO) {
         log.info("Salvando novo registro de condomínio no banco de dados: " + condominiumDTO.getName());
+        /*
         Localization localization = localizationService.findByZipCode(condominiumDTO.getLocalization().getLocalization().getZipCode());
         if (localization == null) {
             localization = localizationService.save(new LocalizationDTO().toEntity(condominiumDTO.getLocalization().getLocalization()));
             condominiumDTO.getLocalization().setLocalization(new LocalizationDTO(localization));
-        }
+        } */
+        verifyLocalization(condominiumDTO);
         CondominiumDTO condominiumDTOService = new CondominiumDTO();
         Condominium registeredCondominium = condominiumRepository.save(condominiumDTOService.toEntity(condominiumDTO));
         if (registeredCondominium.getId() == null) {
@@ -63,6 +65,7 @@ public class CondominiumService {
     public void update(CondominiumDTO condominiumDTO) throws EntityNotFoundException {
         Optional<Condominium> condominium = condominiumRepository.findById(condominiumDTO.getId());
         condominium.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        verifyLocalization(condominiumDTO);
         condominiumRepository.save(new CondominiumDTO().toEntity(condominiumDTO));
     }
 
@@ -85,6 +88,15 @@ public class CondominiumService {
         condominium.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         condominiumRepository.delete(condominium.get());
         log.info("Registro deletado com sucesso");
+    }
+
+    public void verifyLocalization(CondominiumDTO condominiumDTO)
+    {
+        Localization localization = localizationService.findByZipCode(condominiumDTO.getLocalization().getLocalization().getZipCode());
+        if (localization == null) {
+            localization = localizationService.save(new LocalizationDTO().toEntity(condominiumDTO.getLocalization().getLocalization()));
+            condominiumDTO.getLocalization().setLocalization(new LocalizationDTO(localization));
+        }
     }
 
 }

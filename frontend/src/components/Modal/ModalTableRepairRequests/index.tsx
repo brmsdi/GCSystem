@@ -1,50 +1,76 @@
 import Alert from "components/messages";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { findAllPerOrderServiceAndStatus, findAllToModalOrderService } from "services/repair-request";
+import {
+  findAllPerOrderServiceAndStatus,
+  findAllToModalOrderService,
+} from "services/repair-request";
 import { selectStateSelectedOrderService } from "store/OrderServices/order-services.selector";
-import { changeStateModalOrderServiceRepairRequests, selectedRepairRequestsOrderServiceAction } from "store/RepairRequests/repair-requests.actions";
+import {
+  changeStateModalOrderServiceRepairRequests,
+  selectedRepairRequestsOrderServiceAction,
+} from "store/RepairRequests/repair-requests.actions";
 import { selectSelectedRepairRequestsOrderService } from "store/RepairRequests/repair-requests.selector";
 import { OrderService } from "types/order-service";
 import { RepairRequest } from "types/repair-request";
 import { formatDateForView } from "utils/textFormt";
 
 const ModalTableRepairRequests = () => {
-  const dispatch = useDispatch()
-  const selectedRepairRequestsOld : RepairRequest[] = useSelector(selectSelectedRepairRequestsOrderService)
-  const orderServiceSelected: OrderService = useSelector(selectStateSelectedOrderService);
-  const [listRepairRequests, setListRepairRequests] = useState<RepairRequest[]>([]);
-  const [selectedRepairRequests, setSelectedRepairRequests] = useState<RepairRequest[]>([...selectedRepairRequestsOld]);
-  
+  const dispatch = useDispatch();
+  const selectedRepairRequestsOld: RepairRequest[] = useSelector(
+    selectSelectedRepairRequestsOrderService
+  );
+  const orderServiceSelected: OrderService = useSelector(
+    selectStateSelectedOrderService
+  );
+  const [listRepairRequests, setListRepairRequests] = useState<RepairRequest[]>(
+    []
+  );
+  const [selectedRepairRequests, setSelectedRepairRequests] = useState<
+    RepairRequest[]
+  >([...selectedRepairRequestsOld]);
+
   useEffect(() => {
-    if (orderServiceSelected.id)
-    {
-      findAllPerOrderServiceAndStatus(orderServiceSelected.id).then(response => setListRepairRequests(response.data))
+    if (orderServiceSelected.id) {
+      findAllPerOrderServiceAndStatus(orderServiceSelected.id).then(
+        (response) => setListRepairRequests(response.data)
+      );
     } else {
-      findAllToModalOrderService().then(response => setListRepairRequests(response.data))
+      findAllToModalOrderService().then((response) =>
+        setListRepairRequests(response.data)
+      );
     }
-  }, [orderServiceSelected])
+  }, [orderServiceSelected]);
 
   function addSelectedRepairRequests(_repairRequests: RepairRequest) {
     if (_repairRequests.id) {
-      let currentSelectedRepairRequests : RepairRequest[] = selectedRepairRequests;
-      currentSelectedRepairRequests.unshift(_repairRequests)
-      setSelectedRepairRequests([...currentSelectedRepairRequests])
+      let currentSelectedRepairRequests: RepairRequest[] =
+        selectedRepairRequests;
+      currentSelectedRepairRequests.unshift(_repairRequests);
+      setSelectedRepairRequests([...currentSelectedRepairRequests]);
     }
   }
 
-  function removeSelectedRepairRequest(_currentSelectedRepairRequests: RepairRequest[], _index: number) {
-    _currentSelectedRepairRequests.splice(_index, 1)
-    setSelectedRepairRequests([..._currentSelectedRepairRequests])
+  function removeSelectedRepairRequest(
+    _currentSelectedRepairRequests: RepairRequest[],
+    _index: number
+  ) {
+    _currentSelectedRepairRequests.splice(_index, 1);
+    setSelectedRepairRequests([..._currentSelectedRepairRequests]);
   }
 
   function changeSelect(_item: RepairRequest) {
     if (_item.id) {
       let isRemove = false;
       let indexPosition = 0;
-      let currentSelectedRepairRequests: RepairRequest[] = selectedRepairRequests;
-      for (let index = 0; index < currentSelectedRepairRequests.length; index++) {
-        let itemIndex = currentSelectedRepairRequests.at(index)
+      let currentSelectedRepairRequests: RepairRequest[] =
+        selectedRepairRequests;
+      for (
+        let index = 0;
+        index < currentSelectedRepairRequests.length;
+        index++
+      ) {
+        let itemIndex = currentSelectedRepairRequests.at(index);
         if (itemIndex && _item.id === itemIndex.id) {
           isRemove = true;
           indexPosition = index;
@@ -53,9 +79,12 @@ const ModalTableRepairRequests = () => {
       }
 
       if (isRemove === true) {
-        removeSelectedRepairRequest(currentSelectedRepairRequests, indexPosition)
+        removeSelectedRepairRequest(
+          currentSelectedRepairRequests,
+          indexPosition
+        );
       } else {
-        addSelectedRepairRequests(_item)
+        addSelectedRepairRequests(_item);
       }
     }
   }
@@ -63,25 +92,27 @@ const ModalTableRepairRequests = () => {
   function isSelected(_repairRequests: RepairRequest) {
     let isSelected = false;
     for (let index = 0; index < selectedRepairRequests.length; index++) {
-      let itemIndex = selectedRepairRequests.at(index)
+      let itemIndex = selectedRepairRequests.at(index);
       if (_repairRequests.id === itemIndex?.id) {
         isSelected = true;
-        break
+        break;
       }
     }
-    return isSelected
+    return isSelected;
   }
 
   function save() {
-    dispatch(selectedRepairRequestsOrderServiceAction([...selectedRepairRequests]))
-    dispatch(changeStateModalOrderServiceRepairRequests({isOpen: false}))
+    dispatch(
+      selectedRepairRequestsOrderServiceAction([...selectedRepairRequests])
+    );
+    dispatch(changeStateModalOrderServiceRepairRequests({ isOpen: false }));
   }
 
   function cancel() {
     //dispatch(selectedRepairRequestsOrderServiceAction(selectedRepairRequestsOld))
-    dispatch(changeStateModalOrderServiceRepairRequests({isOpen: false}))
+    dispatch(changeStateModalOrderServiceRepairRequests({ isOpen: false }));
   }
-  
+
   return (
     <div className="table-responsive">
       {listRepairRequests.length === 0 ? (
@@ -121,7 +152,7 @@ const ModalTableRepairRequests = () => {
       </section>
     </div> // end table-responsive
   );
-}
+};
 
 interface IPropsItemTable {
   item: RepairRequest;
@@ -131,7 +162,7 @@ interface IPropsItemTable {
 
 const ItemTable = (props: IPropsItemTable) => {
   let item = props.item;
-  console.log(props.isSelected)
+  console.log(props.isSelected);
   return (
     <tr>
       <th className="thead-min">ID</th>
@@ -154,8 +185,7 @@ const ItemTable = (props: IPropsItemTable) => {
         </div>
       </td>
     </tr>
-    
   );
-}
+};
 
 export default ModalTableRepairRequests;

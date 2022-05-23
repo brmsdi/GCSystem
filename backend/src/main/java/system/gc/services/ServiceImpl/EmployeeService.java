@@ -13,6 +13,7 @@ import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.configuration.exceptions.DuplicatedFieldException;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.RepairRequestDTO;
+import system.gc.dtos.StatusDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.LogChangePassword;
 import system.gc.entities.RepairRequest;
@@ -55,6 +56,8 @@ public class EmployeeService {
         newEmployeeDTO.setPassword(new BCryptPasswordEncoder().encode(newEmployeeDTO.getPassword()));
         cpfIsAvailableSave(newEmployeeDTO);
         emailIsAvailableSave(newEmployeeDTO);
+        Status statusActive = statusService.findByName("Ativo");
+        newEmployeeDTO.setStatus(new StatusDTO().toDTO(statusActive));
         Employee registeredEmployee = employeeRepository.save(employeeDTO.toEntity(newEmployeeDTO));
         if (registeredEmployee.getId() == null) {
             log.warn("Erro ao salvar!");

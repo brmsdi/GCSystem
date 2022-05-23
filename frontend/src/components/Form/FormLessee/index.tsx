@@ -3,38 +3,39 @@ import { StateFormEnum } from "types/action";
 import { Lessee } from "types/lessee";
 import { formatDate } from "utils/textFormt";
 
-interface IProps { 
-  initForm: Lessee, 
-  stateForm: StateFormEnum, 
-  submit: Function, 
-  isActivedFieldPassword: boolean, 
-  isNewRegisterForm: boolean}
+interface IProps {
+  initForm: Lessee;
+  stateForm: StateFormEnum;
+  submit: Function;
+  isActivedFieldPassword: boolean;
+  isNewRegisterForm: boolean;
+}
 
 const FormTemplate = (props: IProps) => {
-  const [form, setForm] = useState<Lessee>(props.initForm)
+  const [form, setForm] = useState<Lessee>(props.initForm);
 
   function changeInput(value: any) {
-    setForm(form => ({ ...form, ...value }))
+    setForm((form) => ({ ...form, ...value }));
   }
 
   useEffect(() => {
-    setForm(form => ({ ...form, ...props.initForm }))
-  }, [props.initForm])
+    setForm((form) => ({ ...form, ...props.initForm }));
+  }, [props.initForm]);
 
   async function submit(event: any) {
     event.preventDefault();
-    const result = await props.submit(form) 
+    const result = await props.submit(form);
     if (result === true) {
       if (props.isNewRegisterForm === true) {
-        setForm({ ...props.initForm })
+        setForm({ ...props.initForm });
       } else {
-        setForm({ ...form })
+        setForm({ ...form });
       }
     }
   }
 
   async function clearField() {
-    setForm({...props.initForm})
+    setForm({ ...props.initForm });
   }
   return (
     <form onSubmit={submit}>
@@ -81,7 +82,11 @@ const FormTemplate = (props: IProps) => {
             type="date"
             id="inputBirth"
             name="birthDate"
-            value={form.birthDate.length > 0 ? formatDate(form.birthDate) : form.birthDate}
+            value={
+              form.birthDate.length > 0
+                ? formatDate(form.birthDate)
+                : form.birthDate
+            }
             onChange={(e) => changeInput({ birthDate: e.target.value })}
             required
           />
@@ -101,18 +106,18 @@ const FormTemplate = (props: IProps) => {
           />
         </div>
         <div className="form-container l2">
-            <label htmlFor="inputContactNumber">Nº contato</label>
-            <input
-              type="number"
-              id="inputContactNumber"
-              placeholder="Número"
-              name="contactNumber"
-              value={form.contactNumber}
-              onChange={(e) => changeInput({ contactNumber: e.target.value })}
-              required
-              minLength={11}
-            />
-          </div>
+          <label htmlFor="inputContactNumber">Nº contato</label>
+          <input
+            type="number"
+            id="inputContactNumber"
+            placeholder="Número"
+            name="contactNumber"
+            value={form.contactNumber}
+            onChange={(e) => changeInput({ contactNumber: e.target.value })}
+            required
+            minLength={11}
+          />
+        </div>
         {props.isActivedFieldPassword === true ? (
           <div className="form-container l4">
             <label htmlFor="inputPassword">Senha de acesso</label>
@@ -127,24 +132,24 @@ const FormTemplate = (props: IProps) => {
               minLength={8}
             />
           </div>
-        )
-          :
-          (null)
-        }
+        ) : null}
       </div>
       <div className="row-form-1">
         <div className="form-container l4 btns">
           <button type="submit" className="btn btn-success">
             Salvar
           </button>
-          <button type="button" className="btn btn-secondary"
-          onClick={clearField}>
-             { props.isActivedFieldPassword === true ? 'Limpar' : 'Restaurar' }           
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={clearField}
+          >
+            {props.isActivedFieldPassword === true ? "Limpar" : "Restaurar"}
           </button>
         </div>
       </div>
     </form>
-  )
-}
+  );
+};
 
 export default FormTemplate;

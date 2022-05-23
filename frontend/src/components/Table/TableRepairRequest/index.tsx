@@ -45,8 +45,7 @@ const TableRepairRequest= () => {
         if (!error.response) {
           Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
         } else {
-          let message = error.response.data.errors[0].message;
-          Swal.fire("Oops!", "" + message, "error");
+          Swal.fire("Oops!", "Erro desconhecido", "error");          
         }
       }
     }

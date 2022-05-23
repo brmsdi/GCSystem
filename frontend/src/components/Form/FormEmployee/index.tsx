@@ -64,21 +64,7 @@ const FormTemplate = (props: IProps) => {
   async function clearForm() {
     setForm({...props.initForm})
   }
-
-  /*
-  function toogleClass() {
-    let form = document.querySelector(".content-form");
-    if (form != null) {
-      form.classList.toggle("active");
-      if (form.classList.contains("active")) {
-        dispatch(setStateFormAction(props.stateForm))
-      } else {
-        dispatch(setStateFormAction(StateFormEnum.NOACTION));
-        dispatch(removeSelectedEmployeeTableAction())
-      }
-
-    }
-  } */
+  
   return (
     <form onSubmit={submit}>
       <div className="row-form-1">

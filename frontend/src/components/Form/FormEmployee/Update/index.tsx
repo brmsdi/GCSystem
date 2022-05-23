@@ -8,23 +8,21 @@ import { Employee } from "types/employee";
 import FormTemplate from "..";
 
 const FormUpdateEmployee = () => {
-  const dispatch = useDispatch()
-  const selectedEmployee: Employee = useSelector(selectStateSelectedEmployee)
+  const dispatch = useDispatch();
+  const selectedEmployee: Employee = useSelector(selectStateSelectedEmployee);
   async function submit(form: Employee) {
     try {
       const result = await updateEmployee(form);
-      await Swal.fire('Ebaa!', result, 'success')
-      dispatch(updateEmployeeTableAction())
-      return true
+      await Swal.fire("Ebaa!", result, "success");
+      dispatch(updateEmployeeTableAction());
+      return true;
     } catch (error: any) {
-      const errors = error.response.data.errors
+      const errors = error.response.data.errors;
       if (!error.response) {
         Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
-      } 
-      else if (errors) {
-        Swal.fire('oops!', errors[0].message, 'error')
-      } 
-      else {
+      } else if (errors) {
+        Swal.fire("oops!", errors[0].message, "error");
+      } else {
         Swal.fire("Oops!", "" + error.response.data, "error");
       }
     }
@@ -35,8 +33,9 @@ const FormUpdateEmployee = () => {
       stateForm={StateFormEnum.EDITING}
       submit={submit}
       isActivedFieldPassword={false}
-      isNewEmployeeForm={false} />
-  )
-}
+      isNewEmployeeForm={false}
+    />
+  );
+};
 
 export default FormUpdateEmployee;

@@ -11,7 +11,7 @@ interface IProps {
 
 const Aside = (props: IProps) => {
   function clickColapseMenu() {
-    document.getElementById('header-aside')?.classList.toggle('open');
+    document.getElementById("header-aside")?.classList.toggle("open");
   }
   return (
     <aside>
@@ -19,11 +19,9 @@ const Aside = (props: IProps) => {
         <span className="icon animate-right">
           <i className="bi bi-building"></i>
         </span>
-        <span className="text animate-right">SYSTEM</span>
+        <span className="text animate-right">GC</span>
         <div className="btn-co">
-          <button 
-            id="btn-close-open-aside"
-            onClick={() => clickColapseMenu()}>
+          <button id="btn-close-open-aside" onClick={() => clickColapseMenu()}>
             <i className="bi bi-list"></i>
           </button>
         </div>
@@ -42,15 +40,17 @@ const Aside = (props: IProps) => {
               key={90}
               id={TEXT_MENU_ITEM_ID_HOME}
               idSelectedMenu={props.idSelectedMenu}
-              to={HOME_URL} />
-          ]} />
+              to={HOME_URL}
+            />,
+          ]}
+        />
         {props.childrean}
       </div>
       <div className="aside-info-user">
         <AccountInformation />
       </div>
     </aside>
-  )
-}
+  );
+};
 
 export default Aside;

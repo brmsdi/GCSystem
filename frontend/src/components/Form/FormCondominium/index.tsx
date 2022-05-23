@@ -23,7 +23,8 @@ const FormTemplate = (props: IProps) => {
   const [localization, setLocalization] = useState<Localization>(
     props.initForm.localization.localization
   );
-  const [localizationNumber, setLocalizationNumber] = useState<LocalizationCondominium>(props.initForm.localization);
+  const [localizationNumber, setLocalizationNumber] =
+    useState<LocalizationCondominium>(props.initForm.localization);
   const [zipCode, setZipCode] = useState("");
   const [zipCodeProcessing, setZipCodeProcessing] = useState(false);
   function changeInput(value: any) {
@@ -74,15 +75,17 @@ const FormTemplate = (props: IProps) => {
   }, [props.initForm]);
 
   useEffect(() => {
-    getAllStatusFromViewCondominium().then(response => setStatus(response.data));
+    getAllStatusFromViewCondominium().then((response) =>
+      setStatus(response.data)
+    );
   }, []);
 
   async function submit(event: any) {
     event.preventDefault();
     if (!isSelected(form.status)) {
-      Swal.fire('Oops!', 'Selecione o campo status', 'error')
-      return
-    } 
+      Swal.fire("Oops!", "Selecione o campo status", "error");
+      return;
+    }
     setLocalizationNumber({
       ...localizationNumber,
       localization: localization,
@@ -158,7 +161,7 @@ const FormTemplate = (props: IProps) => {
   }
 
   function clearFieldZipCode() {
-    setZipCode('')
+    setZipCode("");
   }
 
   return (

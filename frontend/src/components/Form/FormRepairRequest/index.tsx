@@ -13,7 +13,12 @@ import { RepairRequest } from "types/repair-request";
 import { Status } from "types/status";
 import { TypeProblem } from "types/type-problem";
 import { formatDate } from "utils/textFormt";
-import { isValidFieldCPF, isValidFieldNumber, isValidFieldText, isSelected } from "utils/verifications";
+import {
+  isValidFieldCPF,
+  isValidFieldNumber,
+  isValidFieldText,
+  isSelected,
+} from "utils/verifications";
 
 interface IProps {
   initForm: RepairRequest;
@@ -26,14 +31,16 @@ const FormTemplate = (props: IProps) => {
   const [form, setForm] = useState<RepairRequest>(props.initForm);
   const [status, setStatus] = useState<Status[]>([]);
   const [typeProblems, setTypeProblems] = useState<TypeProblem[]>([]);
-  const [lessee, setLessee] = useState<Lessee>(props.initForm.lessee)
+  const [lessee, setLessee] = useState<Lessee>(props.initForm.lessee);
   const [condominiums, setCondominiums] = useState<Condominium[]>([]);
   const [item, setItem] = useState<Item>({
-    description: '',
+    description: "",
     quantity: 0,
-    value: 0
+    value: 0,
   });
-  const [addedItems, setAddedItems] = useState<Item[]>(props.initForm.items ? props.initForm.items : []);
+  const [addedItems, setAddedItems] = useState<Item[]>(
+    props.initForm.items ? props.initForm.items : []
+  );
 
   function changeInput(value: any) {
     setForm((form) => ({ ...form, ...value }));
@@ -53,14 +60,14 @@ const FormTemplate = (props: IProps) => {
     for (var index = 0; index < typeProblems.length; index++) {
       let typeProblemSelected = typeProblems.at(index);
       if (typeProblemSelected?.id === value) {
-        setForm({ ...form, typeProblem: typeProblemSelected })
-        break
+        setForm({ ...form, typeProblem: typeProblemSelected });
+        break;
       }
     }
   }
 
   function changeInputLessee(value: any) {
-    setLessee(lessee => ({ ...lessee, ...value }));
+    setLessee((lessee) => ({ ...lessee, ...value }));
   }
 
   function changeCondominium(value: number) {
@@ -74,91 +81,101 @@ const FormTemplate = (props: IProps) => {
   }
 
   function changeInputItem(value: any) {
-    setItem(item => ({...item, ...value}))
+    setItem((item) => ({ ...item, ...value }));
   }
 
-  function repairRequestIsProgress()
-  {
+  function repairRequestIsProgress() {
     return props.initForm.status.name.toLocaleUpperCase() !== "EM ANDAMENTO";
   }
 
   useEffect(() => {
     setForm((form) => ({ ...form, ...props.initForm }));
-    setLessee(props.initForm.lessee)
-    setAddedItems(props.initForm.items ? props.initForm.items : [])
-    listAllCondominiums().then(response => setCondominiums(response.data));
-    getAllTypeProblem().then(response => setTypeProblems(response.data))
-    getAllStatusFromViewRepairRequest().then(response => setStatus(response.data));
+    setLessee(props.initForm.lessee);
+    setAddedItems(props.initForm.items ? props.initForm.items : []);
+    listAllCondominiums().then((response) => setCondominiums(response.data));
+    getAllTypeProblem().then((response) => setTypeProblems(response.data));
+    getAllStatusFromViewRepairRequest().then((response) =>
+      setStatus(response.data)
+    );
   }, [props.initForm]);
 
   useEffect(() => {
-    checkLegend('fieldset-lessee', 
-    isValidFieldNumber(lessee.id))
+    checkLegend("fieldset-lessee", isValidFieldNumber(lessee.id));
 
-    checkLegend('fieldset-condominium', 
-    isValidFieldNumber(form.condominium.id) 
-    && isValidFieldText(form.apartmentNumber))
-    
-    checkLegend('fieldset-repair-informations', isValidFieldText(form.problemDescription)
-    && isValidFieldText(form.date) 
-    && isValidFieldNumber(form.typeProblem.id)
-    && isValidFieldNumber(form.status.id))
+    checkLegend(
+      "fieldset-condominium",
+      isValidFieldNumber(form.condominium.id) &&
+        isValidFieldText(form.apartmentNumber)
+    );
 
-    checkLegend('fieldset-items', isValidFieldText(item.description) 
-    && isValidFieldNumber(item.value)
-    && isValidFieldNumber(item.quantity))
-  },[form, lessee, item])
+    checkLegend(
+      "fieldset-repair-informations",
+      isValidFieldText(form.problemDescription) &&
+        isValidFieldText(form.date) &&
+        isValidFieldNumber(form.typeProblem.id) &&
+        isValidFieldNumber(form.status.id)
+    );
 
-  async function getLesseeForCPF () {
-    if(isValidFieldCPF(lessee.cpf)) {
-      findByCPFService(lessee.cpf)
-      .then(response => {
-        if (response.data.content && response.data.content?.length > 0)
-        {
-          setLessee(response.data.content[0])
-          checkLegend("fieldset-lessee", true)
+    checkLegend(
+      "fieldset-items",
+      isValidFieldText(item.description) &&
+        isValidFieldNumber(item.value) &&
+        isValidFieldNumber(item.quantity)
+    );
+  }, [form, lessee, item]);
+
+  async function getLesseeForCPF() {
+    if (isValidFieldCPF(lessee.cpf)) {
+      findByCPFService(lessee.cpf).then((response) => {
+        if (response.data.content && response.data.content?.length > 0) {
+          setLessee(response.data.content[0]);
+          checkLegend("fieldset-lessee", true);
         } else {
-          Swal.fire('Oops!', 'Nenhum registro encontrado com o CPF: ' + lessee.cpf, 'error')
-          clearLesseeFields()
-          checkLegend("fieldset-lessee", false)
+          Swal.fire(
+            "Oops!",
+            "Nenhum registro encontrado com o CPF: " + lessee.cpf,
+            "error"
+          );
+          clearLesseeFields();
+          checkLegend("fieldset-lessee", false);
         }
-      })
+      });
     } else {
-      Swal.fire('Oops!', 'Digite um cpf valido', 'error')
-      clearLesseeFields()
-      checkLegend("fieldset-lessee", false)
+      Swal.fire("Oops!", "Digite um cpf valido", "error");
+      clearLesseeFields();
+      checkLegend("fieldset-lessee", false);
     }
   }
 
   async function submit(event: any) {
     event.preventDefault();
     if (!isSelected(form.typeProblem)) {
-      Swal.fire('Oops!', 'Selecione o campo tipo de problema', 'error')
-      return
-    } 
+      Swal.fire("Oops!", "Selecione o campo tipo de problema", "error");
+      return;
+    }
 
     if (!isSelected(form.status)) {
-      Swal.fire('Oops!', 'Selecione o campo status', 'error')
-      return
-    } 
-   
+      Swal.fire("Oops!", "Selecione o campo status", "error");
+      return;
+    }
+
     if (!isValidFieldNumber(lessee.id)) {
-      Swal.fire('Oops!', 'Busque por um solicitante', 'error')
-      return
-    } 
+      Swal.fire("Oops!", "Busque por um solicitante", "error");
+      return;
+    }
 
     if (!isSelected(form.condominium)) {
-      Swal.fire('Oops!', 'Selecione o campo condomínio', 'error')
-      return
-    } 
+      Swal.fire("Oops!", "Selecione o campo condomínio", "error");
+      return;
+    }
 
     let newForm = {
       ...form,
       lessee: lessee,
-      items: addedItems
-    }
+      items: addedItems,
+    };
 
-    setForm({...newForm})
+    setForm({ ...newForm });
     const result = await props.submit(newForm);
     if (result === true) {
       if (props.isNewRegisterForm === true) {
@@ -173,33 +190,37 @@ const FormTemplate = (props: IProps) => {
   }
 
   function addItem() {
-    if (isValidFieldText(item.description) && isValidFieldNumber(item.quantity) && isValidFieldNumber(item.value)) {
-      let currentItems : Item[]= addedItems;
-      currentItems.unshift(item)
-      setAddedItems([...addedItems])   
+    if (
+      isValidFieldText(item.description) &&
+      isValidFieldNumber(item.quantity) &&
+      isValidFieldNumber(item.value)
+    ) {
+      let currentItems: Item[] = addedItems;
+      currentItems.unshift(item);
+      setAddedItems([...addedItems]);
       clearItem();
-      return
+      return;
     }
-    Swal.fire('Oops!', "Preencha todos os campos relacionado a itens", 'error')
+    Swal.fire("Oops!", "Preencha todos os campos relacionado a itens", "error");
   }
 
   function removeItem(_item: Item) {
-      let currentItems : Item[] = addedItems;
-      for (let index = 0; index < currentItems.length; index++) {
-        let itemIndex = currentItems.at(index)
-        if (_item.id) {
-          if (itemIndex && _item.id === itemIndex.id) {
-            currentItems.splice(index, 1)
-            setAddedItems([...currentItems])
-            break
-          } 
-        } else {
-          if (itemIndex && _item.description === itemIndex.description) {
-            currentItems.splice(index, 1)
-            setAddedItems([...currentItems])
-            break
-          }
+    let currentItems: Item[] = addedItems;
+    for (let index = 0; index < currentItems.length; index++) {
+      let itemIndex = currentItems.at(index);
+      if (_item.id) {
+        if (itemIndex && _item.id === itemIndex.id) {
+          currentItems.splice(index, 1);
+          setAddedItems([...currentItems]);
+          break;
         }
+      } else {
+        if (itemIndex && _item.description === itemIndex.description) {
+          currentItems.splice(index, 1);
+          setAddedItems([...currentItems]);
+          break;
+        }
+      }
     }
   }
 
@@ -213,27 +234,27 @@ const FormTemplate = (props: IProps) => {
 
   async function clearItem() {
     setItem({
-      description: '',
+      description: "",
       quantity: 0,
-      value: 0
-    })
+      value: 0,
+    });
   }
 
   async function clearAddedItems() {
-    setAddedItems([])
+    setAddedItems([]);
   }
 
   function checkLegend(ID: string, active: boolean) {
-    const component = document.getElementById(ID)
+    const component = document.getElementById(ID);
     if (active) {
-      component?.classList.add('fieldset-ok')
+      component?.classList.add("fieldset-ok");
     } else {
-      component?.classList.remove('fieldset-ok')
+      component?.classList.remove("fieldset-ok");
     }
   }
 
-  console.log('ok ' + repairRequestIsProgress())
-  console.log('ok ' + form.status.name)
+  console.log("ok " + repairRequestIsProgress());
+  console.log("ok " + form.status.name);
 
   return (
     <form onSubmit={submit}>
@@ -286,25 +307,24 @@ const FormTemplate = (props: IProps) => {
               ))}
             </select>
           </div>
-          { repairRequestIsProgress() ? (
-             <div className="form-container l2">
-             <label htmlFor="inputStatus">Status</label>
-             <select
-               id="inputStatus"
-               name="status"
-               value={form.status.id ? form.status.id : 0}
-               onChange={(e) => changeStatus(parseInt(e.target.value))}
-             >
-               <option key={0} value={0}></option>
-               {status.map((item) => (
-                 <option key={item.id} value={item.id}>
-                   {item.name}
-                 </option>
-               ))}
-             </select>
-           </div>) : null
-          }
-         
+          {repairRequestIsProgress() ? (
+            <div className="form-container l2">
+              <label htmlFor="inputStatus">Status</label>
+              <select
+                id="inputStatus"
+                name="status"
+                value={form.status.id ? form.status.id : 0}
+                onChange={(e) => changeStatus(parseInt(e.target.value))}
+              >
+                <option key={0} value={0}></option>
+                {status.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : null}
         </div>
       </fieldset>
       <fieldset id="fieldset-lessee">
@@ -383,19 +403,17 @@ const FormTemplate = (props: IProps) => {
             </select>
           </div>
           <div className="form-container l2">
-              <label htmlFor="inputApartmentNumber">Nº apartamento</label>
-              <input
-                type="text"
-                id="inputApartmentNumber"
-                placeholder="Nº apartamento"
-                name="apartmentNumber"
-                value={form.apartmentNumber}
-                onChange={(e) =>
-                  changeInput({ apartmentNumber: e.target.value })
-                }
-                required
-              />
-            </div>
+            <label htmlFor="inputApartmentNumber">Nº apartamento</label>
+            <input
+              type="text"
+              id="inputApartmentNumber"
+              placeholder="Nº apartamento"
+              name="apartmentNumber"
+              value={form.apartmentNumber}
+              onChange={(e) => changeInput({ apartmentNumber: e.target.value })}
+              required
+            />
+          </div>
         </div>
       </fieldset>
       <fieldset id="fieldset-items">
@@ -452,7 +470,7 @@ const FormTemplate = (props: IProps) => {
         </div>
         <div className="row-form-1">
           <div className="form-container l100">
-            <div className="content-table"> 
+            <div className="content-table">
               <TableItem item={addedItems} removeItem={removeItem} />
             </div>
           </div>

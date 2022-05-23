@@ -8,23 +8,21 @@ import { Contract } from "types/contract";
 import FormTemplate from "..";
 
 const FormUpdateContract = () => {
-  const dispatch = useDispatch()
-  const selectedContract: Contract = useSelector(selectStateSelectedContract)
+  const dispatch = useDispatch();
+  const selectedContract: Contract = useSelector(selectStateSelectedContract);
   async function submit(form: Contract) {
     try {
       const result = await updateContract(form);
-      await Swal.fire('Ebaa!', result, 'success')
-      dispatch(updateContractTableAction())
-      return true
+      await Swal.fire("Ebaa!", result, "success");
+      dispatch(updateContractTableAction());
+      return true;
     } catch (error: any) {
-      const errors = error.response.data.errors
+      const errors = error.response.data.errors;
       if (!error.response) {
         Swal.fire("Oops!", "Sem conexão com o servidor!", "error");
-      } 
-      else if (errors) {
-        Swal.fire('oops!', errors[0].message, 'error')
-      } 
-      else {
+      } else if (errors) {
+        Swal.fire("oops!", errors[0].message, "error");
+      } else {
         Swal.fire("Oops!", "" + error.response.data, "error");
       }
     }
@@ -35,8 +33,9 @@ const FormUpdateContract = () => {
       stateForm={StateFormEnum.EDITING}
       submit={submit}
       isActivedFieldPassword={false}
-      isNewRegisterForm={false} />
-  )
-}
+      isNewRegisterForm={false}
+    />
+  );
+};
 
 export default FormUpdateContract;

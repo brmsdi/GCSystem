@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import { changeSelectedSubMenuAsideAction } from "store/Aside/aside.action";
 import { TEXT_MENU_ITEM_ID_HOME } from "utils/menu-items";
-import IMGCondominium from 'assets/img/cond5.png'
 import Balloon from "components/Balloon";
 
 const HomeView = () => {
@@ -13,11 +12,14 @@ const HomeView = () => {
         <h1>{"Página inicial"}</h1>
       </div>
       <div className="home">
-        <div className="icon-condominium" >
-          <img alt="Condominio" src={IMGCondominium} />
-        </div>
         <div className="text-title-gc">
           <p>SISTEMA PARA GERENCIAMENTO DE CONDOMÍNIOS</p>
+        </div>
+        <div>
+          <p>Desenvolvido por Wisley Bruno Marques França</p>
+        </div>
+        <div>
+          <p className="p-contact"><i className="bi bi-telephone">&nbsp;</i>Contato: 92 99107-1491</p>
         </div>
         <div className="footer-home">
           <div className="footer-balloons">

@@ -9,7 +9,12 @@ import { Contract } from "types/contract";
 import { Lessee } from "types/lessee";
 import { Status } from "types/status";
 import { formatDate, formatLocalizationViewInformation } from "utils/textFormt";
-import { isValidFieldCPF, isValidFieldDay, isValidFieldNumber, isValidFieldText } from "utils/verifications";
+import {
+  isValidFieldCPF,
+  isValidFieldDay,
+  isValidFieldNumber,
+  isValidFieldText,
+} from "utils/verifications";
 
 interface IProps {
   initForm: Contract;
@@ -26,8 +31,8 @@ const FormTemplate = (props: IProps) => {
     formatLocalizationViewInformation(form.condominium.localization)
   );
   const [status, setStatus] = useState<Status[]>([]);
-  const [lessee, setLessee] = useState<Lessee>(props.initForm.lessee)
-  
+  const [lessee, setLessee] = useState<Lessee>(props.initForm.lessee);
+
   function changeInput(value: any) {
     setForm((form) => ({ ...form, ...value }));
   }
@@ -46,7 +51,7 @@ const FormTemplate = (props: IProps) => {
   }
 
   function changeInputLessee(value: any) {
-    setLessee(lessee => ({ ...lessee, ...value }));
+    setLessee((lessee) => ({ ...lessee, ...value }));
   }
 
   function changeStatus(value: number) {
@@ -61,42 +66,46 @@ const FormTemplate = (props: IProps) => {
 
   useEffect(() => {
     setForm((form) => ({ ...form, ...props.initForm }));
-    setLessee(props.initForm.lessee)
+    setLessee(props.initForm.lessee);
     setCondominiumSelectedView(
       formatLocalizationViewInformation(props.initForm.condominium.localization)
     );
-    listAllCondominiums().then(response => setCondominiums(response.data));
-    getAllStatusFromViewContract().then(response => setStatus(response.data));
+    listAllCondominiums().then((response) => setCondominiums(response.data));
+    getAllStatusFromViewContract().then((response) => setStatus(response.data));
   }, [props.initForm]);
 
   useEffect(() => {
-    checkLegend('fieldset-lessee', 
-    isValidFieldNumber(lessee.id))
+    checkLegend("fieldset-lessee", isValidFieldNumber(lessee.id));
 
-    checkLegend('fieldset-condominium', 
-    isValidFieldNumber(form.condominium.id) 
-    && isValidFieldText(form.apartmentNumber))
+    checkLegend(
+      "fieldset-condominium",
+      isValidFieldNumber(form.condominium.id) &&
+        isValidFieldText(form.apartmentNumber)
+    );
 
-    checkLegend('fieldset-contract', isValidFieldNumber(form.contractValue) 
-    && isValidFieldDay(form.monthlyPaymentDate) 
-    && isValidFieldDay(form.monthlyDueDate)
-    && isValidFieldText(form.contractDate)
-    && isValidFieldText(form.contractExpirationDate) 
-    && isValidFieldNumber(form.status.id))
-  },[form, lessee])
+    checkLegend(
+      "fieldset-contract",
+      isValidFieldNumber(form.contractValue) &&
+        isValidFieldDay(form.monthlyPaymentDate) &&
+        isValidFieldDay(form.monthlyDueDate) &&
+        isValidFieldText(form.contractDate) &&
+        isValidFieldText(form.contractExpirationDate) &&
+        isValidFieldNumber(form.status.id)
+    );
+  }, [form, lessee]);
 
   async function submit(event: any) {
     event.preventDefault();
     let newForm: Contract = {
       ...form,
-      lessee: lessee
-    }
-    setForm({...newForm})
-    const result = await props.submit(newForm)
+      lessee: lessee,
+    };
+    setForm({ ...newForm });
+    const result = await props.submit(newForm);
     if (result === true) {
       if (props.isNewRegisterForm === true) {
         clearForm();
-        clearLesseeFields()
+        clearLesseeFields();
         clearCondominiumSelectedView();
       } else {
         setForm({ ...form });
@@ -104,23 +113,25 @@ const FormTemplate = (props: IProps) => {
     }
   }
 
-  async function getLesseeForCPF () {
-    if(isValidFieldCPF(lessee.cpf)) {
-      findByCPFService(lessee.cpf)
-      .then(response => {
-        if (response.data.content && response.data.content?.length > 0)
-        {
-          setLessee(response.data.content[0])
-          checkLegend("fieldset-lessee", true)
+  async function getLesseeForCPF() {
+    if (isValidFieldCPF(lessee.cpf)) {
+      findByCPFService(lessee.cpf).then((response) => {
+        if (response.data.content && response.data.content?.length > 0) {
+          setLessee(response.data.content[0]);
+          checkLegend("fieldset-lessee", true);
         } else {
-          Swal.fire('Oops!', 'Nenhum registro encontrado com o CPF: ' + lessee.cpf, 'error')
-          checkLegend("fieldset-lessee", false)
+          Swal.fire(
+            "Oops!",
+            "Nenhum registro encontrado com o CPF: " + lessee.cpf,
+            "error"
+          );
+          checkLegend("fieldset-lessee", false);
         }
-      })
+      });
     } else {
-      Swal.fire('Oops!', 'Digite um cpf valido', 'error')
-      clearLesseeFields()
-      checkLegend("fieldset-lessee", false)
+      Swal.fire("Oops!", "Digite um cpf valido", "error");
+      clearLesseeFields();
+      checkLegend("fieldset-lessee", false);
     }
   }
 
@@ -133,22 +144,24 @@ const FormTemplate = (props: IProps) => {
   }
 
   async function clearCondominiumSelectedView() {
-    setCondominiumSelectedView('')
+    setCondominiumSelectedView("");
   }
 
   function checkLegend(ID: string, active: boolean) {
-    const component = document.getElementById(ID)
+    const component = document.getElementById(ID);
     if (active) {
-      component?.classList.add('fieldset-ok')
+      component?.classList.add("fieldset-ok");
     } else {
-      component?.classList.remove('fieldset-ok')
+      component?.classList.remove("fieldset-ok");
     }
   }
 
   return (
     <form onSubmit={submit}>
       <fieldset id="fieldset-lessee">
-        <legend><i className="bi bi-card-checklist legend-icon"></i> Locatário</legend>
+        <legend>
+          <i className="bi bi-card-checklist legend-icon"></i> Locatário
+        </legend>
         <hr />
         <div className="row-form-1">
           <div className="form-container l2">
@@ -160,12 +173,14 @@ const FormTemplate = (props: IProps) => {
                 placeholder="CPF"
                 name="cpf"
                 value={lessee.cpf}
-                onChange={(e) => changeInputLessee({cpf: e.target.value})}
-                required/>
-              <button 
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => getLesseeForCPF()}>
+                onChange={(e) => changeInputLessee({ cpf: e.target.value })}
+                required
+              />
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => getLesseeForCPF()}
+              >
                 <i className="bi bi-search"></i>
               </button>
             </div>
@@ -179,7 +194,8 @@ const FormTemplate = (props: IProps) => {
               name="name"
               value={lessee.name}
               disabled
-              required/>
+              required
+            />
           </div>
           <div className="form-container l2">
             <label htmlFor="inputRG">RG</label>
@@ -190,12 +206,15 @@ const FormTemplate = (props: IProps) => {
               name="rg"
               value={lessee.rg}
               disabled
-              required/>
+              required
+            />
           </div>
         </div>
       </fieldset>
       <fieldset id="fieldset-condominium">
-        <legend><i className="bi bi-card-checklist legend-icon"></i> Condomínio</legend>
+        <legend>
+          <i className="bi bi-card-checklist legend-icon"></i> Condomínio
+        </legend>
         <hr />
         <div className="row-form-1">
           <div className="form-container l2">
@@ -204,7 +223,8 @@ const FormTemplate = (props: IProps) => {
               id="inputCondominium"
               name="condominium"
               value={form.condominium.id ? form.condominium.id : 0}
-              onChange={(e) => changeCondominium(parseInt(e.target.value))}>
+              onChange={(e) => changeCondominium(parseInt(e.target.value))}
+            >
               <option key={0} value={0}></option>
               {condominiums.map((item) => (
                 <option key={item.id} value={item.id}>
@@ -221,7 +241,8 @@ const FormTemplate = (props: IProps) => {
               placeholder="Endereço"
               name="name"
               value={condominiumSelectedView}
-              disabled/>
+              disabled
+            />
           </div>
           <div className="form-container l2">
             <label htmlFor="inputApartmentNumber">Nº apartamento</label>
@@ -231,15 +252,16 @@ const FormTemplate = (props: IProps) => {
               placeholder="Nº apartamento"
               name="apartmentNumber"
               value={form.apartmentNumber}
-              onChange={(e) =>
-                changeInput({ apartmentNumber: e.target.value })
-              }
-              required/>
+              onChange={(e) => changeInput({ apartmentNumber: e.target.value })}
+              required
+            />
           </div>
         </div>
       </fieldset>
       <fieldset id="fieldset-contract">
-        <legend><i className="bi bi-card-checklist legend-icon"></i> Contrato</legend>
+        <legend>
+          <i className="bi bi-card-checklist legend-icon"></i> Contrato
+        </legend>
         <hr />
         <div className="row-form-1">
           <div className="form-container f4">
@@ -250,8 +272,9 @@ const FormTemplate = (props: IProps) => {
               placeholder="Valor do contrato"
               name="contractValue"
               value={form.contractValue}
-              onChange={(e) => changeInput({contractValue: e.target.value})}
-              required/>
+              onChange={(e) => changeInput({ contractValue: e.target.value })}
+              required
+            />
           </div>
           <div className="form-container f4">
             <label htmlFor="inputMonthlyPaymentDate">Dia de pagamento</label>
@@ -261,8 +284,11 @@ const FormTemplate = (props: IProps) => {
               placeholder="Dia de pagamento mensal"
               name="monthlyPaymentDate"
               value={form.monthlyPaymentDate}
-              onChange={(e) => changeInput({monthlyPaymentDate: e.target.value})}
-              required/>
+              onChange={(e) =>
+                changeInput({ monthlyPaymentDate: e.target.value })
+              }
+              required
+            />
           </div>
           <div className="form-container f4">
             <label htmlFor="inputMonthlyDueDate">Dia de vencimento</label>
@@ -272,8 +298,9 @@ const FormTemplate = (props: IProps) => {
               placeholder="Dia de vencimento mensal"
               name="monthlyDueDate"
               value={form.monthlyDueDate}
-              onChange={(e) => changeInput({monthlyDueDate: e.target.value})}
-              required />
+              onChange={(e) => changeInput({ monthlyDueDate: e.target.value })}
+              required
+            />
           </div>
           <div className="form-container f4">
             <label htmlFor="inputContractDate">Data do contrato</label>
@@ -281,9 +308,14 @@ const FormTemplate = (props: IProps) => {
               type="date"
               id="inputContractDate"
               name="contractDate"
-              value={form.contractDate.length > 0 ? formatDate(form.contractDate) : form.contractDate}
-              onChange={(e) => changeInput({contractDate: e.target.value })}
-              required />
+              value={
+                form.contractDate.length > 0
+                  ? formatDate(form.contractDate)
+                  : form.contractDate
+              }
+              onChange={(e) => changeInput({ contractDate: e.target.value })}
+              required
+            />
           </div>
         </div>
         <div className="row-form-1">
@@ -295,9 +327,16 @@ const FormTemplate = (props: IProps) => {
               type="date"
               id="inputContractExpirationDate"
               name="contractExpirationDate"
-              value={form.contractExpirationDate.length > 0 ? formatDate(form.contractExpirationDate) : form.contractExpirationDate}
-              onChange={(e) => changeInput({contractExpirationDate: e.target.value })}
-              required />
+              value={
+                form.contractExpirationDate.length > 0
+                  ? formatDate(form.contractExpirationDate)
+                  : form.contractExpirationDate
+              }
+              onChange={(e) =>
+                changeInput({ contractExpirationDate: e.target.value })
+              }
+              required
+            />
           </div>
           <div className="form-container f4">
             <label htmlFor="inputStatus">Status</label>
@@ -305,7 +344,8 @@ const FormTemplate = (props: IProps) => {
               id="inputStatus"
               name="status"
               value={form.status.id ? form.status.id : 0}
-              onChange={(e) => changeStatus(parseInt(e.target.value))}>
+              onChange={(e) => changeStatus(parseInt(e.target.value))}
+            >
               <option key={0} value={0}></option>
               {status.map((item) => (
                 <option key={item.id} value={item.id}>
@@ -324,7 +364,8 @@ const FormTemplate = (props: IProps) => {
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={clearForm}>
+            onClick={clearForm}
+          >
             Limpar
           </button>
         </div>

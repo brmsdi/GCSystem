@@ -276,6 +276,11 @@ a {
       letter-spacing: 0.02rem;
       font-weight: 500;
     }
+
+    .p-contact {
+      font-style: italic;
+      letter-spacing: 0.05rem;
+    }
   }
 
   .footer-home {
@@ -505,8 +510,8 @@ a {
         width: auto;
         padding: 0.7rem 0.6rem;
         transform: translateX(-500%);
-        transition-property: transform;
-        transition-duration: 500ms;
+       // transition-property: transform;
+        //transition-duration: 500ms;
       } // end tooltip-submenu
     } // end sub-menu
   } // End header
@@ -563,15 +568,17 @@ a {
 
     .sub-menu {
       display: flex;
-      margin: 1rem 0rem;
+      margin: .2rem 0rem;
       font-size: 1rem;
+      a {
+        width: 100%;
+        //padding: 0.5rem;
+        padding: 0.53rem 2rem;
+        //padding: 0.53rem;
+        text-align: start;
+      }
     } // end sub-menu
-    a {
-      width: 100%;
-      //padding: 0.5rem;
-      padding: 0 2rem;
-      text-align: start;
-    }
+    
 
     .sub-menu-icon {
       font-size: 1.2rem;
@@ -588,9 +595,9 @@ a {
     .sub-menu.active {
       a {
         background-color: #fff;
-        padding: 0.53rem;
+        //padding: 0.53rem;
         text-align: center;
-        font-size: 1.05rem;
+        //font-size: 1.05rem;
       }
     }
   } // End header.open

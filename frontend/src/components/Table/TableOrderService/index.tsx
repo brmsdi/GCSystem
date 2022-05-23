@@ -13,41 +13,34 @@ const TableOrderService = () => {
     <>
       <ModalDetailsOrderService title="Detalhes" />
       <div className="table-responsive table-responsive-order">
-        {
-          (page.empty === true) ?
-            (
-              (<Alert msg="Nenhum registro encontrado!" />)
-            )
-            :
-            <table className="table table-striped">
-              <thead className="thead-max">
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Data</th>
-                  <th scope="col">Data reservada</th>
-                  <th scope="col">Data de finalização</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">#</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  page?.content?.map((item: OrderService) => {
-                    return <ItemTable
-                      key={item.id}
-                      item={item} />;
-                  })
-                }
-              </tbody>
-            </table>
-        }
+        {page.empty === true ? (
+          <Alert msg="Nenhum registro encontrado!" />
+        ) : (
+          <table className="table table-striped">
+            <thead className="thead-max">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Data</th>
+                <th scope="col">Data reservada</th>
+                <th scope="col">Data de finalização</th>
+                <th scope="col">Status</th>
+                <th scope="col">#</th>
+              </tr>
+            </thead>
+            <tbody>
+              {page?.content?.map((item: OrderService) => {
+                return <ItemTable key={item.id} item={item} />;
+              })}
+            </tbody>
+          </table>
+        )}
       </div>
     </>
-  )
-}
+  );
+};
 
 interface IProps {
-  item: OrderService
+  item: OrderService;
 }
 
 const ItemTable = (props: IProps) => {
@@ -69,9 +62,7 @@ const ItemTable = (props: IProps) => {
         <ButtonMenuOrderServiceTable item={item} />
       </td>
     </tr>
-  )
-}
+  );
+};
 
 export default TableOrderService;
-
-

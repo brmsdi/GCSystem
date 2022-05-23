@@ -15,6 +15,7 @@ import system.gc.configuration.exceptions.DuplicatedFieldException;
 import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.DebtDTO;
 import system.gc.dtos.LesseeDTO;
+import system.gc.dtos.StatusDTO;
 import system.gc.entities.Lessee;
 import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
@@ -52,6 +53,8 @@ public class LesseeService implements ControllerPermission {
         newLesseeDTO.setPassword(new BCryptPasswordEncoder().encode(newLesseeDTO.getPassword()));
         cpfIsAvailableSave(newLesseeDTO);
         emailIsAvailableSave(newLesseeDTO);
+        Status statusActive = statusService.findByName("Ativo");
+        newLesseeDTO.setStatus(new StatusDTO().toDTO(statusActive));
         Lessee registeredLessee = lesseeRepository.save(lesseeDTO.toEntity(newLesseeDTO));
         if (registeredLessee.getId() == null) {
             log.warn("Erro ao salvar!");

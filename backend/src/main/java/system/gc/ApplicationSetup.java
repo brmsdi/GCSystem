@@ -91,7 +91,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) return;
         // ROLE
-        List<Role> roleList = new ArrayList<>();
+        //List<Role> roleList = new ArrayList<>();
         Role roleADM = roleRepository.save(new Role("Administrador"));
         Role roleCounter = roleRepository.save(new Role("Contador"));
         Role roleAssistant = roleRepository.save(new Role("Assistente administrativo"));
@@ -221,8 +221,8 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     statusActive);
 
             //LOCALIZATION
-            LocalizationDTO localizationDTO = localizationService.save(new LocalizationDTO("Flores", "920", 69058200));
-            LocalizationDTO localizationDTO1 = localizationService.save(new LocalizationDTO("Parque 10 de Novembro", "Dom Diogo de souza",  69054641));
+            LocalizationDTO localizationDTO = localizationService.save(new LocalizationDTO("Flores", "Rua Barão de Palmares", 69058200));
+            LocalizationDTO localizationDTO1 = localizationService.save(new LocalizationDTO("Parque 10 de Novembro", "Rua Dom Diogo de souza",  69054641));
 
             // CONDOMINIUM
             CondominiumDTO condominiumDTO = new CondominiumDTO("Villa Lobos",
@@ -292,7 +292,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                     today.plusDays(5).getDayOfMonth(),
                     oneMonthAgo.plusMonths(6),
                     10,
-                    statusOpen,
+                    statusActive,
                     condominiumDTOPage.toList().get(2),
                     lesseeDTODEV2Save);
 

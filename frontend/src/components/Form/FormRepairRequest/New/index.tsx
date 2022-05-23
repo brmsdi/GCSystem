@@ -13,18 +13,16 @@ const FormNewRepairRequest = () => {
   async function submit(form: RepairRequest) {
     try {
       const result = await saveRepairRequest(form);
-      await Swal.fire('Ebaa!', result, 'success')
-      dispatch(updateRepairRequestTableAction())
-      return true
+      await Swal.fire("Ebaa!", result, "success");
+      dispatch(updateRepairRequestTableAction());
+      return true;
     } catch (error: any) {
-      const errors = error.response.data.errors
+      const errors = error.response.data.errors;
       if (!error.response) {
         Swal.fire("Oops!", "Sem conexão com o servidor!!", "error");
-      }   
-      else if (errors) {
-        Swal.fire('oops!', errors[0].message, 'error')
-      }  
-      else {
+      } else if (errors) {
+        Swal.fire("oops!", errors[0].message, "error");
+      } else {
         Swal.fire("Oops!", "" + error.response.data, "error");
       }
     }
@@ -34,8 +32,9 @@ const FormNewRepairRequest = () => {
       initForm={initForm}
       stateForm={StateFormEnum.SAVING}
       submit={submit}
-      isNewRegisterForm={true} />
-  )
-}
+      isNewRegisterForm={true}
+    />
+  );
+};
 
 export default FormNewRepairRequest;

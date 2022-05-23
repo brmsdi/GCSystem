@@ -13,18 +13,16 @@ const FormNewContract = () => {
   async function submit(form: Contract) {
     try {
       const result = await saveContract(form);
-      await Swal.fire('Ebaa!', result, 'success')
-      dispatch(updateContractTableAction())
-      return true
+      await Swal.fire("Ebaa!", result, "success");
+      dispatch(updateContractTableAction());
+      return true;
     } catch (error: any) {
-      const errors = error.response.data.errors
+      const errors = error.response.data.errors;
       if (!error.response) {
         Swal.fire("Oops!", "Sem conexão com o servidor!!", "error");
-      }   
-      else if (errors) {
-        Swal.fire('oops!', errors[0].message, 'error')
-      }  
-      else {
+      } else if (errors) {
+        Swal.fire("oops!", errors[0].message, "error");
+      } else {
         Swal.fire("Oops!", "" + error.response.data, "error");
       }
     }
@@ -35,8 +33,9 @@ const FormNewContract = () => {
       stateForm={StateFormEnum.SAVING}
       submit={submit}
       isActivedFieldPassword={true}
-      isNewRegisterForm={true} />
-  )
-}
+      isNewRegisterForm={true}
+    />
+  );
+};
 
 export default FormNewContract;

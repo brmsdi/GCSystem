@@ -2,31 +2,43 @@ import Alert from "components/messages";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { findAllToModalOrderService } from "services/employee";
-import { changeStateModalOrderServiceEmployees, selectedEmployeesOrderServiceAction } from "store/OrderServices/order-services.actions";
+import {
+  changeStateModalOrderServiceEmployees,
+  selectedEmployeesOrderServiceAction,
+} from "store/OrderServices/order-services.actions";
 import { selectSelectedEmployeesOrderService } from "store/OrderServices/order-services.selector";
 import { Employee } from "types/employee";
 
 const ModalTableEmployees = () => {
-  const dispatch = useDispatch()
-  const selectedEmployeesOld : Employee[] = useSelector(selectSelectedEmployeesOrderService)
+  const dispatch = useDispatch();
+  const selectedEmployeesOld: Employee[] = useSelector(
+    selectSelectedEmployeesOrderService
+  );
   const [listEmployees, setListEmployees] = useState<Employee[]>([]);
-  const [selectedEmployees, setSelectedEmployees] = useState<Employee[]>([...selectedEmployeesOld]);
+  const [selectedEmployees, setSelectedEmployees] = useState<Employee[]>([
+    ...selectedEmployeesOld,
+  ]);
 
   useEffect(() => {
-    findAllToModalOrderService().then(response => setListEmployees(response.data))
-  }, [])
+    findAllToModalOrderService().then((response) =>
+      setListEmployees(response.data)
+    );
+  }, []);
 
   function addSelectedEmployee(_employee: Employee) {
     if (_employee.id) {
-      let currentSelectedEmployees : Employee[] = selectedEmployees;
-      currentSelectedEmployees.unshift(_employee)
-      setSelectedEmployees([...currentSelectedEmployees])
+      let currentSelectedEmployees: Employee[] = selectedEmployees;
+      currentSelectedEmployees.unshift(_employee);
+      setSelectedEmployees([...currentSelectedEmployees]);
     }
   }
 
-  function removeSelectedEmployee(_currentSelectedEmployees: Employee[], _index: number) {
-    _currentSelectedEmployees.splice(_index, 1)
-    setSelectedEmployees([..._currentSelectedEmployees])
+  function removeSelectedEmployee(
+    _currentSelectedEmployees: Employee[],
+    _index: number
+  ) {
+    _currentSelectedEmployees.splice(_index, 1);
+    setSelectedEmployees([..._currentSelectedEmployees]);
   }
 
   function changeSelect(_item: Employee) {
@@ -35,7 +47,7 @@ const ModalTableEmployees = () => {
       let indexPosition = 0;
       let currentSelectedEmployees: Employee[] = selectedEmployees;
       for (let index = 0; index < currentSelectedEmployees.length; index++) {
-        let itemIndex = currentSelectedEmployees.at(index)
+        let itemIndex = currentSelectedEmployees.at(index);
         if (itemIndex && _item.id === itemIndex.id) {
           isRemove = true;
           indexPosition = index;
@@ -44,9 +56,9 @@ const ModalTableEmployees = () => {
       }
 
       if (isRemove === true) {
-        removeSelectedEmployee(currentSelectedEmployees, indexPosition)
+        removeSelectedEmployee(currentSelectedEmployees, indexPosition);
       } else {
-        addSelectedEmployee(_item)
+        addSelectedEmployee(_item);
       }
     }
   }
@@ -54,25 +66,25 @@ const ModalTableEmployees = () => {
   function isSelected(_employee: Employee) {
     let isSelected = false;
     for (let index = 0; index < selectedEmployees.length; index++) {
-      let itemIndex = selectedEmployees.at(index)
+      let itemIndex = selectedEmployees.at(index);
       if (_employee.id === itemIndex?.id) {
         isSelected = true;
-        break
+        break;
       }
     }
-    return isSelected
+    return isSelected;
   }
 
   function save() {
-    dispatch(selectedEmployeesOrderServiceAction([...selectedEmployees]))
-    dispatch(changeStateModalOrderServiceEmployees({isOpen: false}))
+    dispatch(selectedEmployeesOrderServiceAction([...selectedEmployees]));
+    dispatch(changeStateModalOrderServiceEmployees({ isOpen: false }));
   }
 
   function cancel() {
     //dispatch(selectedEmployeesOrderServiceAction(selectedEmployeesOld))
-    dispatch(changeStateModalOrderServiceEmployees({isOpen: false}))
+    dispatch(changeStateModalOrderServiceEmployees({ isOpen: false }));
   }
-  
+
   return (
     <div className="table-responsive">
       {listEmployees.length === 0 ? (
@@ -112,7 +124,7 @@ const ModalTableEmployees = () => {
       </section>
     </div> // end table-responsive
   );
-}
+};
 
 interface IPropsItemTable {
   item: Employee;
@@ -122,7 +134,7 @@ interface IPropsItemTable {
 
 const ItemTable = (props: IPropsItemTable) => {
   let item = props.item;
-  console.log(props.isSelected)
+  console.log(props.isSelected);
   return (
     <tr>
       <th className="thead-min">ID</th>
@@ -145,8 +157,7 @@ const ItemTable = (props: IPropsItemTable) => {
         </div>
       </td>
     </tr>
-    
   );
-}
+};
 
 export default ModalTableEmployees;
