@@ -183,6 +183,13 @@ public class OrderServiceService {
         orderServiceRepository.delete(orderService);
     }
 
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        orderServiceRepository.deleteAll();
+    }
+
     public void updateRepairRequestsFromOrderService(OrderService orderService, OrderServiceDTO updateOrderServiceDTO) {
         log.info("Atualizando solicitações de reparo da ordem de serviço");
         OrderService updateOrderService = new OrderServiceDTO().toEntity(updateOrderServiceDTO);

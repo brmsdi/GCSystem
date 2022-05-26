@@ -10,6 +10,7 @@ import system.gc.entities.Employee;
 import system.gc.entities.Movement;
 import system.gc.repositories.MovementRepository;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 
 @Service
@@ -39,5 +40,12 @@ public class MovementService {
                 activityType,
                 employee));
         log.info("Movimentaçao registrada!");
+    }
+
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        movementRepository.deleteAll();
     }
 }

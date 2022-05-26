@@ -38,6 +38,13 @@ public class LogPasswordCodeService {
         return logPasswordCodeRepository.save(logChangePassword);
     }
 
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        logPasswordCodeRepository.deleteAll();
+    }
+
     public TokenDTO validateCode(String email, Integer type, String code) {
         log.info("Validando código");
         LogChangePassword logChangePassword = chooseType(email, type);

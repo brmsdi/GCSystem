@@ -34,4 +34,11 @@ public class ActivityTypeService {
     public ActivityType findByName(String name) {
         return activityTypeRepository.getByName(name).orElse(null) ;
     }
+
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        activityTypeRepository.deleteAll();
+    }
 }

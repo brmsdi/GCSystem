@@ -40,4 +40,11 @@ public class StatusService {
         List<Status> statusList = statusRepository.findAllToView(params);
         return new StatusDTO().convertListEntityToListDTO(statusList);
     }
+
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        statusRepository.deleteAll();
+    }
 }

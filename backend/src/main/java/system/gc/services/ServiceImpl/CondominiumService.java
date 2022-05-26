@@ -90,6 +90,13 @@ public class CondominiumService {
         log.info("Registro deletado com sucesso");
     }
 
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        condominiumRepository.deleteAll();
+    }
+
     public void verifyLocalization(CondominiumDTO condominiumDTO)
     {
         Localization localization = localizationService.findByZipCode(condominiumDTO.getLocalization().getLocalization().getZipCode());

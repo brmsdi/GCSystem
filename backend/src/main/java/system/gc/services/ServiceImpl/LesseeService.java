@@ -122,6 +122,13 @@ public class LesseeService implements ControllerPermission {
     }
 
     @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        lesseeRepository.deleteAll();
+    }
+
+    @Transactional
     public Page<LesseeDTO> listPaginationDebtsByLessee(LesseeDTO lesseeDTO, Page<DebtDTO> debtDTOPage) {
         for (DebtDTO debtDTO : debtDTOPage) {
             lesseeDTO.getDebts().add(DebtDTO.toViewByLessee(debtDTO));

@@ -84,7 +84,11 @@ public class ContractService {
         log.info("Registro deletado com sucesso");
     }
 
-    public void generateContract() {
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        contractRepository.deleteAll();
     }
 
 }

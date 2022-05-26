@@ -34,4 +34,11 @@ public class RoleService {
     public List<RoleDTO> findAll(Sort sort) {
         return roleRepository.findAll(sort).stream().map(RoleDTO::new).toList();
     }
+
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        roleRepository.deleteAll();
+    }
 }

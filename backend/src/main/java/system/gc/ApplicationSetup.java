@@ -3,8 +3,7 @@ package system.gc;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.*;
 import system.gc.entities.*;
 import system.gc.repositories.RoleRepository;
@@ -19,18 +19,18 @@ import system.gc.repositories.StatusRepository;
 import system.gc.repositories.TypeProblemRepository;
 import system.gc.security.EmployeeUserDetails;
 import system.gc.services.ServiceImpl.*;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 import static java.time.DayOfWeek.*;
 
 @Component
 @Slf4j
-public class ApplicationSetup implements ApplicationListener<ContextRefreshedEvent> {
+public class ApplicationSetup {
 
     @Autowired
     EmployeeService employeeService;
@@ -43,9 +43,6 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
     @Autowired
     StatusService statusService;
-
-    @Autowired
-    RoleService roleService;
 
     @Autowired
     ActivityTypeService activityTypeService;
@@ -67,6 +64,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
     @Autowired
     TypeProblemRepository typeProblemRepository;
+
     @Autowired
     TypeProblemService typeProblemService;
 
@@ -80,16 +78,17 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
     Environment environment;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    LocalDate today = LocalDate.now();
-    LocalDate tomorrow = today.plusDays(today.getDayOfWeek() == FRIDAY ? 2 : 1 );
-    LocalDate sixMonths = today.plusMonths(6);
-    LocalDate oneMonthAgo = today.minusDays(30);
+    private static final String TIME_ZONE = "America/Manaus";
+    ZonedDateTime today = ZonedDateTime.now(ZoneId.of(TIME_ZONE));
+    ZonedDateTime tomorrow = today.plusDays(today.getDayOfWeek() == FRIDAY ? 2 : 1 );
+    ZonedDateTime sixMonths = today.plusMonths(6);
+    ZonedDateTime oneMonthAgo = today.minusDays(30);
 
     @SneakyThrows
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) return;
+    @Transactional
+    public void execute()
+    {
+        log.info("Inserindo dados");
         // ROLE
         //List<Role> roleList = new ArrayList<>();
         Role roleADM = roleRepository.save(new Role("Administrador"));
@@ -324,12 +323,17 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
 
         } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());
-
         }
-
     }
 
-    public EmployeeDTO initializeEmployee(
+
+    @Bean
+    public void InitDataProfileTest() {
+        if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) return;
+        execute();
+    }
+
+    private EmployeeDTO initializeEmployee(
             String name,
             String rg,
             String cpf,
@@ -355,7 +359,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         return employeeService.save(employeeDTO);
     }
 
-    public void initializeCondominium(
+    private void initializeCondominium(
             String name,
             String description,
             int numberApartments,
@@ -372,7 +376,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         condominiumService.save(condominiumDTO);
     }
 
-    public void initializeLessee(
+    private void initializeLessee(
             String name,
             String rg,
             String cpf,
@@ -395,7 +399,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         lesseeService.save(lesseeDTO);
     }
 
-    public void initializeContract(
+    private void initializeContract(
             double contractValue,
             int monthlyPaymentDate,
             int monthlyDueDate,
@@ -415,12 +419,12 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         contractService.save(contractDTO);
     }
 
-    public void initializeContract(
-            LocalDate contractDate,
+    private void initializeContract(
+            ZonedDateTime contractDate,
             double contractValue,
             int monthlyPaymentDate,
             int monthlyDueDate,
-            LocalDate contractExpirationDate,
+            ZonedDateTime contractExpirationDate,
             int apartmentNumber,
             Status status,
             CondominiumDTO condominium,
@@ -437,7 +441,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         contractService.save(contractDTO);
     }
 
-    public void initializeDebt(double value, Status status, LesseeDTO lesseeDTO, LocalDate openDate) throws ParseException {
+    private void initializeDebt(double value, Status status, LesseeDTO lesseeDTO, ZonedDateTime openDate) throws ParseException {
         // Prazo de validade
         int days = getDueDate(1, 7, openDate);
         DebtDTO debtDTO = new DebtDTO(simpleDateFormat.parse(openDate.plusDays(days).toString()),
@@ -455,7 +459,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
      * @param today        // Data atual
      * @return             // quantidade de dias necessário para o prazo de validade
      */
-    public static int getDueDate(int quantityDays, int length, LocalDate today)
+    private static int getDueDate(int quantityDays, int length, ZonedDateTime today)
     {
         while(quantityDays <= length) {
             DayOfWeek current = today.plusDays(quantityDays).getDayOfWeek();
@@ -473,7 +477,7 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
         return quantityDays;
     }
 
-    public RepairRequestDTO initializeRepairRequests(
+    private RepairRequestDTO initializeRepairRequests(
             String problemDescription,
             TypeProblemDTO typeProblemDTO,
             LesseeDTO lesseeDTO,
@@ -487,11 +491,10 @@ public class ApplicationSetup implements ApplicationListener<ContextRefreshedEve
                 condominiumDTO,
                 apartmentNumber,
                 new StatusDTO(status));
-
         return repairRequestService.save(repairRequestDTO);
     }
 
-    public void initializeOrderService(
+    private void initializeOrderService(
             RepairRequestDTO repairRequestDTO,
             EmployeeDTO employeeDTO,
             Status status) throws ParseException {

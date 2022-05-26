@@ -3,6 +3,7 @@ package system.gc.repositories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.OrderService;
 
@@ -25,4 +26,5 @@ public interface OrderServiceRepository extends JpaRepository<OrderService, Inte
             "JOIN FETCH repairRequests.lessee lessee " +
             "WHERE lessee.cpf LIKE :cpf")
     List<OrderService> findOrderServiceForLessee(String cpf);
+
 }

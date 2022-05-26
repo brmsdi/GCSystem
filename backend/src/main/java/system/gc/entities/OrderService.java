@@ -25,7 +25,7 @@ public class OrderService {
 
 	private Date completionDate;
 
-	@OneToMany
+	@OneToMany(mappedBy = "orderService")
 	private Set<RepairRequest> repairRequests;
 
 	@ManyToMany

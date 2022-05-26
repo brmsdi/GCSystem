@@ -45,4 +45,11 @@ public class LocalizationService {
         Optional<Localization> localizationOptional = localizationRepository.findById(ID);
         return localizationOptional.orElse(null);
     }
+
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        localizationRepository.deleteAll();
+    }
 }

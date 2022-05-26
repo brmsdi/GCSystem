@@ -40,4 +40,11 @@ public class TypeProblemService {
         return typeProblemRepository.findByName(name).orElse(null);
     }
 
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        typeProblemRepository.deleteAll();
+    }
+
 }

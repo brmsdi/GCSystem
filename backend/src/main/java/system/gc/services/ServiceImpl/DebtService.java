@@ -25,9 +25,6 @@ public class DebtService {
     private LesseeService lesseeService;
 
     @Autowired
-    private EmployeeService employeeService;
-
-    @Autowired
     private MovementService movementService;
 
     @Autowired
@@ -107,6 +104,13 @@ public class DebtService {
         EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         registerMovementDebt(previousDebt, disabledDebt, activityTypeDisable, employeeUserDetails.getUserAuthenticated());
         log.info("Registro desativado com sucesso");
+    }
+
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        debtRepository.deleteAll();
     }
 
     private void registerMovementDebt(Debt debt, ActivityType activityType, Employee employee) {

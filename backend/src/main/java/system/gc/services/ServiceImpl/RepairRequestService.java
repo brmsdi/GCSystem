@@ -27,7 +27,6 @@ public class RepairRequestService {
     public RepairRequestDTO save(RepairRequestDTO repairRequestDTO) {
         log.info("Salvando nova solicitação de reparo");
         RepairRequestDTO repairRequestDTOService = new RepairRequestDTO();
-        repairRequestDTO.setDate(new Date());
         RepairRequest registeredRepairRequest = repairRequestRepository.save(repairRequestDTOService.toEntity(repairRequestDTO));
         if (registeredRepairRequest.getId() == null) {
             log.warn("Erro ao salvar!");
@@ -85,6 +84,13 @@ public class RepairRequestService {
         log.info("Deletando solicitações de reparo");
         repairRequestRepository.deleteAllById(IDS);
         log.info("Registros deletados com sucesso");
+    }
+
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        repairRequestRepository.deleteAll();
     }
 
     @Transactional

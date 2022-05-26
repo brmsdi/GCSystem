@@ -62,8 +62,7 @@ public class Employee implements Serializable {
     @ManyToMany(mappedBy = "employees")
     private Set<OrderService> orderServices;
 
-    public Employee() {
-    }
+    public Employee() {}
 
     public Employee(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, Role role, Set<Movement> movements, Status status) {
         setName(name);

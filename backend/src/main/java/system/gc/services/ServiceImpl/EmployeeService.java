@@ -23,6 +23,7 @@ import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Wisley Bruno Marques França
@@ -128,6 +129,13 @@ public class EmployeeService {
         employee.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         employeeRepository.delete(employee.get());
         log.info("Registro deletado com sucesso");
+    }
+
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        employeeRepository.deleteAll();
     }
 
     public Employee authentication(String username) {

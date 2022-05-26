@@ -60,7 +60,7 @@ const Login = () => {
     <div className="content-login animate-down">
       <form onSubmit={submit}>
         <div>
-          <h2>System</h2>
+          <h2>GC</h2>
           <span>Autenticar-se no sistema</span>
         </div>
         <div>
