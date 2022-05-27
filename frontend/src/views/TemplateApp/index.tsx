@@ -1,7 +1,7 @@
 import AdministratorAside from "components/Aside/Administrator";
 import AdministrativeAssistantAside from "components/Aside/AdministrativeAssistant";
 import { useSelector } from "react-redux";
-import { selectUserAuthenticated } from "store/Authentication/authentication.selectors";
+import { selectUserAuthenticated } from "store/Authentication/login.selectors";
 import { ROLE_ADMINISTRATIVE_ASSISTANT, ROLE_ADMINISTRATOR, ROLE_COUNTER, UserAuthenticatedView } from "types/authentication-types";
 import CounterAside from "components/Aside/Accounter";
 

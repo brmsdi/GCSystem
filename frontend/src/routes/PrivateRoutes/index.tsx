@@ -2,7 +2,7 @@ import { checkPermissionView, tokenValidate } from "services/authentication";
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setUserAuthenticated } from "store/Authentication/authentication.actions";
+import { setUserAuthenticated } from "store/Authentication/login.actions";
 import { UserAuthenticatedViewTypesEnum } from "types/authentication-types";
 import PageMessage from "components/Loader/PageLoading";
 import { TextInformationEnum } from "types/text-information";

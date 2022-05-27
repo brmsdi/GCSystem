@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { selectUserAuthenticated } from "store/Authentication/authentication.selectors";
+import { selectUserAuthenticated } from "store/Authentication/login.selectors";
 import { UserAuthenticatedView } from "types/authentication-types";
 import { LOGIN_URL } from "utils/urls";
 

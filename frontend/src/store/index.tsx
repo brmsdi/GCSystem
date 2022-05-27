@@ -1,6 +1,6 @@
 import { combineReducers, createStore } from 'redux';
 import { changeSelectedSubMenuAsideReducer } from './Aside/aside.reducer';
-import updateAuthenticationChangeStateReducer, { userAuthenticatedViewReducer } from './Authentication/authentication.reducer';
+import updateAuthenticationChangeStateReducer, { userAuthenticatedViewReducer } from './Authentication/login.reducer';
 import getAllCondominiumsReducer, { setCurrentPaginationCondominiumReducer, setStateFormCondominiumReducer, stateSelectionCondominiumReducer, updateTableCondominiumReducer } from './Condominiums/condiminiums.reducer';
 import getAllContractsReducer, { setCurrentPaginationContractReducer, setStateFormContractReducer, stateSelectionContractReducer, updateTableContractReducer } from './Contracts/contracts.reducer';
 import getAllDebtsReducer, { setCurrentPaginationDebtReducer, setStateFormDebtReducer, stateSelectionDebtReducer, updateTableDebtReducer } from './Debts/debts.reducer';

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import insertRequestCodeInfo, { setUserAuthenticated } from "store/Authentication/authentication.actions";
+import insertRequestCodeInfo, { setUserAuthenticated } from "store/Authentication/login.actions";
 import Swal from "sweetalert2";
 import { AuthCpfAndPassword, StateAuthenticationChange, UserAuthenticatedViewTypesEnum } from "types/authentication-types";
 import { clearAuth, setAuthorization } from "utils/http";

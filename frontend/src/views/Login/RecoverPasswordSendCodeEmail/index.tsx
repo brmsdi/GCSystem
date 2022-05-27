@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { requestCode } from "services/authentication";
-import insertRequestCodeInfo from "store/Authentication/authentication.actions";
+import insertRequestCodeInfo from "store/Authentication/login.actions";
 import Swal from "sweetalert2";
 import { EmailRequestCode, StateAuthenticationChange } from "types/authentication-types";
 import { LOGIN_URL, RECOVER_PASSWORD_SEND_CODE_URL } from "utils/urls";
