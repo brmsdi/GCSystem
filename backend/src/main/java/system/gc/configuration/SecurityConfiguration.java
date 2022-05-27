@@ -129,7 +129,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         corsConfiguration.setAllowedOrigins(
                 List.of(System.getenv("ORIGINV1"),
                         System.getenv("ORIGINV2"),
-                        System.getenv("ORIGINV3")));
+                        System.getenv("ORIGINV3"),
+                        System.getenv("ORIGINV4")));
         final UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return urlBasedCorsConfigurationSource;
