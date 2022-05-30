@@ -46,7 +46,7 @@ Para a descrição completa do sistema [clique aqui](https://github.com/brmsdi)
 
 #### 4. Caso de uso ciclo 01
 
-![Caso de uso](https://media.discordapp.net/attachments/910896970275635223/980976406865534986/DIAGRAMACASODEUSO.png?width=533&height=468)
+![Caso de uso](frontend/src/assets/img/DIAGRAMACASODEUSO.png)
 
 
 #### 5.	Diagrama de classes a nível de análise 
