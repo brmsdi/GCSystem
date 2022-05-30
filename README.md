@@ -5,7 +5,7 @@ O sistema GC terá funcionalidades designadas para administradores, funcionário
 
 Os administradores e auxiliares serão responsáveis por gerenciar os condomínios, eventuais contratos, locatários, solicitações de locatários e funcionários.
 
-Para a descrição completa do sistema [clique aqui](https://github.com/brmsdi)
+Para a descrição completa do sistema [clique aqui](https://drive.google.com/file/d/1FiAllRxepTafrFhMbg82lyrSE0IyKUsh/view?usp=sharing)
 
 <font color="orange">Observação:</font> A versão mobile está em desenvolvimento, portanto, as funcionalidades referentes a locatários e funcionários de manutenção serão publicadas em breve. 
 
@@ -45,12 +45,12 @@ Para a descrição completa do sistema [clique aqui](https://github.com/brmsdi)
 
 
 #### 4. Caso de uso ciclo 01
-
+##### Abra a imagem em uma nova guia para melhor qualidade
 ![Caso de uso](frontend/src/assets/img/DIAGRAMACASODEUSO.png)
 
 
 #### 5.	Diagrama de classes a nível de análise 
-
+##### Abra a imagem em uma nova guia para melhor qualidade
 ![Digrama de classes](frontend/src/assets/img/Diagramadeclasses.png)
 
 
