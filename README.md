@@ -51,7 +51,7 @@ Para a descrição completa do sistema [clique aqui](https://github.com/brmsdi)
 
 #### 5.	Diagrama de classes a nível de análise 
 
-![Digrama de classes](https://media.discordapp.net/attachments/910896970275635223/980976407117181039/Diagramadeclasses.png?width=700&height=468)
+![Digrama de classes](frontend/src/assets/img/Diagramadeclasses.png)
 
 
 #### 6.	Desenvolvimento
