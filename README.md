@@ -5,7 +5,7 @@ O sistema GC terá funcionalidades designadas para administradores, funcionário
 
 Os administradores e auxiliares serão responsáveis por gerenciar os condomínios, eventuais contratos, locatários, solicitações de locatários e funcionários.
 
-Para a descrição completa do sistema <a href="https://drive.google.com/file/d/1FiAllRxepTafrFhMbg82lyrSE0IyKUsh/view?usp=sharing" target="_blank">clique aqui</a>
+Para a descrição completa do sistema [clique aqui](https://drive.google.com/file/d/1FiAllRxepTafrFhMbg82lyrSE0IyKUsh/view?usp=sharing)
 
 <font color="orange">Observação:</font> A versão mobile está em desenvolvimento, portanto, as funcionalidades referentes a locatários e funcionários de manutenção serão publicadas em breve. 
 
@@ -34,7 +34,8 @@ Para a descrição completa do sistema <a href="https://drive.google.com/file/d/
 #### 3. Acesse o sistema WEB
 
 ##### Link do sistema web e dados para autenticação
-<a href="https://systemgc.netlify.app" target="_blank">Ir para o sistema WEB</a>
+
+[Ir para o sistema WEB](https://systemgc.netlify.app/)
 
 | Cargo | Usuário | Senha |
 |-------|----------|----------|
@@ -51,6 +52,7 @@ Para a descrição completa do sistema <a href="https://drive.google.com/file/d/
 #### 5.	Diagrama de classes a nível de análise 
 ##### Abra a imagem em uma nova guia para melhor qualidade
 ![Digrama de classes](frontend/src/assets/img/Diagramadeclasses.png)
+
 
 #### 6.	Desenvolvimento
 
