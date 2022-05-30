@@ -78,7 +78,6 @@ const PaginationTableOrderService = () => {
       })
     );
   };
-  if (propsPagination === undefined) return null;
   return (
     <PaginationItem
       propsPagination={propsPagination}

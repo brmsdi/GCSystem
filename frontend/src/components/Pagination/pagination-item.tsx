@@ -1,10 +1,15 @@
+import PaginationLoading from "components/Loader/PaginationLoading";
 import { Link } from "react-router-dom";
 import { PropsPagination } from "types/pagination";
-const PaginationItem = (props: {
-  propsPagination: PropsPagination;
+
+interface IProps {
+  propsPagination: PropsPagination | undefined
   changeNumberPage: Function;
-}) => {
+}
+
+const PaginationItem = (props: IProps) => {
   let propsPagination = props.propsPagination;
+  if (propsPagination === undefined) return <PaginationLoading />;
   let pages = propsPagination.pagesNumbers;
   let activePage = propsPagination.currentPage;
   let next = propsPagination.next;
@@ -14,6 +19,7 @@ const PaginationItem = (props: {
   const changeNumberPage = props.changeNumberPage;
   return (
     <nav aria-label="...">
+      
       <ul className="pagination pagination-sm justify-content-center">
         <li
           id="page-link-previous"

@@ -31,8 +31,9 @@ public class CondominiumController implements ControllerPermission {
     public ResponseEntity<Page<CondominiumDTO>> listPaginationCondominium(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size,
-            @RequestParam(name = "sort", defaultValue = "name") String sort) {
+            @RequestParam(name = "sort", defaultValue = "name") String sort) throws InterruptedException {
         log.info("Listando condominios");
+        Thread.sleep(5000);
         return ResponseEntity.ok(condominiumService.listPaginationCondominium(PageRequest.of(page, size, Sort.by(sort))));
     }
 

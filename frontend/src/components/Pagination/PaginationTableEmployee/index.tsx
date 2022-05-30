@@ -74,8 +74,6 @@ const PaginationTableEmployee = () => {
       })
     );
   };
-
-  if (propsPagination === undefined) return null;
   return (
     <PaginationItem
       propsPagination={propsPagination}
