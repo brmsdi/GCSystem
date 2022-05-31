@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { PaginationRepairRequest, RepairRequest, RepairRequestEmpty } from "types/repair-request";
 import { formatDateForView } from "utils/textFormt";
+import { repairRequestIsProgress } from "utils/verifications";
 
 const TableRepairRequest= () => {
   const dispatch = useDispatch();
@@ -147,14 +148,16 @@ const ItemTable = (props: IProps) => {
           className="btn btn-primary btn-table-options"
           onClick={(e) => props.toogleClass(item)}><span aria-hidden="true" ><i className="bi bi-clipboard-data"></i></span>
         </button>
-        <button
-          id="btn-table-repair-request-delete"
-          type="button"
-          aria-label="Deletar essa solicitação de reparo"
-          title="Deletar essa solicitação de reparo"
-          className="btn btn-danger btn-table-options"
-          onClick={() => props.clickButtonDelete(item.id)}><span aria-hidden="true"><i className="bi bi-trash"></i></span>
-        </button>        
+        { repairRequestIsProgress(item.status) ? (
+          <button
+            id="btn-table-repair-request-delete"
+            type="button"
+            aria-label="Deletar essa solicitação de reparo"
+            title="Deletar essa solicitação de reparo"
+            className="btn btn-danger btn-table-options"
+            onClick={() => props.clickButtonDelete(item.id)}><span aria-hidden="true"><i className="bi bi-trash"></i></span>
+          </button>) : null    
+        } 
         <button
           id="btn-table-repair-request-plus-info"
           type="button"

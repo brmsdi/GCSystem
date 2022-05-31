@@ -31,3 +31,8 @@ export const isSelected = (combo: Status | TypeProblem | Condominium) => {
 export const isEmpty = (item: RepairRequest[] | Employee[]) => {
     return item.length === 0
 }
+
+export const repairRequestIsProgress = (status: Status) => {
+    //return props.initForm.status.name.toLocaleUpperCase() !== "EM ANDAMENTO";
+    return status.name.toLocaleUpperCase() !== "EM ANDAMENTO";
+  }

@@ -18,6 +18,7 @@ import {
   isValidFieldNumber,
   isValidFieldText,
   isSelected,
+  repairRequestIsProgress,
 } from "utils/verifications";
 
 interface IProps {
@@ -82,10 +83,6 @@ const FormTemplate = (props: IProps) => {
 
   function changeInputItem(value: any) {
     setItem((item) => ({ ...item, ...value }));
-  }
-
-  function repairRequestIsProgress() {
-    return props.initForm.status.name.toLocaleUpperCase() !== "EM ANDAMENTO";
   }
 
   useEffect(() => {
@@ -253,7 +250,7 @@ const FormTemplate = (props: IProps) => {
     }
   }
 
-  console.log("ok " + repairRequestIsProgress());
+  console.log("ok " + repairRequestIsProgress(props.initForm.status));
   console.log("ok " + form.status.name);
 
   return (
@@ -307,7 +304,7 @@ const FormTemplate = (props: IProps) => {
               ))}
             </select>
           </div>
-          {repairRequestIsProgress() ? (
+          {repairRequestIsProgress(props.initForm.status) ? (
             <div className="form-container l2">
               <label htmlFor="inputStatus">Status</label>
               <select

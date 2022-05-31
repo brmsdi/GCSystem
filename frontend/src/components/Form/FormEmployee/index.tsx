@@ -31,6 +31,7 @@ const FormTemplate = (props: IProps) => {
     }
   }
 
+
   useEffect(() => {
     setForm(form => ({ ...form, ...props.initForm }))
   }, [props.initForm])
@@ -137,6 +138,7 @@ const FormTemplate = (props: IProps) => {
             value={form.role.id ? form.role.id : 0}
             onChange={(e) => changeRole(parseInt(e.target.value))}
           >
+            <option key={0} value={0}></option>
             {
               roles.map(role => (
                 <option 
