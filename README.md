@@ -66,6 +66,8 @@ Para a descrição completa do sistema [clique aqui](https://drive.google.com/fi
 8. Bootstrap
 9. Redux 
 10. SASS
+11. Heroku (backend e banco de dados)
+12. netlify (frontend)
 
 #### 7.	Contato
 
