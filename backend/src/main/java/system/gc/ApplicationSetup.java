@@ -75,6 +75,9 @@ public class ApplicationSetup {
     OrderServiceService orderServiceService;
 
     @Autowired
+    private DataReloadService dataReloadService;
+
+    @Autowired
     Environment environment;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -328,8 +331,16 @@ public class ApplicationSetup {
 
 
     @Bean
-    public void InitDataProfileTest() {
+    public void initDataProfileTest() {
         if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) return;
+        execute();
+    }
+
+    @Bean
+    public void initDataProfileProd()
+    {
+        if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("prod")) return;
+        dataReloadService.deleteAll();
         execute();
     }
 
