@@ -25,7 +25,7 @@ Se o site não receber tráfego em um periodo de 30 minutos, o mesmo irá adorme
 10.	Solicitar nova senha de acesso
 11.	Gerar código de troca de senha
 12.	Atualizar senha de acesso
-13.	Gerenciar solicitações
+13.	Gerenciar solicitação de reparo
 14.	Gerar ordem de serviço
 15.	Efetivar ordem de serviço
 16.	Gerar débito
