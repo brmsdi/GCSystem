@@ -36,9 +36,14 @@ public class StatusService {
     }
 
     @Transactional(readOnly = true)
-    public List<StatusDTO> findAllToView(List<String> params) {
+    public List<StatusDTO> findAllToViewDTO(List<String> params) {
         List<Status> statusList = statusRepository.findAllToView(params);
         return new StatusDTO().convertListEntityToListDTO(statusList);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Status> findAllToView(List<String> params) {
+        return statusRepository.findAllToView(params).stream().toList();
     }
 
     @Transactional

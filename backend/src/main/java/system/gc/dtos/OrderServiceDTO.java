@@ -43,8 +43,11 @@ public class OrderServiceDTO implements ConvertEntityAndDTO<OrderServiceDTO, Ord
         setReservedDate(orderService.getReservedDate());
         setCompletionDate(orderService.getCompletionDate());
         setRepairRequests(new HashSet<>());
-        for (RepairRequest repairRequest : orderService.getRepairRequests()) {
-            getRepairRequests().add(new RepairRequestDTO(repairRequest));
+        if (orderService.getRepairRequests() != null)
+        {
+            for (RepairRequest repairRequest : orderService.getRepairRequests()) {
+                getRepairRequests().add(new RepairRequestDTO(repairRequest));
+            }
         }
         setEmployees(new HashSet<>());
         EmployeeDTO employeeDTO;

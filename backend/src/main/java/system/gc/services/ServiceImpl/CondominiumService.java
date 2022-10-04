@@ -32,19 +32,9 @@ public class CondominiumService {
     @Transactional
     public CondominiumDTO save(CondominiumDTO condominiumDTO) {
         log.info("Salvando novo registro de condomínio no banco de dados: " + condominiumDTO.getName());
-        /*
-        Localization localization = localizationService.findByZipCode(condominiumDTO.getLocalization().getLocalization().getZipCode());
-        if (localization == null) {
-            localization = localizationService.save(new LocalizationDTO().toEntity(condominiumDTO.getLocalization().getLocalization()));
-            condominiumDTO.getLocalization().setLocalization(new LocalizationDTO(localization));
-        } */
         verifyLocalization(condominiumDTO);
         CondominiumDTO condominiumDTOService = new CondominiumDTO();
         Condominium registeredCondominium = condominiumRepository.save(condominiumDTOService.toEntity(condominiumDTO));
-        if (registeredCondominium.getId() == null) {
-            log.warn("Erro ao salvar!");
-            return null;
-        }
         log.info("Salvo com sucesso. ID: " + registeredCondominium.getId());
         return condominiumDTOService.toDTO(registeredCondominium);
     }

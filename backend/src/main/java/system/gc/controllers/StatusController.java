@@ -30,31 +30,31 @@ public class StatusController {
     @GetMapping(value = "condominium")
     public ResponseEntity<List<StatusDTO>> findAllToViewCondominium() {
         log.info("Listando status");
-        return ResponseEntity.ok(statusService.findAllToView(List.of("Disponível", "Indisponível", "Lotado")));
+        return ResponseEntity.ok(statusService.findAllToViewDTO(List.of("Disponível", "Indisponível", "Lotado")));
     }
 
 
     @GetMapping(value = "contract")
     public ResponseEntity<List<StatusDTO>> findAllToViewContract() {
         log.info("Listando status");
-        return ResponseEntity.ok(statusService.findAllToView(List.of("Ativo", "Encerrado", "Expirado", "Cancelado")));
+        return ResponseEntity.ok(statusService.findAllToViewDTO(List.of("Ativo", "Encerrado", "Expirado", "Cancelado")));
     }
 
     @GetMapping(value = "debt")
     public ResponseEntity<List<StatusDTO>> findAllToViewDebt() {
         log.info("Listando status");
-        return ResponseEntity.ok(statusService.findAllToView(List.of("Aberto", "Vencido", "Cancelado", "Pago")));
+        return ResponseEntity.ok(statusService.findAllToViewDTO(List.of("Aberto", "Vencido", "Cancelado", "Pago")));
     }
 
     @GetMapping(value = "repair-request")
     public ResponseEntity<List<StatusDTO>> findAllToViewRepairRequest() {
         log.info("Listando status");
-        return ResponseEntity.ok(statusService.findAllToView(List.of("Aberto", "Cancelado", "Concluído", "Em andamento")));
+        return ResponseEntity.ok(statusService.findAllToViewDTO(List.of("Aberto", "Cancelado", "Concluído", "Em andamento")));
     }
 
     @GetMapping(value = "order-service")
     public ResponseEntity<List<StatusDTO>> findAllToViewOrderService() {
         log.info("Listando status");
-        return ResponseEntity.ok(statusService.findAllToView(List.of("Aberto", "Cancelado", "Concluído")));
+        return ResponseEntity.ok(statusService.findAllToViewDTO(List.of("Aberto", "Cancelado", "Concluído")));
     }
 }

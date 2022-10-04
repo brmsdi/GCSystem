@@ -6,10 +6,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import system.gc.dtos.ContractDTO;
 import system.gc.dtos.DebtDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.services.ServiceImpl.DebtService;
@@ -71,5 +69,4 @@ public class DebtController implements ControllerPermission {
                 null,
                 LocaleContextHolder.getLocale()));
     }
-
 }

@@ -10,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.CondominiumDTO;
-import system.gc.dtos.RoleDTO;
 import system.gc.services.ServiceImpl.CondominiumService;
 
 import javax.validation.Valid;
@@ -31,13 +30,12 @@ public class CondominiumController implements ControllerPermission {
     public ResponseEntity<Page<CondominiumDTO>> listPaginationCondominium(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size,
-            @RequestParam(name = "sort", defaultValue = "name") String sort) throws InterruptedException {
+            @RequestParam(name = "sort", defaultValue = "name") String sort) {
         log.info("Listando condominios");
-        Thread.sleep(5000);
         return ResponseEntity.ok(condominiumService.listPaginationCondominium(PageRequest.of(page, size, Sort.by(sort))));
     }
 
-    @GetMapping( value = "list")
+    @GetMapping(value = "list")
     public ResponseEntity<List<CondominiumDTO>> findAll(@RequestParam(name = "sort", defaultValue = "name") String sort) {
         log.info("Listando condominios");
         return ResponseEntity.ok(condominiumService.findAll(Sort.by(sort)));

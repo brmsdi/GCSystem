@@ -3,7 +3,6 @@ package system.gc.repositories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.Employee;
 import system.gc.services.AuthenticateEntity;
@@ -11,7 +10,6 @@ import system.gc.services.ChangePasswordEntity;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer>, AuthenticateEntity<Employee>, ChangePasswordEntity<Employee> {
     @Query("SELECT employee FROM Employee employee " +

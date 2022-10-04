@@ -8,9 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import system.gc.dtos.StatusDTO;
 import system.gc.dtos.TypeProblemDTO;
-import system.gc.services.ServiceImpl.StatusService;
 import system.gc.services.ServiceImpl.TypeProblemService;
 
 import java.util.List;

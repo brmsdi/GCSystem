@@ -30,10 +30,6 @@ public class ContractService {
         log.info("Salvando novo registro de contrato no banco de dados");
         ContractDTO contractDTOService = new ContractDTO();
         Contract registeredContract = contractRepository.save(contractDTOService.toEntity(contractDTO));
-        if (registeredContract.getId() == null) {
-            log.warn("Erro ao salvar!");
-            return null;
-        }
         log.info("Salvo com sucesso. ID: " + registeredContract.getId());
         return contractDTOService.toDTO(registeredContract);
     }

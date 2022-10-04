@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.ActivityTypeDTO;
 import system.gc.entities.ActivityType;
-import system.gc.entities.Role;
-import system.gc.entities.Status;
 import system.gc.repositories.ActivityTypeRepository;
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class ActivityTypeService {
 
     @Transactional(readOnly = true)
     public ActivityType findByName(String name) {
-        return activityTypeRepository.getByName(name).orElse(null) ;
+        return activityTypeRepository.findByName(name).orElse(null) ;
     }
 
     @Transactional

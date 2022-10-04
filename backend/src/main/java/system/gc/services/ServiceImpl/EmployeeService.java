@@ -6,24 +6,20 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.configuration.exceptions.DuplicatedFieldException;
 import system.gc.dtos.EmployeeDTO;
-import system.gc.dtos.RepairRequestDTO;
 import system.gc.dtos.StatusDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.LogChangePassword;
-import system.gc.entities.RepairRequest;
 import system.gc.entities.Status;
 import system.gc.repositories.EmployeeRepository;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Wisley Bruno Marques França
@@ -36,7 +32,7 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    private EmployeeAuthenticationService employeeAuthenticationServiceImpl;
+    private EmployeeAuthenticationServiceImpl employeeAuthenticationServiceImpl;
 
     @Autowired
     private StatusService statusService;
@@ -79,11 +75,6 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Employee findByID(Integer ID) {
-        return employeeRepository.findById(ID).orElse(null);
-    }
-
-    @Transactional
     public void update(EmployeeDTO updateEmployeeDTO) throws EntityNotFoundException {
         log.info("Atualizando registro do funcionário");
         Optional<Employee> employee = employeeRepository.findById(updateEmployeeDTO.getId());
@@ -101,7 +92,6 @@ public class EmployeeService {
         Optional<Employee> employee = employeeRepository.findByCPF(employeeDTO.getCpf());
         if (employee.isEmpty()) {
             log.warn("Registro com o cpf: " + employeeDTO.getCpf() + " não foi localizado");
-            //throw new EntityNotFoundException("Cpf indisponível");
             return null;
         }
         employeeRepository.loadLazyEmployees(List.of(employee.get()));

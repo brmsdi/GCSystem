@@ -9,5 +9,4 @@ class GSystemApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

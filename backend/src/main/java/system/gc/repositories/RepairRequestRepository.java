@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.RepairRequest;
 
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 public interface RepairRequestRepository extends JpaRepository<RepairRequest, Integer> {
@@ -22,10 +23,10 @@ public interface RepairRequestRepository extends JpaRepository<RepairRequest, In
     @Query("SELECT repairRequest FROM RepairRequest repairRequest WHERE repairRequest.lessee.cpf LIKE :cpf")
     Page<RepairRequest> findRepairRequestForLessee(Pageable pageable, String cpf);
 
-    @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
-            "JOIN FETCH repairRequest.status status " +
+    @Query("SELECT COUNT(*) FROM RepairRequest repairRequest " +
+            "INNER JOIN repairRequest.status status " +
             "WHERE repairRequest IN :repairRequests AND status.id = :statusID")
-    List<RepairRequest> checkIfTheRequestIsOpen(List<RepairRequest> repairRequests, Integer statusID);
+    Long checkIfTheRequestIsOpen(List<RepairRequest> repairRequests, Integer statusID);
 
     @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
             "JOIN FETCH repairRequest.status status " +

@@ -76,33 +76,4 @@ public class OrderServiceController implements ControllerPermission {
                 null,
                 LocaleContextHolder.getLocale()));
     }
-/*
-    @PostMapping(value = "order-service/cancel")
-    public ResponseEntity<String> cancelOrderService(@RequestBody  OrderServiceDTO orderServiceDTO)
-    {
-        orderServiceService.cancelOrderService(orderServiceDTO);
-        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_CANCELED_ORDER_SUCCESS",
-                null,
-                LocaleContextHolder.getLocale()));
-    }
-
-    @PostMapping(value = "order-service/repair-requests/change")
-    public ResponseEntity<String> updateRepairRequestsFromOrderService(@Valid @RequestBody OrderServiceDTO orderServiceDTO) {
-        log.info("Atualizando solicitações de reparo da OS");
-        orderServiceService.updateRepairRequestsFromOrderService(orderServiceDTO);
-        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
-                null,
-                LocaleContextHolder.getLocale()));
-    }
-
-    @PostMapping(value = "order-service/employees/change")
-    public ResponseEntity<String> updateEmployeesFromOrderService(@Valid @RequestBody OrderServiceDTO orderServiceDTO) {
-        log.info("Atualizando solicitações de reparo da OS");
-        orderServiceService.updateEmployeesFromOrderService(orderServiceDTO);
-        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
-                null,
-                LocaleContextHolder.getLocale()));
-    }
-
- */
 }

@@ -45,8 +45,8 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         setTypeProblem(typeProblem);
         setLessee(lessee);
         setCondominium(condominium);
-        setStatus(status);
         setApartmentNumber(apartmentNumber);
+        setStatus(status);
     }
 
     public RepairRequestDTO(RepairRequest repairRequest) {
