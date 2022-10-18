@@ -1,7 +1,6 @@
 package system.gc.configuration.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
-import org.postgresql.util.PSQLException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -19,12 +18,10 @@ import system.gc.dtos.ErrorDTO;
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @ControllerAdvice
 @Slf4j
 public class ExceptionHandlerAdvice {
-    private static final String UNKNOWN_ERROR_KEY = "unknown.error";
     private final MessageSource messageSource;
 
     public ExceptionHandlerAdvice(MessageSource messageSource) {

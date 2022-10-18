@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
-import system.gc.dtos.RepairRequestDTO;
 import system.gc.dtos.StatusDTO;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;

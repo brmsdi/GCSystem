@@ -2,12 +2,7 @@ package system.gc.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
-import system.gc.entities.ActivityType;
-import system.gc.entities.Debt;
-import system.gc.entities.Employee;
 import system.gc.entities.Movement;
-
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 

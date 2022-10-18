@@ -3,10 +3,8 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Lessee;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -27,7 +25,8 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
     private String cpf;
 
     @NotNull(message = "{required.validation}")
-    private Date birthDate;
+    @NotBlank(message = "{required.validation}")
+    private String birthDate;
 
     @NotNull(message = "{required.validation}")
     @NotBlank(message = "{required.validation}")
@@ -53,7 +52,7 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
         setCpf(cpf);
     }
 
-    public LesseeDTO(String name, String rg, String cpf, Date birthDate, String email, String contactNumber, String password, StatusDTO status) {
+    public LesseeDTO(String name, String rg, String cpf, String birthDate, String email, String contactNumber, String password, StatusDTO status) {
         setName(name);
         setRg(rg);
         setCpf(cpf);

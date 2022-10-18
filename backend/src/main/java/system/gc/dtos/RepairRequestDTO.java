@@ -3,10 +3,8 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Condominium;
-import system.gc.entities.Employee;
 import system.gc.entities.Lessee;
 import system.gc.entities.RepairRequest;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;

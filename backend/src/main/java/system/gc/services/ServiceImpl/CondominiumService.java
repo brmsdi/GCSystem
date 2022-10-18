@@ -8,9 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.CondominiumDTO;
 import system.gc.dtos.LocalizationDTO;
-import system.gc.dtos.RoleDTO;
 import system.gc.entities.Condominium;
-import system.gc.entities.Employee;
 import system.gc.entities.Localization;
 import system.gc.repositories.CondominiumRepository;
 

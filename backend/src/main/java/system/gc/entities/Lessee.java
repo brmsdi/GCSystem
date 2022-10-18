@@ -2,12 +2,10 @@ package system.gc.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -33,7 +31,8 @@ public class Lessee implements Serializable {
     private String cpf;
 
     @NotNull
-    private Date birthDate;
+    @NotBlank
+    private String birthDate;
 
     @NotNull
     @NotBlank
@@ -63,7 +62,7 @@ public class Lessee implements Serializable {
 
     public Lessee() {}
 
-    public Lessee(String name, String rg, String cpf, Date birthDate, String email, String contactNumber, String password, Status status, Set<Debt> debts, Set<Contract> contracts) {
+    public Lessee(String name, String rg, String cpf, String birthDate, String email, String contactNumber, String password, Status status, Set<Debt> debts, Set<Contract> contracts) {
         setName(name);
         setRg(rg);
         setCpf(cpf);

@@ -63,7 +63,7 @@ public interface ConvertEntityAndDTO<DTO, E> {
 
     @Deprecated
     private void executeConversion(DTO newDTO, E entity, Method getMethod) throws InvocationTargetException, IllegalAccessException {
-        Object returnedValueMethod = getMethod.invoke(entity, null);
+        Object returnedValueMethod = getMethod.invoke(entity, new Object() {});
         Method[] setMethods = newDTO.getClass().getDeclaredMethods();
         for (Method setMethod : setMethods) {
             if (setMethod.getName().toUpperCase().contains("SET")
@@ -93,7 +93,7 @@ public interface ConvertEntityAndDTO<DTO, E> {
 
     @Deprecated
     private void executeConversionToEntity(DTO objectDTO, E newEntity, Method getMethod) throws InvocationTargetException, IllegalAccessException {
-        Object returnedValueMethod = getMethod.invoke(objectDTO, null);
+        Object returnedValueMethod = getMethod.invoke(objectDTO, new Object() {});
         Method[] setMethods = newEntity.getClass().getDeclaredMethods();
         for (Method setMethod : setMethods) {
             if (setMethod.getName().toUpperCase().contains("SET")

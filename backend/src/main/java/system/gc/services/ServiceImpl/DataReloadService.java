@@ -33,6 +33,9 @@ public class DataReloadService {
     private CondominiumService condominiumService;
 
     @Autowired
+    private LocalizationCondominiumService localizationCondominiumService;
+
+    @Autowired
     private LocalizationService localizationService;
 
     @Autowired
@@ -61,6 +64,7 @@ public class DataReloadService {
         activityTypeService.deleteAll();
         contractService.deleteAll();
         condominiumService.deleteAll();
+        localizationCondominiumService.daleteAll();
         localizationService.deleteAll();
         lesseeService.deleteAll();
         orderServiceService.deleteAll();

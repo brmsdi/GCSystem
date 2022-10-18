@@ -1,0 +1,3 @@
+package system.gc.configuration;
+
+public class DefaultInitUsernamePasswordAuthenticationFilter implements InitUsernamePasswordAuthenticationFilter {}

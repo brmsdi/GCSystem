@@ -6,7 +6,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.TypeProblemDTO;
-import system.gc.entities.ActivityType;
 import system.gc.entities.TypeProblem;
 import system.gc.repositories.TypeProblemRepository;
 

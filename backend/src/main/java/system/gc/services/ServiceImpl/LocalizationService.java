@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.LocalizationDTO;
 import system.gc.entities.Localization;
 import system.gc.repositories.LocalizationRepository;
-
 import java.util.List;
 import java.util.Optional;
 

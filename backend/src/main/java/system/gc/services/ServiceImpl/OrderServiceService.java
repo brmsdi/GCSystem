@@ -12,7 +12,6 @@ import system.gc.entities.OrderService;
 import system.gc.entities.RepairRequest;
 import system.gc.entities.Status;
 import system.gc.repositories.OrderServiceRepository;
-
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
@@ -122,6 +121,7 @@ public class OrderServiceService {
         Optional<OrderService> optionalOrderService = orderServiceRepository.findById(orderServiceDTO.getId());
         optionalOrderService.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
         OrderService orderService = optionalOrderService.get();
+        initializeStatus(List.of("Concluído"));
         closeOrderService(orderService);
         orderServiceRepository.save(orderService);
     }

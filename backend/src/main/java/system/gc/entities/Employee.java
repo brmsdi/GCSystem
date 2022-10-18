@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -32,14 +31,18 @@ public class Employee implements Serializable {
     @Column(unique = true)
     private String cpf;
 
-    private Date birthDate;
+    @NotNull
+    @NotBlank
+    private String birthDate;
 
     @NotNull
     @NotBlank
     @Column(unique = true)
     private String email;
-
-    private Date hiringDate;
+    
+    @NotNull
+    @NotBlank
+    private String hiringDate;
 
     @NotNull
     @NotBlank
@@ -64,7 +67,7 @@ public class Employee implements Serializable {
 
     public Employee() {}
 
-    public Employee(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, Role role, Set<Movement> movements, Status status) {
+    public Employee(String name, String rg, String cpf, String birthDate, String email, String hiringDate, String password, Role role, Set<Movement> movements, Status status) {
         setName(name);
         setRg(rg);
         setCpf(cpf);

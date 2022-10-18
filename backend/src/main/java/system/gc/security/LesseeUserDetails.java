@@ -3,7 +3,6 @@ package system.gc.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import system.gc.dtos.LesseeDTO;
 import system.gc.entities.Lessee;
 
 import java.util.ArrayList;

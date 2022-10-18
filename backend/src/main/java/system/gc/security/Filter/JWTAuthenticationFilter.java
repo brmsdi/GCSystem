@@ -9,8 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
-import system.gc.dtos.EmployeeDTO;
-import system.gc.dtos.LesseeDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.Lessee;
 import system.gc.security.EmployeeUserDetails;

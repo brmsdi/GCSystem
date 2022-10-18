@@ -86,6 +86,7 @@ public class ApplicationSetup {
     ZonedDateTime tomorrow = today.plusDays(today.getDayOfWeek() == FRIDAY ? 2 : 1 );
     ZonedDateTime sixMonths = today.plusMonths(6);
     ZonedDateTime oneMonthAgo = today.minusDays(30);
+    
 
     @SneakyThrows
     @Transactional
@@ -143,12 +144,12 @@ public class ApplicationSetup {
         try
         {
             // EMPLOYEE
-            EmployeeDTO employeeDTOWisley = employeeService.save(new EmployeeDTO("Wisley Bruno Marques França",
+            employeeService.save(new EmployeeDTO("Wisley Bruno Marques França",
                     "2343435",
                     "12345678910",
-                    simpleDateFormat.parse("1995-12-06"),
+                    "06/12/1995",
                     "srmarquesms@gmail.com",
-                    simpleDateFormat.parse("2022-01-01"),
+                    "01/01/2022",
                     "admin",
                     new RoleDTO(roleADM),
                     null,
@@ -166,9 +167,9 @@ public class ApplicationSetup {
                     "Eliza Maciel",
                     "6658578",
                     "62578672380",
-                    "2000-04-07",
+                    "07/04/2000",
                     "eliza.exemple@gmail.com",
-                    "2022-01-04",
+                    "04/01/2022",
                     "eliza123",
                     roleCounter,
                     null,
@@ -178,9 +179,9 @@ public class ApplicationSetup {
                     "Amanda Silva",
                     "695854",
                     "12578678980",
-                    "2000-12-07",
+                    "07/12/2000",
                     "amanda.exemple@gmail.com",
-                    "2022-01-04",
+                    "04/01/2022",
                     "amanda123",
                     roleAssistant,
                     null,
@@ -190,9 +191,9 @@ public class ApplicationSetup {
                     "Rafael Almeida",
                     "6958534",
                     "12578678342",
-                    "2000-12-08",
+                    "08/12/2000",
                     "rafael.exemple@gmail.com",
-                    "2022-01-04",
+                    "04/01/2022",
                     "rafael123",
                     electrician,
                     null,
@@ -202,9 +203,9 @@ public class ApplicationSetup {
                     "Antonio Junior",
                     "3951534",
                     "72558678342",
-                    "2000-09-08",
+                    "08/09/2000",
                     "antonio.exemple@gmail.com",
-                    "2022-01-04",
+                    "04/01/2022",
                     "antonio123",
                     plumber,
                     null,
@@ -214,9 +215,9 @@ public class ApplicationSetup {
                     "Jeferson da Silva",
                     "59678534",
                     "90358178342",
-                    "2000-01-08",
+                    "08/01/2000",
                     "jeferson.exemple@gmail.com",
-                    "2022-01-04",
+                    "04/01/2022",
                     "jeferson123",
                     generalServices,
                     null,
@@ -232,7 +233,7 @@ public class ApplicationSetup {
                     20,
                     new StatusDTO(statusAvailable),
                     new LocalizationCondominiumDTO("500", localizationDTO));
-            CondominiumDTO condominiumDTO2Saved = condominiumService.save(condominiumDTO);
+            condominiumService.save(condominiumDTO);
             for (int i = 2; i < 8; i++) {
                 initializeCondominium(
                         "CONDOMÍNIO-" + i,
@@ -248,20 +249,20 @@ public class ApplicationSetup {
                     "Rafael da Silva Monteiro",
                     "63598623",
                     "12563256347",
-                    simpleDateFormat.parse("2003-06-02"),
+                    "02/06/2003",
                     "brmarques.dev@gmail.com",
                     "92941571491",
                     "rafael123",
                     new StatusDTO(statusActive)
             );
 
-            LesseeDTO lesseeDTODEVSave = lesseeService.save(lesseeDTODEV);
+            lesseeService.save(lesseeDTODEV);
 
             LesseeDTO lesseeDTODEV2 = new LesseeDTO(
                     "Juliana Costa da Silva",
                     "78598423",
                     "45565625634",
-                    simpleDateFormat.parse("1992-06-02"),
+                    "02/06/1992",
                     "example-juliana@gmail.com",
                     "92991471431",
                     "juliana123",
@@ -275,7 +276,7 @@ public class ApplicationSetup {
                         "Locatário " + i,
                         "635986" + i,
                         "1256325667" + i,
-                        "2003-06-02",
+                        "02/06/2003",
                         String.format("example-%d@gmail.com", i),
                         "9298863526" + i,
                         "785452545" + i,
@@ -329,10 +330,17 @@ public class ApplicationSetup {
         }
     }
 
-
     @Bean
     public void initDataProfileTest() {
         if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("test")) return;
+        execute();
+    }
+
+    @Bean
+    public void initDataProfileDev()
+    {
+        if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("dev")) return;
+        dataReloadService.deleteAll();
         execute();
     }
 
@@ -360,9 +368,9 @@ public class ApplicationSetup {
                 name,
                 rg,
                 cpf,
-                simpleDateFormat.parse(birthDate),
+                birthDate,
                 email,
-                simpleDateFormat.parse(hiringDate),
+                hiringDate,
                 password,
                 new RoleDTO(role),
                 movements,
@@ -401,33 +409,13 @@ public class ApplicationSetup {
                 name,
                 rg,
                 cpf,
-                simpleDateFormat.parse(birthDate),
+                birthDate,
                 email,
                 contactNumber,
                 password,
                 new StatusDTO(status)
         );
         lesseeService.save(lesseeDTO);
-    }
-
-    private void initializeContract(
-            double contractValue,
-            int monthlyPaymentDate,
-            int monthlyDueDate,
-            int apartmentNumber,
-            Status status,
-            CondominiumDTO condominium,
-            LesseeDTO lessee) throws ParseException {
-        ContractDTO contractDTO = new ContractDTO(simpleDateFormat.parse(today.toString()),
-                contractValue,
-                monthlyPaymentDate,
-                monthlyDueDate,
-                simpleDateFormat.parse(sixMonths.toString()),
-                apartmentNumber,
-                new StatusDTO(status),
-                condominium,
-                lessee);
-        contractService.save(contractDTO);
     }
 
     private void initializeContract(

@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  gcsystem-container:
+    image: gcsystem-image
+    ports:
+      - "8080:8080"
+    networks:
+      - gcsystem-net
+networks:
+  gcsystem-net:

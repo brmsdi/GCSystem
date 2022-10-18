@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.RoleDTO;
 import system.gc.entities.Role;
-import system.gc.entities.Status;
 import system.gc.repositories.RoleRepository;
-
 import java.util.List;
 
 /**

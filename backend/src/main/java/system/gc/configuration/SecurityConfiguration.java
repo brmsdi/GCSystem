@@ -5,14 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -22,7 +20,6 @@ import system.gc.security.EmployeeUserDetailsService;
 import system.gc.security.Filter.*;
 import system.gc.security.LesseeUserDetailsService;
 import system.gc.utils.TextUtils;
-
 import java.util.List;
 
 @Configuration
@@ -33,19 +30,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    final EmployeeUserDetailsService employeeUserDetailsService;
+    private final EmployeeUserDetailsService employeeUserDetailsService;
 
-    final LesseeUserDetailsService lesseeUserDetailsService;
+    private final LesseeUserDetailsService lesseeUserDetailsService;
 
-    ProviderManager employeeProviderManager;
+    private ProviderManager employeeProviderManager;
 
-    ProviderManager lesseeProviderManager;
+    private ProviderManager lesseeProviderManager;
+
+    private final DefaultInitUsernamePasswordAuthenticationFilter defaultInitUsernamePasswordAuthenticationFilter = new DefaultInitUsernamePasswordAuthenticationFilter();
 
     protected SecurityConfiguration(EmployeeUserDetailsService employeeUserDetailsService, LesseeUserDetailsService lesseeUserDetailsService) {
         this.employeeUserDetailsService = employeeUserDetailsService;
         this.lesseeUserDetailsService = lesseeUserDetailsService;
-        this.employeeProviderManager = new ProviderManager(employeeDaoAuthenticationManagerProvider(this.employeeUserDetailsService));
-        this.lesseeProviderManager = new ProviderManager(lesseeDaoAuthenticationManagerProvider(this.lesseeUserDetailsService));
+        this.employeeProviderManager = new ProviderManager(GCSystemDaoAuthenticationManagerProvider.create(this.employeeUserDetailsService, new DaoAuthenticationProvider(), new BCryptPasswordEncoder()));
+        this.lesseeProviderManager = new ProviderManager(GCSystemDaoAuthenticationManagerProvider.create(this.lesseeUserDetailsService, new DaoAuthenticationProvider(), new BCryptPasswordEncoder()));
     }
 
     @Override
@@ -79,30 +78,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
     }
 
-    public DaoAuthenticationProvider employeeDaoAuthenticationManagerProvider(UserDetailsService userDetailsService) {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
-        return authenticationProvider;
-    }
-
-    private DaoAuthenticationProvider lesseeDaoAuthenticationManagerProvider(LesseeUserDetailsService lesseeUserDetailsService) {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(lesseeUserDetailsService);
-        authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
-        return authenticationProvider;
-    }
-
     @Bean
     public UsernamePasswordAuthenticationFilter employeeUsernamePasswordAuthenticationFilter() {
-        return initUsernamePasswordAuthenticationFilter("/employees/login",
+        return defaultInitUsernamePasswordAuthenticationFilter.init("/employees/login",
                 new EmployeeAuthenticationFilter(),
                 employeeProviderManager);
     }
 
     @Bean
     public UsernamePasswordAuthenticationFilter lesseeUsernamePasswordAuthenticationFilter() {
-        return initUsernamePasswordAuthenticationFilter("/lessees/login",
+        return defaultInitUsernamePasswordAuthenticationFilter.init("/lessees/login",
                 new LesseeAuthenticationFilter(),
                 lesseeProviderManager);
     }
@@ -110,15 +95,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public JWTAuthenticationFilter jwtAuthenticationFilter2() {
         return new JWTAuthenticationFilter();
-    }
-
-    private UsernamePasswordAuthenticationFilter initUsernamePasswordAuthenticationFilter(String url,
-                                                                                          UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter,
-                                                                                          AuthenticationManager authenticationManager) {
-
-        usernamePasswordAuthenticationFilter.setFilterProcessesUrl(url);
-        usernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager);
-        return usernamePasswordAuthenticationFilter;
     }
 
     @Bean
