@@ -4,7 +4,8 @@ import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { Employee } from "types/employee";
 import { Role } from "types/role";
-import { formatDate } from "utils/textFormt";
+
+import DatePicker from "react-datepicker"
 
 interface IProps { initForm: Employee, 
   stateForm: StateFormEnum, 
@@ -30,7 +31,6 @@ const FormTemplate = (props: IProps) => {
       }
     }
   }
-
 
   useEffect(() => {
     setForm(form => ({ ...form, ...props.initForm }))
@@ -65,12 +65,14 @@ const FormTemplate = (props: IProps) => {
   async function clearForm() {
     setForm({...props.initForm})
   }
+
+  console.log("RENDER");
   
   return (
     <form onSubmit={submit}>
       <div className="row-form-1">
         <div className="form-container l4">
-          <label htmlFor="inpturName">Nome</label>
+          <label htmlFor="inputName">Nome</label>
           <input
             type="text"
             id="inputName"
@@ -107,13 +109,11 @@ const FormTemplate = (props: IProps) => {
         </div>
         <div className="form-container l2">
           <label htmlFor="inputBirth">Nascimento</label>
-          <input
-            type="date"
-            id="inputBirth"
-            name="birthDate"
-            value={form.birthDate.length > 0 ? formatDate(form.birthDate) : form.birthDate}
-            onChange={(e) => changeInput({ birthDate: e.target.value })}
-            required
+          <DatePicker 
+          selected={form.birthDate !== null ? new Date(form.birthDate) : null} 
+          onChange={(date: Date) => changeInput({ birthDate: date })}
+          dateFormat={"dd/MM/yyyy"}
+          required
           />
         </div>
       </div>
@@ -150,14 +150,12 @@ const FormTemplate = (props: IProps) => {
         </div>
         <div className="form-container l2">
           <label htmlFor="inputHiring">Contratação</label>
-          <input
-            type="date"
-            id="inputHiring"
-            name="hiringDate"
-            value={form.hiringDate.length > 0 ? formatDate(form.hiringDate) : form.hiringDate}
-            onChange={(e) => changeInput({ hiringDate: e.target.value })}
-            required />
-
+          <DatePicker 
+          selected={form.hiringDate !== null ? new Date(form.hiringDate) : null} 
+          onChange={(date: Date) => changeInput({ hiringDate: date })}
+          dateFormat={"dd/MM/yyyy"}
+          required
+          />
         </div>
         {props.isActivedFieldPassword === true ? (
           <div className="form-container l2">

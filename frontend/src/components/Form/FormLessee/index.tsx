@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { StateFormEnum } from "types/action";
 import { Lessee } from "types/lessee";
-import { formatDate } from "utils/textFormt";
+import DatePicker from "react-datepicker"
 
 interface IProps {
   initForm: Lessee;
@@ -78,17 +78,11 @@ const FormTemplate = (props: IProps) => {
         </div>
         <div className="form-container l2">
           <label htmlFor="inputBirth">Nascimento</label>
-          <input
-            type="date"
-            id="inputBirth"
-            name="birthDate"
-            value={
-              form.birthDate.length > 0
-                ? formatDate(form.birthDate)
-                : form.birthDate
-            }
-            onChange={(e) => changeInput({ birthDate: e.target.value })}
-            required
+          <DatePicker 
+          selected={form.birthDate !== null ? new Date(form.birthDate) : null} 
+          onChange={(date: Date) => changeInput({ birthDate: date })}
+          dateFormat={"dd/MM/yyyy"}
+          required
           />
         </div>
       </div>

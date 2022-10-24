@@ -2,11 +2,13 @@ package system.gc.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -32,8 +34,7 @@ public class Employee implements Serializable {
     private String cpf;
 
     @NotNull
-    @NotBlank
-    private String birthDate;
+    private Date birthDate;
 
     @NotNull
     @NotBlank
@@ -41,8 +42,7 @@ public class Employee implements Serializable {
     private String email;
     
     @NotNull
-    @NotBlank
-    private String hiringDate;
+    private Date hiringDate;
 
     @NotNull
     @NotBlank
@@ -67,7 +67,7 @@ public class Employee implements Serializable {
 
     public Employee() {}
 
-    public Employee(String name, String rg, String cpf, String birthDate, String email, String hiringDate, String password, Role role, Set<Movement> movements, Status status) {
+    public Employee(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, Role role, Set<Movement> movements, Status status) {
         setName(name);
         setRg(rg);
         setCpf(cpf);

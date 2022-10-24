@@ -5,7 +5,7 @@ import { selectDetailsModalOrderService } from "store/OrderServices/order-servic
 import { customStyles } from "types/modal";
 import { OrderService, OrderServiceEmpty } from "types/order-service";
 import { statusColor } from "utils/format-color";
-import { formatDateForView } from "utils/textFormt";
+import { formatDateForView } from "utils/text-format";
 
 Modal.setAppElement("#root");
 

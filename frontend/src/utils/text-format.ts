@@ -19,3 +19,8 @@ export const formatLocalizationViewInformation = (localization: LocalizationCond
     if(localization.number === '0') return '';
     return localization.localization.road + ', ' + localization.number + ' - ' + localization.localization.name;
 }
+
+export const formatDateToView = (value : Date | null) => {
+    if (value === null) return 'NaN/NaN/NaN';
+    return new Date(value).toLocaleDateString('pt-BR', {timeZone: 'America/Manaus'});
+}

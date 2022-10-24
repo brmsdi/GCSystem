@@ -5,7 +5,7 @@ export type Lessee = {
     name: string;
     rg: string;
     cpf: string;
-    birthDate: string;
+    birthDate: Date | null;
     email: string;
     contactNumber: string;
     status: Status;
@@ -50,7 +50,7 @@ export const LesseeEmpty : Lessee = {
     name: '',
     rg: '',
     cpf: '',
-    birthDate: '',
+    birthDate: null,
     email: '',
     contactNumber: '',
     status: {

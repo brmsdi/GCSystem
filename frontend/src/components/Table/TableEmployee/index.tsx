@@ -10,7 +10,7 @@ import { selectAllEmployees } from "store/Employees/employees.selectors";
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { Employee, PaginationEmployee } from "types/employee";
-import { formatDateForView } from "utils/textFormt";
+import { formatDateToView } from "utils/text-format";
 const TableEmployee = () => {
   const dispatch = useDispatch();
   const page: PaginationEmployee = useSelector(selectAllEmployees);
@@ -108,7 +108,7 @@ const ItemTable = (props: IProps) => {
       <th className="thead-min">Cargo</th>
       <td>{item.role.name}</td>
       <th className="thead-min">Data de contratação</th>
-      <td>{formatDateForView(item.hiringDate)}</td>
+      <td>{formatDateToView(item.hiringDate)}</td>
       <th className="thead-min">Opções</th>
       <td>
         <button

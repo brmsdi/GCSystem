@@ -38,7 +38,7 @@ const HomeView = () => {
             <Balloon
               id={"balloon-github"}
               title={"GitHub"}
-              link="https://github.com/brmsdi"
+              link="https://github.com/brmsdi/GCSystem"
               icon="bi bi-github"
             />
           </div>

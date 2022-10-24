@@ -4,7 +4,7 @@ import ModalDetailsOrderService from "components/Modal/ModalDetailsOrderService"
 import { useSelector } from "react-redux";
 import { selectAllOrderServices } from "store/OrderServices/order-services.selector";
 import { OrderService, PaginationOrderService } from "types/order-service";
-import { formatDateForView } from "utils/textFormt";
+import { formatDateForView } from "utils/text-format";
 
 const TableOrderService = () => {
   const page: PaginationOrderService = useSelector(selectAllOrderServices);

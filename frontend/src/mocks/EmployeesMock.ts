@@ -10,13 +10,13 @@ export function getAllEmployeesMock(number: number ): Employee[] {
       name: "Wisley Bruno Marques França",
       rg: "1235265",
       cpf: "02356325536",
-      birthDate: "01/08/1997",
+      birthDate: new Date(),
       email: "srmarquesms@gmail.com",
       role: {
         id: 1,
         name: "Analista de sistemas"
       },
-      hiringDate: "01/01/2022",
+      hiringDate: new Date(),
       status: {
         id: 1,
         name: "Ativo"
@@ -28,13 +28,13 @@ export function getAllEmployeesMock(number: number ): Employee[] {
       name: "Wisley Bruno Marques França",
       rg: "1235265",
       cpf: "02356325536",
-      birthDate: "01/08/1997",
+      birthDate: new Date(),
       email: "srmarquesms@gmail.com",
       role: {
         id: 1,
         name: "Analista de sistemas"
       },
-      hiringDate: "01/01/2022",
+      hiringDate: new Date(),
       status: {
         id: 1,
         name: "Ativo"
@@ -46,13 +46,13 @@ export function getAllEmployeesMock(number: number ): Employee[] {
       name: "Wisley Bruno Marques França",
       rg: "1235265",
       cpf: "02356325536",
-      birthDate: "01/08/1997",
+      birthDate: new Date(),
       email: "srmarquesms@gmail.com",
       role: {
         id: 1,
         name: "Analista de sistemas"
       },
-      hiringDate: "01/01/2022",
+      hiringDate: new Date(),
       status: {
         id: 1,
         name: "Ativo"
@@ -64,13 +64,13 @@ export function getAllEmployeesMock(number: number ): Employee[] {
       name: "Wisley Bruno Marques França",
       rg: "1235265",
       cpf: "02356325536",
-      birthDate: "01/08/1997",
+      birthDate: new Date(),
       email: "srmarquesms@gmail.com",
       role: {
         id: 1,
         name: "Analista de sistemas"
       },
-      hiringDate: "01/01/2022",
+      hiringDate: new Date(),
       status: {
         id: 1,
         name: "Ativo"
@@ -82,13 +82,13 @@ export function getAllEmployeesMock(number: number ): Employee[] {
       name: "Wisley Bruno Marques França",
       rg: "1235265",
       cpf: "02356325536",
-      birthDate: "01/08/1997",
+      birthDate: new Date(),
       email: "srmarquesms@gmail.com",
       role: {
         id: 1,
         name: "Analista de sistemas"
       },
-      hiringDate: "01/01/2022",
+      hiringDate: new Date(),
       status: {
         id: 1,
         name: "Ativo"

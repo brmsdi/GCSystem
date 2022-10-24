@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { Contract, PaginationContract } from "types/contract";
 import { formatCoinPTBRForView } from "utils/coin-format";
-import { formatDateForView } from "utils/textFormt";
+import { formatDateForView } from "utils/text-format";
 import { CONTRACTS_HOME_URL, CONTRACTS_PRINTOUT_URL } from "utils/urls";
 const TableContract = () => {
   const dispatch = useDispatch();

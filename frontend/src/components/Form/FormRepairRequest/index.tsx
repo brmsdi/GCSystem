@@ -12,7 +12,7 @@ import { Lessee } from "types/lessee";
 import { RepairRequest } from "types/repair-request";
 import { Status } from "types/status";
 import { TypeProblem } from "types/type-problem";
-import { formatDate } from "utils/textFormt";
+import { formatDate } from "utils/text-format";
 import {
   isValidFieldCPF,
   isValidFieldNumber,

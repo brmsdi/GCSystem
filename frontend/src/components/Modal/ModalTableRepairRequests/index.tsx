@@ -13,7 +13,7 @@ import {
 import { selectSelectedRepairRequestsOrderService } from "store/RepairRequests/repair-requests.selector";
 import { OrderService } from "types/order-service";
 import { RepairRequest } from "types/repair-request";
-import { formatDateForView } from "utils/textFormt";
+import { formatDateForView } from "utils/text-format";
 
 const ModalTableRepairRequests = () => {
   const dispatch = useDispatch();

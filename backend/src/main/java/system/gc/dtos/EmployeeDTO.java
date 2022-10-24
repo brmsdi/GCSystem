@@ -5,6 +5,7 @@ import lombok.Setter;
 import system.gc.entities.Employee;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -28,16 +29,14 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
     private String cpf;
 
     @NotNull(message = "{required.validation}")
-    @NotBlank(message = "{required.validation}")
-    private String birthDate;
+    private Date birthDate;
 
     @NotNull(message = "{required.validation}")
     @NotBlank(message = "{required.validation}")
     private String email;
 
     @NotNull(message = "{required.validation}")
-    @NotBlank(message = "{required.validation}")
-    private String hiringDate;
+    private Date hiringDate;
 
     private String password;
 
@@ -55,7 +54,7 @@ public class EmployeeDTO implements ConvertEntityAndDTO<EmployeeDTO, Employee>, 
         setCpf(cpf);
     }
 
-    public EmployeeDTO(String name, String rg, String cpf, String birthDate, String email, String hiringDate, String password, RoleDTO role, Set<MovementDTO> movements, StatusDTO status) {
+    public EmployeeDTO(String name, String rg, String cpf, Date birthDate, String email, Date hiringDate, String password, RoleDTO role, Set<MovementDTO> movements, StatusDTO status) {
         setName(name);
         setRg(rg);
         setCpf(cpf);

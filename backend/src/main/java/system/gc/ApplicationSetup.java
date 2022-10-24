@@ -82,11 +82,17 @@ public class ApplicationSetup {
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static final String TIME_ZONE = "America/Manaus";
+
+    /**
+     *
+     */
+    private static final ZoneId zoneManaus = ZoneId.of(TIME_ZONE);
     ZonedDateTime today = ZonedDateTime.now(ZoneId.of(TIME_ZONE));
     ZonedDateTime tomorrow = today.plusDays(today.getDayOfWeek() == FRIDAY ? 2 : 1 );
-    ZonedDateTime sixMonths = today.plusMonths(6);
+
     ZonedDateTime oneMonthAgo = today.minusDays(30);
-    
+
+    Date hiringDate = Date.from(ZonedDateTime.of(2022, 1, 4, 8, 0, 0, 0, zoneManaus).toInstant());
 
     @SneakyThrows
     @Transactional
@@ -147,9 +153,9 @@ public class ApplicationSetup {
             employeeService.save(new EmployeeDTO("Wisley Bruno Marques França",
                     "2343435",
                     "12345678910",
-                    "06/12/1995",
+                    Date.from(ZonedDateTime.of(1995, 12, 6, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "srmarquesms@gmail.com",
-                    "01/01/2022",
+                    Date.from(ZonedDateTime.of(2022, 1, 1, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "admin",
                     new RoleDTO(roleADM),
                     null,
@@ -167,9 +173,9 @@ public class ApplicationSetup {
                     "Eliza Maciel",
                     "6658578",
                     "62578672380",
-                    "07/04/2000",
+                    Date.from(ZonedDateTime.of(2000, 4, 7, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "eliza.exemple@gmail.com",
-                    "04/01/2022",
+                    hiringDate,
                     "eliza123",
                     roleCounter,
                     null,
@@ -179,9 +185,9 @@ public class ApplicationSetup {
                     "Amanda Silva",
                     "695854",
                     "12578678980",
-                    "07/12/2000",
+                    Date.from(ZonedDateTime.of(2000, 12, 7, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "amanda.exemple@gmail.com",
-                    "04/01/2022",
+                    hiringDate,
                     "amanda123",
                     roleAssistant,
                     null,
@@ -191,9 +197,9 @@ public class ApplicationSetup {
                     "Rafael Almeida",
                     "6958534",
                     "12578678342",
-                    "08/12/2000",
+                    Date.from(ZonedDateTime.of(2000, 12, 8, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "rafael.exemple@gmail.com",
-                    "04/01/2022",
+                    hiringDate,
                     "rafael123",
                     electrician,
                     null,
@@ -203,9 +209,9 @@ public class ApplicationSetup {
                     "Antonio Junior",
                     "3951534",
                     "72558678342",
-                    "08/09/2000",
+                    Date.from(ZonedDateTime.of(2000, 9, 8, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "antonio.exemple@gmail.com",
-                    "04/01/2022",
+                    hiringDate,
                     "antonio123",
                     plumber,
                     null,
@@ -215,9 +221,9 @@ public class ApplicationSetup {
                     "Jeferson da Silva",
                     "59678534",
                     "90358178342",
-                    "08/01/2000",
+                    Date.from(ZonedDateTime.of(2000, 1, 8, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "jeferson.exemple@gmail.com",
-                    "04/01/2022",
+                    hiringDate,
                     "jeferson123",
                     generalServices,
                     null,
@@ -249,7 +255,7 @@ public class ApplicationSetup {
                     "Rafael da Silva Monteiro",
                     "63598623",
                     "12563256347",
-                    "02/06/2003",
+                    Date.from(ZonedDateTime.of(2003, 6, 2, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "brmarques.dev@gmail.com",
                     "92941571491",
                     "rafael123",
@@ -262,7 +268,7 @@ public class ApplicationSetup {
                     "Juliana Costa da Silva",
                     "78598423",
                     "45565625634",
-                    "02/06/1992",
+                    Date.from(ZonedDateTime.of(1992, 6, 2, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "example-juliana@gmail.com",
                     "92991471431",
                     "juliana123",
@@ -276,7 +282,7 @@ public class ApplicationSetup {
                         "Locatário " + i,
                         "635986" + i,
                         "1256325667" + i,
-                        "02/06/2003",
+                        Date.from(ZonedDateTime.of(2003, 6, 2, 8, 0, 0, 0, zoneManaus).toInstant()),
                         String.format("example-%d@gmail.com", i),
                         "9298863526" + i,
                         "785452545" + i,
@@ -339,7 +345,7 @@ public class ApplicationSetup {
     @Bean
     public void initDataProfileDev()
     {
-        if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("dev")) return;
+        if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("development")) return;
         dataReloadService.deleteAll();
         execute();
     }
@@ -347,7 +353,7 @@ public class ApplicationSetup {
     @Bean
     public void initDataProfileProd()
     {
-        if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("prod")) return;
+        if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("production")) return;
         dataReloadService.deleteAll();
         execute();
     }
@@ -356,9 +362,9 @@ public class ApplicationSetup {
             String name,
             String rg,
             String cpf,
-            String birthDate,
+            Date birthDate,
             String email,
-            String hiringDate,
+            Date hiringDate,
             String password,
             Role role,
             Set<MovementDTO> movements,
@@ -399,7 +405,7 @@ public class ApplicationSetup {
             String name,
             String rg,
             String cpf,
-            String birthDate,
+            Date birthDate,
             String email,
             String contactNumber,
             String password,

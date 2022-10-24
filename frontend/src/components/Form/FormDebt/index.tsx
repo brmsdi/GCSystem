@@ -6,7 +6,7 @@ import { StateFormEnum } from "types/action";
 import { Debt } from "types/debt";
 import { Lessee } from "types/lessee";
 import { Status } from "types/status";
-import { formatDate } from "utils/textFormt";
+import { formatDate } from "utils/text-format";
 import {
   isValidFieldCPF,
   isValidFieldNumber,

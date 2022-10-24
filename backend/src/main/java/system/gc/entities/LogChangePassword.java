@@ -32,7 +32,6 @@ public class LogChangePassword {
     @JoinColumn(name = "fk_status_id", referencedColumnName = "id")
     private Status status;
 
-
     @ManyToOne
     @JoinColumn(name = "fk_employee_id", referencedColumnName = "id")
     private Employee employee;

@@ -8,7 +8,7 @@ import { Condominium } from "types/condominium";
 import { Contract } from "types/contract";
 import { Lessee } from "types/lessee";
 import { Status } from "types/status";
-import { formatDate, formatLocalizationViewInformation } from "utils/textFormt";
+import { formatDate, formatLocalizationViewInformation } from "utils/text-format";
 import {
   isValidFieldCPF,
   isValidFieldDay,

@@ -60,7 +60,6 @@ export function setCurrentPaginationLesseeReducer(state: PaginationTableAction =
 export function stateSelectionLesseeReducer(state: Lessee = initLessee, action: SelectedLesseeAction) {
     switch (action.type) {
         case TypeEnumActionTables.SELECTED_LESSEE:
-            console.log('lesssee')
             return action.payload
         case TypeEnumActionTables.REMOVING_LESSEE:
             return initLessee

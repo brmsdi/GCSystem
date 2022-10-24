@@ -6,9 +6,9 @@ export type Employee = {
     name: string;
     rg: string;
     cpf: string;
-    birthDate: string;
+    birthDate: Date | null;
     email: string;
-    hiringDate: string;
+    hiringDate: Date | null;
     role: Role;
     status: Status;
     password: string;
@@ -52,9 +52,9 @@ export const EmployeeEmpty : Employee = {
     name: '',
     rg: '',
     cpf: '',
-    birthDate: '',
+    birthDate: null,
     email: '',
-    hiringDate: '',
+    hiringDate: null,
     role: {
         name: ''
     },

@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { Debt, PaginationDebt } from "types/debt";
 import { formatCoinPTBRForView } from "utils/coin-format";
-import { formatDateForView } from "utils/textFormt";
+import { formatDateForView } from "utils/text-format";
 const TableDebt = () => {
   const dispatch = useDispatch();
   const page: PaginationDebt = useSelector(selectAllDebts);

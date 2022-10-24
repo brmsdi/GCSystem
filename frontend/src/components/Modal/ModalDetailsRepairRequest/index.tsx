@@ -3,7 +3,7 @@ import { customStyles } from "types/modal";
 import { RepairRequest } from "types/repair-request";
 import { formatCoinPTBRForView } from "utils/coin-format";
 import { statusColor } from "utils/format-color";
-import { formatDateForView } from "utils/textFormt";
+import { formatDateForView } from "utils/text-format";
 
 Modal.setAppElement("#root");
 

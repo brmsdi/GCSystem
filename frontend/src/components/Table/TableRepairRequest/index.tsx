@@ -8,7 +8,7 @@ import { selectAllRepairRequests } from "store/RepairRequests/repair-requests.se
 import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { PaginationRepairRequest, RepairRequest, RepairRequestEmpty } from "types/repair-request";
-import { formatDateForView } from "utils/textFormt";
+import { formatDateForView } from "utils/text-format";
 import { repairRequestIsProgress } from "utils/verifications";
 
 const TableRepairRequest= () => {

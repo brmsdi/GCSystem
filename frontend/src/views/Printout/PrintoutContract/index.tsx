@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { printoutContract } from "services/contract";
 import { Contract, ContractEmpty } from "types/contract";
 import errorIMG from "assets/img/error.svg";
-import { formatDateForView } from "utils/textFormt";
+import { formatDateForView } from "utils/text-format";
 import { formatCoinPTBRForView, formatInFull } from "utils/coin-format";
 
 const PrintoutContract = () => {
