@@ -26,7 +26,7 @@ export async function createNumberPages(
         next: maxNumberOfPage < totalPages ? true : false,
         first: minNumberOfPage === 1 ? true : false,
         nextPage: maxNumberOfPage + 1,
-        previousPagination: minNumberOfPage,
+        previousPagination: minNumberOfPage - 1, 
       };
     } else if (maxNumberOfPage > totalPages) {
       for (let pageMin = minNumberOfPage; pageMin <= totalPages; pageMin++) {

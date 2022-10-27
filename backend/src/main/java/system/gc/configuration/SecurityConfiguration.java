@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,6 +22,7 @@ import system.gc.security.Filter.*;
 import system.gc.security.LesseeUserDetailsService;
 import system.gc.utils.TextUtils;
 import java.util.List;
+import java.util.Objects;
 
 @Configuration
 @EnableWebSecurity
@@ -28,23 +30,19 @@ import java.util.List;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    private Environment environment;
+    @Autowired
     JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    private final EmployeeUserDetailsService employeeUserDetailsService;
+    private final ProviderManager employeeProviderManager;
 
-    private final LesseeUserDetailsService lesseeUserDetailsService;
-
-    private ProviderManager employeeProviderManager;
-
-    private ProviderManager lesseeProviderManager;
+    private final ProviderManager lesseeProviderManager;
 
     private final DefaultInitUsernamePasswordAuthenticationFilter defaultInitUsernamePasswordAuthenticationFilter = new DefaultInitUsernamePasswordAuthenticationFilter();
 
     protected SecurityConfiguration(EmployeeUserDetailsService employeeUserDetailsService, LesseeUserDetailsService lesseeUserDetailsService) {
-        this.employeeUserDetailsService = employeeUserDetailsService;
-        this.lesseeUserDetailsService = lesseeUserDetailsService;
-        this.employeeProviderManager = new ProviderManager(GCSystemDaoAuthenticationManagerProvider.create(this.employeeUserDetailsService, new DaoAuthenticationProvider(), new BCryptPasswordEncoder()));
-        this.lesseeProviderManager = new ProviderManager(GCSystemDaoAuthenticationManagerProvider.create(this.lesseeUserDetailsService, new DaoAuthenticationProvider(), new BCryptPasswordEncoder()));
+        this.employeeProviderManager = new ProviderManager(GCSystemDaoAuthenticationManagerProvider.create(employeeUserDetailsService, new DaoAuthenticationProvider(), new BCryptPasswordEncoder()));
+        this.lesseeProviderManager = new ProviderManager(GCSystemDaoAuthenticationManagerProvider.create(lesseeUserDetailsService, new DaoAuthenticationProvider(), new BCryptPasswordEncoder()));
     }
 
     @Override
@@ -55,6 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable();
         httpSecurity
                 .cors()
+                .configurationSource(corsConfigurationSource())
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter2(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
@@ -103,10 +102,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "UPDATE", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedOrigins(
-                List.of(System.getenv("ORIGINV1"),
-                        System.getenv("ORIGINV2"),
-                        System.getenv("ORIGINV3"),
-                        System.getenv("ORIGINV4")));
+                List.of(Objects.requireNonNull(environment.getProperty("ORIGINV1")),
+                        Objects.requireNonNull(environment.getProperty("ORIGINV2")),
+                        Objects.requireNonNull(environment.getProperty("ORIGINV3")),
+                        Objects.requireNonNull(environment.getProperty("ORIGINV4"))));
         final UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return urlBasedCorsConfigurationSource;

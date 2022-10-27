@@ -277,7 +277,7 @@ public class ApplicationSetup {
 
             LesseeDTO lesseeDTODEV2Save = lesseeService.save(lesseeDTODEV2);
 
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 60; i++) {
                 initializeLessee(
                         "Locatário " + i,
                         "635986" + i,
@@ -291,7 +291,6 @@ public class ApplicationSetup {
             }
 
             Page<CondominiumDTO> condominiumDTOPage = condominiumService.listPaginationCondominium(PageRequest.of(0, 5));
-            //Page<LesseeDTO> lesseeDTOPage = lesseeService.listPaginationLessees(PageRequest.of(0, 5));
 
             // CONTRACT
             initializeContract(

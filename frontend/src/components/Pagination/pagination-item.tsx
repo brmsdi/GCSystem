@@ -19,14 +19,12 @@ const PaginationItem = (props: IProps) => {
   const changeNumberPage = props.changeNumberPage;
   return (
     <nav aria-label="...">
-      
       <ul className="pagination pagination-sm justify-content-center">
         <li
           id="page-link-previous"
           className={first === true ? "page-item disabled" : "page-item"}
-          onClick={() => changeNumberPage(previousPage)}
         >
-          <Link title="Página anterior" className="page-link" to="#">
+          <Link title="Página anterior" className="page-link" to="#" onClick={() => changeNumberPage(previousPage)}>
             <span aria-hidden="true">&laquo;</span>
           </Link>
         </li>
@@ -34,9 +32,9 @@ const PaginationItem = (props: IProps) => {
           <li
             key={number}
             className={activePage === number ? "page-item active" : "page-item"}
-            onClick={() => changeNumberPage(number)}
+            
           >
-            <Link title={`Página ${number}`} className="page-link" to="#">
+            <Link title={`Página ${number}`} className="page-link" to="#" onClick={() => changeNumberPage(number)}>
               {number}
             </Link>
           </li>
@@ -44,9 +42,8 @@ const PaginationItem = (props: IProps) => {
         <li
           id="page-link-next"
           className={next === true ? "page-item" : "page-item disabled"}
-          onClick={() => changeNumberPage(nextPage)}
         >
-          <Link title="Próxima página" className="page-link" to="#">
+          <Link title="Próxima página" className="page-link" to="#" onClick={() => changeNumberPage(nextPage)}>
             <span aria-hidden="true">&raquo;</span>
           </Link>
         </li>

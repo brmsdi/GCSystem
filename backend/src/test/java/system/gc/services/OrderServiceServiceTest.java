@@ -27,6 +27,7 @@ import system.gc.services.testConfigurations.StatusServiceTestConfiguration;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -47,6 +48,9 @@ import static org.mockito.Mockito.when;
         })
 public class OrderServiceServiceTest {
 
+    private final String TIME_ZONE = "America/Manaus";
+
+    private final ZoneId zoneManaus = ZoneId.of(TIME_ZONE);
     @Autowired
     private OrderServiceService orderServiceService;
 
@@ -110,14 +114,14 @@ public class OrderServiceServiceTest {
         typeProblemDTOOthers.setId(1);
         typeProblemDTOOthers.setName("Outros");
         LocalDate localDate = LocalDate.now();
-        today = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        yesterday = Date.from(localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        today = Date.from(localDate.atStartOfDay(zoneManaus).toInstant());
+        yesterday = Date.from(localDate.plusDays(1).atStartOfDay(zoneManaus).toInstant());
 
         oneLesseeDTO = new LesseeDTO(
                 "1 locatário",
                 "1234567",
                 "12345678910",
-                "06/06/1999",
+                Date.from(ZonedDateTime.of(1999, 6, 6, 8, 0, 0, 0, zoneManaus).toInstant()),
                 "locatario@gmail.com",
                 "192544448",
                 "123456788",
@@ -136,9 +140,9 @@ public class OrderServiceServiceTest {
                 "1 Funcionário",
                 "19289383",
                 "12365895412",
-                "06/06/1999",
+                Date.from(ZonedDateTime.of(1999, 6, 6, 8, 0, 0, 0, zoneManaus).toInstant()),
                 "funcionario1@gmail.com",
-                today.toString(),
+                today,
                 "526565665",
                 new RoleDTO(),
                 null,

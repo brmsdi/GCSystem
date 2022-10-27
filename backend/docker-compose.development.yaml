@@ -3,10 +3,11 @@ version: '3.7'
 services:
   postgres-container:
       image: postgres
+      container_name: db
       ports:
         - "5432:5432"
       env_file:
-        - ./config/postgres.env
+        - ./env/postgres.env
       networks:
         - gcsystem-net
 
@@ -19,7 +20,7 @@ services:
       - "8000:8000"
       - "8080:8080"
     env_file:
-      - ./config/system.env
+      - ./env/system.env
     depends_on:
       - postgres-container
     networks:

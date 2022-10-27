@@ -2,7 +2,6 @@
 export const REQUEST_BASE_URL = 'http://127.0.0.1:8080';
 export const PERMISSION_URL = 'permission'
 
-
 /** EMPLOYEES REQUEST */
 export const REQUEST_LOGIN_EMPLOYEES = process.env.REACT_APP_REQUEST_LOGIN_EMPLOYEES ?? ''
 export const REQUEST_EMPLOYEES = process.env.REACT_APP_REQUEST_EMPLOYEES ?? '';

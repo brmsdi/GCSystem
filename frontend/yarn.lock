@@ -9697,11 +9697,6 @@ react-app-polyfill@^2.0.0:
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
 
-react-bootstrap-date-picker@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/react-bootstrap-date-picker/-/react-bootstrap-date-picker-5.1.0.tgz#5f87c6a875e411dbf46d2be74960756f113ebf23"
-  integrity sha512-qxg1kSZGgRSiyAlsyH79GhKkrgA7kwL+Me6UgaIW6DXRSckaTeRO359hsRebXUrrL+QzJlO2fHKnHVrSYctUIg==
-
 react-content-loader@^6.2.0:
   version "6.2.0"
   resolved "https://registry.npmjs.org/react-content-loader/-/react-content-loader-6.2.0.tgz"
