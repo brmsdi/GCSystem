@@ -1,11 +1,12 @@
 #CRIAR ARQUIVO postgres.env
-Adicionar as seguintes variáveis de ambiente:
+#Adicionar as seguintes variáveis de ambiente:
 POSTGRES_DB=
 POSTGRES_USER=
 POSTGRES_PASSWORD=
 
-#CRIAR ARQUVIO system.env
-Adicionar as seguintes variáveis de ambiente:
+#CRIAR ARQUIVO system.env
+#Adicionar as seguintes variáveis de ambiente:
+DATABASE_URL=
 PRIVATE_KEY_TOKEN=
 KEY_LOGIN=
 KEY=

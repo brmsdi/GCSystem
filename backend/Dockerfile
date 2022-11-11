@@ -15,3 +15,8 @@ CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=development", "-Ds
 
 FROM base as build
 RUN ./mvnw package
+
+FROM eclipse-temurin:17-jre-jammy as production
+EXPOSE 8080
+COPY --from=build /app/target/GSystemApplication-*.jar /GSystemApplication.jar
+CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/GSystemApplication.jar"]

@@ -66,8 +66,6 @@ const FormTemplate = (props: IProps) => {
     setForm({...props.initForm})
   }
 
-  console.log("RENDER");
-  
   return (
     <form onSubmit={submit}>
       <div className="row-form-1">
