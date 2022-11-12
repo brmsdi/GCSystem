@@ -7,8 +7,8 @@ COPY mvnw pom.xml ./
 RUN ./mvnw dependency:resolve
 COPY src ./src
 
-FROM base as test 
-CMD ["./mvnw", "test"]
+#FROM base as test 
+#CMD ["./mvnw", "test"]
 
 FROM base as development
 CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=development", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'"]
@@ -18,5 +18,5 @@ RUN ./mvnw package
 
 FROM eclipse-temurin:17-jre-jammy as production
 EXPOSE 8080
-COPY --from=build /app/target/GSystemApplication-*.jar /GSystemApplication.jar
-CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/GSystemApplication.jar"]
+COPY --from=build /app/target/gcsystem-*.jar /gcsystem.jar
+CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/gcsystem.jar"]

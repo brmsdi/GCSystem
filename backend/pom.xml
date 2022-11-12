@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>system</groupId>
-	<artifactId>gc</artifactId>
+	<artifactId>gcsystem</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>GSystem</name>
 	<description>Aplicação de gerenciamento de condomínios</description>

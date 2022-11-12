@@ -28,5 +28,5 @@ public class DataController {
             applicationService.insertAll();
         }
         return ResponseEntity.ok("Dados resetados com sucesso");
-    }
+   }
 }

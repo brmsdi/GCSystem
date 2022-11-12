@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.ContractDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.services.ServiceImpl.ContractService;
-
 import javax.validation.Valid;
 
 @RestController
@@ -58,7 +57,7 @@ public class ContractController implements ControllerPermission {
     public ResponseEntity<Page<ContractDTO>> search(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                     @RequestParam(name = "size", defaultValue = "5") Integer size,
                                                     @RequestParam(name = "cpf") String cpf) {
-        log.info("Localizando contratos");
+        log.info("Localizando contratos...");
         return ResponseEntity.ok(contractService.searchContract(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
     }
 

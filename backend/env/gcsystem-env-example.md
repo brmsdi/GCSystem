@@ -4,9 +4,10 @@ POSTGRES_DB=
 POSTGRES_USER=
 POSTGRES_PASSWORD=
 
-#CRIAR ARQUIVO system.env
+#CRIAR ARQUIVO system-development.env
 #Adicionar as seguintes variáveis de ambiente:
-DATABASE_URL=
+
+SPRING_PROFILES_ACTIVE=development
 PRIVATE_KEY_TOKEN=
 KEY_LOGIN=
 KEY=
@@ -19,9 +20,9 @@ ORIGINV2=
 ORIGINV1=
 ORIGINV3=
 ORIGINV4=
-
 SPRING_DATASOURCE_URL=
 SPRING_DATASOURCE_USERNAME=
 SPRING_DATASOURCE_PASSWORD=
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 SPRING_JPA_HIBERNATE_DDL_AUTO=update
 SPRING_JPA_GENERATE_DLL=true

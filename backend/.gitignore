@@ -35,3 +35,7 @@ build/
 #VAR
 *.env
 create.sql
+
+#docker
+docker-compose.test.yaml
+docker-compose.production.yaml

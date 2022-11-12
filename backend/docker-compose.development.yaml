@@ -20,7 +20,7 @@ services:
       - "8000:8000"
       - "8080:8080"
     env_file:
-      - ./env/system.env
+      - ./env/system-development.env
     depends_on:
       - postgres-container
     networks:
