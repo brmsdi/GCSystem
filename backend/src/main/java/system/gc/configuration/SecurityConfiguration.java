@@ -101,10 +101,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         log.info("configurando cors");
-        String[] origins = environment.getProperty("ORIGINS").split(",");
+        String[] origins = Objects.requireNonNull(environment.getProperty("ORIGINS")).split(",");
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "UPDATE", "PUT", "DELETE", "OPTIONS"));
-        corsConfiguration.setAllowedOrigins(Objects.requireNonNull(Arrays.stream(origins).toList()));
+        corsConfiguration.setAllowedOrigins(Arrays.stream(origins).toList());
         final UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return urlBasedCorsConfigurationSource;
