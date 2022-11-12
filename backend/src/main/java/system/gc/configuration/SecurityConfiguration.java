@@ -21,6 +21,7 @@ import system.gc.security.EmployeeUserDetailsService;
 import system.gc.security.Filter.*;
 import system.gc.security.LesseeUserDetailsService;
 import system.gc.utils.TextUtils;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,6 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private Environment environment;
+
     @Autowired
     JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -99,13 +101,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         log.info("configurando cors");
+        String[] origins = environment.getProperty("ORIGINS").split(",");
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "UPDATE", "PUT", "DELETE", "OPTIONS"));
-        corsConfiguration.setAllowedOrigins(
-                List.of(Objects.requireNonNull(environment.getProperty("ORIGINV1")),
-                        Objects.requireNonNull(environment.getProperty("ORIGINV2")),
-                        Objects.requireNonNull(environment.getProperty("ORIGINV3")),
-                        Objects.requireNonNull(environment.getProperty("ORIGINV4"))));
+        corsConfiguration.setAllowedOrigins(Objects.requireNonNull(Arrays.stream(origins).toList()));
         final UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return urlBasedCorsConfigurationSource;
