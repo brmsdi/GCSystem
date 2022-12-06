@@ -37,7 +37,7 @@ Se o site não receber tráfego em um periodo de 30 minutos, o mesmo irá adorme
 
 ##### Link do sistema web e dados para autenticação
 
-[Ir para o sistema WEB](https://systemgc.netlify.app/)
+[Ir para o sistema WEB](#) off
 
 | Cargo | Usuário | Senha |
 |-------|----------|----------|
