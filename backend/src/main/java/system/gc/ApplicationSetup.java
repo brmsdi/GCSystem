@@ -277,11 +277,11 @@ public class ApplicationSetup {
 
             LesseeDTO lesseeDTODEV2Save = lesseeService.save(lesseeDTODEV2);
 
-            for (int i = 0; i < 25; i++) {
+            for (int i = 10; i < 35; i++) {
                 initializeLessee(
                         "Locatário " + i,
                         "635986" + i,
-                        "1256325667" + i,
+                        "125632566" + i,
                         Date.from(ZonedDateTime.of(2003, 6, 2, 8, 0, 0, 0, zoneManaus).toInstant()),
                         String.format("example-%d@gmail.com", i),
                         "9298863526" + i,
