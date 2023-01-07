@@ -37,7 +37,7 @@ Se o site não receber tráfego em um periodo de 30 minutos, o mesmo irá adorme
 
 ##### Link do sistema web e dados para autenticação
 
-[Ir para o sistema WEB](#) off
+[Ir para o sistema WEB](https://systemgc.netlify.app/)
 
 | Cargo | Usuário | Senha |
 |-------|----------|----------|
@@ -68,8 +68,9 @@ Se o site não receber tráfego em um periodo de 30 minutos, o mesmo irá adorme
 8. Bootstrap
 9. Redux 
 10. SASS
-11. Heroku (backend e banco de dados)
+11. DESCONTINUADO -> Heroku (backend e banco de dados)
 12. netlify (frontend)
+13. SAP BTP (backend e banco de dados)
 
 #### 7.	Contato
 
