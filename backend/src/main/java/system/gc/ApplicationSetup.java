@@ -276,7 +276,6 @@ public class ApplicationSetup {
             );
 
             LesseeDTO lesseeDTODEV2Save = lesseeService.save(lesseeDTODEV2);
-
             for (int i = 10; i < 35; i++) {
                 initializeLessee(
                         "Locatário " + i,
