@@ -9,7 +9,7 @@ Para a descrição completa do sistema [clique aqui](https://drive.google.com/fi
 
 <font color="orange">Observações:</font> A versão mobile está em desenvolvimento, portanto, as funcionalidades referentes a locatários e funcionários de manutenção serão publicadas em breve.
 
-Se o site não receber tráfego em um periodo de 30 minutos, o mesmo irá adormecer. Após sair do modo adormecido, os registros no banco de dados serão atualizados.
+Os dados do banco são atualizados a cada 30 minutos através de um micro serviço externo.  
 
 #### 2. Requisitos funcionais
 
