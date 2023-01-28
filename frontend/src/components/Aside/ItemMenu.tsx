@@ -1,7 +1,7 @@
 interface IProps {
   menuIcon: string;
   menuText: string;
-  subMenus: {};
+  subMenus: JSX.Element|JSX.Element[];
 }
 const ItemMenu = (props: IProps) => {
   return (
