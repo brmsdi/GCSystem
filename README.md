@@ -57,20 +57,20 @@ Os dados do banco são atualizados a cada 30 minutos através de um micro servi�
 
 
 #### 6.	Desenvolvimento
-
-1. No backend foi utilizada a linguagem de programação Java com JDK 17
-2. Framework Spring Security e JWT para realizar a autenticação de usuários
-3. Banco de dados Postgresql
-4. JPA para acesso aos dados
-5. Padrão camadas
-6. Padrão DTO 
-7. No frontend foi utilizado Reactjs com TypeScript 
-8. Bootstrap
-9. Redux 
-10. SASS
-11. DESCONTINUADO -> Heroku (backend e banco de dados)
-12. netlify (frontend)
-13. SAP BTP (backend e banco de dados)
+1. Docker/docker compose
+2. No backend foi utilizada a linguagem de programação Java com JDK 17
+3. Framework Spring Security e JWT para realizar a autenticação de usuários
+4. Banco de dados Postgresql
+5. JPA para acesso aos dados
+6. Padrão camadas
+7. Padrão DTO 
+8. No frontend foi utilizado Reactjs com TypeScript 
+9. Bootstrap
+10. Redux 
+11. SASS
+12. DESCONTINUADO -> Heroku (backend e banco de dados)
+13. netlify (frontend)
+14. SAP BTP (backend e banco de dados)
 
 #### 7.	Contato
 
