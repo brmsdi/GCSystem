@@ -8,7 +8,7 @@ import system.gc.dtos.ActivityTypeDTO;
 import system.gc.entities.ActivityType;
 import system.gc.repositories.ActivityTypeRepository;
 import java.util.List;
-
+@Deprecated
 @Service
 @Slf4j
 public class ActivityTypeService {

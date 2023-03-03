@@ -1,4 +1,4 @@
-package system.gc.configuration.exceptions;
+package system.gc.exceptionsAdvice.exceptions;
 
 public class IllegalSelectedRepairRequestsException extends RuntimeException {
     public IllegalSelectedRepairRequestsException(String message) {

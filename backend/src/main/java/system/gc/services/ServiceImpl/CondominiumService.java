@@ -17,6 +17,9 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 @Slf4j
 public class CondominiumService {

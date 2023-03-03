@@ -1,6 +1,8 @@
-package system.gc.configuration.exceptions;
+package system.gc.exceptionsAdvice;
 
-import lombok.extern.slf4j.Slf4j;
+import br.com.gerencianet.gnsdk.exceptions.GerencianetException;
+import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.text.StrSubstitutor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -10,18 +12,18 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.apache.commons.lang3.text.StrSubstitutor;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import system.gc.dtos.ApiErrorDTO;
 import system.gc.dtos.ErrorDTO;
-
+import system.gc.exceptionsAdvice.exceptions.*;
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Log4j2
 @ControllerAdvice
-@Slf4j
 public class ExceptionHandlerAdvice {
+
     private final MessageSource messageSource;
 
     public ExceptionHandlerAdvice(MessageSource messageSource) {
@@ -88,13 +90,28 @@ public class ExceptionHandlerAdvice {
                 .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
     }
 
-
     @ExceptionHandler(IllegalSelectedRepairRequestsException.class)
     public ResponseEntity<ApiErrorDTO> illegalSelectedRepairRequestsException(IllegalSelectedRepairRequestsException exception) {
         log.error(exception.getMessage());
         ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+    }
+
+    @ExceptionHandler(GerencianetException.class)
+    public ResponseEntity<ApiErrorDTO> gerencianetException(GerencianetException exception)
+    {
+        exception.printStackTrace();
+        log.error(exception.getMessage());
+        log.error(exception.getError());
+        log.error(exception.getErrorDescription());
+        Set<ErrorDTO> errorDTOList = new HashSet<>();
+        if (exception.getMessage() != null && !exception.getMessage().isEmpty()) errorDTOList.add(new ErrorDTO(exception.getMessage()));
+        if (exception.getError() != null && !exception.getError().isEmpty()) errorDTOList.add(new ErrorDTO(exception.getError()));
+        if (exception.getErrorDescription() != null && !exception.getErrorDescription().isEmpty()) errorDTOList.add(new ErrorDTO(exception.getErrorDescription()));
+        return ResponseEntity
+                .badRequest()
+                .body(new ApiErrorDTO(new Date(), HttpStatus.BAD_REQUEST.value(), String.valueOf(exception.getCode()), errorDTOList));
     }
 
     @ExceptionHandler(BaseRuntimeException.class)

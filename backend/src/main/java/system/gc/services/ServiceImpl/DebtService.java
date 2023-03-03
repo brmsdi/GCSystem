@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+@Deprecated
 @Service
 @Slf4j
 public class DebtService {

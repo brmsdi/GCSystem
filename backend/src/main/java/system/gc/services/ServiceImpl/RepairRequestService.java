@@ -14,6 +14,9 @@ import system.gc.repositories.RepairRequestRepository;
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 @Slf4j
 public class RepairRequestService {

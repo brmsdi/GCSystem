@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import system.gc.configuration.exceptions.IllegalSelectedRepairRequestsException;
+import system.gc.exceptionsAdvice.exceptions.IllegalSelectedRepairRequestsException;
 import system.gc.dtos.*;
 import system.gc.entities.OrderService;
 import system.gc.entities.RepairRequest;
@@ -17,6 +17,9 @@ import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 @Slf4j
 public class OrderServiceService {

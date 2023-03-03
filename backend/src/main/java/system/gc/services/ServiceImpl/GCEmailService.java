@@ -14,6 +14,9 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Map;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 @Slf4j
 public class GCEmailService {

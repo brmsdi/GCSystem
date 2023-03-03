@@ -39,3 +39,9 @@ create.sql
 #docker
 docker-compose.test.yaml
 docker-compose.production.yaml
+
+*.p12
+*.pem
+
+credentials-homo.json
+credentials-prod.json

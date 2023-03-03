@@ -10,8 +10,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
-import system.gc.configuration.exceptions.DuplicatedFieldException;
+import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
+import system.gc.exceptionsAdvice.exceptions.DuplicatedFieldException;
 import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.DebtDTO;
 import system.gc.dtos.LesseeDTO;
@@ -25,6 +25,9 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 @Slf4j
 public class LesseeService implements ControllerPermission {

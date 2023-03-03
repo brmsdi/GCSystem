@@ -14,6 +14,7 @@ import system.gc.services.ServiceImpl.DebtService;
 
 import javax.validation.Valid;
 
+@Deprecated
 @RestController
 @RequestMapping(value = "/debts")
 @Slf4j

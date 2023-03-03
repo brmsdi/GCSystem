@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.Debt;
 
 import java.util.List;
-
+@Deprecated
 public interface DebtRepository extends JpaRepository<Debt, Integer> {
 
     @Query("SELECT debt FROM Debt debt " +

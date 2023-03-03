@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 @Getter
 @Setter
 public class DebtDTO implements ConvertEntityAndDTO<DebtDTO, Debt> {

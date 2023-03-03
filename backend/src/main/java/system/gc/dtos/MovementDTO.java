@@ -6,6 +6,7 @@ import system.gc.entities.Movement;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Deprecated
 @Getter
 @Setter
 public class MovementDTO implements ConvertEntityAndDTO<MovementDTO, Movement> {

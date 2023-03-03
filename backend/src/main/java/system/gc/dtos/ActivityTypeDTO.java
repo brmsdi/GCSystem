@@ -7,6 +7,7 @@ import system.gc.entities.ActivityType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Deprecated
 @Getter
 @Setter
 public class ActivityTypeDTO implements ConvertEntityAndDTO<ActivityTypeDTO, ActivityType> {

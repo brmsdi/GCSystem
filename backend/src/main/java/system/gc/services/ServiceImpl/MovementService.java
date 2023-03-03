@@ -13,6 +13,7 @@ import system.gc.repositories.MovementRepository;
 import javax.transaction.Transactional;
 import java.util.Date;
 
+@Deprecated
 @Service
 @Slf4j
 public class MovementService {

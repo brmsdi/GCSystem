@@ -4,7 +4,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 public interface InitUsernamePasswordAuthenticationFilter {
-    public default UsernamePasswordAuthenticationFilter init(String url,
+    default UsernamePasswordAuthenticationFilter init(String url,
     UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter,
     AuthenticationManager authenticationManager)
     {

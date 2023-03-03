@@ -1,5 +1,7 @@
 package system.gc.security.token;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import system.gc.dtos.TokenDTO;
 import system.gc.utils.TextUtils;
 
@@ -17,6 +19,7 @@ public interface CreateTokenSuccessFulAuthentication {
     private void writeToken(String token, HttpServletResponse response) throws IOException {
         response.getWriter().print(TextUtils.GSON.toJson(TokenDTO.builder().type("Bearer").token(token).build()));
         response.setStatus(HttpServletResponse.SC_OK);
+        response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
     }
 
 }

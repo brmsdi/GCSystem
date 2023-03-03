@@ -1,4 +1,4 @@
-package system.gc.configuration.exceptions;
+package system.gc.exceptionsAdvice.exceptions;
 
 public class CodeChangePasswordInvalidException extends RuntimeException {
     public CodeChangePasswordInvalidException(String message) {

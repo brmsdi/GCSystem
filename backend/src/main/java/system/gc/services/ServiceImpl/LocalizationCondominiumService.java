@@ -6,6 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import system.gc.repositories.LocalizationCondominiumRepository;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 @Slf4j
 public class LocalizationCondominiumService {

@@ -28,7 +28,5 @@ public class EmployeeAuthenticationFilter extends UsernamePasswordAuthentication
             log.error("Erro ao criar token");
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
-
-        //super.successfulAuthentication(request, response, chain, authResult);
     }
 }

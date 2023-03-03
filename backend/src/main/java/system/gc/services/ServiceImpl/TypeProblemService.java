@@ -11,6 +11,9 @@ import system.gc.repositories.TypeProblemRepository;
 
 import java.util.List;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 @Slf4j
 public class TypeProblemService {
@@ -45,5 +48,4 @@ public class TypeProblemService {
         log.info("Deletando todos");
         typeProblemRepository.deleteAll();
     }
-
 }

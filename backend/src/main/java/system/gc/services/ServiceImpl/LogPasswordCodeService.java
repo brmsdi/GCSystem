@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
-import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
 import system.gc.dtos.TokenDTO;
 import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
+import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
 import system.gc.repositories.LogPasswordCodeRepository;
 import system.gc.security.token.JWTService;
 import system.gc.utils.TextUtils;
@@ -21,6 +21,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 @Slf4j
 public class LogPasswordCodeService {

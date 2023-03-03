@@ -10,6 +10,9 @@ import system.gc.repositories.LocalizationRepository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 @Slf4j
 public class LocalizationService {

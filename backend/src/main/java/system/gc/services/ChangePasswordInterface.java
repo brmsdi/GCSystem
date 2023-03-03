@@ -2,7 +2,7 @@ package system.gc.services;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
+import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
 import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
 import system.gc.security.token.JWTService;

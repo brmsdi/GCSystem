@@ -7,7 +7,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import system.gc.configuration.exceptions.CodeChangePasswordInvalidException;
+import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
 import system.gc.dtos.TokenChangePasswordDTO;
 import system.gc.dtos.TokenDTO;
 import system.gc.security.UserAuthenticatedView;

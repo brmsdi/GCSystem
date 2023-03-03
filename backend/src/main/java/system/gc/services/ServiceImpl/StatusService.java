@@ -11,6 +11,9 @@ import system.gc.repositories.StatusRepository;
 
 import java.util.List;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 @Slf4j
 public class StatusService {

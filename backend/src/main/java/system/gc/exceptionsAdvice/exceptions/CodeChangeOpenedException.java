@@ -1,4 +1,4 @@
-package system.gc.configuration.exceptions;
+package system.gc.exceptionsAdvice.exceptions;
 
 public class CodeChangeOpenedException extends RuntimeException {
     public CodeChangeOpenedException(String message) {

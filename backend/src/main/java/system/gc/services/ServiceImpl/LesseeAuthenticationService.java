@@ -6,5 +6,8 @@ import system.gc.repositories.LesseeRepository;
 import system.gc.services.AuthenticationByCPFGeneric;
 import system.gc.services.ChangePasswordInterface;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 public class LesseeAuthenticationService implements AuthenticationByCPFGeneric<Lessee, LesseeRepository>, ChangePasswordInterface<Lessee, LesseeRepository> {}

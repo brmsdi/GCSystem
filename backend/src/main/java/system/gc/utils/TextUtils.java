@@ -2,6 +2,7 @@ package system.gc.utils;
 
 import com.google.gson.Gson;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class TextUtils {
@@ -15,6 +16,10 @@ public class TextUtils {
     public static final String ROLE_ADMINISTRATIVE_ASSISTANT = "ASSISTENTE ADMINISTRATIVO";
     public static final String ROLE_COUNTER = "CONTADOR";
 
+    public static String generateTXID()
+    {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
 
     public static String initLowerLetter(String text)
     {

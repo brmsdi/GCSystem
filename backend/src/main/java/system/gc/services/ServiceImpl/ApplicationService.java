@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import system.gc.ApplicationSetup;
 
+/**
+ * @author Wisley Bruno Marques França
+ */
 @Service
 public class ApplicationService {
     @Autowired
