@@ -2,6 +2,7 @@ package system.gc;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -12,21 +13,25 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import system.gc.configuration.GenerateTXIDImpl;
 import system.gc.dtos.*;
 import system.gc.entities.*;
+import system.gc.entities.payment.*;
 import system.gc.repositories.RoleRepository;
 import system.gc.repositories.StatusRepository;
 import system.gc.repositories.TypeProblemRepository;
 import system.gc.security.EmployeeUserDetails;
 import system.gc.services.ServiceImpl.*;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 import static java.time.DayOfWeek.*;
+import static system.gc.utils.NumberUtil.getNumberInstanceUS;
 
 @Component
 @Slf4j
@@ -78,6 +83,9 @@ public class ApplicationSetup {
     private DataReloadService dataReloadService;
 
     @Autowired
+    private PixService pixService;
+
+    @Autowired
     Environment environment;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -100,14 +108,12 @@ public class ApplicationSetup {
     {
         log.info("Inserindo dados");
         // ROLE
-        //List<Role> roleList = new ArrayList<>();
         Role roleADM = roleRepository.save(new Role("Administrador"));
         Role roleCounter = roleRepository.save(new Role("Contador"));
         Role roleAssistant = roleRepository.save(new Role("Assistente administrativo"));
         Role electrician = roleRepository.save(new Role("Eletricista"));
         Role plumber = roleRepository.save(new Role("Encanador"));
         Role generalServices = roleRepository.save(new Role("Serviços gerais"));
-        //roleService.save(roleList);
 
         // Status
         List<Status> statusList = new ArrayList<>();
@@ -251,43 +257,18 @@ public class ApplicationSetup {
             }
 
             // LESSEE
-            LesseeDTO lesseeDTODEV = new LesseeDTO(
-                    "Rafael da Silva Monteiro",
+            LesseeDTO lesseeDTO = new LesseeDTO(
+                    "Francisco da Silva",
                     "63598623",
-                    "12563256347",
+                    "12345678909",
                     Date.from(ZonedDateTime.of(2003, 6, 2, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "brmarques.dev@gmail.com",
                     "92941571491",
-                    "rafael123",
+                    "francisco123",
                     new StatusDTO(statusActive)
             );
 
-            lesseeService.save(lesseeDTODEV);
-
-            LesseeDTO lesseeDTODEV2 = new LesseeDTO(
-                    "Juliana Costa da Silva",
-                    "78598423",
-                    "45565625634",
-                    Date.from(ZonedDateTime.of(1992, 6, 2, 8, 0, 0, 0, zoneManaus).toInstant()),
-                    "example-juliana@gmail.com",
-                    "92991471431",
-                    "juliana123",
-                    new StatusDTO(statusActive)
-            );
-
-            LesseeDTO lesseeDTODEV2Save = lesseeService.save(lesseeDTODEV2);
-            for (int i = 10; i < 35; i++) {
-                initializeLessee(
-                        "Locatário " + i,
-                        "635986" + i,
-                        "125632566" + i,
-                        Date.from(ZonedDateTime.of(2003, 6, 2, 8, 0, 0, 0, zoneManaus).toInstant()),
-                        String.format("example-%d@gmail.com", i),
-                        "9298863526" + i,
-                        "785452545" + i,
-                        statusActive
-                );
-            }
+            LesseeDTO lesseeDTODSave = lesseeService.save(lesseeDTO);
 
             Page<CondominiumDTO> condominiumDTOPage = condominiumService.listPaginationCondominium(PageRequest.of(0, 5));
 
@@ -301,24 +282,50 @@ public class ApplicationSetup {
                     10,
                     statusActive,
                     condominiumDTOPage.toList().get(2),
-                    lesseeDTODEV2Save);
+                    lesseeDTODSave);
 
             // DEBTS
-            Page<ContractDTO> contractDTOPage = contractService.searchContract(PageRequest.of(0, 5), lesseeDTODEV2Save);
+            Page<ContractDTO> contractDTOPage = contractService.searchContract(PageRequest.of(0, 5), lesseeDTODSave);
             ContractDTO contractDTO = contractDTOPage.toList().get(0);
-            initializeDebt(contractDTO.getContractValue(), statusOpen, lesseeDTODEV2Save, today);
+            initializeDebt(contractDTO.getContractValue(), statusOpen, lesseeDTODSave, today);
+
+            //CHARGE
+            //INICIALIZANDO NOVA COBRANÇA PIX
+            LocalizationCondominiumDTO localizationCondominiumDTO = contractDTO.getCondominium().getLocalization();
+            LocalizationDTO localizationDTO2 = localizationCondominiumDTO.getLocalization();
+            // NUMBERFORMAT PARA ADICIONAR 2 CASAS DECIMAIS
+            NumberFormat numberFormat = getNumberInstanceUS();
+            Charge newCharge = new Charge();
+            int days = getDueDate(1, 7, today);
+            Pessoa devedor = new Pessoa();
+            Valor valor = new Valor();
+            valor.setOriginal(numberFormat.format(contractDTO.getContractValue()));
+            valor.setMulta(new Multa(2, "15.00"));
+            valor.setJuros(new Juros(2,"2.00"));
+            devedor.setNome(lesseeDTODSave.getName());
+            devedor.setLogradouro(String.format("%s, %s, %s", localizationDTO2.getRoad(), localizationCondominiumDTO.getNumber(), localizationDTO2.getName()));
+            devedor.setCep(String.format("%s", localizationDTO2.getZipCode()));
+            devedor.setCpf(lesseeDTODSave.getCpf());
+            devedor.setEmail(lesseeDTODSave.getEmail());
+
+            //PREENCHER CHARGE
+            newCharge.setCalendario(new Calendario(today.plusDays(days).format(DateTimeFormatter.ISO_LOCAL_DATE), 30));
+            newCharge.setDevedor(devedor);
+            newCharge.setValor(valor);
+            newCharge.setSolicitacaoPagador("Aluguel. Gerado em: " + today.format(DateTimeFormatter.ISO_LOCAL_DATE));
+            //initializeCharge(newCharge);
 
             // REPAIR REQUESTS
             RepairRequestDTO repairRequestDTOSaved = initializeRepairRequests("Troca de fios eletricos",
                     new TypeProblemDTO(typeProblemDTOElectric),
-                    lesseeDTODEV2Save,
+                    lesseeDTODSave,
                     condominiumDTOPage.toList().get(2),
                     "10",
                     statusOpen);
 
             initializeRepairRequests("Problema de energia",
                     new TypeProblemDTO(typeProblemDTOElectric),
-                    lesseeDTODEV2Save,
+                    lesseeDTODSave,
                     condominiumDTOPage.toList().get(2),
                     "10",
                     statusOpen);
@@ -327,8 +334,6 @@ public class ApplicationSetup {
             initializeOrderService(repairRequestDTOSaved,
                     employeeElectrician,
                     statusOpen);
-
-
         } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());
         }
@@ -444,6 +449,7 @@ public class ApplicationSetup {
         contractService.save(contractDTO);
     }
 
+    @Deprecated
     private void initializeDebt(double value, Status status, LesseeDTO lesseeDTO, ZonedDateTime openDate) throws ParseException {
         // Prazo de validade
         int days = getDueDate(1, 7, openDate);
@@ -453,6 +459,10 @@ public class ApplicationSetup {
                 null,
                 lesseeDTO);
         debtService.save(debtDTO);
+    }
+
+    private void initializeCharge(Charge charge) throws Exception {
+        pixService.pixCreateDueCharge(new JSONObject(charge), new GenerateTXIDImpl());
     }
 
     /**

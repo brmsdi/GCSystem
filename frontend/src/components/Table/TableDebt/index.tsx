@@ -89,6 +89,7 @@ interface IProps {
   toogleClass: Function;
   clickButtonDelete: Function;
 }
+
 const ItemTable = (props: IProps) => {
   let item = props.item;
   return (

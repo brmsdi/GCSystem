@@ -23,3 +23,10 @@ SPRING_DATASOURCE_PASSWORD=
 spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 SPRING_JPA_HIBERNATE_DDL_AUTO=update
 SPRING_JPA_GENERATE_DLL=true
+
+CHAVE=
+CLIENT_ID=
+CLIENT_SECRET=
+CERTIFICATE=/app/certificates/certificado.p12
+SANDBOX=
+DEBUG=

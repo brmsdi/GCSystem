@@ -49,7 +49,6 @@ public class AuthenticationController {
                         null, LocaleContextHolder.getLocale()));
             }
         } else if (TypeUserEnum.valueOf(type) == TypeUserEnum.LESSEE) {
-            //LesseeDTO lesseeDTO = lesseeChangePasswordService.verifyEmail(email);
             if (lesseeService.generateCodeForChangePassword(email)) {
                 return ResponseEntity.ok().body(messageSource.getMessage("TEXT_MSG_EMAIL_SENT_SUCCESS",
                         null, LocaleContextHolder.getLocale()));

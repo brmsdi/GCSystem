@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>system</groupId>
 	<artifactId>gcsystem</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.2</version>
 	<name>GSystem</name>
 	<description>Aplicação de gerenciamento de condomínios</description>
 	<properties>
@@ -129,6 +129,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
 	</dependencies>
 
 	<build>

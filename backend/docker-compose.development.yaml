@@ -12,7 +12,7 @@ services:
         - gcsystem-net
 
   gcsystem-container:
-    image: gcsystem-image
+    image: gcsystem
     build:
       context: .
       target: development

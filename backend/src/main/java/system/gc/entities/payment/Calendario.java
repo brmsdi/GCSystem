@@ -11,4 +11,9 @@ public class Calendario {
     private Integer validadeAposVencimento;
 
     public Calendario(){}
+
+    public Calendario(String dataDeVencimento, Integer validadeAposVencimento) {
+        this.dataDeVencimento = dataDeVencimento;
+        this.validadeAposVencimento = validadeAposVencimento;
+    }
 }
