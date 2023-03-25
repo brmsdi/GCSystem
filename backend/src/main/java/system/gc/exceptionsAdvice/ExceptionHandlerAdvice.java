@@ -1,6 +1,5 @@
 package system.gc.exceptionsAdvice;
 
-import br.com.gerencianet.gnsdk.exceptions.GerencianetException;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.springframework.context.MessageSource;
@@ -17,8 +16,15 @@ import system.gc.dtos.ApiErrorDTO;
 import system.gc.dtos.ErrorDTO;
 import system.gc.exceptionsAdvice.exceptions.*;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
 import java.util.*;
 import java.util.stream.Collectors;
+
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
 
 @Log4j2
 @ControllerAdvice
@@ -82,6 +88,15 @@ public class ExceptionHandlerAdvice {
                 .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
     }
 
+    @ExceptionHandler({DebtNotCreatedException.class})
+    public ResponseEntity<ApiErrorDTO> debtNotCreatedException(DebtNotCreatedException exception)
+    {
+        log.error(exception.getMessage());
+        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+    }
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ApiErrorDTO> missingServletRequestParameterException(MissingServletRequestParameterException exception) {
         log.error(exception.getMessage());
@@ -98,20 +113,12 @@ public class ExceptionHandlerAdvice {
                 .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
     }
 
-    @ExceptionHandler(GerencianetException.class)
-    public ResponseEntity<ApiErrorDTO> gerencianetException(GerencianetException exception)
-    {
-        exception.printStackTrace();
-        log.error(exception.getMessage());
-        log.error(exception.getError());
-        log.error(exception.getErrorDescription());
-        Set<ErrorDTO> errorDTOList = new HashSet<>();
-        if (exception.getMessage() != null && !exception.getMessage().isEmpty()) errorDTOList.add(new ErrorDTO(exception.getMessage()));
-        if (exception.getError() != null && !exception.getError().isEmpty()) errorDTOList.add(new ErrorDTO(exception.getError()));
-        if (exception.getErrorDescription() != null && !exception.getErrorDescription().isEmpty()) errorDTOList.add(new ErrorDTO(exception.getErrorDescription()));
-        return ResponseEntity
-                .badRequest()
-                .body(new ApiErrorDTO(new Date(), HttpStatus.BAD_REQUEST.value(), String.valueOf(exception.getCode()), errorDTOList));
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiErrorDTO> constraintViolationException(ConstraintViolationException exception) {
+        log.error(exception.getLocalizedMessage());
+        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), "Há campos não preenchidos");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
     }
 
     @ExceptionHandler(BaseRuntimeException.class)

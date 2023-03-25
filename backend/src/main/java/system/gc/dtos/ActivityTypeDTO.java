@@ -3,11 +3,15 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.ActivityType;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Deprecated
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Getter
 @Setter
 public class ActivityTypeDTO implements ConvertEntityAndDTO<ActivityTypeDTO, ActivityType> {

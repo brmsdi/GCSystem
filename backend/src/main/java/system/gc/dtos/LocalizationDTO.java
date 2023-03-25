@@ -3,9 +3,13 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Localization;
+import javax.validation.constraints.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
 
 @Getter
 @Setter

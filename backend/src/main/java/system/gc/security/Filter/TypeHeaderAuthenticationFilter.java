@@ -4,8 +4,13 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
 
-@WebFilter({"/employees/login", "/lessees/login"})
+@WebFilter({"/login/employees", "/login/lessees"})
 public class TypeHeaderAuthenticationFilter implements Filter {
 
     @Override

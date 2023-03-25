@@ -6,6 +6,12 @@ import system.gc.entities.OrderService;
 
 import java.util.List;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 public interface OrderServiceRepository extends JpaRepository<OrderService, Integer> {
     @Query("SELECT orderservice FROM OrderService orderservice " +
             "JOIN FETCH orderservice.repairRequests repairRequests " +

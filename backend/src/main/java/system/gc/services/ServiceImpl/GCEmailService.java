@@ -16,19 +16,21 @@ import java.util.Map;
 
 /**
  * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
  */
 @Service
 @Slf4j
 public class GCEmailService {
 
     @Autowired
-    JavaMailSender javaMailSender;
+    private JavaMailSender javaMailSender;
 
     @Autowired
-    MessageSource messageSource;
+    private MessageSource messageSource;
 
     @Autowired
-    SpringTemplateEngine springTemplateEngine;
+    private SpringTemplateEngine springTemplateEngine;
 
     public MimeMessage createMimeMessage(String from, String to, String subject, Map<String, String> bodyParam) {
         log.info("Criando mensagem mime");

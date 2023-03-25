@@ -4,10 +4,11 @@ import org.springframework.stereotype.Service;
 import system.gc.entities.Employee;
 import system.gc.repositories.EmployeeRepository;
 import system.gc.services.AuthenticationByCPFGeneric;
-import system.gc.services.ChangePasswordInterface;
 
 /**
  * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
  */
 @Service
-public class EmployeeAuthenticationServiceImpl implements AuthenticationByCPFGeneric<Employee, EmployeeRepository>, ChangePasswordInterface<Employee, EmployeeRepository> {}
+public class EmployeeAuthenticationServiceImpl implements AuthenticationByCPFGeneric<Employee, EmployeeRepository> {}

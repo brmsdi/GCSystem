@@ -10,11 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.DebtDTO;
 import system.gc.dtos.LesseeDTO;
+import system.gc.exceptionsAdvice.exceptions.DebtNotCreatedException;
 import system.gc.services.ServiceImpl.DebtService;
 
 import javax.validation.Valid;
 
-@Deprecated
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @RestController
 @RequestMapping(value = "/debts")
 @Slf4j
@@ -22,10 +28,6 @@ public class DebtController implements ControllerPermission {
 
     @Autowired
     private DebtService debtService;
-
-    @Autowired
-    private MessageSource messageSource;
-
     @GetMapping
     public ResponseEntity<Page<DebtDTO>> listPaginationDebt(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -35,24 +37,14 @@ public class DebtController implements ControllerPermission {
     }
 
     @PostMapping
-    public ResponseEntity<String> save(@Valid @RequestBody DebtDTO debtDTO) {
-        if (debtService.save(debtDTO) == null) {
-            return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_DEBT",
-                    null,
-                    LocaleContextHolder.getLocale()));
-        }
-        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_INSERT_SUCCESS",
-                null,
-                LocaleContextHolder.getLocale()));
+    public ResponseEntity<DebtDTO> save(@Valid @RequestBody DebtDTO debtDTO) throws DebtNotCreatedException {
+        return ResponseEntity.ok(debtService.save(debtDTO));
     }
 
     @PutMapping
-    public ResponseEntity<String> update(@Valid @RequestBody DebtDTO debtDTO) {
+    public ResponseEntity<DebtDTO> update(@Valid @RequestBody DebtDTO debtDTO) {
         log.info("Atualizando registro");
-        debtService.update(debtDTO);
-        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
-                null,
-                LocaleContextHolder.getLocale()));
+        return ResponseEntity.ok(debtService.update(debtDTO));
     }
 
     @GetMapping(value = "search")
@@ -65,9 +57,6 @@ public class DebtController implements ControllerPermission {
 
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam(name = "id") Integer ID) {
-        debtService.delete(ID);
-        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
-                null,
-                LocaleContextHolder.getLocale()));
+        return ResponseEntity.ok(debtService.delete(ID));
     }
 }

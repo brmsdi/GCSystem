@@ -6,7 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.services.ServiceImpl.ApplicationService;
 import system.gc.services.ServiceImpl.DataReloadService;
-
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
 @RestController
 @Slf4j
 @RequestMapping(value = "/data/reload")

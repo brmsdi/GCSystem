@@ -9,10 +9,10 @@ export const REQUEST_EMPLOYEE_SEARCH = '/search';
 export const REQUEST_EMPLOYEES_TO_MODAL_ORDER_SERVICE = 'employees/list/to-modal-order-service';
 
 export const REQUEST_LOGIN ='login';
-export const REQUEST_VALIDATE_TOKEN = 'change-password/validate/token';
-export const REQUEST_REQUEST_CODE = 'change-password/request-code';
-export const REQUEST_VALIDATE_CODE = 'change-password/receive-code';
-export const REQUEST_PASSWORD_CHANGE = 'change-password/change';
+export const REQUEST_VALIDATE_TOKEN = 'validate/token';
+export const REQUEST_REQUEST_CODE = 'password/request-code';
+export const REQUEST_VALIDATE_CODE = 'password/receive-code';
+export const REQUEST_PASSWORD_CHANGE = 'password/change';
 
 /*STATUS REQUEST */
 export const REQUEST_STATUS = 'status';

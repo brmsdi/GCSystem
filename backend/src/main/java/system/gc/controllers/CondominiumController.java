@@ -11,9 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.CondominiumDTO;
 import system.gc.services.ServiceImpl.CondominiumService;
-
 import javax.validation.Valid;
 import java.util.List;
+
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
 
 @RestController
 @RequestMapping(value = "/condominiums")

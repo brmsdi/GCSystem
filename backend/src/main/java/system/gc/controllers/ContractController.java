@@ -13,6 +13,12 @@ import system.gc.dtos.LesseeDTO;
 import system.gc.services.ServiceImpl.ContractService;
 import javax.validation.Valid;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @RestController
 @RequestMapping(value = "/contracts")
 @Slf4j

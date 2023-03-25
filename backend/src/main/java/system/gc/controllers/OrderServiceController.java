@@ -10,8 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.OrderServiceDTO;
 import system.gc.services.ServiceImpl.OrderServiceService;
-
 import javax.validation.Valid;
+
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
 
 @RestController
 @RequestMapping(value = "/order-services")

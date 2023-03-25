@@ -11,6 +11,12 @@ import system.gc.services.ChangePasswordEntity;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 public interface EmployeeRepository extends JpaRepository<Employee, Integer>, AuthenticateEntity<Employee>, ChangePasswordEntity<Employee> {
     @Query("SELECT employee FROM Employee employee " +
             "JOIN FETCH employee.role " +

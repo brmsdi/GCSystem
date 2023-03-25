@@ -8,21 +8,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
 import system.gc.exceptionsAdvice.exceptions.DuplicatedFieldException;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.StatusDTO;
 import system.gc.entities.Employee;
-import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
 import system.gc.repositories.EmployeeRepository;
-import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
 
 /**
  * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
  */
 @Service
 @Slf4j
@@ -39,9 +38,6 @@ public class EmployeeService {
 
     @Autowired
     private LogPasswordCodeService logPasswordCodeService;
-
-    @Autowired
-    private GCEmailService gcEmailService;
 
     @Autowired
     private MessageSource messageSource;
@@ -131,41 +127,6 @@ public class EmployeeService {
     public Employee authentication(String username) {
         return employeeAuthenticationServiceImpl.authentication(username, employeeRepository);
     }
-
-    @Transactional
-    public boolean generateCodeForChangePassword(String email) {
-        log.info("Iniciando processo de geração de codigo para troca de senha");
-        Status waitingStatus = statusService.findByName("Aguardando");
-        Status cancelStatus = statusService.findByName("Cancelado");
-        Employee employeeResult = employeeAuthenticationServiceImpl.verifyEmail(email, employeeRepository);
-        Optional<Employee> employeeOptional = employeeAuthenticationServiceImpl.checkIfThereISAnOpenRequest(employeeResult.getId(), employeeRepository, waitingStatus.getId());
-        if (employeeOptional.isPresent()) {
-            employeeOptional.get().getLogChangePassword().forEach(it -> it.setStatus(cancelStatus));
-            logPasswordCodeService.updateStatusCode(employeeOptional.get().getLogChangePassword());
-        }
-        LogChangePassword logChangePassword = employeeAuthenticationServiceImpl.startProcess(employeeResult, waitingStatus, logPasswordCodeService);
-        log.info("Enviando código para o E-mail");
-        Map<String, String> bodyParams = new HashMap<>();
-        bodyParams.put("code", logChangePassword.getCode());
-        MimeMessage mimeMessage = gcEmailService.createMimeMessage(System.getenv("EMAIL_GCSYSTEM"), email, gcEmailService.getSubjectEmail(), bodyParams);
-        gcEmailService.send(mimeMessage);
-        log.info("Código enviado para o E-mail");
-        return true;
-    }
-
-    @Transactional
-    public void changePassword(String token, String newPassword) {
-        log.info("Atualizando senha");
-        Status statusValid = statusService.findByName("Valido");
-        Status statusRescued = statusService.findByName("Resgatado");
-        Optional<Employee> employeeOptional = employeeAuthenticationServiceImpl.verifyTokenForChangePassword(token, employeeRepository, statusValid.getId());
-        Employee employee = employeeOptional.orElseThrow(() -> new CodeChangePasswordInvalidException("Nenhum registro encontrado para a solicitação"));
-        employee.setPassword(new BCryptPasswordEncoder().encode(newPassword));
-        employeeRepository.save(employee);
-        employee.getLogChangePassword().forEach(it -> it.setStatus(statusRescued));
-        logPasswordCodeService.updateStatusCode(employee.getLogChangePassword());
-    }
-
     public void cpfIsAvailableSave(EmployeeDTO employeeDTO) {
         log.info("Verificando CPF");
         Optional<Employee> employeeOptional = employeeRepository.findByCPF(employeeDTO.getCpf());
@@ -174,6 +135,7 @@ public class EmployeeService {
             throw new DuplicatedFieldException(messageSource.getMessage("TEXT_ERROR_INSERT_CPF_DUPLICATED", null, LocaleContextHolder.getLocale()));
         }
     }
+
     public void cpfIsAvailableUpdate(EmployeeDTO employeeDTO)  {
         log.info("Verificando CPF");
         Optional<Employee> employeeOptional = employeeRepository.findByCPF(employeeDTO.getCpf());

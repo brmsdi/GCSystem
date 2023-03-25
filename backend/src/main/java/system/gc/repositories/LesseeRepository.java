@@ -11,6 +11,12 @@ import system.gc.services.ChangePasswordEntity;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 public interface LesseeRepository extends JpaRepository<Lessee, Integer>, AuthenticateEntity<Lessee>, ChangePasswordEntity<Lessee> {
 
     @Query("SELECT lessee FROM Lessee lessee JOIN FETCH lessee.status WHERE lessee IN :lessees")

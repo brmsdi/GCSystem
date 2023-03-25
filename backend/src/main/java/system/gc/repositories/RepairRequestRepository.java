@@ -7,6 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.RepairRequest;
 import java.util.List;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 public interface RepairRequestRepository extends JpaRepository<RepairRequest, Integer> {
 
     @Query("SELECT repairRequest FROM RepairRequest repairRequest " +

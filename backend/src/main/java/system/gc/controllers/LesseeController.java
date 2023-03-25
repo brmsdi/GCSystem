@@ -7,19 +7,30 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.LesseeDTO;
+import system.gc.dtos.TokenChangePasswordDTO;
+import system.gc.dtos.TokenDTO;
+import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
+import system.gc.services.LogPasswordCode;
 import system.gc.services.ServiceImpl.DebtService;
 import system.gc.services.ServiceImpl.LesseeService;
-
+import system.gc.utils.TextUtils;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
 
 @RestController
 @RequestMapping(value = "/lessees")
 @Slf4j
-public class LesseeController implements ControllerPermission {
+public class LesseeController implements ControllerPermission, ChangePassword {
     @Autowired
     private LesseeService lesseeService;
 
@@ -28,6 +39,9 @@ public class LesseeController implements ControllerPermission {
 
     @Autowired
     private MessageSource messageSource;
+
+    @Autowired
+    private LogPasswordCode logPasswordCodeLesseeImpl;
 
     @GetMapping
     public ResponseEntity<Page<LesseeDTO>> listPaginationLessees(
@@ -89,5 +103,32 @@ public class LesseeController implements ControllerPermission {
             return ResponseEntity.ok(Page.empty());
         }
         return ResponseEntity.ok(lesseeService.listPaginationDebtsByLessee(lessee, debtService.searchDebts(PageRequest.of(page, size), lessee)));
+    }
+
+    @Override
+    public ResponseEntity<String> requestCode(@RequestParam String email) {
+        if (logPasswordCodeLesseeImpl.generateCodeForChangePassword(email)) {
+            return ResponseEntity.ok().body(messageSource.getMessage("TEXT_MSG_EMAIL_SENT_SUCCESS",
+                    null, LocaleContextHolder.getLocale()));
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(messageSource.getMessage("TEXT_ERROR_CHANGE_PASSWORD",
+                null, LocaleContextHolder.getLocale()));
+    }
+
+    @Override
+    public ResponseEntity<TokenDTO> receiveCode(String email, String code) {
+        if (!(TextUtils.textIsValid(email) && TextUtils.textIsValid(code))) {
+            throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_EMAIL_EMPTY_OR_NULL",
+                    null, LocaleContextHolder.getLocale()));
+        }
+        return ResponseEntity.ok().body(logPasswordCodeLesseeImpl.validateCode(email, code));
+    }
+
+    @Override
+    public ResponseEntity<String> changePassword(TokenChangePasswordDTO tokenChangePasswordDTO) {
+        logPasswordCodeLesseeImpl.changePassword(tokenChangePasswordDTO.getToken(), tokenChangePasswordDTO.getNewPassword());
+        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_PASSWORD_UPDATE_SUCCESS",
+                null, LocaleContextHolder.getLocale()));
     }
 }

@@ -12,8 +12,8 @@ const FormNewDebt = () => {
   const dispatch = useDispatch();
   async function submit(form: Debt) {
     try {
-      const result = await saveDebt(form);
-      await Swal.fire("Ebaa!", result, "success");
+      await saveDebt(form);
+      await Swal.fire("Ebaa!", "Cadastro realizado com sucesso", "success");
       dispatch(updateDebtTableAction());
       return true;
     } catch (error: any) {

@@ -25,13 +25,14 @@ const RecoverPasswordChange = () => {
 
   async function submitPassword(event: any) {
     event.preventDefault();
+    if (stateChangePassword.requestType === undefined) return
     setSending(true)
     await verifyCurrentState()
     if (password.newPassword === password.repeatPassword && stateChangePassword.token) {
       try 
       {
         stateChangePassword.token.newPassword = password.newPassword;
-        const message = await changePassword(stateChangePassword)
+        const message = await changePassword(stateChangePassword.requestType.requestPasswordChange, stateChangePassword)
         await Swal.fire("Eeeba!", message, "success")
         dispatch(insertRequestCodeInfo(StateAuthenticationChange.INSERTINFO, {}))
         nav(LOGIN_URL)
@@ -46,6 +47,7 @@ const RecoverPasswordChange = () => {
       }
     } else {
       Swal.fire('Oops!', 'As senhas não correspondem', 'error')
+      setSending(false)
       return
     }
   }

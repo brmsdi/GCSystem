@@ -7,6 +7,12 @@ import system.gc.entities.Condominium;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Getter
 @Setter
 public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condominium> {
@@ -29,13 +35,7 @@ public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condo
     @NotNull(message = "{required.validation}")
     private LocalizationCondominiumDTO localization;
 
-    /*
-    @NotNull(message = "{required.validation}")
-    @NotBlank(message = "{required.validation}")
-    private Set<Contract> contract; */
-
-    public CondominiumDTO() {
-    }
+    public CondominiumDTO() {}
 
     public CondominiumDTO(String name) {
         setName(name);

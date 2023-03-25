@@ -8,6 +8,12 @@ import system.gc.entities.Contract;
 
 import java.util.List;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 public interface ContractRepository extends JpaRepository<Contract, Integer> {
     @Query("SELECT contract FROM Contract contract " +
             "JOIN FETCH contract.status " +

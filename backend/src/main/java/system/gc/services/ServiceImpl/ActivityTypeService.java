@@ -8,7 +8,13 @@ import system.gc.dtos.ActivityTypeDTO;
 import system.gc.entities.ActivityType;
 import system.gc.repositories.ActivityTypeRepository;
 import java.util.List;
-@Deprecated
+
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Service
 @Slf4j
 public class ActivityTypeService {

@@ -4,10 +4,11 @@ import org.springframework.stereotype.Service;
 import system.gc.entities.Lessee;
 import system.gc.repositories.LesseeRepository;
 import system.gc.services.AuthenticationByCPFGeneric;
-import system.gc.services.ChangePasswordInterface;
 
 /**
  * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
  */
 @Service
-public class LesseeAuthenticationService implements AuthenticationByCPFGeneric<Lessee, LesseeRepository>, ChangePasswordInterface<Lessee, LesseeRepository> {}
+public class LesseeAuthenticationService implements AuthenticationByCPFGeneric<Lessee, LesseeRepository> {}

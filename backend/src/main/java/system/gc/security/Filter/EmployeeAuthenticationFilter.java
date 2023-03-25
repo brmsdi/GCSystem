@@ -13,9 +13,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
 @Slf4j
 public class EmployeeAuthenticationFilter extends UsernamePasswordAuthenticationFilter implements CreateTokenSuccessFulAuthentication {
 
+    /**
+     * <p>Este método insere o token no corpo da resposta da requisição.</p>
+     */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         log.info("Usuário autenticado.");
@@ -26,6 +34,7 @@ public class EmployeeAuthenticationFilter extends UsernamePasswordAuthentication
             createTokenSuccessFulAuthentication(response, params);
         } catch (Exception e) {
             log.error("Erro ao criar token");
+            e.printStackTrace();
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
     }

@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 public class EmployeeUserDetails implements UserDetailsConvert, UserAuthenticated<Employee> {
     private final Employee userDetail;
 

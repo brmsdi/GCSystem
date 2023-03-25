@@ -3,6 +3,12 @@ package system.gc.security;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Getter
 @Setter
 public class UserAuthenticatedView {
@@ -14,5 +20,4 @@ public class UserAuthenticatedView {
         setName(name);
         setRole(role);
     }
-
 }

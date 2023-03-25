@@ -4,6 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Item;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Getter
 @Setter
 public class ItemDTO implements ConvertEntityAndDTO<ItemDTO, Item> {

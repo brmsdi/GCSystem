@@ -9,7 +9,12 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Deprecated
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Getter
 @Setter
 public class DebtDTO implements ConvertEntityAndDTO<DebtDTO, Debt> {

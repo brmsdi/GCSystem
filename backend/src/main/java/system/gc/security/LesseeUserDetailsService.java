@@ -9,6 +9,12 @@ import org.springframework.stereotype.Component;
 import system.gc.entities.Lessee;
 import system.gc.services.ServiceImpl.LesseeService;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Component
 @Slf4j
 public class LesseeUserDetailsService implements UserDetailsService {

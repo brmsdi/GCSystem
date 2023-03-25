@@ -2,12 +2,15 @@ package system.gc.services.ServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import system.gc.dtos.*;
 import system.gc.entities.*;
+import system.gc.exceptionsAdvice.exceptions.DebtNotCreatedException;
 import system.gc.repositories.DebtRepository;
 import system.gc.security.EmployeeUserDetails;
 
@@ -15,7 +18,12 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
-@Deprecated
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Service
 @Slf4j
 public class DebtService {
@@ -34,18 +42,23 @@ public class DebtService {
     @Autowired
     private StatusService statusService;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @Transactional
-    public Debt save(DebtDTO debtDTO) {
+    public DebtDTO save(DebtDTO debtDTO) throws DebtNotCreatedException {
         if (!lesseeService.lesseeRegistrationIsEnabled(debtDTO.getLessee())) {
             log.warn("Locatário não está apto a receber débitos ou não existe no banco de dados");
-            return null;
+            throw new DebtNotCreatedException(messageSource.getMessage("TEXT_ERROR_INSERT_DEBT",
+                    null,
+                    LocaleContextHolder.getLocale()));
         }
         Debt registeredDebt = debtRepository.save(new DebtDTO().toEntity(debtDTO));
         ActivityType activityTypeRegister = activityTypeService.findByName("Registrado");
         log.info("Débito registrado com o id: " + registeredDebt.getId());
         EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         registerMovementDebt(registeredDebt, activityTypeRegister, employeeUserDetails.getUserAuthenticated());
-        return registeredDebt;
+        return new DebtDTO(registeredDebt);
     }
 
     @Transactional
@@ -59,7 +72,7 @@ public class DebtService {
     }
 
     @Transactional
-    public void update(DebtDTO updateDebtDTO) throws EntityNotFoundException {
+    public DebtDTO update(DebtDTO updateDebtDTO) throws EntityNotFoundException {
         log.info("Atualizando registro do débito");
         Optional<Debt> debt = debtRepository.findById(updateDebtDTO.getId());
         debt.orElseThrow(() -> new EntityNotFoundException("Débito inexistente: "));
@@ -69,6 +82,7 @@ public class DebtService {
         log.info("Atualizado com sucesso");
         EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         registerMovementDebt(previousDebt, updatedDebt, activityTypeUpdate, employeeUserDetails.getUserAuthenticated());
+        return new DebtDTO(updatedDebt);
     }
 
     @Transactional
@@ -85,7 +99,7 @@ public class DebtService {
     }
 
     @Transactional
-    public void delete(Integer ID) throws EntityNotFoundException {
+    public String delete(Integer ID) throws EntityNotFoundException {
         log.info("Deletando registro com o ID: " + ID);
         Optional<Debt> debt = debtRepository.findById(ID);
         debt.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
@@ -97,6 +111,9 @@ public class DebtService {
         EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         registerMovementDebt(previousDebt, disabledDebt, activityTypeDisable, employeeUserDetails.getUserAuthenticated());
         log.info("Registro desativado com sucesso");
+        return messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
+                null,
+                LocaleContextHolder.getLocale());
     }
 
     @Transactional

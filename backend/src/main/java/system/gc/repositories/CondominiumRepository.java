@@ -8,6 +8,12 @@ import system.gc.entities.Condominium;
 
 import java.util.List;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 public interface CondominiumRepository extends JpaRepository<Condominium, Integer> {
     @Query("SELECT condominium FROM Condominium condominium " +
             "JOIN FETCH condominium.status " +

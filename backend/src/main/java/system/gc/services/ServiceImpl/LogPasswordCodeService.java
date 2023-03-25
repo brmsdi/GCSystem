@@ -11,6 +11,7 @@ import system.gc.entities.Status;
 import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
 import system.gc.repositories.LogPasswordCodeRepository;
 import system.gc.security.token.JWTService;
+import system.gc.services.LogPasswordCode;
 import system.gc.utils.TextUtils;
 import system.gc.utils.TypeUserEnum;
 import javax.persistence.EntityNotFoundException;
@@ -23,15 +24,17 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
  */
 @Service
 @Slf4j
 public class LogPasswordCodeService {
     @Autowired
-    LogPasswordCodeRepository logPasswordCodeRepository;
+    private LogPasswordCodeRepository logPasswordCodeRepository;
 
     @Autowired
-    StatusService statusService;
+    private StatusService statusService;
 
     @Autowired
     private MessageSource messageSource;
@@ -41,16 +44,11 @@ public class LogPasswordCodeService {
         return logPasswordCodeRepository.save(logChangePassword);
     }
 
-    @Transactional
-    public void deleteAll()
-    {
-        log.info("Deletando todos");
-        logPasswordCodeRepository.deleteAll();
-    }
-
-    public TokenDTO validateCode(String email, Integer type, String code) {
+    @Deprecated(since = "1.3")
+    public TokenDTO validateCode(String email, String code, LogPasswordCode logPasswordCode) {
         log.info("Validando código");
-        LogChangePassword logChangePassword = chooseType(email, type);
+        Status waitingStatus = statusService.findByName("Aguardando");
+        LogChangePassword logChangePassword = logPasswordCode.getLogChangePassword(email, waitingStatus.getId());
         Date currentDate = new Date();
         Date passwordCodeDate = logChangePassword.getDate();
         long time = currentDate.getTime() - passwordCodeDate.getTime();
@@ -79,23 +77,8 @@ public class LogPasswordCodeService {
         updateStatusCode(logChangePassword, statusService.findByName("Invalido"));
         throw new CodeChangePasswordInvalidException("As informações não correspondem. Solicite outro código!");
     }
-    
-    private LogChangePassword chooseType(String email, Integer type) {
-        Optional<LogChangePassword> passwordCode;
-        Status WaitingStatus = statusService.findByName("Aguardando");
-        if (TypeUserEnum.valueOf(type) == TypeUserEnum.EMPLOYEE) {
-            log.info("Tentativa de validação de código (EMPLOYEE)");
-            passwordCode = logPasswordCodeRepository.findPasswordChangeRequestEmployee(email, WaitingStatus.getId());
-            return passwordCode.orElseThrow(() -> new EntityNotFoundException("Dados invalidos!"));
-        } else if (TypeUserEnum.valueOf(type) == TypeUserEnum.LESSEE) {
-            log.info("Tentativa de validação de código (LESSEE)");
-            passwordCode = logPasswordCodeRepository.findPasswordChangeRequestLessee(email, WaitingStatus.getId()) ;
-            return passwordCode.orElseThrow(() -> new EntityNotFoundException("Dados invalidos!"));
-        }
-        throw new EntityNotFoundException("Dados invalidos!");
-    }
-    
-    private void updateStatusCode(LogChangePassword logChangePassword, Status status) {
+
+    public void updateStatusCode(LogChangePassword logChangePassword, Status status) {
         log.info("Atualizando status do registro de troca de senha");
         logChangePassword.setStatus(status);
         save(logChangePassword);
@@ -105,6 +88,7 @@ public class LogPasswordCodeService {
         logPasswordCodeRepository.saveAll(passwordCodes);
     }
 
+    @Deprecated(since = "1.3")
     private String createTokenChangePassword(String email, Integer ID, String code) {
         log.info("Criando token de troca de senha");
         Map<String, String> params = new HashMap<>();
@@ -114,6 +98,7 @@ public class LogPasswordCodeService {
         return JWTService.createTokenJWT(params, TextUtils.TIME_TOKEN_CHANGE_PASSWORD_EXPIRATION);
     }
 
+    @Deprecated(since = "1.3")
     private TokenDTO createTokenDTO(LogChangePassword logChangePassword, String email) {
         if(logChangePassword.getEmployee() != null) {
             return TokenDTO.builder()
@@ -123,5 +108,22 @@ public class LogPasswordCodeService {
         return TokenDTO.builder()
                 .type(String.valueOf(TypeUserEnum.LESSEE))
                 .token(createTokenChangePassword(email, logChangePassword.getId(), logChangePassword.getCode())).build();
+    }
+
+    public Optional<LogChangePassword> findPasswordChangeRequestEmployee(String email, Integer statusID)
+    {
+        return logPasswordCodeRepository.findPasswordChangeRequestEmployee(email, statusID);
+    }
+
+    public Optional<LogChangePassword> findPasswordChangeRequestLessee(String email, Integer statusID)
+    {
+        return logPasswordCodeRepository.findPasswordChangeRequestLessee(email, statusID);
+    }
+
+    @Transactional
+    public void deleteAll()
+    {
+        log.info("Deletando todos");
+        logPasswordCodeRepository.deleteAll();
     }
 }

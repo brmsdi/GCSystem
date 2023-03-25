@@ -13,7 +13,12 @@ import system.gc.repositories.MovementRepository;
 import javax.transaction.Transactional;
 import java.util.Date;
 
-@Deprecated
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Service
 @Slf4j
 public class MovementService {

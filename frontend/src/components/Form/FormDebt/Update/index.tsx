@@ -12,8 +12,8 @@ const FormUpdateDebt = () => {
   const selectedDebt: Debt = useSelector(selectStateSelectedDebt);
   async function submit(form: Debt) {
     try {
-      const result = await updateDebt(form);
-      await Swal.fire("Ebaa!", result, "success");
+      await updateDebt(form);
+      await Swal.fire("Ebaa!", "Registro atualizado com sucesso", "success");
       dispatch(updateDebtTableAction());
       return true;
     } catch (error: any) {

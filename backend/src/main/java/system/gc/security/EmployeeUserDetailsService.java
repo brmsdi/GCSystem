@@ -9,6 +9,12 @@ import org.springframework.stereotype.Component;
 import system.gc.entities.Employee;
 import system.gc.services.ServiceImpl.EmployeeService;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Component
 @Slf4j
 public class EmployeeUserDetailsService implements UserDetailsService {

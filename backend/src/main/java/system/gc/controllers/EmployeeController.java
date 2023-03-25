@@ -7,24 +7,38 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.EmployeeDTO;
+import system.gc.dtos.TokenChangePasswordDTO;
+import system.gc.dtos.TokenDTO;
+import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
+import system.gc.services.LogPasswordCode;
 import system.gc.services.ServiceImpl.EmployeeService;
-
+import system.gc.utils.TextUtils;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @RestController
 @RequestMapping(value = "/employees")
 @Slf4j
-public class EmployeeController implements ControllerPermission {
+public class EmployeeController implements ControllerPermission, ChangePassword {
     @Autowired
     private EmployeeService employeeService;
 
     @Autowired
     private MessageSource messageSource;
+
+    @Autowired
+    private LogPasswordCode logPasswordCodeEmployeeImpl;
 
     @GetMapping
     public ResponseEntity<Page<EmployeeDTO>> listPaginationEmployees(
@@ -77,5 +91,31 @@ public class EmployeeController implements ControllerPermission {
     public ResponseEntity<List<EmployeeDTO>> findAllToModalOrderService() {
         log.info("Listando funcionários");
         return ResponseEntity.ok(employeeService.findAllToModalOrderService());
+    }
+
+    @Override
+    public ResponseEntity<String> requestCode(@RequestParam String email) {
+        if (logPasswordCodeEmployeeImpl.generateCodeForChangePassword(email)) {
+            return ResponseEntity.ok().body(messageSource.getMessage("TEXT_MSG_EMAIL_SENT_SUCCESS",
+                    null, LocaleContextHolder.getLocale()));
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(messageSource.getMessage("TEXT_ERROR_CHANGE_PASSWORD",
+                null, LocaleContextHolder.getLocale()));
+    }
+
+    @Override
+    public ResponseEntity<TokenDTO> receiveCode(String email, String code) {
+        if (!(TextUtils.textIsValid(email) && TextUtils.textIsValid(code))) {
+            throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_EMAIL_EMPTY_OR_NULL",
+                    null, LocaleContextHolder.getLocale()));
+        }
+        return ResponseEntity.ok().body(logPasswordCodeEmployeeImpl.validateCode(email, code));
+    }
+
+    @Override
+    public ResponseEntity<String> changePassword(TokenChangePasswordDTO tokenChangePasswordDTO) {
+        logPasswordCodeEmployeeImpl.changePassword(tokenChangePasswordDTO.getToken(), tokenChangePasswordDTO.getNewPassword());
+        return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_PASSWORD_UPDATE_SUCCESS",
+                null, LocaleContextHolder.getLocale()));
     }
 }

@@ -8,6 +8,12 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Getter
 @Setter
 public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, AuthenticateDTO<LesseeDTO, Lessee> {
