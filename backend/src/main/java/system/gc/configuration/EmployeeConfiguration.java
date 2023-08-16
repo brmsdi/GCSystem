@@ -6,17 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import system.gc.configuration.generics.InitUsernamePasswordAuthenticationFilter;
 import system.gc.security.EmployeeUserDetailsService;
 import system.gc.security.Filter.EmployeeAuthenticationFilter;
-import system.gc.security.Filter.JWTAuthenticationEntryPoint;
-import system.gc.utils.Route;
-import system.gc.utils.RoutesPublicEmployee;
-import java.util.Arrays;
+
+import static system.gc.utils.RoutesPublicEmployee.LOGIN_EMPLOYEES;
 
 /**
  * @author Wisley Bruno Marques França
@@ -32,28 +28,8 @@ public class EmployeeConfiguration {
     private final ProviderManager employeeProviderManager;
     private final DefaultInitUsernamePasswordAuthenticationFilter defaultInitUsernamePasswordAuthenticationFilter = new DefaultInitUsernamePasswordAuthenticationFilter();
     @Autowired
-    private JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    @Autowired
     protected EmployeeConfiguration(EmployeeUserDetailsService employeeUserDetailsService) {
         this.employeeProviderManager = new ProviderManager(InitializeDaoAuthenticationProvider.initialize(employeeUserDetailsService, new BCryptPasswordEncoder()).create());
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChainEmployee(HttpSecurity httpSecurity) throws Exception {
-        log.info("Employees security filter chain");
-        //ADICIONA ROTAS PUBLICAS
-        httpSecurity.authorizeRequests(expressionInterceptUrlRegistry ->
-                Arrays.stream(RoutesPublicEmployee.values()).forEach(routesPublicEmployee -> {
-                    Route route = routesPublicEmployee.getRoute();
-                    expressionInterceptUrlRegistry
-                            .antMatchers(route.getHttpMethod(), route.getRoute()).permitAll();
-                }));
-        httpSecurity
-                .authorizeRequests()
-                .and()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
-        return httpSecurity.build();
     }
 
     /**
@@ -63,7 +39,7 @@ public class EmployeeConfiguration {
      */
     @Bean
     public UsernamePasswordAuthenticationFilter employeeUsernamePasswordAuthenticationFilter() {
-        return defaultInitUsernamePasswordAuthenticationFilter.init("/login/employees",
+        return defaultInitUsernamePasswordAuthenticationFilter.init(LOGIN_EMPLOYEES.getRoute().url(),
                 new EmployeeAuthenticationFilter(),
                 employeeProviderManager);
     }

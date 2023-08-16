@@ -20,6 +20,8 @@ public class TextUtils {
     public static final String ROLE_ADMINISTRATOR = "ADMINISTRADOR";
     public static final String ROLE_ADMINISTRATIVE_ASSISTANT = "ASSISTENTE ADMINISTRATIVO";
     public static final String ROLE_COUNTER = "CONTADOR";
+    public static final String API_V1 = "/api/v1";
+    public static final String API_V1_WEB = API_V1 + "/web";
 
     public static String generateTXID()
     {

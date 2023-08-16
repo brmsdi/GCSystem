@@ -1,9 +1,13 @@
 package system.gc.utils;
 
+import lombok.Getter;
 import org.springframework.http.HttpMethod;
 
+import static system.gc.utils.TextUtils.API_V1_WEB;
+
+@Getter
 public enum RoutesPublicLessee {
-    LOGIN_LESSEES(new Route(HttpMethod.POST, "/login/lessees"));
+    LOGIN_LESSEES(new Route(HttpMethod.POST, API_V1_WEB.concat("/login/lessees")));
 
     private final Route route;
     RoutesPublicLessee(Route route)
@@ -11,8 +15,4 @@ public enum RoutesPublicLessee {
         this.route = route;
     }
 
-    public Route getRoute()
-    {
-        return this.route;
-    }
 }

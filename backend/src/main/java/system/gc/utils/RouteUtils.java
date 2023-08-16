@@ -33,6 +33,6 @@ public class RouteUtils {
      */
     public static List<String> getAllPublicRoutesURI()
     {
-        return getAllPublicRoutes().stream().map(Route::getRoute).toList();
+        return getAllPublicRoutes().stream().map(Route::url).toList();
     }
 }

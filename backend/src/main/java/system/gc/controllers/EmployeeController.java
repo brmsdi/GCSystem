@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
+import static system.gc.utils.TextUtils.API_V1_WEB;
+
 /**
  * @author Wisley Bruno Marques França
  * @since 0.0.1
@@ -28,7 +30,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping(value = "/employees")
+@RequestMapping(value = API_V1_WEB + "/employees")
 @Slf4j
 public class EmployeeController implements ControllerPermission, ChangePassword {
     @Autowired
