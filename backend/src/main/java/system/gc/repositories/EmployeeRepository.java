@@ -5,8 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.Employee;
-import system.gc.services.AuthenticateEntity;
-import system.gc.services.ChangePasswordEntity;
+import system.gc.services.web.AuthenticateEntity;
+import system.gc.services.web.ChangePasswordEntity;
 
 import java.util.List;
 import java.util.Optional;

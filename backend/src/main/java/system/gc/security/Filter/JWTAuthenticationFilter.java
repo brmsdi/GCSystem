@@ -15,8 +15,8 @@ import system.gc.entities.Lessee;
 import system.gc.security.EmployeeUserDetails;
 import system.gc.security.LesseeUserDetails;
 import system.gc.security.token.JWTService;
-import system.gc.services.ServiceImpl.EmployeeService;
-import system.gc.services.ServiceImpl.LesseeService;
+import system.gc.services.web.impl.EmployeeService;
+import system.gc.services.web.impl.LesseeService;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -132,20 +132,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 throw new BadCredentialsException("O usuário não foi localizado (Lessee)");
             }
             log.info("Usuário localizado. (Lessee)");
-            return create(new LesseeUserDetails(lessee));
+            return createV2(new LesseeUserDetails(lessee));
         }
         throw new BadCredentialsException("Token não corresponde a nenhum tipo de autenticação");
-    }
-
-    /**
-     * <p>Este método cria o UsernamePasswordAuthenticationToken, necessário para autenticar o usuário.</p>
-     * @param userDetails - Informações do usuário identificado
-     * @return UsernamePasswordAuthenticationToken - com username, password e autoridades para ser autenticado no sistema.
-     */
-    private UsernamePasswordAuthenticationToken create(UserDetails userDetails) {
-        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
-                userDetails.getPassword(),
-                userDetails.getAuthorities());
     }
 
     /**

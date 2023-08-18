@@ -1,8 +1,8 @@
 package system.gc.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * @author Wisley Bruno Marques França
@@ -21,9 +21,9 @@ public class RouteUtils {
     public static List<Route> getAllPublicRoutes()
     {
         List<Route> allowed = new ArrayList<>();
-        Stream.of(RoutesPublicDefault.values()).forEach(routesPublicDefault -> allowed.add(routesPublicDefault.getRoute()));
-        Stream.of(RoutesPublicEmployee.values()).forEach(routesPublicEmployee -> allowed.add(routesPublicEmployee.getRoute()));
-        Stream.of(RoutesPublicLessee.values()).forEach(routesPublicLessee -> allowed.add(routesPublicLessee.getRoute()));
+        allowed.addAll(Arrays.stream(RoutesPublicDefault.values()).map(RoutesPublicDefault::getRoute).toList());
+        allowed.addAll(Arrays.stream(RoutesPublicEmployee.values()).map(RoutesPublicEmployee::getRoute).toList());
+        allowed.addAll(Arrays.stream(RoutesPublicLessee.values()).map(RoutesPublicLessee::getRoute).toList());
         return allowed;
     }
 

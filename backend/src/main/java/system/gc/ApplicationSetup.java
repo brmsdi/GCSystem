@@ -19,7 +19,8 @@ import system.gc.repositories.RoleRepository;
 import system.gc.repositories.StatusRepository;
 import system.gc.repositories.TypeProblemRepository;
 import system.gc.security.EmployeeUserDetails;
-import system.gc.services.ServiceImpl.*;
+import system.gc.services.web.impl.*;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -106,6 +107,7 @@ public class ApplicationSetup {
         Role electrician = roleRepository.save(new Role("Eletricista"));
         Role plumber = roleRepository.save(new Role("Encanador"));
         Role generalServices = roleRepository.save(new Role("Serviços gerais"));
+        Role lesseeRole = roleRepository.save(new Role("Locatário"));
 
         // Status
         List<Status> statusList = new ArrayList<>();
@@ -257,7 +259,8 @@ public class ApplicationSetup {
                     "brmarques.dev@gmail.com",
                     "92941571491",
                     "francisco123",
-                    new StatusDTO(statusActive)
+                    new StatusDTO(statusActive),
+                    new RoleDTO(lesseeRole)
             );
 
             LesseeDTO lesseeSaved = lesseeService.save(lesseeDTO);
@@ -370,28 +373,6 @@ public class ApplicationSetup {
         condominiumService.save(condominiumDTO);
     }
 
-    private void initializeLessee(
-            String name,
-            String rg,
-            String cpf,
-            Date birthDate,
-            String email,
-            String contactNumber,
-            String password,
-            Status status
-    ) throws ParseException {
-        LesseeDTO lesseeDTO = new LesseeDTO(
-                name,
-                rg,
-                cpf,
-                birthDate,
-                email,
-                contactNumber,
-                password,
-                new StatusDTO(status)
-        );
-        lesseeService.save(lesseeDTO);
-    }
 
     private void initializeContract(
             ZonedDateTime contractDate,

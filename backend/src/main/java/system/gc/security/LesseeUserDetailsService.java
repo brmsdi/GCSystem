@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import system.gc.entities.Lessee;
-import system.gc.services.ServiceImpl.LesseeService;
+import system.gc.services.web.impl.LesseeService;
 
 /**
  * @author Wisley Bruno Marques França

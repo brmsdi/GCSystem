@@ -15,7 +15,7 @@ import java.util.List;
  * @version 1.3
  */
 
-public class LesseeUserDetails implements UserDetails {
+public class LesseeUserDetails implements UserDetailsConvert {
     private final Lessee userDetail;
 
     public LesseeUserDetails(Lessee lessee) {
@@ -25,7 +25,7 @@ public class LesseeUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_LESSEE"));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+ userDetail.getRole().getName().toUpperCase()));
         return grantedAuthorities;
     }
 
@@ -57,5 +57,10 @@ public class LesseeUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public UserAuthenticatedView getNameAndRoleUser() {
+        return new UserAuthenticatedView(userDetail.getName(), userDetail.getRole().getName());
     }
 }

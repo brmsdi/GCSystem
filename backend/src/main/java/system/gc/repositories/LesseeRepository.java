@@ -5,8 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.Lessee;
-import system.gc.services.AuthenticateEntity;
-import system.gc.services.ChangePasswordEntity;
+import system.gc.services.web.AuthenticateEntity;
+import system.gc.services.web.ChangePasswordEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +19,9 @@ import java.util.Optional;
 
 public interface LesseeRepository extends JpaRepository<Lessee, Integer>, AuthenticateEntity<Lessee>, ChangePasswordEntity<Lessee> {
 
-    @Query("SELECT lessee FROM Lessee lessee JOIN FETCH lessee.status WHERE lessee IN :lessees")
+    @Query("SELECT lessee FROM Lessee lessee " +
+            "JOIN FETCH lessee.status " +
+            "JOIN FETCH lessee.role WHERE lessee IN :lessees")
     List<Lessee> loadLazyLessees(List<Lessee> lessees);
 
     @Query("SELECT lessee FROM Lessee lessee WHERE lessee.cpf LIKE :cpf")
@@ -31,6 +33,7 @@ public interface LesseeRepository extends JpaRepository<Lessee, Integer>, Authen
     @Override
     @Query("SELECT lessee FROM Lessee lessee " +
             "JOIN FETCH lessee.status " +
+            "JOIN FETCH lessee.role " +
             "WHERE lessee.cpf LIKE :cpf")
     Lessee getAuthenticationByCPF(String cpf);
 
