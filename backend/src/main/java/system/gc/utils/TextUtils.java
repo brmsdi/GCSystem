@@ -1,6 +1,7 @@
 package system.gc.utils;
 
 import com.google.gson.Gson;
+import system.gc.entities.Role;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -20,6 +21,9 @@ public class TextUtils {
     public static final String ROLE_ADMINISTRATOR = "ADMINISTRADOR";
     public static final String ROLE_ADMINISTRATIVE_ASSISTANT = "ASSISTENTE ADMINISTRATIVO";
     public static final String ROLE_COUNTER = "CONTADOR";
+    public static final String ROLE_ELECTRICIAN = "ELETRICISTA";
+    public static final String ROLE_PLUMBER = "ENCANADOR";
+    public static final String ROLE_GENERAL_SERVICES = "SERVIÇOS GERAIS";
     public static final String ROLE_LESSEE = "LOCATÁRIO";
     public static final String API_V1 = "/api/v1";
     public static final String API_V1_WEB = API_V1 + "/web";

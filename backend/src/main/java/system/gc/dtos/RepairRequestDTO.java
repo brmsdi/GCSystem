@@ -57,6 +57,7 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         setId(repairRequest.getId());
         setProblemDescription(repairRequest.getProblemDescription());
         setDate(repairRequest.getDate());
+        setApartmentNumber(repairRequest.getApartmentNumber());
         setTypeProblem(new TypeProblemDTO().toDTO(repairRequest.getTypeProblem()));
         setStatus(new StatusDTO().toDTO(repairRequest.getStatus()));
         LesseeDTO lesseeDTO = new LesseeDTO();
@@ -69,8 +70,8 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         CondominiumDTO condominiumDTO = new CondominiumDTO();
         condominiumDTO.setId(repairRequest.getCondominium().getId());
         condominiumDTO.setName(repairRequest.getCondominium().getName());
+        condominiumDTO.setNumberApartments(repairRequest.getCondominium().getNumberApartments());
         setCondominium(condominiumDTO);
-        setApartmentNumber(repairRequest.getApartmentNumber());
         setItems(new ItemDTO().convertSetEntityToSetEntityDTO(repairRequest.getItems()));
     }
 

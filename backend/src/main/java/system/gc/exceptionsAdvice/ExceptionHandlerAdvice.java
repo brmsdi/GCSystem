@@ -113,6 +113,14 @@ public class ExceptionHandlerAdvice {
                 .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
     }
 
+    @ExceptionHandler(AccessDeniedOrderService.class)
+    public ResponseEntity<ApiErrorDTO> AccessDeniedOrderService(AccessDeniedOrderService exception) {
+        log.error(exception.getMessage());
+        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiErrorDTO> constraintViolationException(ConstraintViolationException exception) {
         log.error(exception.getLocalizedMessage());

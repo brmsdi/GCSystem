@@ -292,6 +292,41 @@ public class ApplicationSetup {
                     "10",
                     statusOpen);
 
+            RepairRequestDTO repairRequestDTOSaved2 = initializeRepairRequests("Troca de fios eletricos 2",
+                    new TypeProblemDTO(typeProblemDTOElectric),
+                    lesseeSaved,
+                    condominiumDTOPage.toList().get(2),
+                    "10",
+                    statusOpen);
+
+            RepairRequestDTO repairRequestDTOSaved3 = initializeRepairRequests("Troca de fios eletricos 2",
+                    new TypeProblemDTO(typeProblemDTOElectric),
+                    lesseeSaved,
+                    condominiumDTOPage.toList().get(2),
+                    "10",
+                    statusOpen);
+
+            RepairRequestDTO repairRequestDTOSaved4 = initializeRepairRequests("Troca de fios eletricos 2",
+                    new TypeProblemDTO(typeProblemDTOElectric),
+                    lesseeSaved,
+                    condominiumDTOPage.toList().get(2),
+                    "10",
+                    statusOpen);
+
+            RepairRequestDTO repairRequestDTOSaved5 = initializeRepairRequests("Troca de fios eletricos 2",
+                    new TypeProblemDTO(typeProblemDTOElectric),
+                    lesseeSaved,
+                    condominiumDTOPage.toList().get(2),
+                    "10",
+                    statusOpen);
+
+            RepairRequestDTO repairRequestDTOSaved6 = initializeRepairRequests("Troca de fios eletricos 2",
+                    new TypeProblemDTO(typeProblemDTOElectric),
+                    lesseeSaved,
+                    condominiumDTOPage.toList().get(2),
+                    "10",
+                    statusOpen);
+
             initializeRepairRequests("Problema de energia",
                     new TypeProblemDTO(typeProblemDTOElectric),
                     lesseeSaved,
@@ -303,6 +338,26 @@ public class ApplicationSetup {
             initializeOrderService(repairRequestDTOSaved,
                     employeeElectrician,
                     statusOpen);
+
+            initializeOrderService(repairRequestDTOSaved2,
+                    employeeElectrician,
+                    statusActive);
+
+            initializeOrderService(repairRequestDTOSaved3,
+                    employeeElectrician,
+                    statusOpen);
+
+            initializeOrderService(repairRequestDTOSaved4,
+                    employeeElectrician,
+                    statusOpen);
+
+            initializeOrderService(repairRequestDTOSaved5,
+                    employeeElectrician,
+                    statusOpen);
+
+            initializeOrderService(repairRequestDTOSaved6,
+                    employeeElectrician,
+                    statusActive);
         } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());
         }

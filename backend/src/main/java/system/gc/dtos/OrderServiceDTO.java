@@ -80,7 +80,6 @@ public class OrderServiceDTO implements ConvertEntityAndDTO<OrderServiceDTO, Ord
             employeeDTO.setName(employee.getName());
             employeeDTO.setRole(new RoleDTO(employee.getRole()));
             employeeDTOSet.add(employeeDTO);
-
         }
         orderServiceDTO.setEmployees(employeeDTOSet);
         Set<RepairRequestDTO> repairRequestDTOSet = new HashSet<>();
@@ -93,7 +92,7 @@ public class OrderServiceDTO implements ConvertEntityAndDTO<OrderServiceDTO, Ord
             repairRequestDTO.setDate(repairRequest.getDate());
             repairRequestDTO.setApartmentNumber(repairRequest.getApartmentNumber());
             repairRequestDTO.setStatus(new StatusDTO().toDTO(repairRequest.getStatus()));
-            if (repairRequest.getItems() != null || !repairRequest.getItems().isEmpty()) {
+            if (repairRequest.getItems() != null && !repairRequest.getItems().isEmpty()) {
                 repairRequestDTO.setItems(new ItemDTO().convertSetEntityToSetEntityDTO(repairRequest.getItems()));
             }
             LesseeDTO lesseeDTO = new LesseeDTO();
@@ -140,5 +139,15 @@ public class OrderServiceDTO implements ConvertEntityAndDTO<OrderServiceDTO, Ord
             orderService.setId(orderServiceDTO.getId());
         }
         return orderService;
+    }
+
+    public static OrderServiceDTO forViewListMobile(OrderService orderService) {
+        OrderServiceDTO orderServiceDTO = new OrderServiceDTO();
+        orderServiceDTO.id = orderService.getId();
+        orderServiceDTO.generationDate = orderService.getGenerationDate();
+        orderServiceDTO.reservedDate = orderService.getReservedDate();
+        orderServiceDTO.completionDate = orderService.getCompletionDate();
+        orderServiceDTO.status = new StatusDTO(orderService.getStatus());
+        return orderServiceDTO;
     }
 }
