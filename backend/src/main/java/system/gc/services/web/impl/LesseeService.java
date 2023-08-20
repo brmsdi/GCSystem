@@ -22,6 +22,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
 
+import static system.gc.utils.TextUtils.STATUS_ACTIVE;
+
 /**
  * @author Wisley Bruno Marques França
  * @since 0.0.1
@@ -52,7 +54,7 @@ public class LesseeService implements WebControllerPermission {
         newLesseeDTO.setPassword(new BCryptPasswordEncoder().encode(newLesseeDTO.getPassword()));
         cpfIsAvailableSave(newLesseeDTO);
         emailIsAvailableSave(newLesseeDTO);
-        Status statusActive = statusService.findByName("Ativo");
+        Status statusActive = statusService.findByName(STATUS_ACTIVE);
         newLesseeDTO.setStatus(new StatusDTO().toDTO(statusActive));
         Lessee registeredLessee = lesseeRepository.save(lesseeDTO.toEntity(newLesseeDTO));
         if (registeredLessee.getId() == null) {
@@ -77,7 +79,7 @@ public class LesseeService implements WebControllerPermission {
     public void update(LesseeDTO updateLesseeDTO) throws EntityNotFoundException {
         log.info("Atualizando registro do locatário");
         Optional<Lessee> lessee = lesseeRepository.findById(updateLesseeDTO.getId());
-        lessee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o id: " + updateLesseeDTO.getId()));
+        lessee.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         cpfIsAvailableUpdate(updateLesseeDTO);
         emailIsAvailableUpdate(updateLesseeDTO);
         updateLesseeDTO.setPassword(lessee.get().getPassword());
@@ -115,7 +117,7 @@ public class LesseeService implements WebControllerPermission {
     public void delete(Integer ID) throws EntityNotFoundException {
         log.info("Deletando registro com o ID: " + ID);
         Optional<Lessee> lessee = lesseeRepository.findById(ID);
-        lessee.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        lessee.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         lesseeRepository.delete(lessee.get());
         log.info("Registro deletado com sucesso");
     }
@@ -136,7 +138,7 @@ public class LesseeService implements WebControllerPermission {
     }
 
     public boolean isEnabled(@NonNull LesseeDTO lesseeDTO) {
-        return lesseeDTO.getStatus().getName().equalsIgnoreCase("Ativo");
+        return lesseeDTO.getStatus().getName().equalsIgnoreCase(STATUS_ACTIVE);
     }
 
     public boolean lesseeRegistrationIsEnabled(LesseeDTO lesseeDTO) {

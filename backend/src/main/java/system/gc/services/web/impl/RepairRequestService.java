@@ -2,6 +2,8 @@ package system.gc.services.web.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import system.gc.repositories.RepairRequestRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
+
+import static system.gc.utils.TextUtils.*;
 
 /**
  * @author Wisley Bruno Marques França
@@ -27,6 +31,9 @@ public class RepairRequestService {
 
     @Autowired
     private StatusService statusService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Transactional
     public RepairRequestDTO save(RepairRequestDTO repairRequestDTO) {
@@ -52,10 +59,10 @@ public class RepairRequestService {
     @Transactional
     public void update(RepairRequestDTO repairRequestDTO) throws EntityNotFoundException {
         Optional<RepairRequest> repairRequest = repairRequestRepository.findById(repairRequestDTO.getId());
-        repairRequest.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        repairRequest.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         // IMPEDE QUE O STATUS DE SOLICITAÇÕES EM ANDAMENTO SEJAM ATUALIZADAS.
         // SOLICITAÇÕES VÍNCULADAS À UMA ORDEM DE SERVIÇO NÃO PODERÁ TER O STATUS MODIFICADO.
-        if (repairRequest.get().getStatus().getName().equalsIgnoreCase("Em andamento"))
+        if (repairRequest.get().getStatus().getName().equalsIgnoreCase(STATUS_IN_PROGRESS))
         {
             repairRequestDTO.setStatus(new StatusDTO().toDTO(repairRequest.get().getStatus()));
         }
@@ -79,7 +86,7 @@ public class RepairRequestService {
     public void delete(Integer ID) throws EntityNotFoundException {
         log.info("Deletando registro com o ID: " + ID);
         Optional<RepairRequest> repairRequestOptional = repairRequestRepository.findById(ID);
-        repairRequestOptional.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        repairRequestOptional.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         repairRequestRepository.delete(repairRequestOptional.get());
         log.info("Registro deletado com sucesso");
     }
@@ -100,7 +107,7 @@ public class RepairRequestService {
 
     @Transactional
     public boolean checkIfTheRequestIsOpen(Set<RepairRequestDTO> repairRequestDTOSet) {
-        Status statusOpen = statusService.findByName("Aberto");
+        Status statusOpen = statusService.findByName(STATUS_OPEN);
         log.info("Verificando as solicitações em aberto");
         List<RepairRequest> repairRequestList = new ArrayList<>();
         repairRequestDTOSet
@@ -125,7 +132,7 @@ public class RepairRequestService {
             openAndProgressAndLateRepairRequest.getValues().replace(key, newValue);
         }
         log.info("Gerando valores");
-        openAndProgressAndLateRepairRequest.generate("Aberto", "Em andamento", "Atrasado");
+        openAndProgressAndLateRepairRequest.generate(STATUS_OPEN, STATUS_IN_PROGRESS, STATUS_LATE);
         return openAndProgressAndLateRepairRequest;
     }
 

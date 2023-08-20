@@ -24,7 +24,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @RestController
 @RequestMapping(value = API_V1_WEB + "/contracts")
 @Slf4j
-public class WebContractWebController implements WebControllerPermission {
+public class WebContractController implements WebControllerPermission {
 
     @Autowired
     private ContractService contractService;

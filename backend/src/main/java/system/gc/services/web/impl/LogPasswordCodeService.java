@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static system.gc.utils.TextUtils.*;
+
 /**
  * @author Wisley Bruno Marques França
  * @since 0.0.1
@@ -46,7 +48,7 @@ public class LogPasswordCodeService {
     @Deprecated(since = "1.3")
     public TokenDTO validateCode(String email, String code, LogPasswordCode logPasswordCode) {
         log.info("Validando código");
-        Status waitingStatus = statusService.findByName("Aguardando");
+        Status waitingStatus = statusService.findByName(STATUS_WAITING);
         LogChangePassword logChangePassword = logPasswordCode.getLogChangePassword(email, waitingStatus.getId());
         Date currentDate = new Date();
         Date passwordCodeDate = logChangePassword.getDate();
@@ -56,7 +58,7 @@ public class LogPasswordCodeService {
         attempts++;
         if (minutesPast <= 5 && logChangePassword.getNumberOfAttempts() < 3) {
             if (logChangePassword.getCode().equals(code)) {
-                logChangePassword.setStatus(statusService.findByName("Valido"));
+                logChangePassword.setStatus(statusService.findByName(STATUS_VALID));
                 log.info("Código valido");
                 logChangePassword.setNumberOfAttempts(attempts);
                 save(logChangePassword);
@@ -65,7 +67,7 @@ public class LogPasswordCodeService {
                 log.info("Tentativa invalida");
                 logChangePassword.setNumberOfAttempts(attempts);
                 if (attempts == 3) {
-                    updateStatusCode(logChangePassword, statusService.findByName("Invalido"));
+                    updateStatusCode(logChangePassword, statusService.findByName(STATUS_INVALID));
                     throw new CodeChangePasswordInvalidException("Excedeu o número de tentativas");
                 }
             }
@@ -73,7 +75,7 @@ public class LogPasswordCodeService {
             throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_CODE_INVALID",
                     null, LocaleContextHolder.getLocale()));
         }
-        updateStatusCode(logChangePassword, statusService.findByName("Invalido"));
+        updateStatusCode(logChangePassword, statusService.findByName(STATUS_INVALID));
         throw new CodeChangePasswordInvalidException("As informações não correspondem. Solicite outro código!");
     }
 

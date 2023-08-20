@@ -17,6 +17,8 @@ import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static system.gc.utils.TextUtils.*;
+
 /**
  * <p>Esta interface declara os métodos necessários para que usuários possam efetuar a troca de senha de acesso ao sistema.</p>
  * <p>1. O usuário cadastrado teŕa que informar o endereço de email para receber um código de troca de senha.</p>
@@ -92,7 +94,7 @@ public interface LogPasswordCode<E,REPOSITORY extends ChangePasswordEntity<E>> {
      * @throws EntityNotFoundException Esta exceção será lançada se não houver um registro que corresponda ao endreço de email informado.
      */
     default E verifyEmail(String email, REPOSITORY repository) {
-        return repository.findByEMAIL(email).orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com esse E-mail"));
+        return repository.findByEMAIL(email).orElseThrow(() -> new EntityNotFoundException(messageSource().getMessage("TEXT_ERROR_REGISTER_WITH_EMAIL_NOT_FOUND", null, LocaleContextHolder.getLocale())));
     }
 
     /**
@@ -122,9 +124,9 @@ public interface LogPasswordCode<E,REPOSITORY extends ChangePasswordEntity<E>> {
      * @throws CodeChangePasswordInvalidException Esta exceção será lançada se o código enviado estiver errado ou o número máximo de tentativas invalidas for atingido.
      * @return TokenDTO - retorna um token valido para troca de senha de acesso do usuário.
      */
-    default TokenDTO validateCode(String email, String code, StatusService statusService, LogPasswordCodeService logPasswordCodeService, MessageSource messageSource)
+    default TokenDTO validateCode(String email, String code, StatusService statusService, LogPasswordCodeService logPasswordCodeService)
     {
-        Status waitingStatus = statusService.findByName("Aguardando");
+        Status waitingStatus = statusService.findByName(STATUS_WAITING);
         LogChangePassword logChangePassword = getLogChangePassword(email, waitingStatus.getId());
         Date currentDate = new Date();
         Date passwordCodeDate = logChangePassword.getDate();
@@ -136,23 +138,23 @@ public interface LogPasswordCode<E,REPOSITORY extends ChangePasswordEntity<E>> {
         attempts++;
         if (minutesPast <= minutesAttempts && logChangePassword.getNumberOfAttempts() < maxNumberOfAttempts) {
             if (logChangePassword.getCode().equals(code)) {
-                logChangePassword.setStatus(statusService.findByName("Valido"));
+                logChangePassword.setStatus(statusService.findByName(STATUS_VALID));
                 logChangePassword.setNumberOfAttempts(attempts);
                 logPasswordCodeService.save(logChangePassword);
                 return createTokenDTO(logChangePassword, email);
             } else {
                 logChangePassword.setNumberOfAttempts(attempts);
                 if (attempts == 3) {
-                    logPasswordCodeService.updateStatusCode(logChangePassword, statusService.findByName("Invalido"));
-                    throw new CodeChangePasswordInvalidException("Excedeu o número de tentativas");
+                    logPasswordCodeService.updateStatusCode(logChangePassword, statusService.findByName(STATUS_INVALID));
+                    throw new CodeChangePasswordInvalidException(messageSource().getMessage("TEXT_ERROR_EXCEEDED_NUMBER_OF_ATTEMPTS", null, LocaleContextHolder.getLocale()));
                 }
             }
             logPasswordCodeService.save(logChangePassword);
-            throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_CODE_INVALID",
+            throw new CodeChangePasswordInvalidException(messageSource().getMessage("TEXT_ERROR_CODE_INVALID",
                     null, LocaleContextHolder.getLocale()));
         }
-        logPasswordCodeService.updateStatusCode(logChangePassword, statusService.findByName("Invalido"));
-        throw new CodeChangePasswordInvalidException("As informações não correspondem. Solicite outro código!");
+        logPasswordCodeService.updateStatusCode(logChangePassword, statusService.findByName(STATUS_INVALID));
+        throw new CodeChangePasswordInvalidException(messageSource().getMessage("TEXT_ERROR_INFORMATION_NOT_MATCH", null, LocaleContextHolder.getLocale()));
     }
 
     /**
@@ -194,4 +196,6 @@ public interface LogPasswordCode<E,REPOSITORY extends ChangePasswordEntity<E>> {
      */
     @Transactional
     void changePassword(String token, String newPassword);
+
+    MessageSource messageSource();
 }

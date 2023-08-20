@@ -57,4 +57,12 @@ public interface OrderServiceRepository extends JpaRepository<OrderService, Inte
             "JOIN FETCH os.status " +
             "WHERE os IN :orderServices")
     List<OrderService> loadLazyWithStatus(List<OrderService> orderServices);
+
+    @Query("SELECT os FROM OrderService os " +
+            "LEFT JOIN FETCH os.repairRequests rp " +
+            "LEFT JOIN FETCH rp.typeProblem " +
+            "LEFT JOIN FETCH rp.items " +
+            "LEFT JOIN FETCH os.employees " +
+            "WHERE os.id = :idOrderService AND rp.id = :idRepairRequest")
+    Optional<OrderService> findByRepairRequest(Integer idOrderService, Integer idRepairRequest);
 }

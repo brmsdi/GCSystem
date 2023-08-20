@@ -24,7 +24,7 @@ public class EmployeeUserDetails implements UserDetailsConvert, UserAuthenticate
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + userDetail.getRole().getName().toUpperCase()));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + userDetail.getRole().getName()));
         return grantedAuthorities;
     }
 

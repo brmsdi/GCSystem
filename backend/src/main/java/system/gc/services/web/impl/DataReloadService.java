@@ -69,7 +69,7 @@ public class DataReloadService {
         activityTypeService.deleteAll();
         contractService.deleteAll();
         condominiumService.deleteAll();
-        localizationCondominiumService.daleteAll();
+        localizationCondominiumService.deleteAll();
         localizationService.deleteAll();
         lesseeService.deleteAll();
         orderServiceService.deleteAll();

@@ -3,6 +3,10 @@ package system.gc.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import system.gc.entities.Item;
+import system.gc.entities.RepairRequest;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Wisley Bruno Marques França
@@ -14,6 +18,9 @@ import system.gc.entities.Item;
 @Setter
 public class ItemDTO implements ConvertEntityAndDTO<ItemDTO, Item> {
     private Integer Id;
+
+    @NotNull(message = "{required.validation}")
+    @NotBlank(message = "{required.validation}")
     private String description;
     private int quantity;
     private double value;
@@ -44,6 +51,18 @@ public class ItemDTO implements ConvertEntityAndDTO<ItemDTO, Item> {
         item.setDescription(itemDTO.getDescription());
         item.setQuantity(itemDTO.getQuantity());
         item.setValue(itemDTO.getValue());
+        if (itemDTO.getId() != null) {
+            item.setId(itemDTO.getId());
+        }
+        return item;
+    }
+
+    public static Item toEntityWithRepairRequest(ItemDTO itemDTO, RepairRequest repairRequest) {
+        Item item = new Item();
+        item.setDescription(itemDTO.getDescription());
+        item.setQuantity(itemDTO.getQuantity());
+        item.setValue(itemDTO.getValue());
+        item.setRepairRequest(repairRequest);
         if (itemDTO.getId() != null) {
             item.setId(itemDTO.getId());
         }

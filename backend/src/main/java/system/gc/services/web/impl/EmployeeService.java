@@ -18,6 +18,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
 
+import static system.gc.utils.TextUtils.STATUS_ACTIVE;
+
 /**
  * @author Wisley Bruno Marques França
  * @since 0.0.1
@@ -49,7 +51,7 @@ public class EmployeeService {
         newEmployeeDTO.setPassword(new BCryptPasswordEncoder().encode(newEmployeeDTO.getPassword()));
         cpfIsAvailableSave(newEmployeeDTO);
         emailIsAvailableSave(newEmployeeDTO);
-        Status statusActive = statusService.findByName("Ativo");
+        Status statusActive = statusService.findByName(STATUS_ACTIVE);
         newEmployeeDTO.setStatus(new StatusDTO().toDTO(statusActive));
         Employee registeredEmployee = employeeRepository.save(employeeDTO.toEntity(newEmployeeDTO));
         if (registeredEmployee.getId() == null) {
@@ -74,7 +76,7 @@ public class EmployeeService {
     public void update(EmployeeDTO updateEmployeeDTO) throws EntityNotFoundException {
         log.info("Atualizando registro do funcionário");
         Optional<Employee> employee = employeeRepository.findById(updateEmployeeDTO.getId());
-        employee.orElseThrow(() -> new EntityNotFoundException("Não existe registro com o id: " + updateEmployeeDTO.getId()));
+        employee.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         cpfIsAvailableUpdate(updateEmployeeDTO);
         emailIsAvailableUpdate(updateEmployeeDTO);
         updateEmployeeDTO.setPassword(employee.get().getPassword());
@@ -112,7 +114,7 @@ public class EmployeeService {
     public void delete(Integer ID) throws EntityNotFoundException {
         log.info("Deletando registro com o ID: " + ID);
         Optional<Employee> employee = employeeRepository.findById(ID);
-        employee.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        employee.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         employeeRepository.delete(employee.get());
         log.info("Registro deletado com sucesso");
     }

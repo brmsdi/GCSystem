@@ -2,7 +2,6 @@ package system.gc.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import system.gc.entities.Lessee;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class LesseeUserDetails implements UserDetailsConvert {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+ userDetail.getRole().getName().toUpperCase()));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+ userDetail.getRole().getName()));
         return grantedAuthorities;
     }
 

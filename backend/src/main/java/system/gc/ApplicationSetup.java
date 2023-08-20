@@ -28,6 +28,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
 import static java.time.DayOfWeek.*;
+import static system.gc.utils.TextUtils.*;
 
 @Component
 @Slf4j
@@ -101,50 +102,50 @@ public class ApplicationSetup {
     {
         log.info("Inserindo dados");
         // ROLE
-        Role roleADM = roleRepository.save(new Role("Administrador"));
-        Role roleCounter = roleRepository.save(new Role("Contador"));
-        Role roleAssistant = roleRepository.save(new Role("Assistente administrativo"));
-        Role electrician = roleRepository.save(new Role("Eletricista"));
-        Role plumber = roleRepository.save(new Role("Encanador"));
-        Role generalServices = roleRepository.save(new Role("Serviços gerais"));
-        Role lesseeRole = roleRepository.save(new Role("Locatário"));
+        Role roleADM = roleRepository.save(new Role(ROLE_ADMINISTRATOR));
+        Role roleAssistant = roleRepository.save(new Role(ROLE_ADMINISTRATIVE_ASSISTANT));
+        Role roleCounter = roleRepository.save(new Role(ROLE_COUNTER));
+        Role electrician = roleRepository.save(new Role(ROLE_ELECTRICIAN));
+        Role plumber = roleRepository.save(new Role(ROLE_PLUMBER));
+        Role generalServices = roleRepository.save(new Role(ROLE_GENERAL_SERVICES));
+        Role lesseeRole = roleRepository.save(new Role(ROLE_LESSEE));
 
         // Status
         List<Status> statusList = new ArrayList<>();
-        Status statusActive = statusRepository.save(new Status("Ativo"));
-        statusList.add(new Status("Inativo"));
-        Status statusOpen = statusRepository.save(new Status("Aberto"));
-        statusList.add(new Status("Em andamento"));
-        statusList.add(new Status("Desativado"));
-        statusList.add(new Status("Aguardando"));
-        statusList.add(new Status("Valido"));
-        statusList.add(new Status("Invalido"));
-        statusList.add(new Status("Cancelado"));
-        statusList.add(new Status("Resgatado"));
-        statusList.add(new Status("Concluído"));
-        statusList.add(new Status("Deletado"));
-        Status statusAvailable = statusRepository.save(new Status("Disponível"));
-        statusList.add(new Status("Indisponível"));
-        statusList.add(new Status("Lotado"));
-        statusList.add(new Status("Encerrado"));
-        statusList.add(new Status("Expirado"));
-        statusList.add(new Status("Vencido"));
-        statusList.add(new Status("Atrasado"));
-        statusList.add(new Status("Pago"));
+        Status statusActive = statusRepository.save(new Status(STATUS_ACTIVE));
+        statusList.add(new Status(STATUS_INACTIVE));
+        Status statusOpen = statusRepository.save(new Status(STATUS_OPEN));
+        statusList.add(new Status(STATUS_IN_PROGRESS));
+        statusList.add(new Status(STATUS_DISABLED));
+        statusList.add(new Status(STATUS_WAITING));
+        statusList.add(new Status(STATUS_VALID));
+        statusList.add(new Status(STATUS_INVALID));
+        statusList.add(new Status(STATUS_CANCELED));
+        statusList.add(new Status(STATUS_RESCUED));
+        statusList.add(new Status(STATUS_CONCLUDED));
+        statusList.add(new Status(STATUS_DELETED));
+        Status statusAvailable = statusRepository.save(new Status(STATUS_AVAILABLE));
+        statusList.add(new Status(STATUS_UNAVAILABLE));
+        statusList.add(new Status(STATUS_CROWDED));
+        statusList.add(new Status(STATUS_CLOSED));
+        statusList.add(new Status(STATUS_EXPIRED));
+        statusList.add(new Status(STATUS_OVERDUE));
+        statusList.add(new Status(STATUS_LATE));
+        statusList.add(new Status(STATUS_PAID));
         statusService.save(statusList);
 
         // ACTIVITY TYPE
         List<ActivityType> activityTypeList = new ArrayList<>();
-        activityTypeList.add(new ActivityType("Registrado"));
-        activityTypeList.add(new ActivityType("Atualizado"));
-        activityTypeList.add(new ActivityType("Desativado"));
-        activityTypeList.add(new ActivityType("Deletado"));
+        activityTypeList.add(new ActivityType(ACTIVITY_TYPE_REGISTERED));
+        activityTypeList.add(new ActivityType(ACTIVITY_TYPE_UPDATED));
+        activityTypeList.add(new ActivityType(ACTIVITY_TYPE_DISABLED));
+        activityTypeList.add(new ActivityType(ACTIVITY_TYPE_DELETED));
         activityTypeService.save(activityTypeList);
 
         List<TypeProblem> typeProblemList = new ArrayList<>();
-        TypeProblem typeProblemDTOElectric = typeProblemRepository.save(new TypeProblem("Elétrico"));
-        typeProblemList.add(new TypeProblem("Hidráulico"));
-        typeProblemList.add(new TypeProblem("Outros"));
+        TypeProblem typeProblemDTOElectric = typeProblemRepository.save(new TypeProblem(TYPE_PROBLEM_ELECTRIC));
+        typeProblemList.add(new TypeProblem(TYPE_PROBLEM_HYDRAULIC));
+        typeProblemList.add(new TypeProblem(TYPE_PROBLEM_OTHERS));
         typeProblemService.save(typeProblemList);
 
         try

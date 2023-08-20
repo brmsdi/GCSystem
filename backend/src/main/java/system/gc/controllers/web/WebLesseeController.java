@@ -32,7 +32,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @RestController
 @RequestMapping(value = API_V1_WEB + "/lessees")
 @Slf4j
-public class WebLesseeWebController implements WebControllerPermission, WebChangePassword {
+public class WebLesseeController implements WebControllerPermission, WebChangePassword {
     @Autowired
     private LesseeService lesseeService;
 

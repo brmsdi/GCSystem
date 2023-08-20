@@ -2,6 +2,8 @@ package system.gc.services.web.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,6 +34,9 @@ public class CondominiumService {
     @Autowired
     private LocalizationService localizationService;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @Transactional
     public CondominiumDTO save(CondominiumDTO condominiumDTO) {
         log.info("Salvando novo registro de condomínio no banco de dados: " + condominiumDTO.getName());
@@ -57,7 +62,7 @@ public class CondominiumService {
     @Transactional
     public void update(CondominiumDTO condominiumDTO) throws EntityNotFoundException {
         Optional<Condominium> condominium = condominiumRepository.findById(condominiumDTO.getId());
-        condominium.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        condominium.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         verifyLocalization(condominiumDTO);
         condominiumRepository.save(new CondominiumDTO().toEntity(condominiumDTO));
     }
@@ -78,7 +83,7 @@ public class CondominiumService {
     public void delete(Integer ID) throws EntityNotFoundException {
         log.info("Deletando registro com o ID: " + ID);
         Optional<Condominium> condominium = condominiumRepository.findById(ID);
-        condominium.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        condominium.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         condominiumRepository.delete(condominium.get());
         log.info("Registro deletado com sucesso");
     }

@@ -23,7 +23,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @RestController
 @RequestMapping(value = API_V1_WEB + "/order-services")
 @Slf4j
-public class WebOrderServiceWebController implements WebControllerPermission {
+public class WebOrderServiceController implements WebControllerPermission {
 
     @Autowired
     private OrderServiceService orderServiceService;

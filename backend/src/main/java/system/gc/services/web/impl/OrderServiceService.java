@@ -2,6 +2,8 @@ package system.gc.services.web.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static system.gc.utils.TextUtils.*;
 
 /**
  * @author Wisley Bruno Marques França
@@ -35,6 +39,9 @@ public class OrderServiceService {
     @Autowired
     private StatusService statusService;
 
+    @Autowired
+    private MessageSource messageSource;
+
     private AtomicReference<Status> openStatus = null;
 
     private AtomicReference<Status> canceledStatus = null;
@@ -47,11 +54,11 @@ public class OrderServiceService {
     public OrderServiceDTO save(OrderServiceDTO orderServiceDTO) {
         log.info("Gerando ordem de serviço");
         if (!repairRequestService.checkIfTheRequestIsOpen(orderServiceDTO.getRepairRequests())) {
-            throw new IllegalSelectedRepairRequestsException("Solicitações de reparo com o status invalido. Selecione as solicitações com o status 'Aberto'");
+            throw new IllegalSelectedRepairRequestsException(messageSource.getMessage("TEXT_ERROR_REPAIR_REQUEST_STATUS_INVALID", null, LocaleContextHolder.getLocale()));
         }
         OrderService orderServiceRegistered = orderServiceRepository.save(new OrderServiceDTO().toEntity(orderServiceDTO));
         log.info("Ordem de serviço gerada com o id: " + orderServiceRegistered.getId());
-        Status statusProgress = statusService.findByName("Em andamento");
+        Status statusProgress = statusService.findByName(STATUS_IN_PROGRESS);
         orderServiceRegistered
                 .getRepairRequests()
                 .parallelStream()
@@ -68,19 +75,19 @@ public class OrderServiceService {
     public OrderServiceDTO update(OrderServiceDTO updateOrderServiceDTO) {
         log.info("Atualizando registro da ordem de serviço");
         Optional<OrderService> optionalOrderService = orderServiceRepository.findById(updateOrderServiceDTO.getId());
-        optionalOrderService.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        optionalOrderService.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         OrderService orderService = optionalOrderService.get();
         orderServiceRepository.loadLazyOrders(List.of(orderService));
-        if (updateOrderServiceDTO.getStatus().getName().equalsIgnoreCase("Concluído"))
+        if (updateOrderServiceDTO.getStatus().getName().equalsIgnoreCase(STATUS_CONCLUDED))
         {
-            initializeStatus(List.of("Concluído"));
+            initializeStatus(List.of(STATUS_CONCLUDED));
             closeOrderService(orderService);
-        } else if(updateOrderServiceDTO.getStatus().getName().equalsIgnoreCase("Cancelado"))
+        } else if(updateOrderServiceDTO.getStatus().getName().equalsIgnoreCase(STATUS_CANCELED))
         {
-            initializeStatus(List.of("Aberto", "Cancelado"));
+            initializeStatus(List.of(STATUS_OPEN, STATUS_CANCELED));
             cancelOrderService(orderService);
         } else {
-            initializeStatus(List.of("Aberto", "Em andamento"));
+            initializeStatus(List.of(STATUS_OPEN, STATUS_IN_PROGRESS));
             updateRepairRequestsFromOrderService(orderService, updateOrderServiceDTO);
             updateEmployeesFromOrderService(orderService, updateOrderServiceDTO);
         }
@@ -124,9 +131,9 @@ public class OrderServiceService {
     public void closeOrderService(OrderServiceDTO orderServiceDTO)
     {
         Optional<OrderService> optionalOrderService = orderServiceRepository.findById(orderServiceDTO.getId());
-        optionalOrderService.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        optionalOrderService.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         OrderService orderService = optionalOrderService.get();
-        initializeStatus(List.of("Concluído"));
+        initializeStatus(List.of(STATUS_CONCLUDED));
         closeOrderService(orderService);
         orderServiceRepository.save(orderService);
     }
@@ -149,17 +156,17 @@ public class OrderServiceService {
     {
         log.info("Deletando registro da ordem de serviço");
         Optional<OrderService> optionalOrderService = orderServiceRepository.findById(ID);
-        optionalOrderService.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        optionalOrderService.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         OrderService orderService = optionalOrderService.get();
         orderServiceRepository.loadLazyOrders(List.of(orderService));
-        List<StatusDTO> listStatus = statusService.findAllToViewDTO(List.of("Aberto", "Em andamento"));
+        List<StatusDTO> listStatus = statusService.findAllToViewDTO(List.of(STATUS_OPEN, STATUS_IN_PROGRESS));
         StatusDTO openStatus = new StatusDTO();
         StatusDTO progressStatus = new StatusDTO();
         for (StatusDTO statusDTO : listStatus)
         {
-            if (statusDTO.getName().equalsIgnoreCase("Aberto")) {
+            if (statusDTO.getName().equalsIgnoreCase(STATUS_OPEN)) {
                 openStatus = statusDTO;
-            } else if (statusDTO.getName().equalsIgnoreCase("Em andamento")) {
+            } else if (statusDTO.getName().equalsIgnoreCase(STATUS_IN_PROGRESS)) {
                 progressStatus = statusDTO;
             }
         } // end for
@@ -264,17 +271,17 @@ public class OrderServiceService {
     {
         List<Status> statusList = statusService.findAllToView(statusNameList);
         statusList.parallelStream().forEach(status -> {
-            if (status.getName().equalsIgnoreCase("Aberto")) {
+            if (status.getName().equalsIgnoreCase(STATUS_OPEN)) {
                 openStatus = new AtomicReference<>(new Status());
                 openStatus.set(status);
-            } else if (status.getName().equalsIgnoreCase("Cancelado")) {
+            } else if (status.getName().equalsIgnoreCase(STATUS_CANCELED)) {
                 canceledStatus = new AtomicReference<>(new Status());
                 canceledStatus.set(status);
-            } else if (status.getName().equalsIgnoreCase("Concluído"))
+            } else if (status.getName().equalsIgnoreCase(STATUS_CONCLUDED))
             {
                 concludedStatus = new AtomicReference<>(new Status());
                 concludedStatus.set(status);
-            } else if (status.getName().equalsIgnoreCase("Em andamento")) {
+            } else if (status.getName().equalsIgnoreCase(STATUS_IN_PROGRESS)) {
                 progressStatus = new AtomicReference<>(new Status());
                 progressStatus.set(status);
             }

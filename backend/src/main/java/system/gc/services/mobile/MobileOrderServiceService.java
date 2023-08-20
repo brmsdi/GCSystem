@@ -2,8 +2,12 @@ package system.gc.services.mobile;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import system.gc.dtos.ItemDTO;
 import system.gc.dtos.OrderServiceDTO;
+import system.gc.entities.Employee;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderService;
+
+import java.util.Set;
 
 /**
  * @author Wisley Bruno Marques França
@@ -27,4 +31,8 @@ public interface MobileOrderServiceService {
      * @return Ordem de serviço detalhada
      */
     OrderServiceDTO detailsOrderService(Integer idOrderService, Integer idEmployee) throws AccessDeniedOrderService;
+
+    boolean isResponsible(Integer idEmployee, Set<Employee> employees);
+
+    ItemDTO addItem(Integer idEmployee, Integer idOrderService, Integer idRepairRequest, ItemDTO itemDTO) throws AccessDeniedOrderService;
 }

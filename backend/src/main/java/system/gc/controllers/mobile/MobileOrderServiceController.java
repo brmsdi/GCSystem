@@ -5,15 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import system.gc.dtos.ItemDTO;
 import system.gc.dtos.OrderServiceDTO;
 import system.gc.entities.Employee;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderService;
 import system.gc.security.EmployeeUserDetails;
 import system.gc.services.mobile.MobileOrderServiceService;
+
+import javax.validation.Valid;
 
 import static system.gc.utils.TextUtils.API_V1_MOBILE;
 
@@ -36,6 +36,15 @@ public class MobileOrderServiceController {
             @RequestParam(name = "id") Integer id) throws AccessDeniedOrderService {
         Employee employee = getUser();
         return ResponseEntity.ok(mobileOrderServiceService.detailsOrderService(id, employee.getId()));
+    }
+
+    @PostMapping(value = "repair-request/item")
+    public ResponseEntity<ItemDTO> addItem(
+            @RequestParam(name = "idOrderService") Integer idOrderService,
+            @RequestParam(name = "idRepairRequest") Integer idRepairRequest,
+            @Valid @RequestBody ItemDTO itemDTO) throws AccessDeniedOrderService {
+        Employee employee = getUser();
+        return ResponseEntity.ok(mobileOrderServiceService.addItem(employee.getId(), idOrderService, idRepairRequest, itemDTO));
     }
 
     private Employee getUser() {

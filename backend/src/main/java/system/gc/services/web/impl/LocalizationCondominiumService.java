@@ -19,7 +19,7 @@ public class LocalizationCondominiumService {
     private LocalizationCondominiumRepository localizationCondominiumRepository;
 
     @Transactional
-    public void daleteAll()
+    public void deleteAll()
     {
         log.info("Deletando todos");
         localizationCondominiumRepository.deleteAll();

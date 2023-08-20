@@ -18,6 +18,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+import static system.gc.utils.TextUtils.*;
+
 /**
  * @author Wisley Bruno Marques França
  * @since 0.0.1
@@ -54,7 +56,7 @@ public class DebtService {
                     LocaleContextHolder.getLocale()));
         }
         Debt registeredDebt = debtRepository.save(new DebtDTO().toEntity(debtDTO));
-        ActivityType activityTypeRegister = activityTypeService.findByName("Registrado");
+        ActivityType activityTypeRegister = activityTypeService.findByName(ACTIVITY_TYPE_REGISTERED);
         log.info("Débito registrado com o id: " + registeredDebt.getId());
         EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         registerMovementDebt(registeredDebt, activityTypeRegister, employeeUserDetails.getUserAuthenticated());
@@ -75,10 +77,10 @@ public class DebtService {
     public DebtDTO update(DebtDTO updateDebtDTO) throws EntityNotFoundException {
         log.info("Atualizando registro do débito");
         Optional<Debt> debt = debtRepository.findById(updateDebtDTO.getId());
-        debt.orElseThrow(() -> new EntityNotFoundException("Débito inexistente: "));
+        debt.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         DebtDTO previousDebt = new DebtDTO().toDTO(debt.get());
         Debt updatedDebt = debtRepository.save(new DebtDTO().toEntity(updateDebtDTO));
-        ActivityType activityTypeUpdate = activityTypeService.findByName("Atualizado");
+        ActivityType activityTypeUpdate = activityTypeService.findByName(ACTIVITY_TYPE_UPDATED);
         log.info("Atualizado com sucesso");
         EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         registerMovementDebt(previousDebt, updatedDebt, activityTypeUpdate, employeeUserDetails.getUserAuthenticated());
@@ -102,10 +104,10 @@ public class DebtService {
     public String delete(Integer ID) throws EntityNotFoundException {
         log.info("Deletando registro com o ID: " + ID);
         Optional<Debt> debt = debtRepository.findById(ID);
-        debt.orElseThrow(() -> new EntityNotFoundException("Registro não encontrado"));
+        debt.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         DebtDTO previousDebt = new DebtDTO().toDTO(debt.get());
-        Status statusDisable = statusService.findByName("Deletado");
-        ActivityType activityTypeDisable = activityTypeService.findByName("Deletado");
+        Status statusDisable = statusService.findByName(STATUS_DELETED);
+        ActivityType activityTypeDisable = activityTypeService.findByName(ACTIVITY_TYPE_DELETED);
         debt.get().setStatus(statusDisable);
         Debt disabledDebt = debtRepository.save(debt.get());
         EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
