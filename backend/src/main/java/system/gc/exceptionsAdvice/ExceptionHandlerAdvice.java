@@ -113,8 +113,16 @@ public class ExceptionHandlerAdvice {
                 .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
     }
 
-    @ExceptionHandler(AccessDeniedOrderService.class)
-    public ResponseEntity<ApiErrorDTO> AccessDeniedOrderService(AccessDeniedOrderService exception) {
+    @ExceptionHandler(AccessDeniedOrderServiceException.class)
+    public ResponseEntity<ApiErrorDTO> accessDeniedOrderService(AccessDeniedOrderServiceException exception) {
+        log.error(exception.getMessage());
+        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+    }
+
+    @ExceptionHandler(IllegalChangeOrderServiceException.class)
+    public ResponseEntity<ApiErrorDTO> illegalChangeOrderServiceException(IllegalChangeOrderServiceException exception) {
         log.error(exception.getMessage());
         ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

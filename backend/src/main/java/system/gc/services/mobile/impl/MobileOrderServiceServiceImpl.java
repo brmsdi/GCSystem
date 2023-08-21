@@ -8,20 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import system.gc.dtos.ItemDTO;
 import system.gc.dtos.OrderServiceDTO;
-import system.gc.entities.Employee;
 import system.gc.entities.OrderService;
-import system.gc.entities.RepairRequest;
-import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderService;
+import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
 import system.gc.repositories.OrderServiceRepository;
 import system.gc.services.mobile.MobileItemService;
 import system.gc.services.mobile.MobileOrderServiceService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author Wisley Bruno Marques França
@@ -55,40 +50,14 @@ public class MobileOrderServiceServiceImpl implements MobileOrderServiceService 
 
     @Override
     @Transactional(readOnly = true)
-    public OrderServiceDTO detailsOrderService(Integer idOrderService, Integer idEmployee) throws AccessDeniedOrderService {
+    public OrderServiceDTO detailsOrderService(Integer idOrderService, Integer idEmployee) throws AccessDeniedOrderServiceException {
         log.info("Buscando detalhes");
         Optional<OrderService> optionalOrderService = orderServiceRepository.details(idOrderService);
         OrderService orderService = optionalOrderService.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_ORDER_SERVICE_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         boolean isResponsible = isResponsible(idEmployee, orderService.getEmployees());
         if (!isResponsible) {
-            throw new AccessDeniedOrderService(messageSource.getMessage("ACCESS_DENIED", null, LocaleContextHolder.getLocale()));
+            throw new AccessDeniedOrderServiceException(messageSource.getMessage("ACCESS_DENIED", null, LocaleContextHolder.getLocale()));
         }
         return new OrderServiceDTO(orderService);
-    }
-
-    @Override
-    public boolean isResponsible(Integer idEmployee, Set<Employee> employees) {
-        return employees
-                .stream()
-                .map(Employee::getId)
-                .collect(Collectors.toSet())
-                .contains(idEmployee);
-    }
-
-    @Override
-    @Transactional
-    public ItemDTO addItem(Integer idEmployee, Integer idOrderService, Integer idRepairRequest, ItemDTO itemDTO) throws AccessDeniedOrderService {
-        log.info("Adicionando item a ordem de serviço");
-        Optional<OrderService> optionalOrderService = orderServiceRepository.findByRepairRequest(idOrderService, idRepairRequest);
-        OrderService orderService = optionalOrderService.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_ORDER_SERVICE_NOT_FOUND", null, LocaleContextHolder.getLocale())));
-        boolean isResponsible = isResponsible(idEmployee, orderService.getEmployees());
-        if (!isResponsible) {
-            throw new AccessDeniedOrderService(messageSource.getMessage("ACCESS_DENIED", null, LocaleContextHolder.getLocale()));
-        }
-        RepairRequest repairRequest = orderService.getRepairRequests()
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REPAIR_REQUEST_NOT_FOUND", null, LocaleContextHolder.getLocale())));
-        return new ItemDTO(mobileItemService.save(ItemDTO.toEntityWithRepairRequest(itemDTO, repairRequest)));
     }
 }

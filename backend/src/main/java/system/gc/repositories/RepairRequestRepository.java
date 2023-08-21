@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.RepairRequest;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Wisley Bruno Marques França
@@ -40,5 +41,14 @@ public interface RepairRequestRepository extends JpaRepository<RepairRequest, In
     @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
             "JOIN FETCH repairRequest.status status " +
             "WHERE (repairRequest.orderService.id = :ID) OR status.id IN :statusID")
-    List<RepairRequest>  findAllPerOrderServiceAndStatus(Integer ID, List<Integer> statusID);
+    List<RepairRequest> findAllPerOrderServiceAndStatus(Integer ID, List<Integer> statusID);
+
+    @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
+            "LEFT JOIN FETCH repairRequest.orderService orderService " +
+            "LEFT JOIN FETCH orderService.employees " +
+            "LEFT JOIN FETCH orderService.status " +
+            "LEFT JOIN FETCH repairRequest.items " +
+            "LEFT JOIN FETCH repairRequest.typeProblem " +
+            "WHERE repairRequest.id = :idRepairRequest")
+    Optional<RepairRequest> findRepairRequestToAddOrRemoveItem(Integer idRepairRequest);
 }

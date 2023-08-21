@@ -10,4 +10,7 @@ import system.gc.entities.Item;
  */
 public interface MobileItemService {
     Item save(Item item);
+
+    void delete(Integer id);
+    void delete(Item item);
 }

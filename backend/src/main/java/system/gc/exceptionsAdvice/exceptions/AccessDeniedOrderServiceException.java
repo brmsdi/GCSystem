@@ -5,8 +5,8 @@ package system.gc.exceptionsAdvice.exceptions;
  * @version 1.3
  * @since 0.0.1
  */
-public class AccessDeniedOrderService extends Exception {
-    public AccessDeniedOrderService(String message) {
+public class AccessDeniedOrderServiceException extends Exception {
+    public AccessDeniedOrderServiceException(String message) {
         super(message);
     }
 }
