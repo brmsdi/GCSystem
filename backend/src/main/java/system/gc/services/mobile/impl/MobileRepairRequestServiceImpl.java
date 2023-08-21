@@ -62,9 +62,12 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
 
     @Override
     @Transactional
-    public void removeItem(Integer idEmployee, Integer idRepairRequest, Integer idItem) throws AccessDeniedOrderServiceException, EntityNotFoundException {
+    public void removeItem(Integer idEmployee, Integer idRepairRequest, Integer idItem) throws AccessDeniedOrderServiceException, EntityNotFoundException, IllegalChangeOrderServiceException {
         log.info("Removendo item do reparo");
         RepairRequest repairRequest = findRepairRequestToAddOrRemoveItem(idRepairRequest);
+        if (repairRequest.getOrderService().getStatus().getName().equalsIgnoreCase(STATUS_CONCLUDED)) {
+            throw new IllegalChangeOrderServiceException(messageSource.getMessage("TEXT_ERROR_ORDER_SERVICE_STATUS_CONCLUDED", null, LocaleContextHolder.getLocale()));
+        }
         boolean isResponsible = isResponsible(idEmployee, repairRequest.getOrderService().getEmployees());
         if (!isResponsible) {
             throw new AccessDeniedOrderServiceException(messageSource.getMessage("ACCESS_DENIED", null, LocaleContextHolder.getLocale()));

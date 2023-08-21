@@ -40,7 +40,7 @@ public class MobileRepairRequestController {
     @DeleteMapping(value = "item")
     public ResponseEntity<HttpMessageResponse> deleteItem(
             @RequestParam(name = "idRepairRequest") Integer idRepairRequest,
-            @RequestParam(name = "idItem") Integer idItem) throws AccessDeniedOrderServiceException {
+            @RequestParam(name = "idItem") Integer idItem) throws AccessDeniedOrderServiceException, IllegalChangeOrderServiceException {
         Employee employee = getUser();
         mobileRepairRequestService.removeItem(employee.getId(), idRepairRequest, idItem);
         HttpMessageResponse httpMessageResponse = new HttpMessageResponse(HttpStatus.OK.toString(), messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS", null, LocaleContextHolder.getLocale()));

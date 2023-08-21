@@ -1,7 +1,34 @@
 package system.gc.exceptionsAdvice.exceptions;
 
-public class CodeChangeOpenedException extends RuntimeException {
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+
+public class CodeChangeOpenedException extends RuntimeException implements BuildErrorException {
+
+    private HttpStatus httpStatus;
+    private MessageSource messageSource;
     public CodeChangeOpenedException(String message) {
         super(message);
+        setHttpStatusType(HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @Override
+    public String getMessageError() {
+        return getMessage();
+    }
+
+    @Override
+    public MessageSource messageSource() {
+        return messageSource;
+    }
+
+    @Override
+    public void setHttpStatusType(HttpStatus httpStatus) {
+        this.httpStatus = httpStatus;
+    }
+
+    @Override
+    public HttpStatus getHttpStatusType() {
+        return this.httpStatus;
     }
 }

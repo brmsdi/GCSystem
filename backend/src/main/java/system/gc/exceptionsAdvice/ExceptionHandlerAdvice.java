@@ -55,7 +55,6 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ApiErrorDTO> entityNotFoundException(EntityNotFoundException exception) {
-
         log.error(exception.getMessage());
         ErrorDTO errorDTO = buildError(HttpStatus.NOT_FOUND.toString(), exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -66,35 +65,28 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<ApiErrorDTO> codeChangePasswordInvalidException(CodeChangePasswordInvalidException exception) {
 
         log.error(exception.getMessage());
-        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.build());
     }
 
     @ExceptionHandler(CodeChangeOpenedException.class)
-    public ResponseEntity<ApiErrorDTO> codeChangeOpenedException(CodeChangeOpenedException exception) {
-
+    public ResponseEntity<ApiErrorDTO> codeChangeOpenedException(CodeChangeOpenedException exception)
+    {
         log.error(exception.getMessage());
-        ErrorDTO errorDTO = buildError(HttpStatus.NOT_ACCEPTABLE.toString(), exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                .body(baseErrorBuilder(HttpStatus.NOT_ACCEPTABLE, Set.of(errorDTO)));
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.build());
     }
 
     @ExceptionHandler(DuplicatedFieldException.class)
-    public ResponseEntity<ApiErrorDTO> duplicatedFieldException(DuplicatedFieldException exception) {
+    public ResponseEntity<ApiErrorDTO> duplicatedFieldException(DuplicatedFieldException exception)
+    {
         log.error(exception.getMessage());
-        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.build());
     }
 
     @ExceptionHandler({DebtNotCreatedException.class})
     public ResponseEntity<ApiErrorDTO> debtNotCreatedException(DebtNotCreatedException exception)
     {
         log.error(exception.getMessage());
-        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.build());
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
@@ -108,25 +100,19 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(IllegalSelectedRepairRequestsException.class)
     public ResponseEntity<ApiErrorDTO> illegalSelectedRepairRequestsException(IllegalSelectedRepairRequestsException exception) {
         log.error(exception.getMessage());
-        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.build());
     }
 
     @ExceptionHandler(AccessDeniedOrderServiceException.class)
     public ResponseEntity<ApiErrorDTO> accessDeniedOrderService(AccessDeniedOrderServiceException exception) {
         log.error(exception.getMessage());
-        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.build());
     }
 
     @ExceptionHandler(IllegalChangeOrderServiceException.class)
     public ResponseEntity<ApiErrorDTO> illegalChangeOrderServiceException(IllegalChangeOrderServiceException exception) {
         log.error(exception.getMessage());
-        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.build());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -169,7 +155,6 @@ public class ExceptionHandlerAdvice {
 
     private String bindExceptionKeywords(Map<String, Object> keywords, String exceptionKey) {
         String message = messageSource.getMessage(exceptionKey, null, LocaleContextHolder.getLocale());
-
         return Objects.nonNull(keywords) ? new StrSubstitutor(keywords).replace(message) : message;
     }
 
