@@ -1,13 +1,11 @@
 package system.gc.services.web;
 
-import system.gc.services.web.AuthenticateEntity;
-
 /**
  * @author Wisley Bruno Marques França
  * @since 0.0.1
  * @version 1.3
  */
-public interface AuthenticationByCPFGeneric<E, REPOSITORY extends AuthenticateEntity<E>> {
+public interface WebAuthenticationByCPFGeneric<E, REPOSITORY extends WebAuthenticateEntity<E>> {
 
     /**
      * <p>Este método realiza a busca pelos dados do usuário pelo CPF.</p>

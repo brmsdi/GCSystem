@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.ContractDTO;
 import system.gc.dtos.LesseeDTO;
-import system.gc.services.web.impl.ContractService;
+import system.gc.services.web.impl.WebContractService;
 import javax.validation.Valid;
 
 import static system.gc.utils.TextUtils.API_V1_WEB;
@@ -27,7 +27,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 public class WebContractController implements WebControllerPermission {
 
     @Autowired
-    private ContractService contractService;
+    private WebContractService webContractService;
 
     @Autowired
     private MessageSource messageSource;
@@ -37,12 +37,12 @@ public class WebContractController implements WebControllerPermission {
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size) {
         log.info("Listando contratos");
-        return ResponseEntity.ok(contractService.listPaginationContract(PageRequest.of(page, size)));
+        return ResponseEntity.ok(webContractService.listPaginationContract(PageRequest.of(page, size)));
     }
 
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody ContractDTO contractDTO) {
-        if (contractService.save(contractDTO) == null) {
+        if (webContractService.save(contractDTO) == null) {
             return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_CONTRACT",
                     null,
                     LocaleContextHolder.getLocale()));
@@ -55,7 +55,7 @@ public class WebContractController implements WebControllerPermission {
     @PutMapping
     public ResponseEntity<String> update(@Valid @RequestBody ContractDTO contractDTO) {
         log.info("Atualizando registro");
-        contractService.update(contractDTO);
+        webContractService.update(contractDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
@@ -66,17 +66,17 @@ public class WebContractController implements WebControllerPermission {
                                                     @RequestParam(name = "size", defaultValue = "5") Integer size,
                                                     @RequestParam(name = "cpf") String cpf) {
         log.info("Localizando contratos...");
-        return ResponseEntity.ok(contractService.searchContract(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
+        return ResponseEntity.ok(webContractService.searchContract(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
     }
 
     @GetMapping(value = "printout")
     public ResponseEntity<ContractDTO> findByID(@RequestParam(name = "id", defaultValue = "0") Integer id) {
-        return ResponseEntity.ok(contractService.findByID(id));
+        return ResponseEntity.ok(webContractService.findByID(id));
     }
 
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam(name = "id") Integer ID) {
-        contractService.delete(ID);
+        webContractService.delete(ID);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));

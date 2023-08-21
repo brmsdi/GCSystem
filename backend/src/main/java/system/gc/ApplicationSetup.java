@@ -35,7 +35,7 @@ import static system.gc.utils.TextUtils.*;
 public class ApplicationSetup {
 
     @Autowired
-    EmployeeService employeeService;
+    WebEmployeeService webEmployeeService;
 
     @Autowired
     RoleRepository roleRepository;
@@ -44,40 +44,40 @@ public class ApplicationSetup {
     StatusRepository statusRepository;
 
     @Autowired
-    StatusService statusService;
+    WebStatusService webStatusService;
 
     @Autowired
-    ActivityTypeService activityTypeService;
+    WebActivityTypeService webActivityTypeService;
 
     @Autowired
-    LocalizationService localizationService;
+    WebLocalizationService webLocalizationService;
 
     @Autowired
-    CondominiumService condominiumService;
+    WebCondominiumService webCondominiumService;
 
     @Autowired
-    ContractService contractService;
+    WebContractService webContractService;
 
     @Autowired
-    LesseeService lesseeService;
+    WebLesseeService webLesseeService;
 
     @Autowired
-    DebtService debtService;
+    WebDebtService webDebtService;
 
     @Autowired
     TypeProblemRepository typeProblemRepository;
 
     @Autowired
-    TypeProblemService typeProblemService;
+    WebTypeProblemService webTypeProblemService;
 
     @Autowired
-    RepairRequestService repairRequestService;
+    WebRepairRequestService webRepairRequestService;
 
     @Autowired
-    OrderServiceService orderServiceService;
+    WebOrderServiceService webOrderServiceService;
 
     @Autowired
-    private DataReloadService dataReloadService;
+    private WebDataReloadService webDataReloadService;
 
     @Autowired
     Environment environment;
@@ -132,7 +132,7 @@ public class ApplicationSetup {
         statusList.add(new Status(STATUS_OVERDUE));
         statusList.add(new Status(STATUS_LATE));
         statusList.add(new Status(STATUS_PAID));
-        statusService.save(statusList);
+        webStatusService.save(statusList);
 
         // ACTIVITY TYPE
         List<ActivityType> activityTypeList = new ArrayList<>();
@@ -140,18 +140,18 @@ public class ApplicationSetup {
         activityTypeList.add(new ActivityType(ACTIVITY_TYPE_UPDATED));
         activityTypeList.add(new ActivityType(ACTIVITY_TYPE_DISABLED));
         activityTypeList.add(new ActivityType(ACTIVITY_TYPE_DELETED));
-        activityTypeService.save(activityTypeList);
+        webActivityTypeService.save(activityTypeList);
 
         List<TypeProblem> typeProblemList = new ArrayList<>();
         TypeProblem typeProblemDTOElectric = typeProblemRepository.save(new TypeProblem(TYPE_PROBLEM_ELECTRIC));
         typeProblemList.add(new TypeProblem(TYPE_PROBLEM_HYDRAULIC));
         typeProblemList.add(new TypeProblem(TYPE_PROBLEM_OTHERS));
-        typeProblemService.save(typeProblemList);
+        webTypeProblemService.save(typeProblemList);
 
         try
         {
             // EMPLOYEE
-            employeeService.save(new EmployeeDTO("Wisley Bruno Marques França",
+            webEmployeeService.save(new EmployeeDTO("Wisley Bruno Marques França",
                     "2343435",
                     "12345678910",
                     Date.from(ZonedDateTime.of(1995, 12, 6, 8, 0, 0, 0, zoneManaus).toInstant()),
@@ -161,7 +161,7 @@ public class ApplicationSetup {
                     new RoleDTO(roleADM),
                     null,
                     new StatusDTO(statusActive)));
-            Employee auth = employeeService.authentication("12345678910");
+            Employee auth = webEmployeeService.authentication("12345678910");
             UserDetails userDetails = new EmployeeUserDetails(auth);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails.getUsername(),
@@ -231,8 +231,8 @@ public class ApplicationSetup {
                     statusActive);
 
             //LOCALIZATION
-            LocalizationDTO localizationDTO = localizationService.save(new LocalizationDTO("Flores", "Rua Barão de Palmares", 69058200));
-            LocalizationDTO localizationDTO1 = localizationService.save(new LocalizationDTO("Parque 10 de Novembro", "Rua Dom Diogo de souza",  69054641));
+            LocalizationDTO localizationDTO = webLocalizationService.save(new LocalizationDTO("Flores", "Rua Barão de Palmares", 69058200));
+            LocalizationDTO localizationDTO1 = webLocalizationService.save(new LocalizationDTO("Parque 10 de Novembro", "Rua Dom Diogo de souza",  69054641));
 
             // CONDOMINIUM
             CondominiumDTO condominiumDTO = new CondominiumDTO("Villa Lobos",
@@ -240,7 +240,7 @@ public class ApplicationSetup {
                     20,
                     new StatusDTO(statusAvailable),
                     new LocalizationCondominiumDTO("500", localizationDTO));
-            condominiumService.save(condominiumDTO);
+            webCondominiumService.save(condominiumDTO);
             for (int i = 2; i < 8; i++) {
                 initializeCondominium(
                         "CONDOMÍNIO-" + i,
@@ -264,9 +264,9 @@ public class ApplicationSetup {
                     new RoleDTO(lesseeRole)
             );
 
-            LesseeDTO lesseeSaved = lesseeService.save(lesseeDTO);
+            LesseeDTO lesseeSaved = webLesseeService.save(lesseeDTO);
 
-            Page<CondominiumDTO> condominiumDTOPage = condominiumService.listPaginationCondominium(PageRequest.of(0, 5));
+            Page<CondominiumDTO> condominiumDTOPage = webCondominiumService.listPaginationCondominium(PageRequest.of(0, 5));
 
             // CONTRACT
             initializeContract(
@@ -281,7 +281,7 @@ public class ApplicationSetup {
                     lesseeSaved);
 
             // DEBTS
-            Page<ContractDTO> contractDTOPage = contractService.searchContract(PageRequest.of(0, 5), lesseeSaved);
+            Page<ContractDTO> contractDTOPage = webContractService.searchContract(PageRequest.of(0, 5), lesseeSaved);
             ContractDTO contractDTO = contractDTOPage.toList().get(0);
             initializeDebt(contractDTO.getContractValue(), statusOpen, lesseeSaved, today);
 
@@ -374,7 +374,7 @@ public class ApplicationSetup {
     public void initDataProfileDev()
     {
         if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("development")) return;
-        dataReloadService.deleteAll();
+        webDataReloadService.deleteAll();
         execute();
     }
 
@@ -382,7 +382,7 @@ public class ApplicationSetup {
     public void initDataProfileProd()
     {
         if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("production")) return;
-        dataReloadService.deleteAll();
+        webDataReloadService.deleteAll();
         execute();
     }
 
@@ -409,7 +409,7 @@ public class ApplicationSetup {
                 new RoleDTO(role),
                 movements,
                 new StatusDTO(status));
-        return employeeService.save(employeeDTO);
+        return webEmployeeService.save(employeeDTO);
     }
 
     private void initializeCondominium(
@@ -426,7 +426,7 @@ public class ApplicationSetup {
                 numberApartments,
                 new StatusDTO(status),
                 localization);
-        condominiumService.save(condominiumDTO);
+        webCondominiumService.save(condominiumDTO);
     }
 
 
@@ -449,7 +449,7 @@ public class ApplicationSetup {
                 new StatusDTO(status),
                 condominium,
                 lessee);
-        contractService.save(contractDTO);
+        webContractService.save(contractDTO);
     }
 
     private void initializeDebt(double value, Status status, LesseeDTO lesseeDTO, ZonedDateTime openDate) throws ParseException, DebtNotCreatedException {
@@ -460,7 +460,7 @@ public class ApplicationSetup {
                 new StatusDTO().toDTO(status),
                 null,
                 lesseeDTO);
-        debtService.save(debtDTO);
+        webDebtService.save(debtDTO);
     }
 
     /**
@@ -502,7 +502,7 @@ public class ApplicationSetup {
                 condominiumDTO,
                 apartmentNumber,
                 new StatusDTO(status));
-        return repairRequestService.save(repairRequestDTO);
+        return webRepairRequestService.save(repairRequestDTO);
     }
 
     private void initializeOrderService(
@@ -516,6 +516,6 @@ public class ApplicationSetup {
                 Set.of(employeeDTO),
                 new StatusDTO(status)
         );
-        orderServiceService.save(orderServiceDTO);
+        webOrderServiceService.save(orderServiceDTO);
     }
 }

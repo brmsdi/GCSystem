@@ -14,8 +14,8 @@ import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.TokenChangePasswordDTO;
 import system.gc.dtos.TokenDTO;
 import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
-import system.gc.services.web.LogPasswordCode;
-import system.gc.services.web.impl.EmployeeService;
+import system.gc.services.web.WebLogPasswordCode;
+import system.gc.services.web.impl.WebEmployeeService;
 import system.gc.utils.TextUtils;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -34,26 +34,26 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @Slf4j
 public class WebEmployeeController implements WebControllerPermission, WebChangePassword {
     @Autowired
-    private EmployeeService employeeService;
+    private WebEmployeeService webEmployeeService;
 
     @Autowired
     private MessageSource messageSource;
 
     @Autowired
-    private LogPasswordCode logPasswordCodeEmployeeImpl;
+    private WebLogPasswordCode webLogPasswordCodeEmployeeImpl;
 
     @GetMapping
     public ResponseEntity<Page<EmployeeDTO>> listPaginationEmployees(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size,
             @RequestParam(name = "sort", defaultValue = "name") String sort) {
-        return ResponseEntity.ok(employeeService.listPaginationEmployees(PageRequest.of(page, size, Sort.by(sort))));
+        return ResponseEntity.ok(webEmployeeService.listPaginationEmployees(PageRequest.of(page, size, Sort.by(sort))));
     }
 
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Inserindo registro!");
-        if (employeeService.save(employeeDTO) == null) {
+        if (webEmployeeService.save(employeeDTO) == null) {
             return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_INSERT_EMPLOYEE",
                     null,
                     LocaleContextHolder.getLocale()));
@@ -66,7 +66,7 @@ public class WebEmployeeController implements WebControllerPermission, WebChange
     @PutMapping
     public ResponseEntity<String> update(@Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Atualizando registro");
-        employeeService.update(employeeDTO);
+        webEmployeeService.update(employeeDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
@@ -78,12 +78,12 @@ public class WebEmployeeController implements WebControllerPermission, WebChange
                                                           @RequestParam(name = "size", defaultValue = "5") Integer size,
                                                           @RequestParam(name = "cpf") String cpf) {
         log.info("Localizando funcionário...");
-        return ResponseEntity.ok(employeeService.findByCPFPagination(PageRequest.of(page, size), new EmployeeDTO(cpf.trim())));
+        return ResponseEntity.ok(webEmployeeService.findByCPFPagination(PageRequest.of(page, size), new EmployeeDTO(cpf.trim())));
     }
 
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam(name = "id") Integer ID) {
-        employeeService.delete(ID);
+        webEmployeeService.delete(ID);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
@@ -92,12 +92,12 @@ public class WebEmployeeController implements WebControllerPermission, WebChange
     @GetMapping(value = "list/to-modal-order-service")
     public ResponseEntity<List<EmployeeDTO>> findAllToModalOrderService() {
         log.info("Listando funcionários");
-        return ResponseEntity.ok(employeeService.findAllToModalOrderService());
+        return ResponseEntity.ok(webEmployeeService.findAllToModalOrderService());
     }
 
     @Override
     public ResponseEntity<String> requestCode(@RequestParam String email) {
-        if (logPasswordCodeEmployeeImpl.generateCodeForChangePassword(email)) {
+        if (webLogPasswordCodeEmployeeImpl.generateCodeForChangePassword(email)) {
             return ResponseEntity.ok().body(messageSource.getMessage("TEXT_MSG_EMAIL_SENT_SUCCESS",
                     null, LocaleContextHolder.getLocale()));
         }
@@ -111,12 +111,12 @@ public class WebEmployeeController implements WebControllerPermission, WebChange
             throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_EMAIL_EMPTY_OR_NULL",
                     null, LocaleContextHolder.getLocale()));
         }
-        return ResponseEntity.ok().body(logPasswordCodeEmployeeImpl.validateCode(email, code));
+        return ResponseEntity.ok().body(webLogPasswordCodeEmployeeImpl.validateCode(email, code));
     }
 
     @Override
     public ResponseEntity<String> changePassword(TokenChangePasswordDTO tokenChangePasswordDTO) {
-        logPasswordCodeEmployeeImpl.changePassword(tokenChangePasswordDTO.getToken(), tokenChangePasswordDTO.getNewPassword());
+        webLogPasswordCodeEmployeeImpl.changePassword(tokenChangePasswordDTO.getToken(), tokenChangePasswordDTO.getNewPassword());
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_PASSWORD_UPDATE_SUCCESS",
                 null, LocaleContextHolder.getLocale()));
     }

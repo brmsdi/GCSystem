@@ -9,7 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.OrderServiceDTO;
-import system.gc.services.web.impl.OrderServiceService;
+import system.gc.services.web.impl.WebOrderServiceService;
 import javax.validation.Valid;
 
 import static system.gc.utils.TextUtils.API_V1_WEB;
@@ -26,7 +26,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 public class WebOrderServiceController implements WebControllerPermission {
 
     @Autowired
-    private OrderServiceService orderServiceService;
+    private WebOrderServiceService webOrderServiceService;
 
     @Autowired
     private MessageSource messageSource;
@@ -35,12 +35,12 @@ public class WebOrderServiceController implements WebControllerPermission {
     public ResponseEntity<Page<OrderServiceDTO>> listPaginationOrderServices (
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size) {
-        return ResponseEntity.ok(orderServiceService.listPaginationOrderServices(PageRequest.of(page, size)));
+        return ResponseEntity.ok(webOrderServiceService.listPaginationOrderServices(PageRequest.of(page, size)));
     }
 
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody OrderServiceDTO orderServiceDTO) {
-        if (orderServiceService.save(orderServiceDTO) == null) {
+        if (webOrderServiceService.save(orderServiceDTO) == null) {
             return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_ORDER_SERVICE",
                     null,
                     LocaleContextHolder.getLocale()));
@@ -53,7 +53,7 @@ public class WebOrderServiceController implements WebControllerPermission {
     @PutMapping
     public ResponseEntity<String> update(@Valid @RequestBody OrderServiceDTO orderServiceDTO) {
         log.info("Atualizando registro");
-        orderServiceService.update(orderServiceDTO);
+        webOrderServiceService.update(orderServiceDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
@@ -64,12 +64,12 @@ public class WebOrderServiceController implements WebControllerPermission {
                                                     @RequestParam(name = "size", defaultValue = "5") Integer size,
                                                     @RequestParam(name = "id") Integer ID) {
         log.info("Localizando ordem de serviço");
-        return ResponseEntity.ok(orderServiceService.searchOrderService(ID));
+        return ResponseEntity.ok(webOrderServiceService.searchOrderService(ID));
     }
 
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam(name = "id") Integer ID) {
-        orderServiceService.delete(ID);
+        webOrderServiceService.delete(ID);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
@@ -78,7 +78,7 @@ public class WebOrderServiceController implements WebControllerPermission {
     @PostMapping(value = "order-service/close")
     public ResponseEntity<String> closeOrderService(@RequestBody OrderServiceDTO orderServiceDTO)
     {
-        orderServiceService.closeOrderService(orderServiceDTO);
+        webOrderServiceService.closeOrderService(orderServiceDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_CLOSE_ORDER_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));

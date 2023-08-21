@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class StatusService {
+public class WebStatusService {
 
     @Autowired
     private StatusRepository statusRepository;

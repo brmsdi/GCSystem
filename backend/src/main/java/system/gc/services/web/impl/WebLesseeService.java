@@ -31,18 +31,18 @@ import static system.gc.utils.TextUtils.STATUS_ACTIVE;
  */
 @Service
 @Slf4j
-public class LesseeService implements WebControllerPermission {
+public class WebLesseeService implements WebControllerPermission {
     @Autowired
     private LesseeRepository lesseeRepository;
 
     @Autowired
-    private LesseeAuthenticationService lesseeAuthenticationServiceImpl;
+    private LesseeWebAuthenticationService lesseeAuthenticationServiceImpl;
 
     @Autowired
-    private StatusService statusService;
+    private WebStatusService webStatusService;
 
     @Autowired
-    private LogPasswordCodeService logPasswordCodeService;
+    private WebLogPasswordCodeService webLogPasswordCodeService;
 
     @Autowired
     private MessageSource messageSource;
@@ -54,7 +54,7 @@ public class LesseeService implements WebControllerPermission {
         newLesseeDTO.setPassword(new BCryptPasswordEncoder().encode(newLesseeDTO.getPassword()));
         cpfIsAvailableSave(newLesseeDTO);
         emailIsAvailableSave(newLesseeDTO);
-        Status statusActive = statusService.findByName(STATUS_ACTIVE);
+        Status statusActive = webStatusService.findByName(STATUS_ACTIVE);
         newLesseeDTO.setStatus(new StatusDTO().toDTO(statusActive));
         Lessee registeredLessee = lesseeRepository.save(lesseeDTO.toEntity(newLesseeDTO));
         if (registeredLessee.getId() == null) {

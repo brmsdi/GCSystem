@@ -3,7 +3,7 @@ package system.gc.services.web.impl;
 import org.springframework.stereotype.Service;
 import system.gc.entities.Employee;
 import system.gc.repositories.EmployeeRepository;
-import system.gc.services.web.AuthenticationByCPFGeneric;
+import system.gc.services.web.WebAuthenticationByCPFGeneric;
 
 /**
  * @author Wisley Bruno Marques França
@@ -11,4 +11,4 @@ import system.gc.services.web.AuthenticationByCPFGeneric;
  * @version 1.3
  */
 @Service
-public class EmployeeAuthenticationServiceImpl implements AuthenticationByCPFGeneric<Employee, EmployeeRepository> {}
+public class EmployeeWebAuthenticationServiceImpl implements WebAuthenticationByCPFGeneric<Employee, EmployeeRepository> {}

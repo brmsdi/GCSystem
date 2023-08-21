@@ -14,9 +14,9 @@ import system.gc.dtos.LesseeDTO;
 import system.gc.dtos.TokenChangePasswordDTO;
 import system.gc.dtos.TokenDTO;
 import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
-import system.gc.services.web.LogPasswordCode;
-import system.gc.services.web.impl.DebtService;
-import system.gc.services.web.impl.LesseeService;
+import system.gc.services.web.WebLogPasswordCode;
+import system.gc.services.web.impl.WebDebtService;
+import system.gc.services.web.impl.WebLesseeService;
 import system.gc.utils.TextUtils;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -34,29 +34,29 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @Slf4j
 public class WebLesseeController implements WebControllerPermission, WebChangePassword {
     @Autowired
-    private LesseeService lesseeService;
+    private WebLesseeService webLesseeService;
 
     @Autowired
-    private DebtService debtService;
+    private WebDebtService webDebtService;
 
     @Autowired
     private MessageSource messageSource;
 
     @Autowired
-    private LogPasswordCode logPasswordCodeLesseeImpl;
+    private WebLogPasswordCode webLogPasswordCodeLesseeImpl;
 
     @GetMapping
     public ResponseEntity<Page<LesseeDTO>> listPaginationLessees(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size,
             @RequestParam(name = "sort", defaultValue = "name") String sort) {
-        return ResponseEntity.ok(lesseeService.listPaginationLessees(PageRequest.of(page, size, Sort.by(sort))));
+        return ResponseEntity.ok(webLesseeService.listPaginationLessees(PageRequest.of(page, size, Sort.by(sort))));
     }
 
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody LesseeDTO lesseeDTO) {
         log.info("Inserindo registro!");
-        if (lesseeService.save(lesseeDTO) == null) {
+        if (webLesseeService.save(lesseeDTO) == null) {
             return ResponseEntity.badRequest().body(messageSource.getMessage("TEXT_ERROR_INSERT_LESSEE",
                     null,
                     LocaleContextHolder.getLocale()));
@@ -69,7 +69,7 @@ public class WebLesseeController implements WebControllerPermission, WebChangePa
     @PutMapping
     public ResponseEntity<String> update(@Valid @RequestBody LesseeDTO lesseeDTO) {
         log.info("Atualizando registro");
-        lesseeService.update(lesseeDTO);
+        webLesseeService.update(lesseeDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
@@ -81,12 +81,12 @@ public class WebLesseeController implements WebControllerPermission, WebChangePa
                                                         @RequestParam(name = "size", defaultValue = "5") Integer size,
                                                         @RequestParam(name = "cpf") String cpf) {
         log.info("Localizando locatário...");
-        return ResponseEntity.ok(lesseeService.findByCPFPagination(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
+        return ResponseEntity.ok(webLesseeService.findByCPFPagination(PageRequest.of(page, size), new LesseeDTO(cpf.trim())));
     }
 
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam(name = "id") Integer ID) {
-        lesseeService.delete(ID);
+        webLesseeService.delete(ID);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
@@ -98,18 +98,18 @@ public class WebLesseeController implements WebControllerPermission, WebChangePa
                                                                        @RequestParam(name = "cpf") String cpf) {
 
         log.info("Localizando débito");
-        LesseeDTO lessee = lesseeService.findByCPF(new LesseeDTO(cpf.trim()));
+        LesseeDTO lessee = webLesseeService.findByCPF(new LesseeDTO(cpf.trim()));
 
         if (lessee == null) {
             log.warn("Locatário com o CPF: " + cpf + " não foi localizado");
             return ResponseEntity.ok(Page.empty());
         }
-        return ResponseEntity.ok(lesseeService.listPaginationDebtsByLessee(lessee, debtService.searchDebts(PageRequest.of(page, size), lessee)));
+        return ResponseEntity.ok(webLesseeService.listPaginationDebtsByLessee(lessee, webDebtService.searchDebts(PageRequest.of(page, size), lessee)));
     }
 
     @Override
     public ResponseEntity<String> requestCode(@RequestParam String email) {
-        if (logPasswordCodeLesseeImpl.generateCodeForChangePassword(email)) {
+        if (webLogPasswordCodeLesseeImpl.generateCodeForChangePassword(email)) {
             return ResponseEntity.ok().body(messageSource.getMessage("TEXT_MSG_EMAIL_SENT_SUCCESS",
                     null, LocaleContextHolder.getLocale()));
         }
@@ -124,12 +124,12 @@ public class WebLesseeController implements WebControllerPermission, WebChangePa
             throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_EMAIL_EMPTY_OR_NULL",
                     null, LocaleContextHolder.getLocale()));
         }
-        return ResponseEntity.ok().body(logPasswordCodeLesseeImpl.validateCode(email, code));
+        return ResponseEntity.ok().body(webLogPasswordCodeLesseeImpl.validateCode(email, code));
     }
 
     @Override
     public ResponseEntity<String> changePassword(TokenChangePasswordDTO tokenChangePasswordDTO) {
-        logPasswordCodeLesseeImpl.changePassword(tokenChangePasswordDTO.getToken(), tokenChangePasswordDTO.getNewPassword());
+        webLogPasswordCodeLesseeImpl.changePassword(tokenChangePasswordDTO.getToken(), tokenChangePasswordDTO.getNewPassword());
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_PASSWORD_UPDATE_SUCCESS",
                 null, LocaleContextHolder.getLocale()));
     }

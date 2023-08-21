@@ -3,7 +3,7 @@ package system.gc.services.web.impl;
 import org.springframework.stereotype.Service;
 import system.gc.entities.Lessee;
 import system.gc.repositories.LesseeRepository;
-import system.gc.services.web.AuthenticationByCPFGeneric;
+import system.gc.services.web.WebAuthenticationByCPFGeneric;
 
 /**
  * @author Wisley Bruno Marques França
@@ -11,4 +11,4 @@ import system.gc.services.web.AuthenticationByCPFGeneric;
  * @version 1.3
  */
 @Service
-public class LesseeAuthenticationService implements AuthenticationByCPFGeneric<Lessee, LesseeRepository> {}
+public class LesseeWebAuthenticationService implements WebAuthenticationByCPFGeneric<Lessee, LesseeRepository> {}

@@ -11,7 +11,7 @@ import system.gc.entities.Status;
 import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
 import system.gc.repositories.LogPasswordCodeRepository;
 import system.gc.security.token.JWTService;
-import system.gc.services.web.LogPasswordCode;
+import system.gc.services.web.WebLogPasswordCode;
 import system.gc.utils.TextUtils;
 import system.gc.utils.TypeUserEnum;
 import javax.transaction.Transactional;
@@ -30,12 +30,12 @@ import static system.gc.utils.TextUtils.*;
  */
 @Service
 @Slf4j
-public class LogPasswordCodeService {
+public class WebLogPasswordCodeService {
     @Autowired
     private LogPasswordCodeRepository logPasswordCodeRepository;
 
     @Autowired
-    private StatusService statusService;
+    private WebStatusService webStatusService;
 
     @Autowired
     private MessageSource messageSource;
@@ -46,10 +46,10 @@ public class LogPasswordCodeService {
     }
 
     @Deprecated(since = "1.3")
-    public TokenDTO validateCode(String email, String code, LogPasswordCode logPasswordCode) {
+    public TokenDTO validateCode(String email, String code, WebLogPasswordCode webLogPasswordCode) {
         log.info("Validando código");
-        Status waitingStatus = statusService.findByName(STATUS_WAITING);
-        LogChangePassword logChangePassword = logPasswordCode.getLogChangePassword(email, waitingStatus.getId());
+        Status waitingStatus = webStatusService.findByName(STATUS_WAITING);
+        LogChangePassword logChangePassword = webLogPasswordCode.getLogChangePassword(email, waitingStatus.getId());
         Date currentDate = new Date();
         Date passwordCodeDate = logChangePassword.getDate();
         long time = currentDate.getTime() - passwordCodeDate.getTime();
@@ -58,7 +58,7 @@ public class LogPasswordCodeService {
         attempts++;
         if (minutesPast <= 5 && logChangePassword.getNumberOfAttempts() < 3) {
             if (logChangePassword.getCode().equals(code)) {
-                logChangePassword.setStatus(statusService.findByName(STATUS_VALID));
+                logChangePassword.setStatus(webStatusService.findByName(STATUS_VALID));
                 log.info("Código valido");
                 logChangePassword.setNumberOfAttempts(attempts);
                 save(logChangePassword);
@@ -67,7 +67,7 @@ public class LogPasswordCodeService {
                 log.info("Tentativa invalida");
                 logChangePassword.setNumberOfAttempts(attempts);
                 if (attempts == 3) {
-                    updateStatusCode(logChangePassword, statusService.findByName(STATUS_INVALID));
+                    updateStatusCode(logChangePassword, webStatusService.findByName(STATUS_INVALID));
                     throw new CodeChangePasswordInvalidException("Excedeu o número de tentativas");
                 }
             }
@@ -75,7 +75,7 @@ public class LogPasswordCodeService {
             throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_CODE_INVALID",
                     null, LocaleContextHolder.getLocale()));
         }
-        updateStatusCode(logChangePassword, statusService.findByName(STATUS_INVALID));
+        updateStatusCode(logChangePassword, webStatusService.findByName(STATUS_INVALID));
         throw new CodeChangePasswordInvalidException("As informações não correspondem. Solicite outro código!");
     }
 

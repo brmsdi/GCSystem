@@ -21,7 +21,7 @@ import java.util.Date;
 
 @Service
 @Slf4j
-public class MovementService {
+public class WebMovementService {
 
     @Autowired
     private MovementRepository movementRepository;

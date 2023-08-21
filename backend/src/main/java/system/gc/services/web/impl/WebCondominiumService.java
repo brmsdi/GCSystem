@@ -26,13 +26,13 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
-public class CondominiumService {
+public class WebCondominiumService {
 
     @Autowired
     private CondominiumRepository condominiumRepository;
 
     @Autowired
-    private LocalizationService localizationService;
+    private WebLocalizationService webLocalizationService;
 
     @Autowired
     private MessageSource messageSource;
@@ -97,9 +97,9 @@ public class CondominiumService {
 
     public void verifyLocalization(CondominiumDTO condominiumDTO)
     {
-        Localization localization = localizationService.findByZipCode(condominiumDTO.getLocalization().getLocalization().getZipCode());
+        Localization localization = webLocalizationService.findByZipCode(condominiumDTO.getLocalization().getLocalization().getZipCode());
         if (localization == null) {
-            localization = localizationService.save(new LocalizationDTO().toEntity(condominiumDTO.getLocalization().getLocalization()));
+            localization = webLocalizationService.save(new LocalizationDTO().toEntity(condominiumDTO.getLocalization().getLocalization()));
             condominiumDTO.getLocalization().setLocalization(new LocalizationDTO(localization));
         }
     }

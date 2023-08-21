@@ -8,7 +8,7 @@ import java.util.Optional;
  * @version 1.3
  */
 
-public interface ChangePasswordEntity<T> {
+public interface WebChangePasswordEntity<T> {
     /**
      * <p>Busca um registro por um endereço de e-mail.</p>
      * @param email Endereço de e-mail para realizar a busca.

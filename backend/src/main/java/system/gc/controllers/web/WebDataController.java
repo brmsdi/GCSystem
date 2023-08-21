@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import system.gc.services.web.impl.ApplicationService;
-import system.gc.services.web.impl.DataReloadService;
+import system.gc.services.web.impl.WebApplicationService;
+import system.gc.services.web.impl.WebDataReloadService;
 
 import static system.gc.utils.TextUtils.API_V1_WEB;
 
@@ -20,19 +20,19 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 public class WebDataController {
 
     @Autowired
-    private DataReloadService dataReloadService;
+    private WebDataReloadService webDataReloadService;
 
     @Autowired
-    private ApplicationService applicationService;
+    private WebApplicationService webApplicationService;
 
     @PutMapping
     public ResponseEntity<String> reload(@RequestParam(name = "insert", defaultValue = "INSERT_YES") String insert)
     {
         log.info("reload!");
-        dataReloadService.deleteAll();
+        webDataReloadService.deleteAll();
         if (insert.equalsIgnoreCase("INSERT_YES"))
         {
-            applicationService.insertAll();
+            webApplicationService.insertAll();
         }
         return ResponseEntity.ok("Dados resetados com sucesso");
    }

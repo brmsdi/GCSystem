@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
-public class LocalizationService {
+public class WebLocalizationService {
 
     @Autowired
     private LocalizationRepository localizationRepository;

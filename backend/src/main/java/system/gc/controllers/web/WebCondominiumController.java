@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import system.gc.dtos.CondominiumDTO;
-import system.gc.services.web.impl.CondominiumService;
+import system.gc.services.web.impl.WebCondominiumService;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -28,7 +28,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 public class WebCondominiumController implements WebControllerPermission {
 
     @Autowired
-    private CondominiumService condominiumService;
+    private WebCondominiumService webCondominiumService;
 
     @Autowired
     private MessageSource messageSource;
@@ -39,18 +39,18 @@ public class WebCondominiumController implements WebControllerPermission {
             @RequestParam(name = "size", defaultValue = "5") Integer size,
             @RequestParam(name = "sort", defaultValue = "name") String sort) {
         log.info("Listando condominios");
-        return ResponseEntity.ok(condominiumService.listPaginationCondominium(PageRequest.of(page, size, Sort.by(sort))));
+        return ResponseEntity.ok(webCondominiumService.listPaginationCondominium(PageRequest.of(page, size, Sort.by(sort))));
     }
 
     @GetMapping(value = "list")
     public ResponseEntity<List<CondominiumDTO>> findAll(@RequestParam(name = "sort", defaultValue = "name") String sort) {
         log.info("Listando condominios");
-        return ResponseEntity.ok(condominiumService.findAll(Sort.by(sort)));
+        return ResponseEntity.ok(webCondominiumService.findAll(Sort.by(sort)));
     }
 
     @PostMapping
     public ResponseEntity<String> save(@Valid @RequestBody CondominiumDTO condominiumDTO) {
-        if (condominiumService.save(condominiumDTO) == null) {
+        if (webCondominiumService.save(condominiumDTO) == null) {
             return ResponseEntity.ok(messageSource.getMessage("TEXT_ERROR_INSERT_CONDOMINIUM",
                     null,
                     LocaleContextHolder.getLocale()));
@@ -63,7 +63,7 @@ public class WebCondominiumController implements WebControllerPermission {
     @PutMapping
     public ResponseEntity<String> update(@Valid @RequestBody CondominiumDTO condominiumDTO) {
         log.info("Atualizando registro");
-        condominiumService.update(condominiumDTO);
+        webCondominiumService.update(condominiumDTO);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_UPDATE_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));
@@ -74,12 +74,12 @@ public class WebCondominiumController implements WebControllerPermission {
                                                        @RequestParam(name = "size", defaultValue = "5") Integer size,
                                                        @RequestParam(name = "name") String name) {
         log.info("Localizando condominios");
-        return ResponseEntity.ok(condominiumService.searchCondominium(PageRequest.of(page, size), new CondominiumDTO(name.trim())));
+        return ResponseEntity.ok(webCondominiumService.searchCondominium(PageRequest.of(page, size), new CondominiumDTO(name.trim())));
     }
 
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam(name = "id") Integer ID) {
-        condominiumService.delete(ID);
+        webCondominiumService.delete(ID);
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS",
                 null,
                 LocaleContextHolder.getLocale()));

@@ -24,13 +24,13 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
-public class ContractService {
+public class WebContractService {
 
     @Autowired
     private ContractRepository contractRepository;
 
     @Autowired
-    private LesseeService lesseeService;
+    private WebLesseeService webLesseeService;
 
     @Autowired
     private MessageSource messageSource;
@@ -62,7 +62,7 @@ public class ContractService {
     @Transactional
     public Page<ContractDTO> searchContract(Pageable pageable, LesseeDTO lesseeDTO) {
         log.info("Buscando registro de contrato");
-        LesseeDTO lessee = lesseeService.findByCPF(lesseeDTO);
+        LesseeDTO lessee = webLesseeService.findByCPF(lesseeDTO);
         if (lessee == null) {
             log.warn("Locatário com o CPF: " + lesseeDTO.getCpf() + " não foi localizado");
             return Page.empty();

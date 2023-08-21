@@ -5,7 +5,7 @@ package system.gc.services.web;
  * @since 0.0.1
  * @version 1.3
  */
-public interface AuthenticateEntity<T> {
+public interface WebAuthenticateEntity<T> {
 
     /**
      * <p>Autenticar o usuário pelo CPF.</p>

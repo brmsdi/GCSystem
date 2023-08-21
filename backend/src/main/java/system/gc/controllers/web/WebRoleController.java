@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import system.gc.dtos.RoleDTO;
-import system.gc.services.web.impl.RoleService;
+import system.gc.services.web.impl.WebRoleService;
 
 import java.util.List;
 
@@ -27,11 +27,11 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 public class WebRoleController {
 
     @Autowired
-    private RoleService roleService;
+    private WebRoleService webRoleService;
 
     @GetMapping
     public ResponseEntity<List<RoleDTO>> findAll(@RequestParam(name = "sort", defaultValue = "name") String sort) {
         log.info("Listando funções");
-        return ResponseEntity.ok(roleService.findAll(Sort.by(sort)));
+        return ResponseEntity.ok(webRoleService.findAll(Sort.by(sort)));
     }
 }

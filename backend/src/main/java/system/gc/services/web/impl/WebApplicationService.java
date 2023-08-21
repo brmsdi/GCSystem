@@ -10,7 +10,7 @@ import system.gc.ApplicationSetup;
  * @version 1.3
  */
 @Service
-public class ApplicationService {
+public class WebApplicationService {
     @Autowired
     private ApplicationSetup applicationSetup;
 

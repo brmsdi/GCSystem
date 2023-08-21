@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class ActivityTypeService {
+public class WebActivityTypeService {
 
     @Autowired
     private ActivityTypeRepository activityTypeRepository;

@@ -25,12 +25,12 @@ import static system.gc.utils.TextUtils.*;
  */
 @Service
 @Slf4j
-public class RepairRequestService {
+public class WebRepairRequestService {
     @Autowired
     private RepairRequestRepository repairRequestRepository;
 
     @Autowired
-    private StatusService statusService;
+    private WebStatusService webStatusService;
 
     @Autowired
     private MessageSource messageSource;
@@ -107,7 +107,7 @@ public class RepairRequestService {
 
     @Transactional
     public boolean checkIfTheRequestIsOpen(Set<RepairRequestDTO> repairRequestDTOSet) {
-        Status statusOpen = statusService.findByName(STATUS_OPEN);
+        Status statusOpen = webStatusService.findByName(STATUS_OPEN);
         log.info("Verificando as solicitações em aberto");
         List<RepairRequest> repairRequestList = new ArrayList<>();
         repairRequestDTOSet
@@ -120,7 +120,7 @@ public class RepairRequestService {
     @Transactional(readOnly = true)
     public OpenAndProgressAndLateRepairRequest openAndProgressAndLateRepairRequest(List<String> params) {
         log.info("Buscando lista de status");
-        List<StatusDTO> statusDTOList = statusService.findAllToViewDTO(params);
+        List<StatusDTO> statusDTOList = webStatusService.findAllToViewDTO(params);
         log.info("Buscando reparos por status");
         List<RepairRequest> repairRequestList = repairRequestRepository.perStatusRepairRequest(statusDTOList.stream().map(StatusDTO::getId).toList());
         OpenAndProgressAndLateRepairRequest openAndProgressAndLateRepairRequest =
@@ -137,14 +137,14 @@ public class RepairRequestService {
     }
 
     public List<RepairRequestDTO> findAllToModalOrderService(List<String> statusName) {
-        List<StatusDTO> listStatus = statusService.findAllToViewDTO(statusName);
+        List<StatusDTO> listStatus = webStatusService.findAllToViewDTO(statusName);
         List<RepairRequest> repairRequestList = repairRequestRepository.perStatusRepairRequest(listStatus.stream().map(StatusDTO::getId).toList());
         repairRequestRepository.loadLazyRepairRequests(repairRequestList);
         return repairRequestList.stream().map(RepairRequestDTO::new).toList();
     }
 
     public List<RepairRequestDTO> findAllPerOrderServiceAndStatus(Integer ID, List<String> statusName) {
-        List<StatusDTO> listStatus = statusService.findAllToViewDTO(statusName);
+        List<StatusDTO> listStatus = webStatusService.findAllToViewDTO(statusName);
         List<RepairRequest> repairRequestList = repairRequestRepository.findAllPerOrderServiceAndStatus(ID, listStatus.stream().map(StatusDTO::getId).toList());
         repairRequestRepository.loadLazyRepairRequests(repairRequestList);
         return repairRequestList.stream().map(RepairRequestDTO::new).toList();

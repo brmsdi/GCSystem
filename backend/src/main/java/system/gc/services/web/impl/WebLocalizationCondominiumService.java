@@ -13,7 +13,7 @@ import system.gc.repositories.LocalizationCondominiumRepository;
  */
 @Service
 @Slf4j
-public class LocalizationCondominiumService {
+public class WebLocalizationCondominiumService {
     
     @Autowired
     private LocalizationCondominiumRepository localizationCondominiumRepository;

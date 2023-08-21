@@ -15,8 +15,8 @@ import system.gc.entities.Lessee;
 import system.gc.security.EmployeeUserDetails;
 import system.gc.security.LesseeUserDetails;
 import system.gc.security.token.JWTService;
-import system.gc.services.web.impl.EmployeeService;
-import system.gc.services.web.impl.LesseeService;
+import system.gc.services.web.impl.WebEmployeeService;
+import system.gc.services.web.impl.WebLesseeService;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,13 +38,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
      * Campo utilizado para buscar funcionários no banco de dados, utilizando o username contido no token.
      */
     @Autowired
-    private EmployeeService employeeService;
+    private WebEmployeeService webEmployeeService;
 
     /**
      * Campo utilizado para buscar funcionários no banco de dados, utilizando o username contido no token.
      */
     @Autowired
-    private LesseeService lesseeService;
+    private WebLesseeService webLesseeService;
 
     /**
      * <p>Este método executa em todas as requisições para verificar se o token é valido.</p>
@@ -119,7 +119,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         final String TYPE = decodedJWT.getClaim("TYPE").asString();
         final String USERNAME = decodedJWT.getClaim("USERNAME").asString();
         if (TYPE.equals(System.getenv("TYPE_1"))) {
-            Employee employee = employeeService.authentication(USERNAME);
+            Employee employee = webEmployeeService.authentication(USERNAME);
             if (employee == null) {
                 throw new BadCredentialsException("O usuário não foi localizado (Employee)");
             }
@@ -127,7 +127,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             return createV2(new EmployeeUserDetails(employee));
 
         } else if (TYPE.equals(System.getenv("TYPE_2"))) {
-            Lessee lessee = lesseeService.authentication(USERNAME);
+            Lessee lessee = webLesseeService.authentication(USERNAME);
             if (lessee == null) {
                 throw new BadCredentialsException("O usuário não foi localizado (Lessee)");
             }

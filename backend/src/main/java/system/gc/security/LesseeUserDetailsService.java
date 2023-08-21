@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import system.gc.entities.Lessee;
-import system.gc.services.web.impl.LesseeService;
+import system.gc.services.web.impl.WebLesseeService;
 
 /**
  * @author Wisley Bruno Marques França
@@ -20,7 +20,7 @@ import system.gc.services.web.impl.LesseeService;
 public class LesseeUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private LesseeService lesseeService;
+    private WebLesseeService webLesseeService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -30,7 +30,7 @@ public class LesseeUserDetailsService implements UserDetailsService {
             log.warn("Username inválido!");
             throw new UsernameNotFoundException("Campo username precisa ser preenchido");
         }
-        Lessee lesseeUser = lesseeService.authentication(username);
+        Lessee lesseeUser = webLesseeService.authentication(username);
 
         if (lesseeUser == null) {
             log.warn("Username não corresponde a nenhum registro!");

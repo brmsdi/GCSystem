@@ -27,19 +27,19 @@ import static system.gc.utils.TextUtils.STATUS_ACTIVE;
  */
 @Service
 @Slf4j
-public class EmployeeService {
+public class WebEmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    private EmployeeAuthenticationServiceImpl employeeAuthenticationServiceImpl;
+    private EmployeeWebAuthenticationServiceImpl employeeAuthenticationServiceImpl;
 
     @Autowired
-    private StatusService statusService;
+    private WebStatusService webStatusService;
 
     @Autowired
-    private LogPasswordCodeService logPasswordCodeService;
+    private WebLogPasswordCodeService webLogPasswordCodeService;
 
     @Autowired
     private MessageSource messageSource;
@@ -51,7 +51,7 @@ public class EmployeeService {
         newEmployeeDTO.setPassword(new BCryptPasswordEncoder().encode(newEmployeeDTO.getPassword()));
         cpfIsAvailableSave(newEmployeeDTO);
         emailIsAvailableSave(newEmployeeDTO);
-        Status statusActive = statusService.findByName(STATUS_ACTIVE);
+        Status statusActive = webStatusService.findByName(STATUS_ACTIVE);
         newEmployeeDTO.setStatus(new StatusDTO().toDTO(statusActive));
         Employee registeredEmployee = employeeRepository.save(employeeDTO.toEntity(newEmployeeDTO));
         if (registeredEmployee.getId() == null) {

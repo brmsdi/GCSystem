@@ -9,8 +9,8 @@ import system.gc.entities.LogChangePassword;
 import system.gc.entities.Status;
 import system.gc.exceptionsAdvice.exceptions.CodeChangePasswordInvalidException;
 import system.gc.security.token.JWTService;
-import system.gc.services.web.impl.LogPasswordCodeService;
-import system.gc.services.web.impl.StatusService;
+import system.gc.services.web.impl.WebLogPasswordCodeService;
+import system.gc.services.web.impl.WebStatusService;
 import system.gc.utils.TextUtils;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -28,7 +28,7 @@ import static system.gc.utils.TextUtils.*;
  * @since 0.0.1
  * @version 1.3
  */
-public interface LogPasswordCode<E,REPOSITORY extends ChangePasswordEntity<E>> {
+public interface WebLogPasswordCode<E,REPOSITORY extends WebChangePasswordEntity<E>> {
     /**
      * <p>Verifica se uma requisição de troca de senha está com o status aberto para continuar o fluxo.</p>
      * @param ID ID do registro no banco de dados
@@ -58,13 +58,13 @@ public interface LogPasswordCode<E,REPOSITORY extends ChangePasswordEntity<E>> {
      * <p>Registra um novo log de troca de senha.</p>
      * @param entity Esta entidade representa o usuário que solicitou a troca de senha.
      * @param status Status atual do LogChangePassword que será criado
-     * @param logPasswordCodeService Serviço utilizado para salvar LogChangePassword no banco de dados.
+     * @param webLogPasswordCodeService Serviço utilizado para salvar LogChangePassword no banco de dados.
      * @return LogChangePassword - Registro criado no banco de dados
      */
-    default LogChangePassword startProcess(E entity, Status status, LogPasswordCodeService logPasswordCodeService) {
+    default LogChangePassword startProcess(E entity, Status status, WebLogPasswordCodeService webLogPasswordCodeService) {
         String code = generateCode();
         LogChangePassword logChangePassword = new LogChangePassword(entity, code, status, new Date(), Short.parseShort("0"));
-        return logPasswordCodeService.save(logChangePassword);
+        return webLogPasswordCodeService.save(logChangePassword);
     }
 
     /**
@@ -119,14 +119,14 @@ public interface LogPasswordCode<E,REPOSITORY extends ChangePasswordEntity<E>> {
      * <p>O código tem validade de <strong>5 minutos</strong> e após a terceira tentativa invalida, será necessário a criação de um novo código.</p>
      * @param email Endereço de E-mail para onde o código foi enviado inicialmente.
      * @param code Código a ser validado.
-     * @param statusService Serviço necessário para atualizar o <strong>status</strong> dos registros.
-     * @param logPasswordCodeService Serviço necessário para buscar dados.
+     * @param webStatusService Serviço necessário para atualizar o <strong>status</strong> dos registros.
+     * @param webLogPasswordCodeService Serviço necessário para buscar dados.
      * @throws CodeChangePasswordInvalidException Esta exceção será lançada se o código enviado estiver errado ou o número máximo de tentativas invalidas for atingido.
      * @return TokenDTO - retorna um token valido para troca de senha de acesso do usuário.
      */
-    default TokenDTO validateCode(String email, String code, StatusService statusService, LogPasswordCodeService logPasswordCodeService)
+    default TokenDTO validateCode(String email, String code, WebStatusService webStatusService, WebLogPasswordCodeService webLogPasswordCodeService)
     {
-        Status waitingStatus = statusService.findByName(STATUS_WAITING);
+        Status waitingStatus = webStatusService.findByName(STATUS_WAITING);
         LogChangePassword logChangePassword = getLogChangePassword(email, waitingStatus.getId());
         Date currentDate = new Date();
         Date passwordCodeDate = logChangePassword.getDate();
@@ -138,22 +138,22 @@ public interface LogPasswordCode<E,REPOSITORY extends ChangePasswordEntity<E>> {
         attempts++;
         if (minutesPast <= minutesAttempts && logChangePassword.getNumberOfAttempts() < maxNumberOfAttempts) {
             if (logChangePassword.getCode().equals(code)) {
-                logChangePassword.setStatus(statusService.findByName(STATUS_VALID));
+                logChangePassword.setStatus(webStatusService.findByName(STATUS_VALID));
                 logChangePassword.setNumberOfAttempts(attempts);
-                logPasswordCodeService.save(logChangePassword);
+                webLogPasswordCodeService.save(logChangePassword);
                 return createTokenDTO(logChangePassword, email);
             } else {
                 logChangePassword.setNumberOfAttempts(attempts);
                 if (attempts == 3) {
-                    logPasswordCodeService.updateStatusCode(logChangePassword, statusService.findByName(STATUS_INVALID));
+                    webLogPasswordCodeService.updateStatusCode(logChangePassword, webStatusService.findByName(STATUS_INVALID));
                     throw new CodeChangePasswordInvalidException(messageSource().getMessage("TEXT_ERROR_EXCEEDED_NUMBER_OF_ATTEMPTS", null, LocaleContextHolder.getLocale()));
                 }
             }
-            logPasswordCodeService.save(logChangePassword);
+            webLogPasswordCodeService.save(logChangePassword);
             throw new CodeChangePasswordInvalidException(messageSource().getMessage("TEXT_ERROR_CODE_INVALID",
                     null, LocaleContextHolder.getLocale()));
         }
-        logPasswordCodeService.updateStatusCode(logChangePassword, statusService.findByName(STATUS_INVALID));
+        webLogPasswordCodeService.updateStatusCode(logChangePassword, webStatusService.findByName(STATUS_INVALID));
         throw new CodeChangePasswordInvalidException(messageSource().getMessage("TEXT_ERROR_INFORMATION_NOT_MATCH", null, LocaleContextHolder.getLocale()));
     }
 

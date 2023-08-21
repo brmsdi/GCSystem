@@ -28,35 +28,35 @@ import static system.gc.utils.TextUtils.*;
 
 @Service
 @Slf4j
-public class DebtService {
+public class WebDebtService {
     @Autowired
     private DebtRepository debtRepository;
 
     @Autowired
-    private LesseeService lesseeService;
+    private WebLesseeService webLesseeService;
 
     @Autowired
-    private MovementService movementService;
+    private WebMovementService webMovementService;
 
     @Autowired
-    private ActivityTypeService activityTypeService;
+    private WebActivityTypeService webActivityTypeService;
 
     @Autowired
-    private StatusService statusService;
+    private WebStatusService webStatusService;
 
     @Autowired
     private MessageSource messageSource;
 
     @Transactional
     public DebtDTO save(DebtDTO debtDTO) throws DebtNotCreatedException {
-        if (!lesseeService.lesseeRegistrationIsEnabled(debtDTO.getLessee())) {
+        if (!webLesseeService.lesseeRegistrationIsEnabled(debtDTO.getLessee())) {
             log.warn("Locatário não está apto a receber débitos ou não existe no banco de dados");
             throw new DebtNotCreatedException(messageSource.getMessage("TEXT_ERROR_INSERT_DEBT",
                     null,
                     LocaleContextHolder.getLocale()));
         }
         Debt registeredDebt = debtRepository.save(new DebtDTO().toEntity(debtDTO));
-        ActivityType activityTypeRegister = activityTypeService.findByName(ACTIVITY_TYPE_REGISTERED);
+        ActivityType activityTypeRegister = webActivityTypeService.findByName(ACTIVITY_TYPE_REGISTERED);
         log.info("Débito registrado com o id: " + registeredDebt.getId());
         EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         registerMovementDebt(registeredDebt, activityTypeRegister, employeeUserDetails.getUserAuthenticated());
@@ -80,7 +80,7 @@ public class DebtService {
         debt.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         DebtDTO previousDebt = new DebtDTO().toDTO(debt.get());
         Debt updatedDebt = debtRepository.save(new DebtDTO().toEntity(updateDebtDTO));
-        ActivityType activityTypeUpdate = activityTypeService.findByName(ACTIVITY_TYPE_UPDATED);
+        ActivityType activityTypeUpdate = webActivityTypeService.findByName(ACTIVITY_TYPE_UPDATED);
         log.info("Atualizado com sucesso");
         EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         registerMovementDebt(previousDebt, updatedDebt, activityTypeUpdate, employeeUserDetails.getUserAuthenticated());
@@ -90,7 +90,7 @@ public class DebtService {
     @Transactional
     public Page<DebtDTO> searchDebts(Pageable pageable, LesseeDTO lesseeDTO) {
         log.info("Buscando débitos");
-        LesseeDTO lessee = lesseeService.findByCPF(lesseeDTO);
+        LesseeDTO lessee = webLesseeService.findByCPF(lesseeDTO);
         if(lessee == null) {
             log.warn("Locatário com o CPF: " + lesseeDTO.getCpf() + " não foi localizado");
             return Page.empty();
@@ -106,8 +106,8 @@ public class DebtService {
         Optional<Debt> debt = debtRepository.findById(ID);
         debt.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         DebtDTO previousDebt = new DebtDTO().toDTO(debt.get());
-        Status statusDisable = statusService.findByName(STATUS_DELETED);
-        ActivityType activityTypeDisable = activityTypeService.findByName(ACTIVITY_TYPE_DELETED);
+        Status statusDisable = webStatusService.findByName(STATUS_DELETED);
+        ActivityType activityTypeDisable = webActivityTypeService.findByName(ACTIVITY_TYPE_DELETED);
         debt.get().setStatus(statusDisable);
         Debt disabledDebt = debtRepository.save(debt.get());
         EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
@@ -126,10 +126,10 @@ public class DebtService {
     }
 
     private void registerMovementDebt(Debt debt, ActivityType activityType, Employee employee) {
-        movementService.registerMovement(debt, activityType, employee);
+        webMovementService.registerMovement(debt, activityType, employee);
     }
 
     private void registerMovementDebt(DebtDTO previousDebtDTO, Debt debt, ActivityType activityType, Employee employee) {
-        movementService.registerMovement(previousDebtDTO, debt, activityType, employee);
+        webMovementService.registerMovement(previousDebtDTO, debt, activityType, employee);
     }
 }
