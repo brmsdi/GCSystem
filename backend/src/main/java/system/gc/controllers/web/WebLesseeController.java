@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import system.gc.controllers.ChangePassword;
+import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.LesseeDTO;
 import system.gc.dtos.TokenChangePasswordDTO;
 import system.gc.dtos.TokenDTO;
@@ -32,7 +34,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @RestController
 @RequestMapping(value = API_V1_WEB + "/lessees")
 @Slf4j
-public class WebLesseeController implements WebControllerPermission, WebChangePassword {
+public class WebLesseeController implements ControllerPermission, ChangePassword {
     @Autowired
     private WebLesseeService webLesseeService;
 

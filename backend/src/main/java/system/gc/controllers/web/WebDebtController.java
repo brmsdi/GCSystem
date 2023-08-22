@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.DebtDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.exceptionsAdvice.exceptions.DebtNotCreatedException;
@@ -24,7 +25,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @RestController
 @RequestMapping(value = API_V1_WEB + "/debts")
 @Slf4j
-public class WebDebtController implements WebControllerPermission {
+public class WebDebtController implements ControllerPermission {
 
     @Autowired
     private WebDebtService webDebtService;

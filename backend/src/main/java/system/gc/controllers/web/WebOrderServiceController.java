@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.OrderServiceDTO;
 import system.gc.services.web.impl.WebOrderServiceService;
 import javax.validation.Valid;
@@ -23,7 +24,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @RestController
 @RequestMapping(value = API_V1_WEB + "/order-services")
 @Slf4j
-public class WebOrderServiceController implements WebControllerPermission {
+public class WebOrderServiceController implements ControllerPermission {
 
     @Autowired
     private WebOrderServiceService webOrderServiceService;

@@ -1,4 +1,4 @@
-package system.gc.controllers.web;
+package system.gc.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @since 0.0.1
  * @version 1.3
  */
-public interface WebControllerPermission {
+public interface ControllerPermission {
 
     /**
      * <p>Verificar se o usuário autenticado tem permissão para acessar o endpoint atual. A requisição só chegará a este endpoint se o usuário autenticado tiver autorização.</p>

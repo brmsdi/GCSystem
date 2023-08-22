@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import system.gc.controllers.ChangePassword;
+import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.TokenChangePasswordDTO;
 import system.gc.dtos.TokenDTO;
@@ -32,7 +34,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @RestController
 @RequestMapping(value = API_V1_WEB + "/employees")
 @Slf4j
-public class WebEmployeeController implements WebControllerPermission, WebChangePassword {
+public class WebEmployeeController implements ControllerPermission, ChangePassword {
     @Autowired
     private WebEmployeeService webEmployeeService;
 

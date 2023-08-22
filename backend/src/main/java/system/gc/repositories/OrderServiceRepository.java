@@ -48,7 +48,7 @@ public interface OrderServiceRepository extends JpaRepository<OrderService, Inte
             "WHERE os.id = :idOrderService")
     Optional<OrderService> details(Integer idOrderService);
 
-    @Query("SELECT DISTINCT os FROM OrderService os " +
+    @Query("SELECT os FROM OrderService os " +
             "INNER JOIN os.employees e " +
             "WHERE e.id = :idEmployee")
     Page<OrderService> findAllByEmployee(Pageable pageable, Integer idEmployee);
@@ -59,10 +59,7 @@ public interface OrderServiceRepository extends JpaRepository<OrderService, Inte
     List<OrderService> loadLazyWithStatus(List<OrderService> orderServices);
 
     @Query("SELECT os FROM OrderService os " +
-            "LEFT JOIN FETCH os.repairRequests rp " +
-            "LEFT JOIN FETCH rp.typeProblem " +
-            "LEFT JOIN FETCH rp.items " +
-            "LEFT JOIN FETCH os.employees " +
-            "WHERE os.id = :idOrderService AND rp.id = :idRepairRequest")
-    Optional<OrderService> findByRepairRequest(Integer idOrderService, Integer idRepairRequest);
+            "INNER JOIN os.employees e " +
+            "WHERE os.id = :idOrderService AND e.id = :idEmployee")
+    Page<OrderService> findByIdFromEmployee(Pageable pageable, Integer idEmployee, Integer idOrderService);
 }

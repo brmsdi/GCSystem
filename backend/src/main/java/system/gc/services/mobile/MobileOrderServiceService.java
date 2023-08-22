@@ -17,27 +17,42 @@ import java.util.stream.Collectors;
 public interface MobileOrderServiceService {
 
     /**
-     * <p>Retorna as ordens de serviço correpondentes ao funcionário que está realizando a consulta.</p>
-     *
-     * @param pageable - Páginação
-     * @param id       - Identificaçao do funcionário
+     * <p>Retorna as ordens de serviço correspondentes ao funcionário que está realizando a consulta.</p>
+     * @param pageable - Parâmetros de paginação.
+     * @param id       - Identificação do funcionário
      * @return Lista de ordens de serviço
      */
     Page<OrderServiceDTO> employeeOrders(Pageable pageable, Integer id);
 
     /**
      * <p>Retorna todas os dados detalhados da ordem de serviço.</p>
-     *
      * @param idOrderService - Identificação da ordem de serviço em questão
      * @param idEmployee     - Identificação do funcionário que está realizando a consulta.
      * @return Ordem de serviço detalhada
      */
     OrderServiceDTO detailsOrderService(Integer idOrderService, Integer idEmployee) throws AccessDeniedOrderServiceException;
 
+    /**
+     * <p>Verifica se o funcionário pode ter acesso a um determinado recurso.</p>
+     * <p>Exemplo: será verdadeiro se o funcionário estiver incluso em uma ordem de serviço.</p>
+     * @param idEmployee - Identificação do funcionário em questão.
+     * @param employees - Lista de funcionários que possuem acesso a determinado recurso.
+     * @return Verdadeiro se e somente se o 'idEmployee' estiver incluso na lista de ids de 'employees'.
+     */
     default boolean isResponsible(Integer idEmployee, Set<Employee> employees) {
         return employees.stream()
                 .map(Employee::getId)
                 .collect(Collectors.toSet())
                 .contains(idEmployee);
     }
+
+    /**
+     * <p>Realiza uma busca no banco de dados, utilizando o 'id' como chava de pesquisa.</p>
+     * <p>A ordem de serviço só será retornada se o 'id' corresponder a um registro no banco de dados e o funcionário tiver permissão para acessar a mesma.</p>
+     * @param pageable Parâmetros de paginação.
+     * @param idEmployee - Identificação do funcionário que está realizando a consulta
+     * @param idOrderService - Id da ordem de serviço utilizado na busca no banco de dados
+     * @return Busca paginada com a ordem de serviço localizada.
+     */
+    Page<OrderServiceDTO> findByIdFromEmployee(Pageable pageable, Integer idEmployee, Integer idOrderService);
 }

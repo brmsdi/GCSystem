@@ -1,4 +1,4 @@
-package system.gc.controllers.web;
+package system.gc.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +12,7 @@ import system.gc.dtos.TokenDTO;
  * @author Wisley Bruno Marques França
  * @since 1.3
  */
-public interface WebChangePassword {
+public interface ChangePassword {
 
     /**
      * @param email Para qual será enviado o código gerado. Este código terá uma validade.

@@ -206,6 +206,18 @@ public class ApplicationSetup {
                     null,
                     statusActive);
 
+            EmployeeDTO employeeElectrician2 = initializeEmployee(
+                    "Henrique",
+                    "69538534",
+                    "12578678142",
+                    Date.from(ZonedDateTime.of(2000, 12, 8, 8, 0, 0, 0, zoneManaus).toInstant()),
+                    "henrique.exemple@gmail.com",
+                    hiringDate,
+                    "henrique123",
+                    electrician,
+                    null,
+                    statusActive);
+
             initializeEmployee(
                     "Antonio Junior",
                     "3951534",
@@ -337,27 +349,27 @@ public class ApplicationSetup {
 
             // ORDER SERVICE
             initializeOrderService(repairRequestDTOSaved,
-                    employeeElectrician,
+                    Set.of(employeeElectrician, employeeElectrician2),
                     statusOpen);
 
             initializeOrderService(repairRequestDTOSaved2,
-                    employeeElectrician,
+                    Set.of(employeeElectrician2),
                     statusActive);
 
             initializeOrderService(repairRequestDTOSaved3,
-                    employeeElectrician,
+                    Set.of(employeeElectrician),
                     statusOpen);
 
             initializeOrderService(repairRequestDTOSaved4,
-                    employeeElectrician,
+                    Set.of(employeeElectrician),
                     statusOpen);
 
             initializeOrderService(repairRequestDTOSaved5,
-                    employeeElectrician,
+                    Set.of(employeeElectrician),
                     statusOpen);
 
             initializeOrderService(repairRequestDTOSaved6,
-                    employeeElectrician,
+                    Set.of(employeeElectrician),
                     statusActive);
         } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());
@@ -507,13 +519,13 @@ public class ApplicationSetup {
 
     private void initializeOrderService(
             RepairRequestDTO repairRequestDTO,
-            EmployeeDTO employeeDTO,
+            Set<EmployeeDTO> employeeDTO,
             Status status) throws ParseException {
         OrderServiceDTO orderServiceDTO = new OrderServiceDTO(
                 simpleDateFormat.parse(today.toString()),
                 simpleDateFormat.parse(tomorrow.toString()),
                 Set.of(repairRequestDTO),
-                Set.of(employeeDTO),
+                employeeDTO,
                 new StatusDTO(status)
         );
         webOrderServiceService.save(orderServiceDTO);

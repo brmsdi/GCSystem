@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.CondominiumDTO;
 import system.gc.services.web.impl.WebCondominiumService;
 import javax.validation.Valid;
@@ -25,7 +26,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @RestController
 @RequestMapping(value = API_V1_WEB + "/condominiums")
 @Slf4j
-public class WebCondominiumController implements WebControllerPermission {
+public class WebCondominiumController implements ControllerPermission {
 
     @Autowired
     private WebCondominiumService webCondominiumService;

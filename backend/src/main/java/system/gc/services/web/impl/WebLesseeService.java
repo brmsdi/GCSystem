@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import system.gc.exceptionsAdvice.exceptions.DuplicatedFieldException;
-import system.gc.controllers.web.WebControllerPermission;
+import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.DebtDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.dtos.StatusDTO;
@@ -31,7 +31,7 @@ import static system.gc.utils.TextUtils.STATUS_ACTIVE;
  */
 @Service
 @Slf4j
-public class WebLesseeService implements WebControllerPermission {
+public class WebLesseeService implements ControllerPermission {
     @Autowired
     private LesseeRepository lesseeRepository;
 

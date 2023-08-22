@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.LesseeDTO;
 import system.gc.dtos.OpenAndProgressAndLateRepairRequest;
 import system.gc.dtos.RepairRequestDTO;
@@ -26,7 +27,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @RestController
 @RequestMapping(value = API_V1_WEB + "/repair-requests")
 @Slf4j
-public class WebRepairRequestController implements WebControllerPermission {
+public class WebRepairRequestController implements ControllerPermission {
 
     @Autowired
     private WebRepairRequestService webRepairRequestService;

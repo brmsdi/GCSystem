@@ -60,4 +60,14 @@ public class MobileOrderServiceServiceImpl implements MobileOrderServiceService 
         }
         return new OrderServiceDTO(orderService);
     }
+
+    @Override
+    public Page<OrderServiceDTO> findByIdFromEmployee(Pageable pageable, Integer idEmployee, Integer idOrderService) {
+        Page<OrderService> orderServicePage = orderServiceRepository.findByIdFromEmployee(pageable, idEmployee, idOrderService);
+        if (orderServicePage.isEmpty()) {
+            return Page.empty();
+        }
+        orderServiceRepository.loadLazyWithStatus(orderServicePage.toList());
+        return orderServicePage.map(OrderServiceDTO::forViewListMobile);
+    }
 }

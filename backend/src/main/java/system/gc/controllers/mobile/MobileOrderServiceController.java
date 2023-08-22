@@ -35,6 +35,16 @@ public class MobileOrderServiceController {
         return ResponseEntity.ok(mobileOrderServiceService.detailsOrderService(id, employee.getId()));
     }
 
+    @GetMapping(value = "search")
+    public ResponseEntity<Page<OrderServiceDTO>> findByIdFromEmployee(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "idOrderService") Integer idOrderService
+    ) {
+        Employee employee = getUser();
+        if (page < 0) page = 0;
+        return ResponseEntity.ok(mobileOrderServiceService.findByIdFromEmployee(PageRequest.of(page, 5), employee.getId(), idOrderService));
+    }
+
     private Employee getUser() {
         return ((EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails()).getUserAuthenticated();
     }
