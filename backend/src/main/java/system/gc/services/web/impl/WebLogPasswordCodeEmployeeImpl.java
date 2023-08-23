@@ -6,6 +6,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.TokenDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.LogChangePassword;
@@ -28,7 +29,7 @@ import static system.gc.utils.TextUtils.*;
  * @since 0.0.1
  */
 @Log4j2
-@Service
+@Service("WebLogPasswordCodeEmployee")
 public class WebLogPasswordCodeEmployeeImpl implements WebLogPasswordCode<Employee, EmployeeRepository> {
 
     @Autowired
@@ -47,6 +48,7 @@ public class WebLogPasswordCodeEmployeeImpl implements WebLogPasswordCode<Employ
     private MessageSource messageSource;
 
     @Override
+    @Transactional
     public boolean generateCodeForChangePassword(String email)
     {
         log.info("Iniciando processo de geração de codigo para troca de senha");
@@ -90,6 +92,7 @@ public class WebLogPasswordCodeEmployeeImpl implements WebLogPasswordCode<Employ
     }
 
     @Override
+    @Transactional
     public void changePassword(String token, String newPassword) {
         log.info("Atualizando senha");
         Status statusValid = webStatusService.findByName(STATUS_VALID);

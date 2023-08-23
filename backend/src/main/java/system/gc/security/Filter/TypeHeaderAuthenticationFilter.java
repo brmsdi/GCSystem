@@ -4,7 +4,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
-import static system.gc.utils.TextUtils.API_V1_WEB;
+import static system.gc.utils.TextUtils.API_V1;
 
 /**
  * @author Wisley Bruno Marques França
@@ -12,7 +12,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
  * @since 0.0.1
  */
 
-@WebFilter({API_V1_WEB + "/login/employees", API_V1_WEB + "/login/lessees"})
+@WebFilter({API_V1 + "/login/employees", API_V1 + "/login/lessees"})
 public class TypeHeaderAuthenticationFilter implements Filter {
 
     @Override

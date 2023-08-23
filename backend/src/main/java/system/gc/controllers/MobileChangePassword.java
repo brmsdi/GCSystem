@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import system.gc.dtos.HttpMessageResponse;
 import system.gc.dtos.TokenChangePasswordDTO;
 import system.gc.dtos.TokenDTO;
 
@@ -12,14 +13,14 @@ import system.gc.dtos.TokenDTO;
  * @author Wisley Bruno Marques França
  * @since 1.3
  */
-public interface ChangePassword {
+public interface MobileChangePassword {
 
     /**
      * @param email Para qual será enviado o código gerado. Este código terá uma validade.
-     * @return 'String' Mensagem de sucesso ou informação de erro.
+     * @return 'HttpMessageResponse' json com a mensagem de sucesso ou informação de erro.
      */
     @PostMapping("password/request-code")
-    ResponseEntity<String> requestCode(@RequestParam String email);
+    ResponseEntity<HttpMessageResponse> requestCode(@RequestParam String email);
 
     /**
      * @param email Endereço de email para qual o code será valido.
@@ -31,8 +32,8 @@ public interface ChangePassword {
 
     /**
      * @param tokenChangePasswordDTO Este objeto contém os dados necessários para validar e efetuar a troca de senha do usuário.
-     * @return Mensagem de sucesso
+     * @return 'HttpMessageResponse' json com a mensagem de sucesso
      */
     @PutMapping(value = "password/change")
-    ResponseEntity<String> changePassword(@RequestBody TokenChangePasswordDTO tokenChangePasswordDTO);
+    ResponseEntity<HttpMessageResponse> changePassword(@RequestBody TokenChangePasswordDTO tokenChangePasswordDTO);
 }

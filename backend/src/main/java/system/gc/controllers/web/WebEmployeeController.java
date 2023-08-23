@@ -2,6 +2,7 @@ package system.gc.controllers.web;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
@@ -10,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import system.gc.controllers.ChangePassword;
+import system.gc.controllers.WebChangePassword;
 import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.TokenChangePasswordDTO;
@@ -34,7 +35,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @RestController
 @RequestMapping(value = API_V1_WEB + "/employees")
 @Slf4j
-public class WebEmployeeController implements ControllerPermission, ChangePassword {
+public class WebEmployeeController implements ControllerPermission, WebChangePassword {
     @Autowired
     private WebEmployeeService webEmployeeService;
 
@@ -42,7 +43,8 @@ public class WebEmployeeController implements ControllerPermission, ChangePasswo
     private MessageSource messageSource;
 
     @Autowired
-    private WebLogPasswordCode webLogPasswordCodeEmployeeImpl;
+    @Qualifier("WebLogPasswordCodeEmployee")
+    private WebLogPasswordCode webLogPasswordCode;
 
     @GetMapping
     public ResponseEntity<Page<EmployeeDTO>> listPaginationEmployees(
@@ -99,7 +101,7 @@ public class WebEmployeeController implements ControllerPermission, ChangePasswo
 
     @Override
     public ResponseEntity<String> requestCode(@RequestParam String email) {
-        if (webLogPasswordCodeEmployeeImpl.generateCodeForChangePassword(email)) {
+        if (webLogPasswordCode.generateCodeForChangePassword(email)) {
             return ResponseEntity.ok().body(messageSource.getMessage("TEXT_MSG_EMAIL_SENT_SUCCESS",
                     null, LocaleContextHolder.getLocale()));
         }
@@ -113,12 +115,12 @@ public class WebEmployeeController implements ControllerPermission, ChangePasswo
             throw new CodeChangePasswordInvalidException(messageSource.getMessage("TEXT_ERROR_EMAIL_EMPTY_OR_NULL",
                     null, LocaleContextHolder.getLocale()));
         }
-        return ResponseEntity.ok().body(webLogPasswordCodeEmployeeImpl.validateCode(email, code));
+        return ResponseEntity.ok().body(webLogPasswordCode.validateCode(email, code));
     }
 
     @Override
     public ResponseEntity<String> changePassword(TokenChangePasswordDTO tokenChangePasswordDTO) {
-        webLogPasswordCodeEmployeeImpl.changePassword(tokenChangePasswordDTO.getToken(), tokenChangePasswordDTO.getNewPassword());
+        webLogPasswordCode.changePassword(tokenChangePasswordDTO.getToken(), tokenChangePasswordDTO.getNewPassword());
         return ResponseEntity.ok(messageSource.getMessage("TEXT_MSG_PASSWORD_UPDATE_SUCCESS",
                 null, LocaleContextHolder.getLocale()));
     }

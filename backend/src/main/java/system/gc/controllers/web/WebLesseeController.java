@@ -2,6 +2,7 @@ package system.gc.controllers.web;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
@@ -10,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import system.gc.controllers.ChangePassword;
+import system.gc.controllers.WebChangePassword;
 import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.LesseeDTO;
 import system.gc.dtos.TokenChangePasswordDTO;
@@ -34,7 +35,7 @@ import static system.gc.utils.TextUtils.API_V1_WEB;
 @RestController
 @RequestMapping(value = API_V1_WEB + "/lessees")
 @Slf4j
-public class WebLesseeController implements ControllerPermission, ChangePassword {
+public class WebLesseeController implements ControllerPermission, WebChangePassword {
     @Autowired
     private WebLesseeService webLesseeService;
 
@@ -45,6 +46,7 @@ public class WebLesseeController implements ControllerPermission, ChangePassword
     private MessageSource messageSource;
 
     @Autowired
+    @Qualifier("WebLogPasswordCodeLessee")
     private WebLogPasswordCode webLogPasswordCodeLesseeImpl;
 
     @GetMapping

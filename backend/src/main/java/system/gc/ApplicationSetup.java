@@ -155,7 +155,7 @@ public class ApplicationSetup {
                     "2343435",
                     "12345678910",
                     Date.from(ZonedDateTime.of(1995, 12, 6, 8, 0, 0, 0, zoneManaus).toInstant()),
-                    "srmarquesms@gmail.com",
+                    "srwisley.dev@gmail.com",
                     Date.from(ZonedDateTime.of(2022, 1, 1, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "admin",
                     new RoleDTO(roleADM),

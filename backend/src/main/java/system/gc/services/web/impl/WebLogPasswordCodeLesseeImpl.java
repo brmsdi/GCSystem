@@ -6,6 +6,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.TokenDTO;
 import system.gc.entities.Lessee;
 import system.gc.entities.LogChangePassword;
@@ -28,7 +29,7 @@ import static system.gc.utils.TextUtils.*;
  * @since 0.0.1
  */
 @Log4j2
-@Service
+@Service("WebLogPasswordCodeLessee")
 public class WebLogPasswordCodeLesseeImpl implements WebLogPasswordCode<Lessee, LesseeRepository> {
 
     @Autowired
@@ -46,6 +47,7 @@ public class WebLogPasswordCodeLesseeImpl implements WebLogPasswordCode<Lessee, 
     private MessageSource messageSource;
 
     @Override
+    @Transactional
     public boolean generateCodeForChangePassword(String email)
     {
         log.info("Iniciando processo de geração de codigo para troca de senha");
@@ -70,7 +72,7 @@ public class WebLogPasswordCodeLesseeImpl implements WebLogPasswordCode<Lessee, 
     @Override
     public LogChangePassword getLogChangePassword(String email, Integer statusID) throws EntityNotFoundException {
         log.info("Tentativa de validação de código (LESSEE)");
-        Optional<LogChangePassword> passwordCode = webLogPasswordCodeService.findPasswordChangeRequestEmployee(email, statusID);
+        Optional<LogChangePassword> passwordCode = webLogPasswordCodeService.findPasswordChangeRequestLessee(email, statusID);
         return passwordCode.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_DATA_INVALID", null, LocaleContextHolder.getLocale())));
     }
 
@@ -90,6 +92,7 @@ public class WebLogPasswordCodeLesseeImpl implements WebLogPasswordCode<Lessee, 
     }
 
     @Override
+    @Transactional
     public void changePassword(String token, String newPassword) {
         log.info("Atualizando senha");
         Status statusValid = webStatusService.findByName(STATUS_VALID);
