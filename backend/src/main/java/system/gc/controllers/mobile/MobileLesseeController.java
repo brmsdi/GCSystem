@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import system.gc.controllers.ControllerPermission;
 import system.gc.controllers.MobileChangePassword;
 import system.gc.dtos.HttpMessageResponse;
 import system.gc.dtos.LesseeDTO;
@@ -26,7 +27,7 @@ import static system.gc.utils.TextUtils.API_V1_MOBILE;
 
 @RestController
 @RequestMapping(value = API_V1_MOBILE + "/lessees")
-public class MobileLesseeController implements MobileChangePassword {
+public class MobileLesseeController implements ControllerPermission, MobileChangePassword {
     private final MobileLesseeService mobileLesseeService;
     private final MessageSource messageSource;
     private final WebLogPasswordCode webLogPasswordCode;

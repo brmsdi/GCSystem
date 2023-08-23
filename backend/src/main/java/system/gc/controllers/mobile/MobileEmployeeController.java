@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import system.gc.controllers.ControllerPermission;
 import system.gc.controllers.MobileChangePassword;
 import system.gc.dtos.EmployeeDTO;
 import system.gc.dtos.HttpMessageResponse;
@@ -26,7 +27,7 @@ import static system.gc.utils.TextUtils.API_V1_MOBILE;
 
 @RestController
 @RequestMapping(value = API_V1_MOBILE + "/employees")
-public class MobileEmployeeController implements MobileChangePassword {
+public class MobileEmployeeController implements ControllerPermission, MobileChangePassword {
     private final MobileEmployeeService mobileEmployeeService;
     private final MessageSource messageSource;
     private final WebLogPasswordCode webLogPasswordCode;

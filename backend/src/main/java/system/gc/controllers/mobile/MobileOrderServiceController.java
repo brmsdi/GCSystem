@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.OrderServiceDTO;
 import system.gc.entities.Employee;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
@@ -16,7 +17,7 @@ import static system.gc.utils.TextUtils.API_V1_MOBILE;
 
 @RestController
 @RequestMapping(value = API_V1_MOBILE + "/order-services")
-public class MobileOrderServiceController {
+public class MobileOrderServiceController implements ControllerPermission{
 
     @Autowired
     private MobileOrderServiceService mobileOrderServiceService;

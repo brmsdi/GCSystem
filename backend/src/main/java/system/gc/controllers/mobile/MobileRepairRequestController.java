@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import system.gc.controllers.ControllerPermission;
 import system.gc.dtos.HttpMessageResponse;
 import system.gc.dtos.ItemDTO;
 import system.gc.entities.Employee;
@@ -21,7 +22,7 @@ import static system.gc.utils.TextUtils.API_V1_MOBILE;
 
 @RestController
 @RequestMapping(value = API_V1_MOBILE + "/repair-requests")
-public class MobileRepairRequestController {
+public class MobileRepairRequestController implements ControllerPermission {
 
     @Autowired
     private MobileRepairRequestService mobileRepairRequestService;
