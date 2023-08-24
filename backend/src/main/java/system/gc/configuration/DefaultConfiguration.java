@@ -50,13 +50,6 @@ public class DefaultConfiguration {
         if (profile.equals("test") || profile.equals("development")) {
             httpSecurity.authorizeRequests().antMatchers("/h2-console/**").permitAll();
         }
-
-        //ADICIONA ROTAS PUBLICAS
-        httpSecurity.authorizeRequests(expressionInterceptUrlRegistry ->
-                RouteUtils.getAllPublicRoutes().forEach(route -> {
-                    expressionInterceptUrlRegistry.antMatchers(route.httpMethod(), route.url()).permitAll();
-                }));
-
         httpSecurity
                 .headers()
                 .frameOptions()
@@ -69,6 +62,9 @@ public class DefaultConfiguration {
                 .and()
                 .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)
                 .authorizeRequests(expressionInterceptUrlRegistry -> {
+                    RouteUtils.getAllPublicRoutes().forEach(route -> {
+                        expressionInterceptUrlRegistry.antMatchers(route.httpMethod(), route.url()).permitAll();
+                    });
                     Arrays.stream(RoutesPrivate.values()).forEach(routePrivate -> {
                                 RoutePrivate item = routePrivate.getRoute();
                                 expressionInterceptUrlRegistry.antMatchers(item.url()).hasAnyRole(item.roles());

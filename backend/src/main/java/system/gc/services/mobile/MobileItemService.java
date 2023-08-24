@@ -1,6 +1,5 @@
 package system.gc.services.mobile;
 
-import system.gc.dtos.ItemDTO;
 import system.gc.entities.Item;
 
 /**
