@@ -11,12 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.OrderServiceDTO;
 import system.gc.entities.OrderService;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
+import system.gc.exceptionsAdvice.exceptions.IllegalChangeOrderServiceException;
 import system.gc.repositories.OrderServiceRepository;
-import system.gc.services.mobile.MobileItemService;
 import system.gc.services.mobile.MobileOrderServiceService;
-
+import system.gc.services.web.impl.WebOrderServiceService;
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
+
+import static system.gc.utils.TextUtils.STATUS_CONCLUDED;
 
 /**
  * @author Wisley Bruno Marques França
@@ -27,15 +29,18 @@ import java.util.Optional;
 @Service
 @Log4j2
 public class MobileOrderServiceServiceImpl implements MobileOrderServiceService {
+    private final OrderServiceRepository orderServiceRepository;
+    private final WebOrderServiceService webOrderServiceService;
+    private final MessageSource messageSource;
 
     @Autowired
-    private OrderServiceRepository orderServiceRepository;
-
-    @Autowired
-    private MobileItemService mobileItemService;
-
-    @Autowired
-    private MessageSource messageSource;
+    public MobileOrderServiceServiceImpl(OrderServiceRepository orderServiceRepository,
+                                         WebOrderServiceService webOrderServiceService,
+                                         MessageSource messageSource) {
+        this.orderServiceRepository = orderServiceRepository;
+        this.webOrderServiceService = webOrderServiceService;
+        this.messageSource = messageSource;
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -54,14 +59,12 @@ public class MobileOrderServiceServiceImpl implements MobileOrderServiceService 
         log.info("Buscando detalhes");
         Optional<OrderService> optionalOrderService = orderServiceRepository.details(idOrderService);
         OrderService orderService = optionalOrderService.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_ORDER_SERVICE_NOT_FOUND", null, LocaleContextHolder.getLocale())));
-        boolean isResponsible = isResponsible(idEmployee, orderService.getEmployees());
-        if (!isResponsible) {
-            throw new AccessDeniedOrderServiceException(messageSource.getMessage("ACCESS_DENIED", null, LocaleContextHolder.getLocale()));
-        }
+        isResponsible(idEmployee, orderService.getEmployees(), messageSource);
         return new OrderServiceDTO(orderService);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<OrderServiceDTO> findByIdFromEmployee(Pageable pageable, Integer idEmployee, Integer idOrderService) {
         Page<OrderService> orderServicePage = orderServiceRepository.findByIdFromEmployee(pageable, idEmployee, idOrderService);
         if (orderServicePage.isEmpty()) {
@@ -69,5 +72,16 @@ public class MobileOrderServiceServiceImpl implements MobileOrderServiceService 
         }
         orderServiceRepository.loadLazyWithStatus(orderServicePage.toList());
         return orderServicePage.map(OrderServiceDTO::forViewListMobile);
+    }
+
+    @Override
+    @Transactional
+    public void closeOrderService(Integer idEmployee, Integer idOrderService) throws AccessDeniedOrderServiceException, IllegalChangeOrderServiceException {
+        Optional<OrderService> optionalOrderService = orderServiceRepository.details(idOrderService);
+        OrderService orderService = optionalOrderService.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
+        statusIsEditable(STATUS_CONCLUDED, orderService.getStatus(), messageSource);
+        isResponsible(idEmployee, orderService.getEmployees(), messageSource);
+        webOrderServiceService.closeOrderService(orderService);
+        orderServiceRepository.save(orderService);
     }
 }
