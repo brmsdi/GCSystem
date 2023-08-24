@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import system.gc.controllers.ControllerPermission;
+import system.gc.controllers.Pagination;
 import system.gc.dtos.HttpMessageResponse;
 import system.gc.dtos.OrderServiceDTO;
 import system.gc.entities.Employee;
@@ -22,7 +23,7 @@ import static system.gc.utils.TextUtils.API_V1_MOBILE;
 
 @RestController
 @RequestMapping(value = API_V1_MOBILE + "/order-services")
-public class MobileOrderServiceController implements ControllerPermission{
+public class MobileOrderServiceController implements ControllerPermission, Pagination {
     private final MobileOrderServiceService mobileOrderServiceService;
     private final MessageSource messageSource;
 
@@ -35,9 +36,12 @@ public class MobileOrderServiceController implements ControllerPermission{
 
     @GetMapping(value = "employee")
     public Page<OrderServiceDTO> findAllByEmployee(
-            @RequestParam(name = "page", defaultValue = "0") Integer page) {
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "5") Integer size) {
         Employee employee = getUser();
-        return mobileOrderServiceService.employeeOrders(PageRequest.of(page, 5), employee.getId());
+        pageLimit(page);
+        sizeLimit(size);
+        return mobileOrderServiceService.employeeOrders(PageRequest.of(page, size), employee.getId());
     }
 
     @GetMapping(value = "details")
@@ -50,11 +54,13 @@ public class MobileOrderServiceController implements ControllerPermission{
     @GetMapping(value = "search")
     public ResponseEntity<Page<OrderServiceDTO>> findByIdFromEmployee(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "5") Integer size,
             @RequestParam(name = "idOrderService") Integer idOrderService
-    ) {
+    ) throws IllegalArgumentException {
         Employee employee = getUser();
-        if (page < 0) page = 0;
-        return ResponseEntity.ok(mobileOrderServiceService.findByIdFromEmployee(PageRequest.of(page, 5), employee.getId(), idOrderService));
+        pageLimit(page);
+        sizeLimit(size);
+        return ResponseEntity.ok(mobileOrderServiceService.findByIdFromEmployee(PageRequest.of(page, size), employee.getId(), idOrderService));
     }
 
     @PostMapping(value = "order-service/close")
@@ -66,5 +72,10 @@ public class MobileOrderServiceController implements ControllerPermission{
 
     private Employee getUser() {
         return ((EmployeeUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails()).getUserAuthenticated();
+    }
+
+    @Override
+    public MessageSource messageSource() {
+        return messageSource;
     }
 }

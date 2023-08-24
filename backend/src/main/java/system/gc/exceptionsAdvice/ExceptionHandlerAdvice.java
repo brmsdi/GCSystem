@@ -122,6 +122,13 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
     }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErrorDTO> illegalArgumentException(IllegalArgumentException exception) {
+        log.error(exception.getLocalizedMessage());
+        ErrorDTO errorDTO = buildError(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(baseErrorBuilder(HttpStatus.BAD_REQUEST, Set.of(errorDTO)));
+    }
 
     @ExceptionHandler(BaseRuntimeException.class)
     public ResponseEntity<ApiErrorDTO> handlerBaseException(Throwable exception) {
