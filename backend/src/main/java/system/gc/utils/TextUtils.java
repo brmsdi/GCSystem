@@ -2,7 +2,6 @@ package system.gc.utils;
 
 import com.google.gson.Gson;
 
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -51,21 +50,9 @@ public class TextUtils {
     public static final String TYPE_PROBLEM_ELECTRIC = "Elétrico";
     public static final String TYPE_PROBLEM_HYDRAULIC = "Hidráulico";
     public static final String TYPE_PROBLEM_OTHERS = "Outros";
+    public static final String TYPE_INVALID = "Tipo inválido";
+
     public static final String API_V1 = "/api/v1";
     public static final String API_V1_WEB = API_V1 + "/web";
     public static final String API_V1_MOBILE = API_V1 + "/mobile";
-
-    public static String generateTXID()
-    {
-        return UUID.randomUUID().toString().replace("-", "");
-    }
-
-    public static String initLowerLetter(String text)
-    {
-        String regex = ".*[A-Z].*";
-        if (text.length() == 0) throw new IllegalArgumentException("O texto não pode ser vázio");
-        if (!String.valueOf(text.charAt(0)).matches(regex)) return text.concat("Object");
-        String startText = String.valueOf(text.charAt(0)).toLowerCase();
-        return startText.concat(text.substring(1));
-    }
 }
