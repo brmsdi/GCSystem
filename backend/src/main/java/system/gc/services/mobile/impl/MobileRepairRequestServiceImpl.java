@@ -29,14 +29,18 @@ import static system.gc.utils.TextUtils.STATUS_CONCLUDED;
 @Service
 @Log4j2
 public class MobileRepairRequestServiceImpl implements MobileRepairRequestService {
+    private final RepairRequestRepository repairRequestRepository;
+    private final MobileItemService mobileItemService;
+    private final MessageSource messageSource;
 
     @Autowired
-    private RepairRequestRepository repairRequestRepository;
-
-    @Autowired
-    private MobileItemService mobileItemService;
-    @Autowired
-    private MessageSource messageSource;
+    public MobileRepairRequestServiceImpl(RepairRequestRepository repairRequestRepository,
+                                          MobileItemService mobileItemService,
+                                          MessageSource messageSource) {
+        this.repairRequestRepository = repairRequestRepository;
+        this.mobileItemService = mobileItemService;
+        this.messageSource = messageSource;
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -50,13 +54,8 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
     public ItemDTO addItem(Integer idEmployee, Integer idRepairRequest, ItemDTO itemDTO) throws AccessDeniedOrderServiceException, IllegalChangeOrderServiceException {
         log.info("Adicionando item ao reparo");
         RepairRequest repairRequest = findRepairRequestToAddOrRemoveItem(idRepairRequest);
-        if (repairRequest.getOrderService().getStatus().getName().equalsIgnoreCase(STATUS_CONCLUDED)) {
-            throw new IllegalChangeOrderServiceException(messageSource.getMessage("TEXT_ERROR_ORDER_SERVICE_STATUS_CONCLUDED", null, LocaleContextHolder.getLocale()));
-        }
-        boolean isResponsible = isResponsible(idEmployee, repairRequest.getOrderService().getEmployees());
-        if (!isResponsible) {
-            throw new AccessDeniedOrderServiceException(messageSource.getMessage("ACCESS_DENIED", null, LocaleContextHolder.getLocale()));
-        }
+        statusIsEditable(STATUS_CONCLUDED, repairRequest.getOrderService().getStatus(), messageSource);
+        isResponsible(idEmployee, repairRequest.getOrderService().getEmployees(), messageSource);
         return new ItemDTO(mobileItemService.save(ItemDTO.toEntityWithRepairRequest(itemDTO, repairRequest)));
     }
 
@@ -65,13 +64,8 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
     public void removeItem(Integer idEmployee, Integer idRepairRequest, Integer idItem) throws AccessDeniedOrderServiceException, EntityNotFoundException, IllegalChangeOrderServiceException {
         log.info("Removendo item do reparo");
         RepairRequest repairRequest = findRepairRequestToAddOrRemoveItem(idRepairRequest);
-        if (repairRequest.getOrderService().getStatus().getName().equalsIgnoreCase(STATUS_CONCLUDED)) {
-            throw new IllegalChangeOrderServiceException(messageSource.getMessage("TEXT_ERROR_ORDER_SERVICE_STATUS_CONCLUDED", null, LocaleContextHolder.getLocale()));
-        }
-        boolean isResponsible = isResponsible(idEmployee, repairRequest.getOrderService().getEmployees());
-        if (!isResponsible) {
-            throw new AccessDeniedOrderServiceException(messageSource.getMessage("ACCESS_DENIED", null, LocaleContextHolder.getLocale()));
-        }
+        statusIsEditable(STATUS_CONCLUDED, repairRequest.getOrderService().getStatus(), messageSource);
+        isResponsible(idEmployee, repairRequest.getOrderService().getEmployees(), messageSource);
         Optional<Item> optionalItem = getItemInItems(idItem, repairRequest.getItems());
         Item item = optionalItem.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         mobileItemService.delete(item);

@@ -120,6 +120,7 @@ public class WebOrderServiceService {
     @Transactional
     public void closeOrderService(OrderService orderService) {
         log.info("Registrando conclusão da ordem de serviço");
+        initializeStatus(List.of(STATUS_CONCLUDED));
         orderService.getRepairRequests().parallelStream().forEach(repairRequestDTO -> repairRequestDTO.setStatus(concludedStatus.get()));
         orderService.setStatus(concludedStatus.get());
         orderService.setCompletionDate(new Date());
@@ -131,15 +132,14 @@ public class WebOrderServiceService {
     public void closeOrderService(OrderServiceDTO orderServiceDTO)
     {
         Optional<OrderService> optionalOrderService = orderServiceRepository.findById(orderServiceDTO.getId());
-        optionalOrderService.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
-        OrderService orderService = optionalOrderService.get();
-        initializeStatus(List.of(STATUS_CONCLUDED));
+        OrderService orderService = optionalOrderService.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         closeOrderService(orderService);
         orderServiceRepository.save(orderService);
     }
 
     @Transactional
-    public void cancelOrderService(OrderService orderService) {
+    public void cancelOrderService(OrderService orderService)
+    {
         log.info("Registrando cancelamento da ordem de serviço");
         orderService.setStatus(canceledStatus.get());
         orderService.getRepairRequests().forEach(repairRequestDTO -> {
@@ -197,7 +197,8 @@ public class WebOrderServiceService {
         orderServiceRepository.deleteAll();
     }
 
-    public void updateRepairRequestsFromOrderService(OrderService orderService, OrderServiceDTO updateOrderServiceDTO) {
+    public void updateRepairRequestsFromOrderService(OrderService orderService, OrderServiceDTO updateOrderServiceDTO)
+    {
         log.info("Atualizando solicitações de reparo da ordem de serviço");
         OrderService updateOrderService = new OrderServiceDTO().toEntity(updateOrderServiceDTO);
         StatusDTO finalOpenStatus = new StatusDTO(openStatus.get());
@@ -254,7 +255,8 @@ public class WebOrderServiceService {
         } // end for external
     }
 
-    public void updateEmployeesFromOrderService(OrderService orderService, OrderServiceDTO updateOrderServiceDTO) {
+    public void updateEmployeesFromOrderService(OrderService orderService, OrderServiceDTO updateOrderServiceDTO)
+    {
         log.info("Atualizando solicitações de reparo da ordem de serviço");
         OrderService updateOrderService = new OrderServiceDTO().toEntity(updateOrderServiceDTO);
         addOrRemoveEmployees(orderService, updateOrderService);

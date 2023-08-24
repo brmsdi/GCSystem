@@ -20,12 +20,14 @@ import javax.persistence.EntityNotFoundException;
 
 @Service
 public class MobileItemServiceImpl implements MobileItemService {
+    private final ItemRepository itemRepository;
+    private final MessageSource messageSource;
 
     @Autowired
-    private ItemRepository itemRepository;
-
-    @Autowired
-    private MessageSource messageSource;
+    public MobileItemServiceImpl(ItemRepository itemRepository, MessageSource messageSource) {
+        this.itemRepository = itemRepository;
+        this.messageSource = messageSource;
+    }
 
     @Override
     @Transactional

@@ -23,12 +23,14 @@ import static system.gc.utils.TextUtils.API_V1_MOBILE;
 @RestController
 @RequestMapping(value = API_V1_MOBILE + "/repair-requests")
 public class MobileRepairRequestController implements ControllerPermission {
+    private final  MobileRepairRequestService mobileRepairRequestService;
+    private final MessageSource messageSource;
 
     @Autowired
-    private MobileRepairRequestService mobileRepairRequestService;
-
-    @Autowired
-    private MessageSource messageSource;
+    public MobileRepairRequestController(MobileRepairRequestService mobileRepairRequestService, MessageSource messageSource) {
+        this.mobileRepairRequestService = mobileRepairRequestService;
+        this.messageSource = messageSource;
+    }
 
     @PostMapping(value = "item")
     public ResponseEntity<ItemDTO> addItem(

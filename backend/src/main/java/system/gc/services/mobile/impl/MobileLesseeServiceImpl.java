@@ -12,16 +12,17 @@ import system.gc.services.mobile.MobileLesseeService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class MobileLesseeServiceImpl implements MobileLesseeService {
+    private final LesseeRepository lesseeRepository;
+    private final MessageSource messageSource;
 
     @Autowired
-    private LesseeRepository lesseeRepository;
-
-    @Autowired
-    private MessageSource messageSource;
+    public MobileLesseeServiceImpl(LesseeRepository lesseeRepository, MessageSource messageSource) {
+        this.lesseeRepository = lesseeRepository;
+        this.messageSource = messageSource;
+    }
 
     @Override
     @Transactional(readOnly = true)

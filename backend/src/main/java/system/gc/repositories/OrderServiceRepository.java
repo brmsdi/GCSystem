@@ -35,7 +35,6 @@ public interface OrderServiceRepository extends JpaRepository<OrderService, Inte
             "WHERE lessee.cpf LIKE :cpf")
     List<OrderService> findOrderServiceForLessee(String cpf);
 
-
     @Query("SELECT os FROM OrderService os " +
             "LEFT JOIN FETCH os.repairRequests repairRequests " +
             "LEFT JOIN FETCH repairRequests.typeProblem " +

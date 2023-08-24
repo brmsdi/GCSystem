@@ -15,12 +15,14 @@ import java.util.Optional;
 
 @Service
 public class MobileEmployeeServiceImpl implements MobileEmployeeService {
+    private final EmployeeRepository employeeRepository;
+    private final MessageSource messageSource;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
-
-    @Autowired
-    private MessageSource messageSource;
+    public MobileEmployeeServiceImpl(EmployeeRepository employeeRepository, MessageSource messageSource) {
+        this.employeeRepository = employeeRepository;
+        this.messageSource = messageSource;
+    }
 
     @Override
     @Transactional(readOnly = true)

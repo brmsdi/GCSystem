@@ -3,18 +3,15 @@ package system.gc.services.mobile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import system.gc.dtos.OrderServiceDTO;
-import system.gc.entities.Employee;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
-
-import java.util.Set;
-import java.util.stream.Collectors;
+import system.gc.exceptionsAdvice.exceptions.IllegalChangeOrderServiceException;
 
 /**
  * @author Wisley Bruno Marques França
  * @version 1.3
  * @since 0.0.1
  */
-public interface MobileOrderServiceService {
+public interface MobileOrderServiceService extends MobileOrderServiceStatusUtils, MobileEmployeeResponsibility {
 
     /**
      * <p>Retorna as ordens de serviço correspondentes ao funcionário que está realizando a consulta.</p>
@@ -32,19 +29,6 @@ public interface MobileOrderServiceService {
      */
     OrderServiceDTO detailsOrderService(Integer idOrderService, Integer idEmployee) throws AccessDeniedOrderServiceException;
 
-    /**
-     * <p>Verifica se o funcionário pode ter acesso a um determinado recurso.</p>
-     * <p>Exemplo: será verdadeiro se o funcionário estiver incluso em uma ordem de serviço.</p>
-     * @param idEmployee - Identificação do funcionário em questão.
-     * @param employees - Lista de funcionários que possuem acesso a determinado recurso.
-     * @return Verdadeiro se e somente se o 'idEmployee' estiver incluso na lista de ids de 'employees'.
-     */
-    default boolean isResponsible(Integer idEmployee, Set<Employee> employees) {
-        return employees.stream()
-                .map(Employee::getId)
-                .collect(Collectors.toSet())
-                .contains(idEmployee);
-    }
 
     /**
      * <p>Realiza uma busca no banco de dados, utilizando o 'id' como chava de pesquisa.</p>
@@ -55,4 +39,6 @@ public interface MobileOrderServiceService {
      * @return Busca paginada com a ordem de serviço localizada.
      */
     Page<OrderServiceDTO> findByIdFromEmployee(Pageable pageable, Integer idEmployee, Integer idOrderService);
+
+    void closeOrderService(Integer idEmployee, Integer idOrderService) throws AccessDeniedOrderServiceException, IllegalChangeOrderServiceException;
 }
