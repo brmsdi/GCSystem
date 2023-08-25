@@ -22,12 +22,6 @@ import java.util.stream.Collectors;
 public interface MobileRepairRequestService extends MobileOrderServiceStatusUtils, MobileEmployeeResponsibility {
     RepairRequest findRepairRequestToAddOrRemoveItem(Integer id);
 
-    default boolean containsItem(Integer idItem, Set<Item> items) {
-        return items.stream().map(Item::getId)
-                .collect(Collectors.toSet())
-                .contains(idItem);
-    }
-
     default Optional<Item> getItemInItems(Integer idItem, Set<Item> items) {
         return items.stream()
                 .filter(item -> Objects.equals(item.getId(), idItem))
