@@ -51,4 +51,16 @@ public interface RepairRequestRepository extends JpaRepository<RepairRequest, In
             "LEFT JOIN FETCH repairRequest.typeProblem " +
             "WHERE repairRequest.id = :idRepairRequest")
     Optional<RepairRequest> findRepairRequestToAddOrRemoveItem(Integer idRepairRequest);
+
+    @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
+            "WHERE repairRequest.lessee.id = :id")
+    Page<RepairRequest> findRepairRequestForLessee(Pageable pageable, Integer id);
+
+    @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
+            "LEFT JOIN FETCH repairRequest.typeProblem " +
+            "LEFT JOIN FETCH repairRequest.status " +
+            "LEFT JOIN FETCH repairRequest.lessee " +
+            "LEFT JOIN FETCH repairRequest.condominium " +
+            "WHERE repairRequest IN :repairRequestList")
+    List<RepairRequest> loadLazyRepairRequestsForViewListMobile(List<RepairRequest> repairRequestList);
 }

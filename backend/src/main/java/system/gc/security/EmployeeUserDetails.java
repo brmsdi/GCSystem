@@ -17,8 +17,8 @@ import java.util.List;
 public class EmployeeUserDetails implements UserDetailsConvert, UserAuthenticated<Employee> {
     private final Employee userDetail;
 
-    public EmployeeUserDetails(Employee employeeDTOUser) {
-        this.userDetail = employeeDTOUser;
+    public EmployeeUserDetails(Employee employee) {
+        this.userDetail = employee;
     }
 
     @Override

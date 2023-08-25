@@ -76,4 +76,12 @@ public class CondominiumDTO implements ConvertEntityAndDTO<CondominiumDTO, Condo
         }
         return condominium;
     }
+
+    public static CondominiumDTO forRepairRequestViewListMobile(Condominium condominium) {
+        CondominiumDTO condominiumDTO = new CondominiumDTO();
+        condominiumDTO.setId(condominium.getId());
+        condominiumDTO.setName(condominium.getName());
+        return condominiumDTO;
+    }
+
 }

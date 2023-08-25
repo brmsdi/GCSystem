@@ -4,9 +4,13 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.ItemDTO;
+import system.gc.dtos.RepairRequestDTO;
+import system.gc.entities.Employee;
 import system.gc.entities.Item;
 import system.gc.entities.RepairRequest;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
@@ -17,6 +21,7 @@ import system.gc.services.mobile.MobileRepairRequestService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static system.gc.utils.TextUtils.STATUS_CONCLUDED;
 
@@ -55,7 +60,7 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
         log.info("Adicionando item ao reparo");
         RepairRequest repairRequest = findRepairRequestToAddOrRemoveItem(idRepairRequest);
         statusIsEditable(STATUS_CONCLUDED, repairRequest.getOrderService().getStatus(), messageSource);
-        isResponsible(idEmployee, repairRequest.getOrderService().getEmployees(), messageSource);
+        isResponsible(idEmployee, repairRequest.getOrderService().getEmployees().stream().map(Employee::getId).collect(Collectors.toSet()), messageSource);
         return new ItemDTO(mobileItemService.save(ItemDTO.toEntityWithRepairRequest(itemDTO, repairRequest)));
     }
 
@@ -65,9 +70,20 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
         log.info("Removendo item do reparo");
         RepairRequest repairRequest = findRepairRequestToAddOrRemoveItem(idRepairRequest);
         statusIsEditable(STATUS_CONCLUDED, repairRequest.getOrderService().getStatus(), messageSource);
-        isResponsible(idEmployee, repairRequest.getOrderService().getEmployees(), messageSource);
+        isResponsible(idEmployee, repairRequest.getOrderService().getEmployees().stream().map(Employee::getId).collect(Collectors.toSet()), messageSource);
         Optional<Item> optionalItem = getItemInItems(idItem, repairRequest.getItems());
         Item item = optionalItem.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         mobileItemService.delete(item);
+    }
+
+    @Override
+    public Page<RepairRequestDTO> lesseeRepairRequests(Pageable pageable, Integer id) {
+        Page<RepairRequest> repairRequestPage = repairRequestRepository.findRepairRequestForLessee(pageable, id);
+        if (repairRequestPage.isEmpty()) {
+            return Page.empty();
+        }
+        repairRequestRepository.loadLazyRepairRequestsForViewListMobile(repairRequestPage.toList());
+        isResponsible(id, repairRequestPage.map(RepairRequest::getId).stream().collect(Collectors.toSet()));
+        return repairRequestPage.map(RepairRequestDTO::forViewListMobile);
     }
 }

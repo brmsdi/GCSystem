@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.OrderServiceDTO;
+import system.gc.entities.Employee;
 import system.gc.entities.OrderService;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
 import system.gc.exceptionsAdvice.exceptions.IllegalChangeOrderServiceException;
@@ -17,6 +18,7 @@ import system.gc.services.mobile.MobileOrderServiceService;
 import system.gc.services.web.impl.WebOrderServiceService;
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static system.gc.utils.TextUtils.STATUS_CONCLUDED;
 
@@ -59,7 +61,7 @@ public class MobileOrderServiceServiceImpl implements MobileOrderServiceService 
         log.info("Buscando detalhes");
         Optional<OrderService> optionalOrderService = orderServiceRepository.details(idOrderService);
         OrderService orderService = optionalOrderService.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_ORDER_SERVICE_NOT_FOUND", null, LocaleContextHolder.getLocale())));
-        isResponsible(idEmployee, orderService.getEmployees(), messageSource);
+        isResponsible(idEmployee, orderService.getEmployees().stream().map(Employee::getId).collect(Collectors.toSet()), messageSource);
         return new OrderServiceDTO(orderService);
     }
 
@@ -80,7 +82,7 @@ public class MobileOrderServiceServiceImpl implements MobileOrderServiceService 
         Optional<OrderService> optionalOrderService = orderServiceRepository.details(idOrderService);
         OrderService orderService = optionalOrderService.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         statusIsEditable(STATUS_CONCLUDED, orderService.getStatus(), messageSource);
-        isResponsible(idEmployee, orderService.getEmployees(), messageSource);
+        isResponsible(idEmployee, orderService.getEmployees().stream().map(Employee::getId).collect(Collectors.toSet()), messageSource);
         webOrderServiceService.closeOrderService(orderService);
         orderServiceRepository.save(orderService);
     }

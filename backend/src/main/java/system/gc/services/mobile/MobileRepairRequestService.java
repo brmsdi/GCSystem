@@ -1,6 +1,9 @@
 package system.gc.services.mobile;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import system.gc.dtos.ItemDTO;
+import system.gc.dtos.RepairRequestDTO;
 import system.gc.entities.Item;
 import system.gc.entities.RepairRequest;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
@@ -17,7 +20,6 @@ import java.util.stream.Collectors;
  * @since 0.0.1
  */
 public interface MobileRepairRequestService extends MobileOrderServiceStatusUtils, MobileEmployeeResponsibility {
-
     RepairRequest findRepairRequestToAddOrRemoveItem(Integer id);
 
     default boolean containsItem(Integer idItem, Set<Item> items) {
@@ -35,5 +37,12 @@ public interface MobileRepairRequestService extends MobileOrderServiceStatusUtil
     ItemDTO addItem(Integer idEmployee, Integer idRepairRequest, ItemDTO itemDTO) throws AccessDeniedOrderServiceException, IllegalChangeOrderServiceException;
 
     void removeItem(Integer idEmployee, Integer idRepairRequest, Integer idItem) throws AccessDeniedOrderServiceException, IllegalChangeOrderServiceException;
-}
 
+    /**
+     * <p>Retorna as solicitações de reparo correspondentes ao locatário que está realizando a consulta.</p>
+     * @param pageable - Parâmetros de paginação.
+     * @param id       - Identificação do locatário
+     * @return Lista de solicitações de reparo
+     */
+    Page<RepairRequestDTO> lesseeRepairRequests(Pageable pageable, Integer id);
+}

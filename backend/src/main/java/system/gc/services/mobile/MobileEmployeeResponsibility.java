@@ -2,11 +2,9 @@ package system.gc.services.mobile;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import system.gc.entities.Employee;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author Wisley Bruno Marques França
@@ -15,30 +13,27 @@ import java.util.stream.Collectors;
  */
 public interface MobileEmployeeResponsibility {
     /**
-     * <p>Verifica se o funcionário pode ter acesso a um determinado recurso.</p>
-     * <p>Exemplo: será verdadeiro se o funcionário estiver incluso em uma ordem de serviço.</p>
-     * @param idEmployee - Identificação do funcionário em questão.
-     * @param employees - Lista de funcionários que possuem acesso a determinado recurso.
-     * @return Verdadeiro se e somente se o 'idEmployee' estiver incluso na lista de ids de 'employees'.
+     * <p>Verifica se o funcionário/locatário pode ter acesso a um determinado recurso.</p>
+     * <p>Exemplo: será verdadeiro se o id do funcionário ou locatário estiver incluso em um determinado recurso.</p>
+     *
+     * @param id  - Identificação chave em questão.
+     * @param ids - Lista de números de identificação correspondentes a registros que possuem acesso a determinado recurso.
+     * @return Verdadeiro se e somente se o 'id' estiver incluso na lista de 'ids''.
      */
-    default boolean isResponsible(Integer idEmployee, Set<Employee> employees) {
-        return employees.stream()
-                .map(Employee::getId)
-                .collect(Collectors.toSet())
-                .contains(idEmployee);
+    default boolean isResponsible(Integer id, Set<Integer> ids) {
+        return ids.contains(id);
     }
 
     /**
-     * <p>Verifica se o funcionário pode ter acesso a um determinado recurso.</p>
-     * <p>Exemplo: será verdadeiro se o funcionário estiver incluso em uma ordem de serviço.</p>
+     * <p>Verifica se o funcionário/locatário pode ter acesso a um determinado recurso.</p>
      *
-     * @param idEmployee    - Identificação do funcionário em questão.
-     * @param employees     - Lista de funcionários que possuem acesso a determinado recurso.
+     * @param id            - Identificação chave em questão.
+     * @param ids           - Lista de números de identificação correspondentes a registros que possuem acesso a determinado recurso.
      * @param messageSource - Recurso de strings
      * @throws AccessDeniedOrderServiceException - Lançará está exceção se o 'idEmployee' não estiver incluso na lista de ids de 'employees'.
      */
-    default void isResponsible(Integer idEmployee, Set<Employee> employees, MessageSource messageSource) throws AccessDeniedOrderServiceException {
-        boolean isResponsible = isResponsible(idEmployee, employees);
+    default void isResponsible(Integer id, Set<Integer> ids, MessageSource messageSource) throws AccessDeniedOrderServiceException {
+        boolean isResponsible = isResponsible(id, ids);
         if (!isResponsible)
             throw new AccessDeniedOrderServiceException(messageSource.getMessage("ACCESS_DENIED", null, LocaleContextHolder.getLocale()));
     }
