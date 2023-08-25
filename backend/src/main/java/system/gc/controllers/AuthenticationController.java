@@ -14,6 +14,7 @@ import system.gc.security.UserDetailsConvert;
 public interface AuthenticationController {
     /**
      * Validar token enviado na requisição. A requisição só chegará a este endpoint se o token da requisição for valido.
+     *
      * @return UserAuthenticatedView - Usuário identificado no sistema
      */
     @GetMapping("token")

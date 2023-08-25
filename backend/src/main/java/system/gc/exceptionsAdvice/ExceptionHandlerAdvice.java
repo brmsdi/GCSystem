@@ -115,6 +115,12 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.build());
     }
 
+    @ExceptionHandler(UserAuthenticatedException.class)
+    public ResponseEntity<ApiErrorDTO> userAuthenticatedException(UserAuthenticatedException exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.build());
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiErrorDTO> constraintViolationException(ConstraintViolationException exception) {
         log.error(exception.getLocalizedMessage());

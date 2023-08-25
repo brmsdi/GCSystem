@@ -275,9 +275,7 @@ public class ApplicationSetup {
                     new StatusDTO(statusActive),
                     new RoleDTO(lesseeRole)
             );
-
             LesseeDTO lesseeSaved = webLesseeService.save(lesseeDTO);
-
             Page<CondominiumDTO> condominiumDTOPage = webCondominiumService.listPaginationCondominium(PageRequest.of(0, 5));
 
             // CONTRACT
