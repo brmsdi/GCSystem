@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import system.gc.dtos.ItemDTO;
 import system.gc.dtos.RepairRequestDTO;
+import system.gc.dtos.ScreenNewRepairRequestMobileDataDTO;
 import system.gc.entities.Item;
 import system.gc.entities.RepairRequest;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
@@ -53,4 +54,6 @@ public interface MobileRepairRequestService extends MobileOrderServiceStatusUtil
     Page<RepairRequestDTO> searchById(Pageable pageable, Integer idLessee, Integer keySearch);
 
     RepairRequestDTO save(RepairRequestDTO repairRequestDTO, Integer idLessee);
+
+    ScreenNewRepairRequestMobileDataDTO screenData(Integer idLessee);
 }

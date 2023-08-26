@@ -49,7 +49,7 @@ public class Contract implements Serializable {
     private Condominium condominium;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_contract_id", referencedColumnName = "id")
+    @JoinColumn(name = "fk_lessee_id", referencedColumnName = "id")
     private Lessee lessee;
 
     public Contract() {

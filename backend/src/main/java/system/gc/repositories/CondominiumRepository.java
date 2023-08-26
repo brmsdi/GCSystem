@@ -24,4 +24,10 @@ public interface CondominiumRepository extends JpaRepository<Condominium, Intege
 
     @Query("SELECT condominium FROM Condominium condominium WHERE condominium.name LIKE :name")
     Page<Condominium> findAllByName(Pageable pageable, String name);
+
+    @Query("SELECT DISTINCT condominium FROM Condominium condominium " +
+            "JOIN FETCH condominium.contract contract " +
+            "JOIN FETCH contract.lessee lessee " +
+            "WHERE lessee.id = :idLessee")
+    List<Condominium> findAllForLessee(Integer idLessee);
 }

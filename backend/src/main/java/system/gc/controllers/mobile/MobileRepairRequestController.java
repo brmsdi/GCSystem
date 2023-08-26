@@ -14,6 +14,7 @@ import system.gc.controllers.UserAuthenticatedController;
 import system.gc.dtos.HttpMessageResponse;
 import system.gc.dtos.ItemDTO;
 import system.gc.dtos.RepairRequestDTO;
+import system.gc.dtos.ScreenNewRepairRequestMobileDataDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.Lessee;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
@@ -83,6 +84,12 @@ public class MobileRepairRequestController implements ControllerPermission, Pagi
         sizeLimit(size);
         Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
         return ResponseEntity.ok(mobileRepairRequestService.searchById(PageRequest.of(page, size), lessee.getId(), keySearch));
+    }
+
+    @GetMapping(value = "screen-new-data")
+    public ResponseEntity<ScreenNewRepairRequestMobileDataDTO> screenData() throws UserAuthenticatedException {
+        Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
+        return ResponseEntity.ok(mobileRepairRequestService.screenData(lessee.getId()));
     }
 
     @Override

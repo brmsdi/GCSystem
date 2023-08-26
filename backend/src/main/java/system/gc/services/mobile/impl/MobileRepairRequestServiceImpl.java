@@ -11,14 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.ItemDTO;
 import system.gc.dtos.LesseeDTO;
 import system.gc.dtos.RepairRequestDTO;
+import system.gc.dtos.ScreenNewRepairRequestMobileDataDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.Item;
 import system.gc.entities.RepairRequest;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
 import system.gc.exceptionsAdvice.exceptions.IllegalChangeOrderServiceException;
 import system.gc.repositories.RepairRequestRepository;
+import system.gc.services.mobile.MobileCondominiumService;
 import system.gc.services.mobile.MobileItemService;
 import system.gc.services.mobile.MobileRepairRequestService;
+import system.gc.services.mobile.MobileTypeProblemService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -38,13 +41,19 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
     private final RepairRequestRepository repairRequestRepository;
     private final MobileItemService mobileItemService;
     private final MessageSource messageSource;
+    private final MobileCondominiumService mobileCondominiumService;
+    private final MobileTypeProblemService mobileTypeProblemService;
 
     @Autowired
     public MobileRepairRequestServiceImpl(RepairRequestRepository repairRequestRepository,
                                           MobileItemService mobileItemService,
+                                          MobileCondominiumService mobileCondominiumService,
+                                          MobileTypeProblemService mobileTypeProblemService,
                                           MessageSource messageSource) {
         this.repairRequestRepository = repairRequestRepository;
         this.mobileItemService = mobileItemService;
+        this.mobileCondominiumService = mobileCondominiumService;
+        this.mobileTypeProblemService = mobileTypeProblemService;
         this.messageSource = messageSource;
     }
 
@@ -103,5 +112,14 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
         repairRequestDTO.setLessee(new LesseeDTO());
         repairRequestDTO.getLessee().setId(idLessee);
         return new RepairRequestDTO(repairRequestRepository.save(RepairRequestDTO.toSaveMobile(repairRequestDTO)));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ScreenNewRepairRequestMobileDataDTO screenData(Integer idLessee) {
+        return new ScreenNewRepairRequestMobileDataDTO(
+                mobileCondominiumService.findAllToScreen(idLessee),
+                mobileTypeProblemService.findAllToScreen()
+        );
     }
 }

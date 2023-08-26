@@ -290,6 +290,17 @@ public class ApplicationSetup {
                     condominiumDTOPage.toList().get(2),
                     lesseeSaved);
 
+            initializeContract(
+                    oneMonthAgo,
+                    5000.00,
+                    today.getDayOfMonth(),
+                    today.plusDays(5).getDayOfMonth(),
+                    oneMonthAgo.plusMonths(6),
+                    10,
+                    statusActive,
+                    condominiumDTOPage.toList().get(2),
+                    lesseeSaved);
+
             // DEBTS
             Page<ContractDTO> contractDTOPage = webContractService.searchContract(PageRequest.of(0, 5), lesseeSaved);
             ContractDTO contractDTO = contractDTOPage.toList().get(0);

@@ -26,4 +26,5 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
 
     @Query("SELECT contract FROM Contract contract WHERE contract.lessee.id = :id")
     Page<Contract> findContractsForLessee(Pageable pageable, Integer id);
+
 }
