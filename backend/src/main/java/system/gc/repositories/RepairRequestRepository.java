@@ -5,13 +5,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.RepairRequest;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
  * @author Wisley Bruno Marques França
- * @since 0.0.1
  * @version 1.3
+ * @since 0.0.1
  */
 
 public interface RepairRequestRepository extends JpaRepository<RepairRequest, Integer> {
@@ -63,4 +64,8 @@ public interface RepairRequestRepository extends JpaRepository<RepairRequest, In
             "LEFT JOIN FETCH repairRequest.condominium " +
             "WHERE repairRequest IN :repairRequestList")
     List<RepairRequest> loadLazyRepairRequestsForViewListMobile(List<RepairRequest> repairRequestList);
+
+    @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
+            "WHERE repairRequest.id = :keySearch AND repairRequest.lessee.id = :idLessee")
+    Page<RepairRequest> searchRepairRequestFromLessee(Pageable pageable, Integer idLessee, Integer keySearch);
 }

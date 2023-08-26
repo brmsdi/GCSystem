@@ -34,9 +34,23 @@ public interface MobileRepairRequestService extends MobileOrderServiceStatusUtil
 
     /**
      * <p>Retorna as solicitações de reparo correspondentes ao locatário que está realizando a consulta.</p>
+     *
      * @param pageable - Parâmetros de paginação.
      * @param id       - Identificação do locatário
      * @return Lista de solicitações de reparo
      */
     Page<RepairRequestDTO> lesseeRepairRequests(Pageable pageable, Integer id);
+
+    /**
+     * <p>Buscar solicitação de reparo por id.</p>
+     * <p>Essa busca só retornará a solicitação de reparo criada pelo locatário em questão.</p>
+     *
+     * @param pageable  - Paginação.
+     * @param idLessee  - Identificador do locatário que está acessando o recurso.
+     * @param keySearch - Identificador da solicitação de reparo
+     * @return Registro da solicitação de reparo referente a chave de pesquisa 'keySearch'.
+     */
+    Page<RepairRequestDTO> searchById(Pageable pageable, Integer idLessee, Integer keySearch);
+
+    RepairRequestDTO save(RepairRequestDTO repairRequestDTO, Integer idLessee);
 }

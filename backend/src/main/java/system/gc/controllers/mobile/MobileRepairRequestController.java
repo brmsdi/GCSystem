@@ -39,13 +39,19 @@ public class MobileRepairRequestController implements ControllerPermission, Pagi
         this.messageSource = messageSource;
     }
 
+    @PostMapping(value = "lessee")
+    public ResponseEntity<RepairRequestDTO> save(@Valid @RequestBody RepairRequestDTO repairRequestDTO) throws UserAuthenticatedException {
+        Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
+        return ResponseEntity.ok(mobileRepairRequestService.save(repairRequestDTO, lessee.getId()));
+    }
+
     @GetMapping(value = "lessee")
     public ResponseEntity<Page<RepairRequestDTO>> findAllByEmployee(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size) throws UserAuthenticatedException {
-        Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
         pageLimit(page);
         sizeLimit(size);
+        Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
         return ResponseEntity.ok(mobileRepairRequestService.lesseeRepairRequests(PageRequest.of(page, size), lessee.getId()));
     }
 
@@ -65,6 +71,18 @@ public class MobileRepairRequestController implements ControllerPermission, Pagi
         mobileRepairRequestService.removeItem(employee.getId(), idRepairRequest, idItem);
         HttpMessageResponse httpMessageResponse = new HttpMessageResponse(HttpStatus.OK.toString(), messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS", null, LocaleContextHolder.getLocale()));
         return ResponseEntity.ok(httpMessageResponse);
+    }
+
+    @GetMapping(value = "lessee/search")
+    public ResponseEntity<Page<RepairRequestDTO>> searchById(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size") Integer size,
+            @RequestParam(name = "keySearch") Integer keySearch
+    ) throws UserAuthenticatedException {
+        pageLimit(page);
+        sizeLimit(size);
+        Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
+        return ResponseEntity.ok(mobileRepairRequestService.searchById(PageRequest.of(page, size), lessee.getId(), keySearch));
     }
 
     @Override

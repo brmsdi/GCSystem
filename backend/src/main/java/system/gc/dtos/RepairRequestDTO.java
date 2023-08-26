@@ -123,4 +123,18 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         repairRequestDTO.setStatus(new StatusDTO(repairRequest.getStatus()));
         return repairRequestDTO;
     }
+
+    public static RepairRequest toSaveMobile(RepairRequestDTO repairRequestDTO) {
+        RepairRequest repairRequest = new RepairRequest();
+        repairRequest.setProblemDescription(repairRequestDTO.getProblemDescription());
+        repairRequest.setDate(repairRequestDTO.getDate());
+        repairRequest.setTypeProblem(new TypeProblemDTO().toEntity(repairRequestDTO.getTypeProblem()));
+        repairRequest.setLessee(new Lessee());
+        repairRequest.getLessee().setId(repairRequestDTO.getLessee().getId());
+        repairRequest.setCondominium(new Condominium());
+        repairRequest.getCondominium().setId(repairRequestDTO.getCondominium().getId());
+        repairRequest.setStatus(new StatusDTO().toEntity(repairRequestDTO.getStatus()));
+        repairRequest.setApartmentNumber(repairRequestDTO.getApartmentNumber());
+        return repairRequest;
+    }
 }

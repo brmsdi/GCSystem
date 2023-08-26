@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.ItemDTO;
+import system.gc.dtos.LesseeDTO;
 import system.gc.dtos.RepairRequestDTO;
 import system.gc.entities.Employee;
 import system.gc.entities.Item;
@@ -83,7 +84,24 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
             return Page.empty();
         }
         repairRequestRepository.loadLazyRepairRequestsForViewListMobile(repairRequestPage.toList());
-        isResponsible(id, repairRequestPage.map(RepairRequest::getId).stream().collect(Collectors.toSet()));
         return repairRequestPage.map(RepairRequestDTO::forViewListMobile);
+    }
+
+    @Override
+    public Page<RepairRequestDTO> searchById(Pageable pageable, Integer idLessee, Integer keySearch) {
+        Page<RepairRequest> repairRequestPage = repairRequestRepository.searchRepairRequestFromLessee(pageable, idLessee, keySearch);
+        if (repairRequestPage.isEmpty()) {
+            return Page.empty();
+        }
+        repairRequestRepository.loadLazyRepairRequestsForViewListMobile(repairRequestPage.toList());
+        return repairRequestPage.map(RepairRequestDTO::forViewListMobile);
+    }
+
+    @Override
+    @Transactional
+    public RepairRequestDTO save(RepairRequestDTO repairRequestDTO, Integer idLessee) {
+        repairRequestDTO.setLessee(new LesseeDTO());
+        repairRequestDTO.getLessee().setId(idLessee);
+        return new RepairRequestDTO(repairRequestRepository.save(RepairRequestDTO.toSaveMobile(repairRequestDTO)));
     }
 }
