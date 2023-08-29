@@ -92,6 +92,13 @@ public class MobileRepairRequestController implements ControllerPermission, Pagi
         return ResponseEntity.ok(mobileRepairRequestService.screenData(lessee.getId()));
     }
 
+    @GetMapping(value = "details/lessee")
+    public ResponseEntity<RepairRequestDTO> detailsRepairRequest(
+            @RequestParam(name = "id") Integer id
+    ) throws UserAuthenticatedException, ClassNotFoundException {
+        Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
+        return ResponseEntity.ok(mobileRepairRequestService.details(lessee.getId(), id));
+    }
     @Override
     public MessageSource messageSource() {
         return messageSource;

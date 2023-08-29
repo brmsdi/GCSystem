@@ -298,7 +298,7 @@ public class ApplicationSetup {
                     oneMonthAgo.plusMonths(6),
                     10,
                     statusActive,
-                    condominiumDTOPage.toList().get(2),
+                    condominiumDTOPage.toList().get(1),
                     lesseeSaved);
 
             // DEBTS

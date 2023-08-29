@@ -122,4 +122,12 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
                 mobileTypeProblemService.findAllToScreen()
         );
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public RepairRequestDTO details(Integer idLessee, Integer idRepairRequest) throws ClassNotFoundException {
+        Optional<RepairRequest> optionalRepairRequest = repairRequestRepository.detailsRepairRequestFromLessee(idLessee, idRepairRequest);
+        RepairRequest repairRequest = optionalRepairRequest.orElseThrow(() -> new ClassNotFoundException(messageSource.getMessage("TEXT_ERROR_REPAIR_REQUEST_NOT_FOUND", null, LocaleContextHolder.getLocale())));
+        return RepairRequestDTO.toDetailsMobile(repairRequest);
+    }
 }

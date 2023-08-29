@@ -68,4 +68,15 @@ public interface RepairRequestRepository extends JpaRepository<RepairRequest, In
     @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
             "WHERE repairRequest.id = :keySearch AND repairRequest.lessee.id = :idLessee")
     Page<RepairRequest> searchRepairRequestFromLessee(Pageable pageable, Integer idLessee, Integer keySearch);
+
+    @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
+            "LEFT JOIN FETCH repairRequest.orderService orderService " +
+            "LEFT JOIN FETCH orderService.employees " +
+            "LEFT JOIN FETCH orderService.status " +
+            "LEFT JOIN FETCH repairRequest.items " +
+            "LEFT JOIN FETCH repairRequest.typeProblem " +
+            "LEFT JOIN FETCH repairRequest.lessee lessee " +
+            "LEFT JOIN FETCH repairRequest.condominium " +
+            "WHERE repairRequest.id = :id AND lessee.id = :idLessee")
+    Optional<RepairRequest> detailsRepairRequestFromLessee(Integer idLessee, Integer id);
 }

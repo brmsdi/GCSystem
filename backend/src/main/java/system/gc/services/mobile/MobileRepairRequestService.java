@@ -13,7 +13,6 @@ import system.gc.exceptionsAdvice.exceptions.IllegalChangeOrderServiceException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author Wisley Bruno Marques França
@@ -56,4 +55,6 @@ public interface MobileRepairRequestService extends MobileOrderServiceStatusUtil
     RepairRequestDTO save(RepairRequestDTO repairRequestDTO, Integer idLessee);
 
     ScreenNewRepairRequestMobileDataDTO screenData(Integer idLessee);
+
+    RepairRequestDTO details(Integer idLessee, Integer idRepairRequest) throws ClassNotFoundException;
 }
