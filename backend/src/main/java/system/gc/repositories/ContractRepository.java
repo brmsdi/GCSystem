@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import system.gc.entities.Contract;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Wisley Bruno Marques França
@@ -27,4 +28,6 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
     @Query("SELECT contract FROM Contract contract WHERE contract.lessee.id = :id")
     Page<Contract> findContractsForLessee(Pageable pageable, Integer id);
 
+    @Query("SELECT contract FROM Contract contract WHERE contract.id = :idContract AND contract.lessee.id = :idLessee")
+    Optional<Contract> findByIdForLessee(Integer idLessee, Integer idContract);
 }
