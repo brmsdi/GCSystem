@@ -72,7 +72,6 @@ public class ContractDTO implements ConvertEntityAndDTO<ContractDTO, Contract> {
         setStatus(new StatusDTO().toDTO(contract.getStatus()));
         setCondominium(new CondominiumDTO().toDTO(contract.getCondominium()));
         setLessee(new LesseeDTO().toDTO(contract.getLessee()));
-
     }
 
     public ContractDTO(String cpf) {
@@ -102,6 +101,22 @@ public class ContractDTO implements ConvertEntityAndDTO<ContractDTO, Contract> {
     }
 
     public static ContractDTO forListViewMobile(Contract contract) {
+        ContractDTO contractDTO = new ContractDTO();
+        contractDTO.setId(contract.getId());
+        contractDTO.setContractDate(contract.getContractDate());
+        contractDTO.setContractExpirationDate(contract.getContractExpirationDate());
+        contractDTO.setMonthlyPaymentDate(contract.getMonthlyPaymentDate());
+        contractDTO.setMonthlyDueDate(contract.getMonthlyDueDate());
+        contractDTO.setApartmentNumber(contract.getApartmentNumber());
+        contractDTO.setContractValue(contract.getContractValue());
+        contractDTO.setLessee(new LesseeDTO());
+        contractDTO.getLessee().setId(contract.getLessee().getId());
+        contractDTO.getLessee().setName(contract.getLessee().getName());
+        contractDTO.setStatus(new StatusDTO().toDTO(contract.getStatus()));
+        return contractDTO;
+    }
+
+    public static ContractDTO forContractDocument(Contract contract) {
         ContractDTO contractDTO = new ContractDTO();
         contractDTO.setId(contract.getId());
         contractDTO.setContractDate(contract.getContractDate());
