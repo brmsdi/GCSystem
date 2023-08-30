@@ -23,7 +23,8 @@ public enum RoutesPrivate {
     URL_MOBILE_ORDERS(new RoutePrivate(API_V1_MOBILE.concat("/order-services/**"), new String[]{ROLE_ADMINISTRATOR, ROLE_ELECTRICIAN, ROLE_PLUMBER, ROLE_GENERAL_SERVICES})),
     URL_MOBILE_REPAIR_REQUEST(new RoutePrivate(API_V1_MOBILE.concat("/repair-requests/**"), new String[]{ROLE_ADMINISTRATOR, ROLE_ELECTRICIAN, ROLE_PLUMBER, ROLE_GENERAL_SERVICES, ROLE_LESSEE})),
     URL_MOBILE_DEBTS(new RoutePrivate(API_V1_MOBILE.concat("/debts/**"), new String[]{ROLE_LESSEE})),
-    URL_MOBILE_CONTRACTS(new RoutePrivate(API_V1_MOBILE.concat("/contracts/**"), new String[]{ROLE_LESSEE}));
+    URL_MOBILE_CONTRACTS(new RoutePrivate(API_V1_MOBILE.concat("/contracts/**"), new String[]{ROLE_LESSEE})),
+    URL_MOBILE_CONTRACT_VIEW(new RoutePrivate(API_V1_MOBILE.concat("/contract-view/printout-contract"), new String[]{ROLE_LESSEE}));
 
     private final RoutePrivate route;
 
