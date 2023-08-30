@@ -39,9 +39,9 @@ public class MobileOrderServiceController implements ControllerPermission, Pagin
     public Page<OrderServiceDTO> findAllByEmployee(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size) throws UserAuthenticatedException {
-        Employee employee = getUserAuthenticated(EmployeeUserDetails.class);
         pageLimit(page);
         sizeLimit(size);
+        Employee employee = getUserAuthenticated(EmployeeUserDetails.class);
         return mobileOrderServiceService.employeeOrders(PageRequest.of(page, size), employee.getId());
     }
 
