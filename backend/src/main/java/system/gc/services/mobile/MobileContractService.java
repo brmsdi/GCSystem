@@ -11,4 +11,6 @@ import system.gc.dtos.ContractDTO;
  */
 public interface MobileContractService {
     Page<ContractDTO> lesseeContracts(Pageable pageable, Integer idLessee);
+
+    ContractDTO findByIdForLessee(Integer idLessee, Integer idContract);
 }
