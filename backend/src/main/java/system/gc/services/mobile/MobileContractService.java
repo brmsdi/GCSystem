@@ -3,6 +3,7 @@ package system.gc.services.mobile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import system.gc.dtos.ContractDTO;
+import system.gc.dtos.ContractDocumentDTO;
 
 /**
  * @author Wisley Bruno Marques França
@@ -12,5 +13,5 @@ import system.gc.dtos.ContractDTO;
 public interface MobileContractService {
     Page<ContractDTO> lesseeContracts(Pageable pageable, Integer idLessee);
 
-    ContractDTO findByIdForLessee(Integer idLessee, Integer idContract);
+    ContractDocumentDTO findByIdForLessee(Integer idLessee, Integer idContract);
 }

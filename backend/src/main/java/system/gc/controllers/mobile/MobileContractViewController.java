@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import system.gc.controllers.Pagination;
 import system.gc.controllers.UserAuthenticatedController;
-import system.gc.dtos.ContractDTO;
+import system.gc.dtos.ContractDocumentDTO;
 import system.gc.entities.Lessee;
 import system.gc.exceptionsAdvice.exceptions.UserAuthenticatedException;
 import system.gc.security.LesseeUserDetails;
@@ -42,8 +42,8 @@ public class MobileContractViewController implements Pagination, UserAuthenticat
             Model model
     ) throws UserAuthenticatedException {
         Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
-        ContractDTO contractDTO = mobileContractService.findByIdForLessee(lessee.getId(), id);
-        model.addAttribute("contract", contractDTO);
+        ContractDocumentDTO contractDocumentDTO = mobileContractService.findByIdForLessee(lessee.getId(), id);
+        model.addAttribute("contract", contractDocumentDTO);
         return "contract";
     }
 

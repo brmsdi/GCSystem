@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.ContractDTO;
+import system.gc.dtos.ContractDocumentDTO;
 import system.gc.entities.Contract;
 import system.gc.repositories.ContractRepository;
 import system.gc.services.mobile.MobileContractService;
@@ -45,10 +46,10 @@ public class MobileContractServiceImpl implements MobileContractService {
     }
 
     @Override
-    public ContractDTO findByIdForLessee(Integer idLessee, Integer idContract) {
+    public ContractDocumentDTO findByIdForLessee(Integer idLessee, Integer idContract) {
         Optional<Contract> contractOptional = contractRepository.findByIdForLessee(idLessee, idContract);
         Contract contract = contractOptional.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REGISTER_NOT_FOUND", null, LocaleContextHolder.getLocale())));
         contractRepository.loadLazyContracts(List.of(contract));
-        return ContractDTO.forContractDocument(contract);
+        return new ContractDocumentDTO(contract);
     }
 }
