@@ -15,12 +15,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import system.gc.security.Filter.JWTAuthenticationEntryPoint;
 import system.gc.security.Filter.JWTAuthenticationFilter;
-import system.gc.utils.RoutePrivate;
-import system.gc.utils.RouteUtils;
-import system.gc.utils.RoutesPrivate;
+import system.gc.utils.*;
 
 import java.util.*;
 
+import static system.gc.utils.RoutesPublicEmployee.LOGIN_EMPLOYEES;
+import static system.gc.utils.RoutesPublicLessee.LOGIN_LESSEES;
+import static system.gc.utils.TextUtils.API_V1_MOBILE;
 import static system.gc.utils.TextUtils.API_V1_WEB;
 
 /**
@@ -79,18 +80,39 @@ public class DefaultConfiguration {
 
     /**
      * <p>Este CorsConfigurationSource será configurado para permitir acesso somente das urls definidas na variável de ambiente 'ORIGINS'.</p>
-     *
+     * <p>Para acesso aos endpoints mobile, não será necessário o cors.</p>
      * @return CorsConfigurationSource Cross-origin resource sharing
      */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         log.info("Configurando cors");
         String[] origins = Objects.requireNonNull(environment.getProperty("ORIGINS")).split(",");
-        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "UPDATE", "PUT", "DELETE", "OPTIONS"));
-        corsConfiguration.setAllowedOrigins(Arrays.stream(origins).toList());
+        List<String> methods = List.of("GET", "POST", "UPDATE", "PUT", "DELETE", "OPTIONS");
+        // CORS WEB
+        CorsConfiguration webcorsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+        webcorsConfiguration.setAllowedMethods(methods);
+        webcorsConfiguration.setAllowedOrigins(Arrays.stream(origins).toList());
+        //CORS MOBILE
+        CorsConfiguration mobileCorsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+        mobileCorsConfiguration.setAllowedOrigins(methods);
+        mobileCorsConfiguration.setAllowedOrigins(List.of("*"));
+        Map<String, CorsConfiguration> corsConfigurationMap = Map.of(
+                API_V1_WEB.concat("/**"),
+                webcorsConfiguration,
+                LOGIN_EMPLOYEES.getRoute().url(),
+                webcorsConfiguration,
+                LOGIN_LESSEES.getRoute().url(),
+                webcorsConfiguration,
+                API_V1_MOBILE.concat("/**"),
+                mobileCorsConfiguration
+        );
         final UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration(API_V1_WEB.concat("/**"), corsConfiguration);
+        return getUrlBasedCorsConfigurationSource(urlBasedCorsConfigurationSource, corsConfigurationMap);
+    }
+
+    private static UrlBasedCorsConfigurationSource getUrlBasedCorsConfigurationSource(UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource, Map<String, CorsConfiguration> corsConfigurationMap) {
+        corsConfigurationMap.forEach(urlBasedCorsConfigurationSource::registerCorsConfiguration);
+        urlBasedCorsConfigurationSource.setCorsConfigurations(corsConfigurationMap);
         return urlBasedCorsConfigurationSource;
     }
 }

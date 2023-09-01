@@ -209,7 +209,7 @@ public class WebOrderServiceService {
     }
 
     /**
-     * @param orderService Ordem de serviço registrada na banco de dados. A mesma terá as solicitações de reparo modificadas
+     * @param orderService Ordem de serviço registrada no banco de dados. A mesma terá as solicitações de reparo modificadas
      * @param updateOrderService Ordem de serviço com a lista de solicitações de reparo modificadas
      * @param finalOpenStatus Solicitações de reparo para o status 'Aberto'
      * @param finalProgressStatus Solicitações de reparo para o status 'Em andamento'
