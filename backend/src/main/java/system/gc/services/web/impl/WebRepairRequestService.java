@@ -33,6 +33,9 @@ public class WebRepairRequestService {
     private WebStatusService webStatusService;
 
     @Autowired
+    private ItemService itemService;
+
+    @Autowired
     private MessageSource messageSource;
 
     @Transactional
@@ -44,6 +47,8 @@ public class WebRepairRequestService {
             log.warn("Erro ao salvar!");
             return null;
         }
+        registeredRepairRequest.getItems().forEach(item -> item.setRepairRequest(registeredRepairRequest));
+        itemService.saveAll(registeredRepairRequest.getItems());
         log.info("Salvo com sucesso. ID: " + registeredRepairRequest.getId());
         return repairRequestDTOService.toDTO(registeredRepairRequest);
     }

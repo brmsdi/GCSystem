@@ -29,7 +29,7 @@ public class Item {
     private double value;
 
     @ManyToOne
-    @JoinColumn(name = "fk_repair_request", referencedColumnName = "id")
+    @JoinColumn(name = "fk_repair_request")
     private RepairRequest repairRequest;
 
     public Item() {}
