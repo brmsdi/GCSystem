@@ -133,7 +133,7 @@ const ItemTable = (props: IProps) => {
       <th className="thead-min">Nº do apartamento</th>
       <td>{item.apartmentNumber}</td>
       <th className="thead-min">Data de solicitação</th>
-      <td>{formatDateForView(item.date)}</td>
+      <td>{formatDateForView(item.date?.toString())}</td>
       <th className="thead-min">Tipo de problema</th>
       <td>{item.typeProblem.name}</td>
       <th className="thead-min">Status</th>

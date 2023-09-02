@@ -4,11 +4,11 @@ import { Status } from "./status";
 
 export type Contract = {
     id?: number;
-    contractDate: string;
+    contractDate: Date | null;
     contractValue: number;
     monthlyPaymentDate: number;
     monthlyDueDate: number;
-    contractExpirationDate: string;
+    contractExpirationDate: Date | null;
     apartmentNumber: string;
     status: Status;
     condominium: Condominium;
@@ -50,11 +50,11 @@ export const PaginationContractEmpty : PaginationContract = {
 }
 
 export const ContractEmpty : Contract = {
-    contractDate: '',
+    contractDate: null,
     contractValue: 0,
     monthlyPaymentDate: 0,
     monthlyDueDate: 0,
-    contractExpirationDate: '',
+    contractExpirationDate: null,
     apartmentNumber: '',
     status: {
         name: ''

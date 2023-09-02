@@ -172,7 +172,7 @@ const ItemTable = (props: IPropsItemTable) => {
       <th className="thead-min">Tipo</th>
       <td>{item.typeProblem.name}</td>
       <th className="thead-min">Data</th>
-      <td>{formatDateForView(item.date)}</td>
+      <td>{formatDateForView(item.date?.toString())}</td>
       <th className="thead-min">Selecionar</th>
       <td>
         <div className="div-checkbox">

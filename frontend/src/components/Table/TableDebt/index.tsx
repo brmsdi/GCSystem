@@ -101,7 +101,7 @@ const ItemTable = (props: IProps) => {
       <th className="thead-min">valor do débito</th>
       <td>{formatCoinPTBRForView(item.value)}</td>
       <th className="thead-min">Data de vencimento</th>
-      <td>{formatDateForView(item.dueDate)}</td>
+      <td>{formatDateForView(item.dueDate?.toString())}</td>
       <th className="thead-min">Status</th>
       <td>{item.status.name}</td>
       <th className="thead-min">Opções</th>

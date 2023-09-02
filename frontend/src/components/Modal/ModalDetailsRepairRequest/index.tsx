@@ -62,7 +62,7 @@ const ModalDetailsRepairRequest = (props: IProps) => {
         </div>
         <div>
           <span className="modal-title">Data de solicitação: </span>
-          <span>{formatDateForView(item.date)}</span>
+          <span>{formatDateForView(item.date?.toString())}</span>
         </div>
         <div>
           <span className="modal-title">Status: </span>

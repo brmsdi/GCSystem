@@ -12,8 +12,8 @@ export const isValidZipCode = (value: string) => {
     return (value.length === 8)
 }
 
-export const isValidFieldText = (value: string | undefined) => {
-    return (value !== undefined && value.length > 0)
+export const isValidFieldText = (value: string | undefined | null) => {
+    return (value !== undefined && value != null && value.length > 0)
 }
 
 export const isValidFieldNumber = (value: number | undefined) => {
