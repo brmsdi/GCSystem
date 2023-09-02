@@ -10,9 +10,9 @@ export const formatDate = (value: string) => {
 
 
 export const formatDateForView = (value: string | undefined | null) => {
-    if (value === null || value === undefined) return "Invalid Date"
+    if (value === null || value === undefined) return "Sem data definida"
     let date = new Date(value).toLocaleDateString('pt-BR', {timeZone: 'UTC'});
-    if (date === "Invalid Date") return 'NaN/NaN/NaN'
+    if (date === "Invalid Date") return 'Sem data definida'
     return date
 }
 

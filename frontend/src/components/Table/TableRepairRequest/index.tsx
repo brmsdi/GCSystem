@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import { StateFormEnum } from "types/action";
 import { PaginationRepairRequest, RepairRequest, RepairRequestEmpty } from "types/repair-request";
 import { formatDateForView } from "utils/text-format";
-import { repairRequestIsProgress } from "utils/verifications";
+import { repairRequestIsProgressOrConcluded } from "utils/verifications";
 
 const TableRepairRequest= () => {
   const dispatch = useDispatch();
@@ -148,7 +148,7 @@ const ItemTable = (props: IProps) => {
           className="btn btn-primary btn-table-options"
           onClick={(e) => props.toogleClass(item)}><span aria-hidden="true" ><i className="bi bi-clipboard-data"></i></span>
         </button>
-        { repairRequestIsProgress(item.status) ? (
+        { repairRequestIsProgressOrConcluded(item.status) ? (
           <button
             id="btn-table-repair-request-delete"
             type="button"

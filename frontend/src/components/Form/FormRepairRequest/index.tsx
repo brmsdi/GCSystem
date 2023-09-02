@@ -17,10 +17,10 @@ import {
   isValidFieldNumber,
   isValidFieldText,
   isSelected,
-  repairRequestIsProgress,
+  repairRequestIsProgressOrConcluded,
 } from "utils/verifications";
 
-import DatePicker from "react-datepicker"
+import DatePicker from "react-datepicker";
 
 interface IProps {
   initForm: RepairRequest;
@@ -172,7 +172,7 @@ const FormTemplate = (props: IProps) => {
       lessee: lessee,
       items: addedItems,
     };
-    
+
     setForm({ ...newForm });
     const result = await props.submit(newForm);
     if (result === true) {
@@ -300,7 +300,7 @@ const FormTemplate = (props: IProps) => {
               ))}
             </select>
           </div>
-          {repairRequestIsProgress(props.initForm.status) ? (
+          {repairRequestIsProgressOrConcluded(props.initForm.status) ? (
             <div className="form-container l2">
               <label htmlFor="inputStatus">Status</label>
               <select
