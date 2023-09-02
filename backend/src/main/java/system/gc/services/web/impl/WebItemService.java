@@ -16,7 +16,7 @@ import java.util.Set;
  */
 
 @Service
-public class ItemService {
+public class WebItemService {
 
     @Autowired
     private ItemRepository itemRepository;

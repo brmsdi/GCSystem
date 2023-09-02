@@ -33,7 +33,7 @@ public class WebRepairRequestService {
     private WebStatusService webStatusService;
 
     @Autowired
-    private ItemService itemService;
+    private WebItemService webItemService;
 
     @Autowired
     private MessageSource messageSource;
@@ -48,7 +48,7 @@ public class WebRepairRequestService {
             return null;
         }
         registeredRepairRequest.getItems().forEach(item -> item.setRepairRequest(registeredRepairRequest));
-        itemService.saveAll(registeredRepairRequest.getItems());
+        webItemService.saveAll(registeredRepairRequest.getItems());
         log.info("Salvo com sucesso. ID: " + registeredRepairRequest.getId());
         return repairRequestDTOService.toDTO(registeredRepairRequest);
     }
@@ -71,7 +71,13 @@ public class WebRepairRequestService {
         {
             repairRequestDTO.setStatus(new StatusDTO().toDTO(repairRequest.get().getStatus()));
         }
-        repairRequestRepository.save(new RepairRequestDTO().toEntity(repairRequestDTO));
+        RepairRequest repairRequestUpdate = new RepairRequestDTO().toEntity(repairRequestDTO);
+        repairRequestUpdate.getItems().forEach(item -> {
+            if (item.getRepairRequest() == null) {
+                item.setRepairRequest(repairRequestUpdate);
+            }
+        });
+        repairRequestRepository.save(repairRequestUpdate);
     }
 
     @Transactional

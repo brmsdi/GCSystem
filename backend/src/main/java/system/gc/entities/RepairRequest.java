@@ -51,7 +51,7 @@ public class RepairRequest implements Serializable {
     @JoinColumn(name = "fk_order_service", referencedColumnName = "id")
     private OrderService orderService;
 
-    @OneToMany(mappedBy = "repairRequest", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "repairRequest", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Item> items = new HashSet<>();
 
     @NotNull
