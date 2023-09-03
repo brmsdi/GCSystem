@@ -1,4 +1,4 @@
-import { ModalStateInformations } from "./action";
+import { ModalStateInformation } from "./action";
 import { Condominium, CondominiumEmpty } from "./condominium";
 import { Item } from "./item";
 import { Lessee, LesseeEmpty } from "./lessee";
@@ -68,5 +68,5 @@ export type SelectedRepairRequestsOrderServiceAction = {
 
 export type StateModalOrderServiceRepairRequestsAction = {
     type: string,
-    payload: ModalStateInformations
+    payload: ModalStateInformation
 }

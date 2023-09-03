@@ -1,4 +1,4 @@
-import { ModalStateInformations, StateFormAction, TableAction, TypeEnumActionTables } from "types/action";
+import { ModalStateInformation, StateFormAction, TableAction, TypeEnumActionTables } from "types/action";
 import { Employee } from "types/employee";
 import { ActionOrderService, OrderService, PaginationOrderService, SelectedEmployeesOrderServiceAction, SelectedOrderServiceAction, StateModalOrderServiceEmployeesAction } from "types/order-service";
 import { PaginationTableActionSearchPerNumber } from "types/pagination";
@@ -61,7 +61,7 @@ export function selectedEmployeesOrderServiceAction(selectedEmployees: Employee[
     return action
 }
 
-export function changeStateModalOrderServiceEmployees(state: ModalStateInformations) {
+export function changeStateModalOrderServiceEmployees(state: ModalStateInformation) {
     let action: StateModalOrderServiceEmployeesAction = {
         type: 'CHANGE-STATE-MODAL-ORDER-SERVICE-EMPLOYEES',
         payload: state

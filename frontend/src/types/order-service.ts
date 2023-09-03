@@ -1,13 +1,13 @@
-import { ModalStateInformations } from "./action";
+import { ModalStateInformation } from "./action";
 import { Employee } from "./employee";
 import { RepairRequest } from "./repair-request";
 import { Status, StatusEmpty } from "./status" 
 
 export type OrderService = {
     id?: number;
-    generationDate: string;
-    reservedDate: string;
-    completionDate: string;
+    generationDate: Date | null;
+    reservedDate: Date | null;
+    completionDate: Date | null;
     repairRequests: RepairRequest[];
     employees: Employee[];
     status: Status;
@@ -48,9 +48,9 @@ export const PaginationOrderServiceEmpty : PaginationOrderService = {
 }
 
 export const OrderServiceEmpty : OrderService = {
-    generationDate: '',
-    reservedDate: '',
-    completionDate: '',
+    generationDate: null,
+    reservedDate: null,
+    completionDate: null,
     repairRequests: [],
     employees: [],
     status: StatusEmpty
@@ -63,9 +63,9 @@ export type SelectedEmployeesOrderServiceAction = {
 
 export type StateModalOrderServiceEmployeesAction = {
     type: string,
-    payload: ModalStateInformations
+    payload: ModalStateInformation
 }
 
-export const ModalStateInformationsInit : ModalStateInformations= {
+export const ModalStateInformationsInit : ModalStateInformation= {
     isOpen: false
 }

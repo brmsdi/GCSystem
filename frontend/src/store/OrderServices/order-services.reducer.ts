@@ -1,11 +1,11 @@
-import { CurrentStateForm, ModalStateInformations, StateFormAction, StateFormEnum, TableAction, TypeEnumActionTables } from "types/action";
+import { CurrentStateForm, ModalStateInformation, StateFormAction, StateFormEnum, TableAction, TypeEnumActionTables } from "types/action";
 import { Employee } from "types/employee";
 import { ActionOrderService, ModalStateInformationsInit, OrderService, OrderServiceEmpty, PaginationOrderService, PaginationOrderServiceEmpty, SelectedEmployeesOrderServiceAction, SelectedOrderServiceAction, StateModalOrderServiceEmployeesAction } from "types/order-service";
 import { PaginationTableActionSearchPerNumber, StatePaginationEnum } from "types/pagination";
 
 let initPagination : PaginationOrderService = PaginationOrderServiceEmpty;
 let initOrderService : OrderService = OrderServiceEmpty;
-let initStateModalOrderServiceEmployees : ModalStateInformations = ModalStateInformationsInit;
+let initStateModalOrderServiceEmployees : ModalStateInformation = ModalStateInformationsInit;
 
 export default function getAllOrderServiceReducer(state: PaginationOrderService = initPagination, action: ActionOrderService) {
     switch(action.type)
@@ -65,7 +65,7 @@ export function stateSelectionOrderServiceReducer(state: OrderService = initOrde
             let pay = action.payload;
             if (pay)
             {
-                pay.completionDate = pay.completionDate ? pay.completionDate : '';
+                pay.completionDate = pay.completionDate ? pay.completionDate : null;
             }          
             return action.payload
         case TypeEnumActionTables.REMOVING_ORDER_SERVICE:
@@ -93,7 +93,7 @@ export function selectedEmployeesOrderServiceReducer(selectedEmployees: Employee
     }
 }
 
-export function changeStateModalOrderServiceEmployeesReducer(state: ModalStateInformations = initStateModalOrderServiceEmployees, action: StateModalOrderServiceEmployeesAction) {
+export function changeStateModalOrderServiceEmployeesReducer(state: ModalStateInformation = initStateModalOrderServiceEmployees, action: StateModalOrderServiceEmployeesAction) {
     switch(action.type) {
         case 'CHANGE-STATE-MODAL-ORDER-SERVICE-EMPLOYEES':
             return action.payload

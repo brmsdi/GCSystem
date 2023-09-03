@@ -1,4 +1,4 @@
-import { ModalStateInformations, StateFormAction, TableAction, TypeEnumActionTables } from "types/action";
+import { ModalStateInformation, StateFormAction, TableAction, TypeEnumActionTables } from "types/action";
 import { PaginationTableAction } from "types/pagination";
 import { ActionRepairRequest, PaginationRepairRequest, RepairRequest, SelectedRepairRequestAction, SelectedRepairRequestsOrderServiceAction, StateModalOrderServiceRepairRequestsAction } from "types/repair-request";
 
@@ -60,7 +60,7 @@ export function selectedRepairRequestsOrderServiceAction(selectedRepairRequests:
     return action
 }
 
-export function changeStateModalOrderServiceRepairRequests(state: ModalStateInformations) {
+export function changeStateModalOrderServiceRepairRequests(state: ModalStateInformation) {
     let action: StateModalOrderServiceRepairRequestsAction = {
         type: 'CHANGE-STATE-MODAL-ORDER-SERVICE-REPAIR-REQUESTS',
         payload: state

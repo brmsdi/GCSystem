@@ -50,11 +50,11 @@ const ItemTable = (props: IProps) => {
       <th className="thead-min">ID</th>
       <td>{item.id}</td>
       <th className="thead-min">Data</th>
-      <td>{formatDateForView(item.generationDate)}</td>
+      <td>{formatDateForView(item.generationDate?.toString())}</td>
       <th className="thead-min">Data reservada</th>
-      <td>{formatDateForView(item.reservedDate)}</td>
+      <td>{formatDateForView(item.reservedDate?.toString())}</td>
       <th className="thead-min">Data de finalização</th>
-      <td>{formatDateForView(item.completionDate)}</td>
+      <td>{formatDateForView(item.completionDate?.toString())}</td>
       <th className="thead-min">Status</th>
       <td>{item.status.name}</td>
       <th className="thead-min">Opções</th>
