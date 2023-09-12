@@ -10,9 +10,8 @@ services:
         - ./env/postgres.env
       networks:
         - gcsystem-net
-
   gcsystem-container:
-    image: gcsystem
+    image: wisleymarques/gcsystem:latest
     build:
       context: .
       target: development
