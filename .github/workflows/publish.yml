@@ -28,10 +28,10 @@ jobs:
 
       - name: Configuration environment
         run: |
-          export $(cat env/app.env | grep "APP_VERSION" | xargs)
+          export $(cat backend/env/app.env | grep "APP_VERSION" | xargs)
           echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_ENV
           
-          export $(cat env/app.env | grep "APP_NAME" | xargs)
+          export $(cat backend/env/app.env | grep "APP_NAME" | xargs)
           echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
         working-directory: ${{ github.workspace }}
 
