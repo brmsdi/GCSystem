@@ -1,4 +1,4 @@
-name: Docker
+name: Create and push image to Docker HUb
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -42,12 +42,3 @@ jobs:
          docker push ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:${ENV.APP_VERSION}
          docker tag ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:${ENV.APP_VERSION} ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:latest
          docker push ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:latest
-
-
-
-
-
-
-
-         
-      
