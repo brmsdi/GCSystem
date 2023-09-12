@@ -33,7 +33,9 @@ build/
 .vscode/
 
 #VAR
-*.env
+system-development.env
+system-production.env
+postgres.env
 create.sql
 
 #docker
