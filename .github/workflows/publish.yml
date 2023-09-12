@@ -10,13 +10,13 @@ on:
     branches: [ "v1.3" ]
 jobs:
   build:
-    runs-on: ubuntu-latest
-
-#    defaults:
-#      run:
-#        working-directory: backend
-
-    steps:
+   runs-on: ubuntu-latest
+    
+   defaults:
+    run:
+     working-directory: backend
+       
+   steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -28,20 +28,17 @@ jobs:
 
       - name: Configuration environment
         run: |
-          export $(cat backend/env/app.env | grep "APP_VERSION" | xargs)
+          export $(cat env/app.env | grep "APP_VERSION" | xargs)
           echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_ENV
           
-          export $(cat backend/env/app.env | grep "APP_NAME" | xargs)
+          export $(cat env/app.env | grep "APP_NAME" | xargs)
           echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
-        working-directory: ${{ github.workspace }}
 
       - name: Build dockefile
-        run:  docker build -t ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:${ENV.APP_VERSION} --target=production .
-        working-directory: ${{ github.workspace }}
+        run:  docker build -t ${{secrets.DOCKER_USERNAME}}/${APP_NAME}:${APP_VERSION} --target=production .
 
       - name: Push image to Docker Hub
         run: |
-          docker push ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:${ENV.APP_VERSION}
-          docker tag ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:${ENV.APP_VERSION} ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:latest
-          docker push ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:latest
-        working-directory: ${{ github.workspace }}
+          docker push ${{secrets.DOCKER_USERNAME}}/${APP_NAME}:${APP_VERSION}
+          docker tag ${{secrets.DOCKER_USERNAME}}/${APP_NAME}:${APP_VERSION} ${{secrets.DOCKER_USERNAME}}/${APP_NAME}:latest
+          docker push ${{secrets.DOCKER_USERNAME}}/${APP_NAME}:latest
