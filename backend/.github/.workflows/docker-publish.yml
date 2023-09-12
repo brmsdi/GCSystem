@@ -1,0 +1,44 @@
+name: Create and push image to Docker HUb
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  push:
+    branches: [ "v1.3" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Docker login
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Configuration environment
+        run: |
+          export $(cat env/app.env | grep "APP_VERSION" | xargs)
+          echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_ENV
+          
+          export $(cat env/app.env | grep "APP_NAME" | xargs)
+          echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
+
+      - name: Build dockefile
+        run:  docker build -t ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:${ENV.APP_VERSION} --target=production .
+
+      - name: Push image to Docker Hub
+        run: |
+          docker push ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:${ENV.APP_VERSION}
+          docker tag ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:${ENV.APP_VERSION} ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:latest
+          docker push ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:latest
