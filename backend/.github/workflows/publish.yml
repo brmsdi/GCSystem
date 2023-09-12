@@ -45,4 +45,3 @@ jobs:
           docker tag ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:${ENV.APP_VERSION} ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:latest
           docker push ${{secrets.DOCKER_USERNAME}}/${ENV.APP_NAME}:latest
         working-directory: ${{ github.workspace }}
-        
