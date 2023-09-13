@@ -12,9 +12,6 @@ services:
         - gcsystem-net
   gcsystem-container:
     image: wisleymarques/gcsystem:latest
-    build:
-      context: .
-      target: development
     ports:
       - "8000:8000"
       - "8080:8080"
