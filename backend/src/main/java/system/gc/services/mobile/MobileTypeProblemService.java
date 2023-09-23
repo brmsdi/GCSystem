@@ -12,4 +12,6 @@ import java.util.Set;
 public interface MobileTypeProblemService {
 
     Set<TypeProblemDTO> findAllToScreen();
+
+    boolean exists(Integer id);
 }

@@ -28,4 +28,9 @@ public class MobileTypeProblemServiceImpl implements MobileTypeProblemService {
     public Set<TypeProblemDTO> findAllToScreen() {
         return typeProblemRepository.findAll().stream().map(TypeProblemDTO::new).collect(Collectors.toSet());
     }
+
+    @Override
+    public boolean exists(Integer id) {
+        return typeProblemRepository.findById(id).isPresent();
+    }
 }
