@@ -12,4 +12,6 @@ import java.util.Set;
 public interface MobileCondominiumService {
 
     Set<CondominiumDTO> findAllToScreen(Integer idLessee);
+
+    boolean exists(Integer id);
 }

@@ -32,4 +32,9 @@ public class MobileCondominiumServiceImpl implements MobileCondominiumService {
         List<Condominium> condominiumList = condominiumRepository.findAllForLessee(idLessee);
         return condominiumList.stream().map(CondominiumDTO::forRepairRequestViewListMobile).collect(Collectors.toSet());
     }
+
+    @Override
+    public boolean exists(Integer id) {
+        return condominiumRepository.findById(id).isPresent();
+    }
 }
