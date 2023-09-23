@@ -8,13 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import system.gc.dtos.ItemDTO;
-import system.gc.dtos.LesseeDTO;
-import system.gc.dtos.RepairRequestDTO;
-import system.gc.dtos.ScreenNewRepairRequestMobileDataDTO;
-import system.gc.entities.Employee;
-import system.gc.entities.Item;
-import system.gc.entities.RepairRequest;
+import system.gc.dtos.*;
+import system.gc.entities.*;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
 import system.gc.exceptionsAdvice.exceptions.IllegalChangeOrderServiceException;
 import system.gc.repositories.RepairRequestRepository;
@@ -22,12 +17,15 @@ import system.gc.services.mobile.MobileCondominiumService;
 import system.gc.services.mobile.MobileItemService;
 import system.gc.services.mobile.MobileRepairRequestService;
 import system.gc.services.mobile.MobileTypeProblemService;
+import system.gc.services.web.impl.WebStatusService;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static system.gc.utils.TextUtils.STATUS_CONCLUDED;
+import static system.gc.utils.TextUtils.STATUS_OPEN;
 
 /**
  * @author Wisley Bruno Marques França
@@ -44,17 +42,20 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
     private final MobileCondominiumService mobileCondominiumService;
     private final MobileTypeProblemService mobileTypeProblemService;
 
+    private final WebStatusService webStatusService;
+
     @Autowired
     public MobileRepairRequestServiceImpl(RepairRequestRepository repairRequestRepository,
                                           MobileItemService mobileItemService,
                                           MobileCondominiumService mobileCondominiumService,
                                           MobileTypeProblemService mobileTypeProblemService,
-                                          MessageSource messageSource) {
+                                          MessageSource messageSource, WebStatusService webStatusService) {
         this.repairRequestRepository = repairRequestRepository;
         this.mobileItemService = mobileItemService;
         this.mobileCondominiumService = mobileCondominiumService;
         this.mobileTypeProblemService = mobileTypeProblemService;
         this.messageSource = messageSource;
+        this.webStatusService = webStatusService;
     }
 
     @Override
@@ -108,10 +109,30 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
 
     @Override
     @Transactional
-    public RepairRequestDTO save(RepairRequestDTO repairRequestDTO, Integer idLessee) {
-        repairRequestDTO.setLessee(new LesseeDTO());
-        repairRequestDTO.getLessee().setId(idLessee);
-        return new RepairRequestDTO(repairRequestRepository.save(RepairRequestDTO.toSaveMobile(repairRequestDTO)));
+    public RepairRequestDTO save(Integer lesseeID, MobileRepairRequestToSaveDTO mobileRepairRequestToSaveDTO) {
+        RepairRequest newRepairRequest = new RepairRequest();
+        newRepairRequest.setLessee(new Lessee());
+        newRepairRequest.getLessee().setId(lesseeID);
+        if (!mobileCondominiumService.exists(mobileRepairRequestToSaveDTO.getCondominiumID())) {
+            throw new EntityNotFoundException(
+                    messageSource.getMessage("TEXT_ERROR_CONDOMINIUM_NOT_FOUND", new Object[]{mobileRepairRequestToSaveDTO.getTypeProblemID()}, LocaleContextHolder.getLocale())
+            );
+        }
+        newRepairRequest.setCondominium(new Condominium());
+        newRepairRequest.getCondominium().setId(mobileRepairRequestToSaveDTO.getCondominiumID());
+        newRepairRequest.setProblemDescription(mobileRepairRequestToSaveDTO.getProblemDescription());
+        newRepairRequest.setApartmentNumber(mobileRepairRequestToSaveDTO.getApartmentNumber());
+        newRepairRequest.setDate(new Date());
+        Status openedStatus = webStatusService.findByName(STATUS_OPEN);
+        newRepairRequest.setStatus(openedStatus);
+        if (!mobileTypeProblemService.exists(mobileRepairRequestToSaveDTO.getTypeProblemID())) {
+            throw new EntityNotFoundException(
+                    messageSource.getMessage("TEXT_ERROR_TYPE_PROBLEM_NOT_FOUND", new Object[]{mobileRepairRequestToSaveDTO.getTypeProblemID()}, LocaleContextHolder.getLocale())
+            );
+        }
+        newRepairRequest.setTypeProblem(new TypeProblem());
+        newRepairRequest.getTypeProblem().setId(mobileRepairRequestToSaveDTO.getTypeProblemID());
+        return new RepairRequestDTO(repairRequestRepository.save(newRepairRequest));
     }
 
     @Override

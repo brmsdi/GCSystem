@@ -3,6 +3,7 @@ package system.gc.services.mobile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import system.gc.dtos.ItemDTO;
+import system.gc.dtos.MobileRepairRequestToSaveDTO;
 import system.gc.dtos.RepairRequestDTO;
 import system.gc.dtos.ScreenNewRepairRequestMobileDataDTO;
 import system.gc.entities.Item;
@@ -10,6 +11,7 @@ import system.gc.entities.RepairRequest;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
 import system.gc.exceptionsAdvice.exceptions.IllegalChangeOrderServiceException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -52,7 +54,7 @@ public interface MobileRepairRequestService extends MobileOrderServiceStatusUtil
      */
     Page<RepairRequestDTO> searchById(Pageable pageable, Integer idLessee, Integer keySearch);
 
-    RepairRequestDTO save(RepairRequestDTO repairRequestDTO, Integer idLessee);
+    RepairRequestDTO save(Integer lesseeID, MobileRepairRequestToSaveDTO mobileRepairRequestToSaveDTO) throws EntityNotFoundException;
 
     ScreenNewRepairRequestMobileDataDTO screenData(Integer idLessee);
 

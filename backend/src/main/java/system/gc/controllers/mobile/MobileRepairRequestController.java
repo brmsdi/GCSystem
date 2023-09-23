@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import system.gc.controllers.ControllerPermission;
 import system.gc.controllers.Pagination;
 import system.gc.controllers.UserAuthenticatedController;
-import system.gc.dtos.HttpMessageResponse;
-import system.gc.dtos.ItemDTO;
-import system.gc.dtos.RepairRequestDTO;
-import system.gc.dtos.ScreenNewRepairRequestMobileDataDTO;
+import system.gc.dtos.*;
 import system.gc.entities.Employee;
 import system.gc.entities.Lessee;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
@@ -41,9 +38,9 @@ public class MobileRepairRequestController implements ControllerPermission, Pagi
     }
 
     @PostMapping(value = "lessee")
-    public ResponseEntity<RepairRequestDTO> save(@Valid @RequestBody RepairRequestDTO repairRequestDTO) throws UserAuthenticatedException {
+    public ResponseEntity<RepairRequestDTO> save(@Valid @RequestBody MobileRepairRequestToSaveDTO mobileRepairRequestToSaveDTO) throws UserAuthenticatedException {
         Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
-        return ResponseEntity.ok(mobileRepairRequestService.save(repairRequestDTO, lessee.getId()));
+        return ResponseEntity.ok(mobileRepairRequestService.save(lessee.getId(), mobileRepairRequestToSaveDTO));
     }
 
     @GetMapping(value = "lessee")
