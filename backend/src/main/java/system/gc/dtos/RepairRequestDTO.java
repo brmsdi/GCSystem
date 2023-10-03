@@ -137,17 +137,19 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         repairRequestDTO.setProblemDescription(repairRequest.getProblemDescription());
         repairRequestDTO.setDate(repairRequest.getDate());
         repairRequestDTO.setTypeProblem(new TypeProblemDTO().toDTO(repairRequest.getTypeProblem()));
-        repairRequestDTO.setOrderService(new OrderServiceDTO());
-        repairRequestDTO.getOrderService().setId(repairRequest.getOrderService().getId());
-        if (!repairRequest.getOrderService().getEmployees().isEmpty()) {
-            Set<EmployeeDTO> employeeDTOSet = new HashSet<>();
-            repairRequest.getOrderService().getEmployees().forEach(employee -> {
-                EmployeeDTO employeeDTO = new EmployeeDTO();
-                employeeDTO.setId(employee.getId());
-                employeeDTO.setName(employee.getName());
-                employeeDTOSet.add(employeeDTO);
-            });
-            repairRequestDTO.getOrderService().setEmployees(employeeDTOSet);
+        if (repairRequest.getOrderService() != null && repairRequest.getOrderService().getId() != null) {
+            repairRequestDTO.setOrderService(new OrderServiceDTO());
+            repairRequestDTO.getOrderService().setId(repairRequest.getOrderService().getId());
+            if (!repairRequest.getOrderService().getEmployees().isEmpty()) {
+                Set<EmployeeDTO> employeeDTOSet = new HashSet<>();
+                repairRequest.getOrderService().getEmployees().forEach(employee -> {
+                    EmployeeDTO employeeDTO = new EmployeeDTO();
+                    employeeDTO.setId(employee.getId());
+                    employeeDTO.setName(employee.getName());
+                    employeeDTOSet.add(employeeDTO);
+                });
+                repairRequestDTO.getOrderService().setEmployees(employeeDTOSet);
+            }
         }
         return repairRequestDTO;
     }
