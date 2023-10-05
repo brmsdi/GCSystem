@@ -34,6 +34,11 @@ public class MobileCondominiumServiceImpl implements MobileCondominiumService {
     }
 
     @Override
+    public List<Condominium> findAllToScreenEntity(Integer idLessee) {
+        return condominiumRepository.findAllForLessee(idLessee);
+    }
+
+    @Override
     public boolean exists(Integer id) {
         return condominiumRepository.findById(id).isPresent();
     }

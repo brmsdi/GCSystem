@@ -1,7 +1,9 @@
 package system.gc.services.mobile;
 
 import system.gc.dtos.TypeProblemDTO;
+import system.gc.entities.TypeProblem;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,6 +14,8 @@ import java.util.Set;
 public interface MobileTypeProblemService {
 
     Set<TypeProblemDTO> findAllToScreen();
+
+    List<TypeProblem> findAllToScreenEntity();
 
     boolean exists(Integer id);
 }

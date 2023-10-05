@@ -3,9 +3,11 @@ package system.gc.services.mobile.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.TypeProblemDTO;
+import system.gc.entities.TypeProblem;
 import system.gc.repositories.TypeProblemRepository;
 import system.gc.services.mobile.MobileTypeProblemService;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,12 @@ public class MobileTypeProblemServiceImpl implements MobileTypeProblemService {
     @Transactional(readOnly = true)
     public Set<TypeProblemDTO> findAllToScreen() {
         return typeProblemRepository.findAll().stream().map(TypeProblemDTO::new).collect(Collectors.toSet());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TypeProblem> findAllToScreenEntity() {
+        return typeProblemRepository.findAll();
     }
 
     @Override
