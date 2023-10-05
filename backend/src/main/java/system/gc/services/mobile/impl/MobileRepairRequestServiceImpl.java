@@ -20,9 +20,9 @@ import system.gc.services.mobile.MobileTypeProblemService;
 import system.gc.services.web.impl.WebStatusService;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static system.gc.utils.TextUtils.STATUS_CONCLUDED;
 import static system.gc.utils.TextUtils.STATUS_OPEN;
@@ -133,6 +133,25 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
         newRepairRequest.setTypeProblem(new TypeProblem());
         newRepairRequest.getTypeProblem().setId(mobileRepairRequestToSaveDTO.getTypeProblemID());
         return new RepairRequestDTO(repairRequestRepository.save(newRepairRequest));
+    }
+
+    @Override
+    public RepairRequestDTO update(Integer lesseeID, RepairRequestDTO repairRequestDTO) throws ClassNotFoundException {
+        Optional<RepairRequest> optionalRepairRequest = repairRequestRepository.detailsRepairRequestFromLessee(lesseeID, repairRequestDTO.getId());
+        RepairRequest repairRequest = optionalRepairRequest.orElseThrow(() -> new ClassNotFoundException(messageSource.getMessage("TEXT_ERROR_REPAIR_REQUEST_NOT_FOUND", null, LocaleContextHolder.getLocale())));
+        if (!Objects.equals(repairRequest.getCondominium().getId(), repairRequestDTO.getCondominium().getId())) {
+            List<Condominium> condominiums = mobileCondominiumService.findAllToScreenEntity(lesseeID);
+            Stream<Condominium> condominiumStream = condominiums.stream().filter(condominium -> Objects.equals(condominium.getId(), repairRequestDTO.getCondominium().getId()));
+            repairRequest.setCondominium(condominiumStream.findFirst().orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_CONDOMINIUM_NOT_FOUND", new Object[]{repairRequestDTO.getCondominium().getId()}, LocaleContextHolder.getLocale()))));
+        }
+        if (!Objects.equals(repairRequest.getTypeProblem().getId(), repairRequestDTO.getTypeProblem().getId())) {
+            List<TypeProblem> typesProblem = mobileTypeProblemService.findAllToScreenEntity();
+            Stream<TypeProblem> typeProblemStream = typesProblem.stream().filter(typeProblem -> Objects.equals(typeProblem.getId(), repairRequestDTO.getTypeProblem().getId()));
+            repairRequest.setTypeProblem(typeProblemStream.findFirst().orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_TYPE_PROBLEM_NOT_FOUND", new Object[]{repairRequestDTO.getTypeProblem().getId()}, LocaleContextHolder.getLocale()))));
+        }
+        repairRequest.setApartmentNumber(repairRequestDTO.getApartmentNumber());
+        repairRequest.setProblemDescription(repairRequestDTO.getProblemDescription());
+        return RepairRequestDTO.toDetailsMobile(repairRequestRepository.save(repairRequest));
     }
 
     @Override

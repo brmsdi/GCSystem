@@ -56,6 +56,8 @@ public interface MobileRepairRequestService extends MobileOrderServiceStatusUtil
 
     RepairRequestDTO save(Integer lesseeID, MobileRepairRequestToSaveDTO mobileRepairRequestToSaveDTO) throws EntityNotFoundException;
 
+    RepairRequestDTO update(Integer lesseeID, RepairRequestDTO repairRequestDTO) throws ClassNotFoundException;
+
     ScreenNewRepairRequestMobileDataDTO screenData(Integer idLessee);
 
     RepairRequestDTO details(Integer idLessee, Integer idRepairRequest) throws ClassNotFoundException;

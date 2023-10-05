@@ -43,6 +43,12 @@ public class MobileRepairRequestController implements ControllerPermission, Pagi
         return ResponseEntity.ok(mobileRepairRequestService.save(lessee.getId(), mobileRepairRequestToSaveDTO));
     }
 
+    @PutMapping(value = "lessee")
+    public ResponseEntity<RepairRequestDTO> update(@RequestBody RepairRequestDTO repairRequestDTO) throws UserAuthenticatedException, ClassNotFoundException {
+        Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
+        return ResponseEntity.ok(mobileRepairRequestService.update(lessee.getId(), repairRequestDTO));
+    }
+
     @GetMapping(value = "lessee")
     public ResponseEntity<Page<RepairRequestDTO>> findAllByEmployee(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -91,11 +97,11 @@ public class MobileRepairRequestController implements ControllerPermission, Pagi
 
     @GetMapping(value = "details/lessee")
     public ResponseEntity<RepairRequestDTO> detailsRepairRequest(
-            @RequestParam(name = "id") Integer id
-    ) throws UserAuthenticatedException, ClassNotFoundException {
+            @RequestParam(name = "id") Integer id) throws UserAuthenticatedException, ClassNotFoundException {
         Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
         return ResponseEntity.ok(mobileRepairRequestService.details(lessee.getId(), id));
     }
+
     @Override
     public MessageSource messageSource() {
         return messageSource;
