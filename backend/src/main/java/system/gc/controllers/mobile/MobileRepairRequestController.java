@@ -49,6 +49,13 @@ public class MobileRepairRequestController implements ControllerPermission, Pagi
         return ResponseEntity.ok(mobileRepairRequestService.update(lessee.getId(), repairRequestDTO));
     }
 
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<HttpMessageResponse> delete(@PathVariable(name = "id") Integer id) throws UserAuthenticatedException {
+        Lessee lessee = getUserAuthenticated(LesseeUserDetails.class);
+        mobileRepairRequestService.delete(lessee.getId(), id);
+        return ResponseEntity.ok(new HttpMessageResponse(HttpStatus.OK.toString(), messageSource.getMessage("TEXT_MSG_DELETED_SUCCESS", null, LocaleContextHolder.getLocale())));
+    }
+
     @GetMapping(value = "lessee")
     public ResponseEntity<Page<RepairRequestDTO>> findAllByEmployee(
             @RequestParam(name = "page", defaultValue = "0") Integer page,

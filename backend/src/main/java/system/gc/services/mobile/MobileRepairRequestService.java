@@ -10,6 +10,7 @@ import system.gc.entities.Item;
 import system.gc.entities.RepairRequest;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
 import system.gc.exceptionsAdvice.exceptions.IllegalChangeOrderServiceException;
+import system.gc.exceptionsAdvice.exceptions.IllegalSelectedRepairRequestsException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Objects;
@@ -57,6 +58,8 @@ public interface MobileRepairRequestService extends MobileOrderServiceStatusUtil
     RepairRequestDTO save(Integer lesseeID, MobileRepairRequestToSaveDTO mobileRepairRequestToSaveDTO) throws EntityNotFoundException;
 
     RepairRequestDTO update(Integer lesseeID, RepairRequestDTO repairRequestDTO) throws ClassNotFoundException;
+
+    void delete(Integer lesseeID, Integer id) throws EntityNotFoundException, IllegalSelectedRepairRequestsException;
 
     ScreenNewRepairRequestMobileDataDTO screenData(Integer idLessee);
 

@@ -12,6 +12,7 @@ import system.gc.dtos.*;
 import system.gc.entities.*;
 import system.gc.exceptionsAdvice.exceptions.AccessDeniedOrderServiceException;
 import system.gc.exceptionsAdvice.exceptions.IllegalChangeOrderServiceException;
+import system.gc.exceptionsAdvice.exceptions.IllegalSelectedRepairRequestsException;
 import system.gc.repositories.RepairRequestRepository;
 import system.gc.services.mobile.MobileCondominiumService;
 import system.gc.services.mobile.MobileItemService;
@@ -152,6 +153,19 @@ public class MobileRepairRequestServiceImpl implements MobileRepairRequestServic
         repairRequest.setApartmentNumber(repairRequestDTO.getApartmentNumber());
         repairRequest.setProblemDescription(repairRequestDTO.getProblemDescription());
         return RepairRequestDTO.toDetailsMobile(repairRequestRepository.save(repairRequest));
+    }
+
+    @Override
+    public void delete(Integer lesseeID, Integer id) throws EntityNotFoundException, IllegalSelectedRepairRequestsException {
+        Optional<RepairRequest> repairRequestOptional = repairRequestRepository.searchToDelete(id);
+        RepairRequest repairRequest = repairRequestOptional.orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("TEXT_ERROR_REPAIR_REQUEST_NOT_FOUND", null, LocaleContextHolder.getLocale())));
+        if (!repairRequest.getStatus().getName().equalsIgnoreCase(STATUS_OPEN)) {
+            throw new IllegalSelectedRepairRequestsException(messageSource.getMessage("TEXT_ERROR_DELETE_REPAIR_REQUEST_STATUS", null, LocaleContextHolder.getLocale()));
+        }
+        if (!Objects.equals(lesseeID, repairRequest.getLessee().getId())) {
+            throw new IllegalSelectedRepairRequestsException(messageSource.getMessage("ACCESS_DENIED", null, LocaleContextHolder.getLocale()));
+        }
+        repairRequestRepository.deleteById(id);
     }
 
     @Override
