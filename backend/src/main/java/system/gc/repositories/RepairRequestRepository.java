@@ -79,4 +79,10 @@ public interface RepairRequestRepository extends JpaRepository<RepairRequest, In
             "LEFT JOIN FETCH repairRequest.condominium " +
             "WHERE repairRequest.id = :id AND lessee.id = :idLessee")
     Optional<RepairRequest> detailsRepairRequestFromLessee(Integer idLessee, Integer id);
+
+    @Query("SELECT repairRequest FROM RepairRequest repairRequest " +
+            "LEFT JOIN FETCH repairRequest.status " +
+            "LEFT JOIN FETCH repairRequest.lessee " +
+            "WHERE repairRequest.id = :id")
+    Optional<RepairRequest> searchToDelete(Integer id);
 }
