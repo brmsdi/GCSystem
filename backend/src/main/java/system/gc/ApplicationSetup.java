@@ -379,7 +379,7 @@ public class ApplicationSetup {
 
             initializeOrderService(repairRequestDTOSaved6,
                     Set.of(employeeElectrician),
-                    statusActive);
+                    statusOpen);
         } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());
         }
