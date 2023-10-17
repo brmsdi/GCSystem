@@ -23,6 +23,7 @@ public class TextUtils {
     public static final String ROLE_PLUMBER = "Encanador";
     public static final String ROLE_GENERAL_SERVICES = "Serviços gerais";
     public static final String ROLE_LESSEE = "Locatário";
+    public static final String[] ROLE_ALL_EMPLOYEES = { ROLE_ADMINISTRATOR, ROLE_ADMINISTRATIVE_ASSISTANT, ROLE_COUNTER, ROLE_ELECTRICIAN, ROLE_PLUMBER, ROLE_GENERAL_SERVICES };
     public static final String STATUS_IN_PROGRESS = "Em andamento";
     public static final String STATUS_CONCLUDED = "Concluído";
     public static final String STATUS_CANCELED = "Cancelado";
