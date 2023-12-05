@@ -10,12 +10,8 @@ services:
         - ./env/postgres.env
       networks:
         - gcsystem-net
-
   gcsystem-container:
-    image: gcsystem-image
-    build:
-      context: .
-      target: development
+    image: wisleymarques/gcsystem:latest
     ports:
       - "8000:8000"
       - "8080:8080"

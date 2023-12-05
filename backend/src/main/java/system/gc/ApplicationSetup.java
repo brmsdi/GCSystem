@@ -14,26 +14,28 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import system.gc.dtos.*;
 import system.gc.entities.*;
+import system.gc.exceptionsAdvice.exceptions.DebtNotCreatedException;
 import system.gc.repositories.RoleRepository;
 import system.gc.repositories.StatusRepository;
 import system.gc.repositories.TypeProblemRepository;
 import system.gc.security.EmployeeUserDetails;
-import system.gc.services.ServiceImpl.*;
+import system.gc.services.web.impl.*;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
-
 import static java.time.DayOfWeek.*;
+import static system.gc.utils.TextUtils.*;
 
 @Component
 @Slf4j
 public class ApplicationSetup {
 
     @Autowired
-    EmployeeService employeeService;
+    WebEmployeeService webEmployeeService;
 
     @Autowired
     RoleRepository roleRepository;
@@ -42,40 +44,40 @@ public class ApplicationSetup {
     StatusRepository statusRepository;
 
     @Autowired
-    StatusService statusService;
+    WebStatusService webStatusService;
 
     @Autowired
-    ActivityTypeService activityTypeService;
+    WebActivityTypeService webActivityTypeService;
 
     @Autowired
-    LocalizationService localizationService;
+    WebLocalizationService webLocalizationService;
 
     @Autowired
-    CondominiumService condominiumService;
+    WebCondominiumService webCondominiumService;
 
     @Autowired
-    ContractService contractService;
+    WebContractService webContractService;
 
     @Autowired
-    LesseeService lesseeService;
+    WebLesseeService webLesseeService;
 
     @Autowired
-    DebtService debtService;
+    WebDebtService webDebtService;
 
     @Autowired
     TypeProblemRepository typeProblemRepository;
 
     @Autowired
-    TypeProblemService typeProblemService;
+    WebTypeProblemService webTypeProblemService;
 
     @Autowired
-    RepairRequestService repairRequestService;
+    WebRepairRequestService webRepairRequestService;
 
     @Autowired
-    OrderServiceService orderServiceService;
+    WebOrderServiceService webOrderServiceService;
 
     @Autowired
-    private DataReloadService dataReloadService;
+    private WebDataReloadService webDataReloadService;
 
     @Autowired
     Environment environment;
@@ -100,67 +102,66 @@ public class ApplicationSetup {
     {
         log.info("Inserindo dados");
         // ROLE
-        //List<Role> roleList = new ArrayList<>();
-        Role roleADM = roleRepository.save(new Role("Administrador"));
-        Role roleCounter = roleRepository.save(new Role("Contador"));
-        Role roleAssistant = roleRepository.save(new Role("Assistente administrativo"));
-        Role electrician = roleRepository.save(new Role("Eletricista"));
-        Role plumber = roleRepository.save(new Role("Encanador"));
-        Role generalServices = roleRepository.save(new Role("Serviços gerais"));
-        //roleService.save(roleList);
+        Role roleADM = roleRepository.save(new Role(ROLE_ADMINISTRATOR));
+        Role roleAssistant = roleRepository.save(new Role(ROLE_ADMINISTRATIVE_ASSISTANT));
+        Role roleCounter = roleRepository.save(new Role(ROLE_COUNTER));
+        Role electrician = roleRepository.save(new Role(ROLE_ELECTRICIAN));
+        Role plumber = roleRepository.save(new Role(ROLE_PLUMBER));
+        Role generalServices = roleRepository.save(new Role(ROLE_GENERAL_SERVICES));
+        Role lesseeRole = roleRepository.save(new Role(ROLE_LESSEE));
 
         // Status
         List<Status> statusList = new ArrayList<>();
-        Status statusActive = statusRepository.save(new Status("Ativo"));
-        statusList.add(new Status("Inativo"));
-        Status statusOpen = statusRepository.save(new Status("Aberto"));
-        statusList.add(new Status("Em andamento"));
-        statusList.add(new Status("Desativado"));
-        statusList.add(new Status("Aguardando"));
-        statusList.add(new Status("Valido"));
-        statusList.add(new Status("Invalido"));
-        statusList.add(new Status("Cancelado"));
-        statusList.add(new Status("Resgatado"));
-        statusList.add(new Status("Concluído"));
-        statusList.add(new Status("Deletado"));
-        Status statusAvailable = statusRepository.save(new Status("Disponível"));
-        statusList.add(new Status("Indisponível"));
-        statusList.add(new Status("Lotado"));
-        statusList.add(new Status("Encerrado"));
-        statusList.add(new Status("Expirado"));
-        statusList.add(new Status("Vencido"));
-        statusList.add(new Status("Atrasado"));
-        statusList.add(new Status("Pago"));
-        statusService.save(statusList);
+        Status statusActive = statusRepository.save(new Status(STATUS_ACTIVE));
+        statusList.add(new Status(STATUS_INACTIVE));
+        Status statusOpen = statusRepository.save(new Status(STATUS_OPEN));
+        statusList.add(new Status(STATUS_IN_PROGRESS));
+        statusList.add(new Status(STATUS_DISABLED));
+        statusList.add(new Status(STATUS_WAITING));
+        statusList.add(new Status(STATUS_VALID));
+        statusList.add(new Status(STATUS_INVALID));
+        statusList.add(new Status(STATUS_CANCELED));
+        statusList.add(new Status(STATUS_RESCUED));
+        statusList.add(new Status(STATUS_CONCLUDED));
+        statusList.add(new Status(STATUS_DELETED));
+        Status statusAvailable = statusRepository.save(new Status(STATUS_AVAILABLE));
+        statusList.add(new Status(STATUS_UNAVAILABLE));
+        statusList.add(new Status(STATUS_CROWDED));
+        statusList.add(new Status(STATUS_CLOSED));
+        statusList.add(new Status(STATUS_EXPIRED));
+        statusList.add(new Status(STATUS_OVERDUE));
+        statusList.add(new Status(STATUS_LATE));
+        statusList.add(new Status(STATUS_PAID));
+        webStatusService.save(statusList);
 
         // ACTIVITY TYPE
         List<ActivityType> activityTypeList = new ArrayList<>();
-        activityTypeList.add(new ActivityType("Registrado"));
-        activityTypeList.add(new ActivityType("Atualizado"));
-        activityTypeList.add(new ActivityType("Desativado"));
-        activityTypeList.add(new ActivityType("Deletado"));
-        activityTypeService.save(activityTypeList);
+        activityTypeList.add(new ActivityType(ACTIVITY_TYPE_REGISTERED));
+        activityTypeList.add(new ActivityType(ACTIVITY_TYPE_UPDATED));
+        activityTypeList.add(new ActivityType(ACTIVITY_TYPE_DISABLED));
+        activityTypeList.add(new ActivityType(ACTIVITY_TYPE_DELETED));
+        webActivityTypeService.save(activityTypeList);
 
         List<TypeProblem> typeProblemList = new ArrayList<>();
-        TypeProblem typeProblemDTOElectric = typeProblemRepository.save(new TypeProblem("Elétrico"));
-        typeProblemList.add(new TypeProblem("Hidráulico"));
-        typeProblemList.add(new TypeProblem("Outros"));
-        typeProblemService.save(typeProblemList);
+        TypeProblem typeProblemDTOElectric = typeProblemRepository.save(new TypeProblem(TYPE_PROBLEM_ELECTRIC));
+        typeProblemList.add(new TypeProblem(TYPE_PROBLEM_HYDRAULIC));
+        typeProblemList.add(new TypeProblem(TYPE_PROBLEM_OTHERS));
+        webTypeProblemService.save(typeProblemList);
 
         try
         {
             // EMPLOYEE
-            employeeService.save(new EmployeeDTO("Wisley Bruno Marques França",
+            webEmployeeService.save(new EmployeeDTO("Wisley Bruno Marques França",
                     "2343435",
                     "12345678910",
                     Date.from(ZonedDateTime.of(1995, 12, 6, 8, 0, 0, 0, zoneManaus).toInstant()),
-                    "srmarquesms@gmail.com",
+                    "srwisley.dev@gmail.com",
                     Date.from(ZonedDateTime.of(2022, 1, 1, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "admin",
                     new RoleDTO(roleADM),
                     null,
                     new StatusDTO(statusActive)));
-            Employee auth = employeeService.authentication("12345678910");
+            Employee auth = webEmployeeService.authentication("12345678910");
             UserDetails userDetails = new EmployeeUserDetails(auth);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails.getUsername(),
@@ -205,6 +206,18 @@ public class ApplicationSetup {
                     null,
                     statusActive);
 
+            EmployeeDTO employeeElectrician2 = initializeEmployee(
+                    "Henrique",
+                    "69538534",
+                    "12578678142",
+                    Date.from(ZonedDateTime.of(2000, 12, 8, 8, 0, 0, 0, zoneManaus).toInstant()),
+                    "henrique.exemple@gmail.com",
+                    hiringDate,
+                    "henrique123",
+                    electrician,
+                    null,
+                    statusActive);
+
             initializeEmployee(
                     "Antonio Junior",
                     "3951534",
@@ -230,8 +243,8 @@ public class ApplicationSetup {
                     statusActive);
 
             //LOCALIZATION
-            LocalizationDTO localizationDTO = localizationService.save(new LocalizationDTO("Flores", "Rua Barão de Palmares", 69058200));
-            LocalizationDTO localizationDTO1 = localizationService.save(new LocalizationDTO("Parque 10 de Novembro", "Rua Dom Diogo de souza",  69054641));
+            LocalizationDTO localizationDTO = webLocalizationService.save(new LocalizationDTO("Flores", "Rua Barão de Palmares", 69058200));
+            LocalizationDTO localizationDTO1 = webLocalizationService.save(new LocalizationDTO("Parque 10 de Novembro", "Rua Dom Diogo de souza",  69054641));
 
             // CONDOMINIUM
             CondominiumDTO condominiumDTO = new CondominiumDTO("Villa Lobos",
@@ -239,7 +252,7 @@ public class ApplicationSetup {
                     20,
                     new StatusDTO(statusAvailable),
                     new LocalizationCondominiumDTO("500", localizationDTO));
-            condominiumService.save(condominiumDTO);
+            webCondominiumService.save(condominiumDTO);
             for (int i = 2; i < 8; i++) {
                 initializeCondominium(
                         "CONDOMÍNIO-" + i,
@@ -251,45 +264,19 @@ public class ApplicationSetup {
             }
 
             // LESSEE
-            LesseeDTO lesseeDTODEV = new LesseeDTO(
-                    "Rafael da Silva Monteiro",
+            LesseeDTO lesseeDTO = new LesseeDTO(
+                    "Francisco da Silva",
                     "63598623",
-                    "12563256347",
+                    "12345678909",
                     Date.from(ZonedDateTime.of(2003, 6, 2, 8, 0, 0, 0, zoneManaus).toInstant()),
                     "brmarques.dev@gmail.com",
                     "92941571491",
-                    "rafael123",
-                    new StatusDTO(statusActive)
+                    "francisco123",
+                    new StatusDTO(statusActive),
+                    new RoleDTO(lesseeRole)
             );
-
-            lesseeService.save(lesseeDTODEV);
-
-            LesseeDTO lesseeDTODEV2 = new LesseeDTO(
-                    "Juliana Costa da Silva",
-                    "78598423",
-                    "45565625634",
-                    Date.from(ZonedDateTime.of(1992, 6, 2, 8, 0, 0, 0, zoneManaus).toInstant()),
-                    "example-juliana@gmail.com",
-                    "92991471431",
-                    "juliana123",
-                    new StatusDTO(statusActive)
-            );
-
-            LesseeDTO lesseeDTODEV2Save = lesseeService.save(lesseeDTODEV2);
-            for (int i = 10; i < 35; i++) {
-                initializeLessee(
-                        "Locatário " + i,
-                        "635986" + i,
-                        "125632566" + i,
-                        Date.from(ZonedDateTime.of(2003, 6, 2, 8, 0, 0, 0, zoneManaus).toInstant()),
-                        String.format("example-%d@gmail.com", i),
-                        "9298863526" + i,
-                        "785452545" + i,
-                        statusActive
-                );
-            }
-
-            Page<CondominiumDTO> condominiumDTOPage = condominiumService.listPaginationCondominium(PageRequest.of(0, 5));
+            LesseeDTO lesseeSaved = webLesseeService.save(lesseeDTO);
+            Page<CondominiumDTO> condominiumDTOPage = webCondominiumService.listPaginationCondominium(PageRequest.of(0, 5));
 
             // CONTRACT
             initializeContract(
@@ -301,34 +288,98 @@ public class ApplicationSetup {
                     10,
                     statusActive,
                     condominiumDTOPage.toList().get(2),
-                    lesseeDTODEV2Save);
+                    lesseeSaved);
+
+            initializeContract(
+                    oneMonthAgo,
+                    5000.00,
+                    today.getDayOfMonth(),
+                    today.plusDays(5).getDayOfMonth(),
+                    oneMonthAgo.plusMonths(6),
+                    10,
+                    statusActive,
+                    condominiumDTOPage.toList().get(1),
+                    lesseeSaved);
 
             // DEBTS
-            Page<ContractDTO> contractDTOPage = contractService.searchContract(PageRequest.of(0, 5), lesseeDTODEV2Save);
+            Page<ContractDTO> contractDTOPage = webContractService.searchContract(PageRequest.of(0, 5), lesseeSaved);
             ContractDTO contractDTO = contractDTOPage.toList().get(0);
-            initializeDebt(contractDTO.getContractValue(), statusOpen, lesseeDTODEV2Save, today);
+            initializeDebt(contractDTO.getContractValue(), statusOpen, lesseeSaved, today);
 
             // REPAIR REQUESTS
             RepairRequestDTO repairRequestDTOSaved = initializeRepairRequests("Troca de fios eletricos",
                     new TypeProblemDTO(typeProblemDTOElectric),
-                    lesseeDTODEV2Save,
+                    lesseeSaved,
+                    condominiumDTOPage.toList().get(2),
+                    "10",
+                    statusOpen);
+
+            RepairRequestDTO repairRequestDTOSaved2 = initializeRepairRequests("Troca de fios eletricos 2",
+                    new TypeProblemDTO(typeProblemDTOElectric),
+                    lesseeSaved,
+                    condominiumDTOPage.toList().get(2),
+                    "10",
+                    statusOpen);
+
+            RepairRequestDTO repairRequestDTOSaved3 = initializeRepairRequests("Troca de fios eletricos 2",
+                    new TypeProblemDTO(typeProblemDTOElectric),
+                    lesseeSaved,
+                    condominiumDTOPage.toList().get(2),
+                    "10",
+                    statusOpen);
+
+            RepairRequestDTO repairRequestDTOSaved4 = initializeRepairRequests("Troca de fios eletricos 2",
+                    new TypeProblemDTO(typeProblemDTOElectric),
+                    lesseeSaved,
+                    condominiumDTOPage.toList().get(2),
+                    "10",
+                    statusOpen);
+
+            RepairRequestDTO repairRequestDTOSaved5 = initializeRepairRequests("Troca de fios eletricos 2",
+                    new TypeProblemDTO(typeProblemDTOElectric),
+                    lesseeSaved,
+                    condominiumDTOPage.toList().get(2),
+                    "10",
+                    statusOpen);
+
+            RepairRequestDTO repairRequestDTOSaved6 = initializeRepairRequests("Troca de fios eletricos 2",
+                    new TypeProblemDTO(typeProblemDTOElectric),
+                    lesseeSaved,
                     condominiumDTOPage.toList().get(2),
                     "10",
                     statusOpen);
 
             initializeRepairRequests("Problema de energia",
                     new TypeProblemDTO(typeProblemDTOElectric),
-                    lesseeDTODEV2Save,
+                    lesseeSaved,
                     condominiumDTOPage.toList().get(2),
                     "10",
                     statusOpen);
 
             // ORDER SERVICE
             initializeOrderService(repairRequestDTOSaved,
-                    employeeElectrician,
+                    Set.of(employeeElectrician, employeeElectrician2),
                     statusOpen);
 
+            initializeOrderService(repairRequestDTOSaved2,
+                    Set.of(employeeElectrician2),
+                    statusActive);
 
+            initializeOrderService(repairRequestDTOSaved3,
+                    Set.of(employeeElectrician),
+                    statusOpen);
+
+            initializeOrderService(repairRequestDTOSaved4,
+                    Set.of(employeeElectrician),
+                    statusOpen);
+
+            initializeOrderService(repairRequestDTOSaved5,
+                    Set.of(employeeElectrician),
+                    statusOpen);
+
+            initializeOrderService(repairRequestDTOSaved6,
+                    Set.of(employeeElectrician),
+                    statusOpen);
         } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());
         }
@@ -344,7 +395,7 @@ public class ApplicationSetup {
     public void initDataProfileDev()
     {
         if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("development")) return;
-        dataReloadService.deleteAll();
+        webDataReloadService.deleteAll();
         execute();
     }
 
@@ -352,7 +403,7 @@ public class ApplicationSetup {
     public void initDataProfileProd()
     {
         if (!Arrays.stream(environment.getActiveProfiles()).toList().contains("production")) return;
-        dataReloadService.deleteAll();
+        webDataReloadService.deleteAll();
         execute();
     }
 
@@ -379,7 +430,7 @@ public class ApplicationSetup {
                 new RoleDTO(role),
                 movements,
                 new StatusDTO(status));
-        return employeeService.save(employeeDTO);
+        return webEmployeeService.save(employeeDTO);
     }
 
     private void initializeCondominium(
@@ -396,31 +447,9 @@ public class ApplicationSetup {
                 numberApartments,
                 new StatusDTO(status),
                 localization);
-        condominiumService.save(condominiumDTO);
+        webCondominiumService.save(condominiumDTO);
     }
 
-    private void initializeLessee(
-            String name,
-            String rg,
-            String cpf,
-            Date birthDate,
-            String email,
-            String contactNumber,
-            String password,
-            Status status
-    ) throws ParseException {
-        LesseeDTO lesseeDTO = new LesseeDTO(
-                name,
-                rg,
-                cpf,
-                birthDate,
-                email,
-                contactNumber,
-                password,
-                new StatusDTO(status)
-        );
-        lesseeService.save(lesseeDTO);
-    }
 
     private void initializeContract(
             ZonedDateTime contractDate,
@@ -441,10 +470,10 @@ public class ApplicationSetup {
                 new StatusDTO(status),
                 condominium,
                 lessee);
-        contractService.save(contractDTO);
+        webContractService.save(contractDTO);
     }
 
-    private void initializeDebt(double value, Status status, LesseeDTO lesseeDTO, ZonedDateTime openDate) throws ParseException {
+    private void initializeDebt(double value, Status status, LesseeDTO lesseeDTO, ZonedDateTime openDate) throws ParseException, DebtNotCreatedException {
         // Prazo de validade
         int days = getDueDate(1, 7, openDate);
         DebtDTO debtDTO = new DebtDTO(simpleDateFormat.parse(openDate.plusDays(days).toString()),
@@ -452,7 +481,7 @@ public class ApplicationSetup {
                 new StatusDTO().toDTO(status),
                 null,
                 lesseeDTO);
-        debtService.save(debtDTO);
+        webDebtService.save(debtDTO);
     }
 
     /**
@@ -494,20 +523,20 @@ public class ApplicationSetup {
                 condominiumDTO,
                 apartmentNumber,
                 new StatusDTO(status));
-        return repairRequestService.save(repairRequestDTO);
+        return webRepairRequestService.save(repairRequestDTO);
     }
 
     private void initializeOrderService(
             RepairRequestDTO repairRequestDTO,
-            EmployeeDTO employeeDTO,
+            Set<EmployeeDTO> employeeDTO,
             Status status) throws ParseException {
         OrderServiceDTO orderServiceDTO = new OrderServiceDTO(
                 simpleDateFormat.parse(today.toString()),
                 simpleDateFormat.parse(tomorrow.toString()),
                 Set.of(repairRequestDTO),
-                Set.of(employeeDTO),
+                employeeDTO,
                 new StatusDTO(status)
         );
-        orderServiceService.save(orderServiceDTO);
+        webOrderServiceService.save(orderServiceDTO);
     }
 }

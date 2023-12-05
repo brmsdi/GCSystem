@@ -121,13 +121,13 @@ const ItemTable = (props: IProps) => {
       <th className="thead-min">Valor do contrato</th>
       <td>{formatCoinPTBRForView(item.contractValue)}</td>
       <th className="thead-min">Data do contrato</th>
-      <td>{formatDateForView(item.contractDate)}</td>
+      <td>{formatDateForView(item.contractDate?.toString())}</td>
       <th className="thead-min">Dia de pagamento</th>
       <td>{item.monthlyPaymentDate}</td>
       <th className="thead-min">Dia de vencimento</th>
       <td>{item.monthlyDueDate}</td>
       <th className="thead-min">Data de validade</th>
-      <td>{formatDateForView(item.contractExpirationDate)}</td>
+      <td>{formatDateForView(item.contractExpirationDate?.toString())}</td>
       <th className="thead-min">Nº do apartamento</th>
       <td>{item.apartmentNumber}</td>
       <th className="thead-min">Status</th>

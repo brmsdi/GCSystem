@@ -24,9 +24,10 @@ const RecoverPasswordSendCode = () => {
   async function submit(event: any) {
     event.preventDefault();
     try {
+      if (stateChangePassword.requestType === undefined) return
       setSending(true)
       await verifyCurrentState();
-      let data = await validateCode({ ...stateChangePassword, ...form })
+      let data = await validateCode(stateChangePassword.requestType.requestSendCode, { ...stateChangePassword, ...form})
       let newForm: EmailRequestCode = {
         ...stateChangePassword,
         ...form,
@@ -64,7 +65,7 @@ const RecoverPasswordSendCode = () => {
   }
 
   if (sending) return <PageMessage title="Validando código" />
-
+  
   return (
     <div className="content-login animate-down">
       <form id="form-send-code" onSubmit={submit}>

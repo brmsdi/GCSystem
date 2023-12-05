@@ -68,9 +68,10 @@ Os dados do banco são atualizados a cada 30 minutos através de um micro servi�
 9. Bootstrap
 10. Redux 
 11. SASS
-12. DESCONTINUADO -> Heroku (backend e banco de dados)
-13. netlify (frontend)
-14. SAP BTP (backend e banco de dados)
+12. netlify (frontend)
+13. Render.com (Backend e banco de dados)
+14. DESCONTINUADO -> SAP BTP (backend e banco de dados)
+15. DESCONTINUADO -> Heroku (backend e banco de dados)
 
 #### 7.	Contato
 

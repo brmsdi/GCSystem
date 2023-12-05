@@ -45,6 +45,6 @@ export enum TypeEnumActionTables {
     UPDATE="UPDATE"
 }
 
-export type ModalStateInformations = {
+export type ModalStateInformation = {
     isOpen: boolean
 }

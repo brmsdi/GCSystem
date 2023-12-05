@@ -1,4 +1,4 @@
-import reactDom from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 import { Provider } from 'react-redux'
 import store from 'store';
@@ -42,7 +42,10 @@ import RepairRequestsView from 'views/RepairRequests';
 import OrderServiceView from 'views/OrderServices';
 import { REQUEST_CONDOMINIUMS, REQUEST_CONTRACTS, REQUEST_DEBTS, REQUEST_EMPLOYEES, REQUEST_LESSEES, REQUEST_ORDER_SERVICES, REQUEST_REPAIR_REQUESTS } from 'utils/requests';
 
-reactDom.render(
+const container = document.getElementById("root");
+const root = createRoot(container);
+
+root.render(
   <Provider store={store}>
     <BrowserRouter>
       <Routes>
@@ -165,6 +168,5 @@ reactDom.render(
         />
       </Routes>
     </BrowserRouter>
-  </Provider>,
-  document.getElementById("root")
+  </Provider>
 );

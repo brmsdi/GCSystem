@@ -12,14 +12,15 @@ import { Lessee } from "types/lessee";
 import { RepairRequest } from "types/repair-request";
 import { Status } from "types/status";
 import { TypeProblem } from "types/type-problem";
-import { formatDate } from "utils/text-format";
 import {
   isValidFieldCPF,
   isValidFieldNumber,
   isValidFieldText,
   isSelected,
-  repairRequestIsProgress,
+  repairRequestIsProgressOrConcluded,
 } from "utils/verifications";
+
+import DatePicker from "react-datepicker";
 
 interface IProps {
   initForm: RepairRequest;
@@ -108,7 +109,7 @@ const FormTemplate = (props: IProps) => {
     checkLegend(
       "fieldset-repair-informations",
       isValidFieldText(form.problemDescription) &&
-        isValidFieldText(form.date) &&
+        isValidFieldText(form.date?.toString()) &&
         isValidFieldNumber(form.typeProblem.id) &&
         isValidFieldNumber(form.status.id)
     );
@@ -194,7 +195,7 @@ const FormTemplate = (props: IProps) => {
     ) {
       let currentItems: Item[] = addedItems;
       currentItems.unshift(item);
-      setAddedItems([...addedItems]);
+      setAddedItems([...currentItems]);
       clearItem();
       return;
     }
@@ -250,9 +251,6 @@ const FormTemplate = (props: IProps) => {
     }
   }
 
-  console.log("ok " + repairRequestIsProgress(props.initForm.status));
-  console.log("ok " + form.status.name);
-
   return (
     <form onSubmit={submit}>
       <fieldset id="fieldset-repair-informations">
@@ -279,12 +277,10 @@ const FormTemplate = (props: IProps) => {
           </div>
           <div className="form-container l2">
             <label htmlFor="inputDate">Data de solicitação</label>
-            <input
-              type="date"
-              id="inputDate"
-              name="date"
-              value={form.date.length > 0 ? formatDate(form.date) : form.date}
-              onChange={(e) => changeInput({ date: e.target.value })}
+            <DatePicker
+              selected={form.date !== null ? new Date(form.date) : null}
+              onChange={(date: Date) => changeInput({ date: date })}
+              dateFormat={"dd/MM/yyyy"}
               required
             />
           </div>
@@ -304,7 +300,7 @@ const FormTemplate = (props: IProps) => {
               ))}
             </select>
           </div>
-          {repairRequestIsProgress(props.initForm.status) ? (
+          {repairRequestIsProgressOrConcluded(props.initForm.status) ? (
             <div className="form-container l2">
               <label htmlFor="inputStatus">Status</label>
               <select

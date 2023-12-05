@@ -8,6 +8,12 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Getter
 @Setter
 public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, AuthenticateDTO<LesseeDTO, Lessee> {
@@ -43,6 +49,9 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
 
     private Set<DebtDTO> debts;
 
+    @NotNull(message = "{required.validation}")
+    private RoleDTO role;
+
     //private Set<Contract> contracts = new HashSet<>();
 
     public LesseeDTO() {
@@ -52,7 +61,7 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
         setCpf(cpf);
     }
 
-    public LesseeDTO(String name, String rg, String cpf, Date birthDate, String email, String contactNumber, String password, StatusDTO status) {
+    public LesseeDTO(String name, String rg, String cpf, Date birthDate, String email, String contactNumber, String password, StatusDTO status, RoleDTO role) {
         setName(name);
         setRg(rg);
         setCpf(cpf);
@@ -61,6 +70,7 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
         setContactNumber(contactNumber);
         setPassword(password);
         setStatus(status);
+        setRole(role);
     }
 
     public LesseeDTO(Lessee lessee) {
@@ -72,6 +82,7 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
         setEmail(lessee.getEmail());
         setContactNumber(lessee.getContactNumber());
         setStatus(new StatusDTO().toDTO(lessee.getStatus()));
+        setRole(new RoleDTO().toDTO(lessee.getRole()));
     }
 
     @Override
@@ -90,7 +101,8 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
                 lesseeDTO.getPassword(),
                 new StatusDTO().toEntity(lesseeDTO.getStatus()),
                 null,
-                null);
+                null,
+                new RoleDTO().toEntity(lesseeDTO.getRole()));
         if (lesseeDTO.getId() != null) {
             lessee.setId(lesseeDTO.getId());
         }
@@ -109,6 +121,7 @@ public class LesseeDTO implements ConvertEntityAndDTO<LesseeDTO, Lessee>, Authen
         result.setCpf(lessee.getCpf());
         result.setStatus(new StatusDTO(lessee.getStatus()));
         result.setPassword(lessee.getPassword());
+        result.setRole(new RoleDTO(lessee.getRole()));
         return result;
     }
 }

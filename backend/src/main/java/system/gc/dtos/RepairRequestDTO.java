@@ -2,13 +2,19 @@ package system.gc.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
-import system.gc.entities.Condominium;
-import system.gc.entities.Lessee;
-import system.gc.entities.RepairRequest;
+import system.gc.entities.*;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
+
+/**
+ * @author Wisley Bruno Marques França
+ * @version 1.3
+ * @since 0.0.1
+ */
 
 @Getter
 @Setter
@@ -35,9 +41,12 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
     @NotBlank(message = "{required.validation}")
     private String apartmentNumber;
 
-    public RepairRequestDTO() {}
+    private OrderServiceDTO orderService;
 
-    public RepairRequestDTO(String problemDescription, Date date, TypeProblemDTO typeProblem, LesseeDTO lessee, CondominiumDTO condominium, String apartmentNumber,  StatusDTO status) {
+    public RepairRequestDTO() {
+    }
+
+    public RepairRequestDTO(String problemDescription, Date date, TypeProblemDTO typeProblem, LesseeDTO lessee, CondominiumDTO condominium, String apartmentNumber, StatusDTO status) {
         setProblemDescription(problemDescription);
         setDate(date);
         setTypeProblem(typeProblem);
@@ -51,6 +60,7 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         setId(repairRequest.getId());
         setProblemDescription(repairRequest.getProblemDescription());
         setDate(repairRequest.getDate());
+        setApartmentNumber(repairRequest.getApartmentNumber());
         setTypeProblem(new TypeProblemDTO().toDTO(repairRequest.getTypeProblem()));
         setStatus(new StatusDTO().toDTO(repairRequest.getStatus()));
         LesseeDTO lesseeDTO = new LesseeDTO();
@@ -63,8 +73,8 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         CondominiumDTO condominiumDTO = new CondominiumDTO();
         condominiumDTO.setId(repairRequest.getCondominium().getId());
         condominiumDTO.setName(repairRequest.getCondominium().getName());
+        condominiumDTO.setNumberApartments(repairRequest.getCondominium().getNumberApartments());
         setCondominium(condominiumDTO);
-        setApartmentNumber(repairRequest.getApartmentNumber());
         setItems(new ItemDTO().convertSetEntityToSetEntityDTO(repairRequest.getItems()));
     }
 
@@ -92,7 +102,7 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         repairRequest.setApartmentNumber(repairRequestDTO.getApartmentNumber());
         repairRequest.setStatus(new StatusDTO().toEntity(repairRequestDTO.getStatus()));
         repairRequest.setItems(new ItemDTO().convertSetEntityDTOToSetEntity(repairRequestDTO.getItems()));
-        if(repairRequestDTO.getId() != null ) {
+        if (repairRequestDTO.getId() != null) {
             repairRequest.setId(repairRequestDTO.getId());
         }
         return repairRequest;
@@ -105,6 +115,42 @@ public class RepairRequestDTO implements ConvertEntityAndDTO<RepairRequestDTO, R
         repairRequestDTO.setProblemDescription(repairRequest.getProblemDescription());
         repairRequestDTO.setDate(repairRequest.getDate());
         repairRequestDTO.setTypeProblem(new TypeProblemDTO(repairRequest.getTypeProblem()));
+        return repairRequestDTO;
+    }
+
+    public static RepairRequestDTO forViewListMobile(RepairRequest repairRequest) {
+        RepairRequestDTO repairRequestDTO = new RepairRequestDTO();
+        repairRequestDTO.setId(repairRequest.getId());
+        repairRequestDTO.setCondominium(CondominiumDTO.forRepairRequestViewListMobile(repairRequest.getCondominium()));
+        repairRequestDTO.setTypeProblem(new TypeProblemDTO(repairRequest.getTypeProblem()));
+        repairRequestDTO.setStatus(new StatusDTO(repairRequest.getStatus()));
+        return repairRequestDTO;
+    }
+
+    public static RepairRequestDTO toDetailsMobile(RepairRequest repairRequest) {
+        RepairRequestDTO repairRequestDTO = new RepairRequestDTO();
+        repairRequestDTO.setId(repairRequest.getId());
+        repairRequestDTO.setCondominium(new CondominiumDTO());
+        repairRequestDTO.getCondominium().setId(repairRequest.getCondominium().getId());
+        repairRequestDTO.getCondominium().setName(repairRequest.getCondominium().getName());
+        repairRequestDTO.setApartmentNumber(repairRequest.getApartmentNumber());
+        repairRequestDTO.setProblemDescription(repairRequest.getProblemDescription());
+        repairRequestDTO.setDate(repairRequest.getDate());
+        repairRequestDTO.setTypeProblem(new TypeProblemDTO().toDTO(repairRequest.getTypeProblem()));
+        if (repairRequest.getOrderService() != null && repairRequest.getOrderService().getId() != null) {
+            repairRequestDTO.setOrderService(new OrderServiceDTO());
+            repairRequestDTO.getOrderService().setId(repairRequest.getOrderService().getId());
+            if (!repairRequest.getOrderService().getEmployees().isEmpty()) {
+                Set<EmployeeDTO> employeeDTOSet = new HashSet<>();
+                repairRequest.getOrderService().getEmployees().forEach(employee -> {
+                    EmployeeDTO employeeDTO = new EmployeeDTO();
+                    employeeDTO.setId(employee.getId());
+                    employeeDTO.setName(employee.getName());
+                    employeeDTOSet.add(employeeDTO);
+                });
+                repairRequestDTO.getOrderService().setEmployees(employeeDTOSet);
+            }
+        }
         return repairRequestDTO;
     }
 }

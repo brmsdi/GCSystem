@@ -6,8 +6,15 @@ import java.util.*;
 
 /**
  * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
  */
 public interface ConvertEntityAndDTO<DTO, E> {
+    /**
+     * Este método converte as entidades em DTOS para serem enviados nas respostas das requisições
+     * @param entityList - Coleção de entidades
+     * @return Coleção de entidades convertidades para DTO
+     */
     default Set<DTO> convertSetEntityToSetEntityDTO(Set<E> entityList) {
         if (entityList == null || entityList.isEmpty()) {
             return null;
@@ -17,6 +24,11 @@ public interface ConvertEntityAndDTO<DTO, E> {
         return convertedList;
     }
 
+    /**
+     * Este método converte os DTOS em entidades
+     * @param setEntityDTO - Coleção de DTOS
+     * @return Coleção de entidades
+     */
     default Set<E> convertSetEntityDTOToSetEntity(Set<DTO> setEntityDTO) {
         if (setEntityDTO == null || setEntityDTO.isEmpty()) {
             return null;
@@ -26,6 +38,11 @@ public interface ConvertEntityAndDTO<DTO, E> {
         return convertedList;
     }
 
+    /**
+     * Este método converte as entidades em DTOS para serem enviados nas respostas das requisições
+     * @param entityList - Coleção de entidades
+     * @return Coleção de entidades convertidades para DTO
+     */
     default List<DTO> convertListEntityToListDTO(List<E> entityList) {
         if (entityList == null || entityList.isEmpty()) {
             return null;
@@ -35,6 +52,11 @@ public interface ConvertEntityAndDTO<DTO, E> {
         return convertedList;
     }
 
+    /**
+     * Este método converte os DTOS em entidades
+     * @param listEntityDTO - Coleção de DTOS
+     * @return Coleção de entidades
+     */
     default List<E> convertListEntityDTOToListEntity(List<DTO> listEntityDTO) {
         if (listEntityDTO == null || listEntityDTO.isEmpty()) {
             return null;
@@ -104,7 +126,15 @@ public interface ConvertEntityAndDTO<DTO, E> {
         }
     }
 
+    /**
+     * @param e - Entidade que será convertida para DTO
+     * @return DTO - Entidade convertida para DTO
+     */
     DTO toDTO(E e);
 
+    /**
+     * @param DTO - DTO que será convertido para entidade
+     * @return E - DTO convertido para entidade
+     */
     E toEntity(DTO DTO);
 }

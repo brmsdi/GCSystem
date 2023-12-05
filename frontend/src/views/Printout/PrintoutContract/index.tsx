@@ -73,7 +73,7 @@ const PrintoutContract = () => {
             <p>
               {
                 `2.1 O prazo de locação é de no mínimo 03 meses, iniciando-se em
-                ${formatDateForView(contract.contractDate)} com término em ${formatDateForView(contract.contractExpirationDate)}, independentemente de
+                ${formatDateForView(contract.contractDate?.toString())} com término em ${formatDateForView(contract.contractExpirationDate?.toString())}, independentemente de
                 aviso, notificação ou interpelação judicial ou extrajudicial.`
               }
             </p>

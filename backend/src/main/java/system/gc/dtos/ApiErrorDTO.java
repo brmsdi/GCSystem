@@ -8,7 +8,8 @@ import java.util.Set;
 
 /**
  * @author Wisley Bruno Marques França
- * @since 25/01/2022
+ * @since 0.0.1
+ * @version 1.3
  */
 @Getter
 @Setter

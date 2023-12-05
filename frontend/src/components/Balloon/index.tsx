@@ -8,7 +8,6 @@ const Balloon = (props: IProps) => {
   return (
     <div id={props.id} className="balloon">
       <a
-        className="animate-shake"
         title={props.title}
         href={props.link}
         target="_blank"

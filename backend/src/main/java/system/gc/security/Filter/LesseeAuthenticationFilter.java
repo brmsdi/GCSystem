@@ -13,6 +13,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Slf4j
 public class LesseeAuthenticationFilter extends UsernamePasswordAuthenticationFilter implements CreateTokenSuccessFulAuthentication {
     @Override
@@ -25,9 +31,8 @@ public class LesseeAuthenticationFilter extends UsernamePasswordAuthenticationFi
             createTokenSuccessFulAuthentication(response, params);
         } catch (Exception e) {
             log.error("Erro ao criar token");
+            e.printStackTrace();
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
-
-        //super.successfulAuthentication(request, response, chain, authResult);
     }
 }

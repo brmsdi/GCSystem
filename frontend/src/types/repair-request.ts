@@ -1,4 +1,4 @@
-import { ModalStateInformations } from "./action";
+import { ModalStateInformation } from "./action";
 import { Condominium, CondominiumEmpty } from "./condominium";
 import { Item } from "./item";
 import { Lessee, LesseeEmpty } from "./lessee";
@@ -8,7 +8,7 @@ import { TypeProblem, TypeProblemEmpty } from "./type-problem";
 export type RepairRequest = {
     id?: number;
     problemDescription: string;
-    date: string;
+    date: Date | null;
     lessee: Lessee;
     condominium: Condominium;
     typeProblem: TypeProblem;
@@ -53,7 +53,7 @@ export const PaginationRepairRequestEmpty : PaginationRepairRequest = {
 
 export const RepairRequestEmpty : RepairRequest = {
     problemDescription: '',
-    date: '',
+    date: null,
     status: StatusEmpty,
     condominium: CondominiumEmpty,
     lessee: LesseeEmpty,
@@ -68,5 +68,5 @@ export type SelectedRepairRequestsOrderServiceAction = {
 
 export type StateModalOrderServiceRepairRequestsAction = {
     type: string,
-    payload: ModalStateInformations
+    payload: ModalStateInformation
 }

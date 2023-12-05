@@ -33,9 +33,17 @@ build/
 .vscode/
 
 #VAR
-*.env
+system-development.env
+system-production.env
+postgres.env
 create.sql
 
 #docker
 docker-compose.test.yaml
 docker-compose.production.yaml
+
+*.p12
+*.pem
+
+credentials-homo.json
+credentials-prod.json

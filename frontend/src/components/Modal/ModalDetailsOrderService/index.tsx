@@ -41,7 +41,7 @@ const ModalDetailsOrderService = (props: IProps) => {
         <div>
           <span className="modal-title">Data de abertura: </span>
           <span>
-            {formatDateForView(orderServiceSelectedFromModal.generationDate)}
+            {formatDateForView(orderServiceSelectedFromModal.generationDate?.toString())}
           </span>
         </div>
         <div>

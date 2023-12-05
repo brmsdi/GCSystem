@@ -6,12 +6,13 @@ import { StateFormEnum } from "types/action";
 import { Debt } from "types/debt";
 import { Lessee } from "types/lessee";
 import { Status } from "types/status";
-import { formatDate } from "utils/text-format";
 import {
   isValidFieldCPF,
   isValidFieldNumber,
   isValidFieldText,
 } from "utils/verifications";
+
+import DatePicker from "react-datepicker";
 
 interface IProps {
   initForm: Debt;
@@ -55,7 +56,7 @@ const FormDebt = (props: IProps) => {
     checkLegend(
       "fieldset-form-debt-debt",
       isValidFieldNumber(form.value) &&
-        isValidFieldText(form.dueDate) &&
+        isValidFieldText(form.dueDate?.toString()) &&
         isValidFieldNumber(form.status.id)
     );
   }, [form, lessee]);
@@ -192,16 +193,10 @@ const FormDebt = (props: IProps) => {
           </div>
           <div className="form-container l2">
             <label htmlFor="inputDueDate">Data do vencimento</label>
-            <input
-              type="date"
-              id="inputDueDate"
-              name="dueDate"
-              value={
-                form.dueDate.length > 0
-                  ? formatDate(form.dueDate)
-                  : form.dueDate
-              }
-              onChange={(e) => changeInput({ dueDate: e.target.value })}
+            <DatePicker
+              selected={form.dueDate !== null ? new Date(form.dueDate) : null}
+              onChange={(date: Date) => changeInput({ dueDate: date })}
+              dateFormat={"dd/MM/yyyy"}
               required
             />
           </div>

@@ -8,6 +8,11 @@ import system.gc.entities.Debt;
 
 import java.util.List;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
 public interface DebtRepository extends JpaRepository<Debt, Integer> {
 
     @Query("SELECT debt FROM Debt debt " +

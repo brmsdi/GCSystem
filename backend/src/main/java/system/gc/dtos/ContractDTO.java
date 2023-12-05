@@ -7,6 +7,12 @@ import system.gc.entities.Contract;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Getter
 @Setter
 public class ContractDTO implements ConvertEntityAndDTO<ContractDTO, Contract> {
@@ -66,7 +72,6 @@ public class ContractDTO implements ConvertEntityAndDTO<ContractDTO, Contract> {
         setStatus(new StatusDTO().toDTO(contract.getStatus()));
         setCondominium(new CondominiumDTO().toDTO(contract.getCondominium()));
         setLessee(new LesseeDTO().toDTO(contract.getLessee()));
-
     }
 
     public ContractDTO(String cpf) {
@@ -93,5 +98,21 @@ public class ContractDTO implements ConvertEntityAndDTO<ContractDTO, Contract> {
             contract.setId(contractDTO.getId());
         }
         return contract;
+    }
+
+    public static ContractDTO forListViewMobile(Contract contract) {
+        ContractDTO contractDTO = new ContractDTO();
+        contractDTO.setId(contract.getId());
+        contractDTO.setContractDate(contract.getContractDate());
+        contractDTO.setContractExpirationDate(contract.getContractExpirationDate());
+        contractDTO.setMonthlyPaymentDate(contract.getMonthlyPaymentDate());
+        contractDTO.setMonthlyDueDate(contract.getMonthlyDueDate());
+        contractDTO.setApartmentNumber(contract.getApartmentNumber());
+        contractDTO.setContractValue(contract.getContractValue());
+        contractDTO.setLessee(new LesseeDTO());
+        contractDTO.getLessee().setId(contract.getLessee().getId());
+        contractDTO.getLessee().setName(contract.getLessee().getName());
+        contractDTO.setStatus(new StatusDTO().toDTO(contract.getStatus()));
+        return contractDTO;
     }
 }

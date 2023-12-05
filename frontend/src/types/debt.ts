@@ -4,7 +4,7 @@ import { Status, StatusEmpty } from "./status";
 
 export type Debt = {
     id?: number;
-    dueDate: string;
+    dueDate: Date | null;
     value: number;
     movement?: Movement;
     status: Status;
@@ -46,7 +46,7 @@ export const PaginationDebtEmpty : PaginationDebt = {
 }
 
 export const DebtEmpty : Debt = {
-    dueDate: '',
+    dueDate: null,
     value: 0,
     status: StatusEmpty,
     lessee: LesseeEmpty

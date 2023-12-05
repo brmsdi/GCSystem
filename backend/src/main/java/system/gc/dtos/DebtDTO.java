@@ -9,6 +9,12 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Getter
 @Setter
 public class DebtDTO implements ConvertEntityAndDTO<DebtDTO, Debt> {
@@ -75,5 +81,18 @@ public class DebtDTO implements ConvertEntityAndDTO<DebtDTO, Debt> {
             debt.setId(debtDTO.getId());
         }
         return debt;
+    }
+
+    public static DebtDTO forListViewMobile(Debt debt) {
+        DebtDTO debtDTO = new DebtDTO();
+        debtDTO.setId(debt.getId());
+        debtDTO.setValue(debt.getValue());
+        debtDTO.setDueDate(debt.getDueDate());
+        debtDTO.setStatus(new StatusDTO().toDTO(debt.getStatus()));
+        debtDTO.setLessee(new LesseeDTO());
+        debtDTO.getLessee().setId(debt.getLessee().getId());
+        debtDTO.getLessee().setName(debt.getLessee().getName());
+        debtDTO.setMovements(null);
+        return debtDTO;
     }
 }

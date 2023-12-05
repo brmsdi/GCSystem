@@ -9,6 +9,12 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Getter
 @Setter
 @Entity
@@ -60,9 +66,13 @@ public class Lessee implements Serializable {
     @OneToMany(mappedBy = "lessee")
     private Set<LogChangePassword> logChangePassword;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_role_id", referencedColumnName = "id")
+    private Role role;
+
     public Lessee() {}
 
-    public Lessee(String name, String rg, String cpf, Date birthDate, String email, String contactNumber, String password, Status status, Set<Debt> debts, Set<Contract> contracts) {
+    public Lessee(String name, String rg, String cpf, Date birthDate, String email, String contactNumber, String password, Status status, Set<Debt> debts, Set<Contract> contracts, Role role) {
         setName(name);
         setRg(rg);
         setCpf(cpf);
@@ -73,6 +83,6 @@ public class Lessee implements Serializable {
         setStatus(status);
         setDebts(debts);
         setContracts(contracts);
+        setRole(role);
     }
-
 }

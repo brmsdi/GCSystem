@@ -8,6 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
 @Component
 public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
 

@@ -36,17 +36,3 @@
         opacity: 1;
     }
 }
-
-.animate-shake {
-    animation: shake .2s;
-    animation-iteration-count: 1;
-    animation-iteration-count: infinite;
-}
-
-@keyframes shake {
-    0% {margin-left: 0;}
-    25% {margin-left: 1px;}
-    50% {margin-left: 0;}
-    75% {margin-left: -1px;}
-    100% {margin-left: 0;}
-}

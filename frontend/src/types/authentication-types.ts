@@ -1,3 +1,5 @@
+import { UriRequestType } from "./request-uri-change-password"
+
 export type AuthCpfAndPassword = {
     cpf: string,
     password: string
@@ -6,13 +8,13 @@ export type AuthCpfAndPassword = {
 export type EmailRequestCode = {
     state?: StateAuthenticationChange,
     email?: string,
-    type?: number,
     code?: string,
     token?: {
         type: string,
         token: string
         newPassword?: string
-    }
+    },
+    requestType?: UriRequestType
 }
 
 export type EmailRequestCodeAction = {

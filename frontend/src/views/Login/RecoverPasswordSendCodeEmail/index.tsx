@@ -6,6 +6,7 @@ import { requestCode } from "services/authentication";
 import insertRequestCodeInfo from "store/Authentication/login.actions";
 import Swal from "sweetalert2";
 import { EmailRequestCode, StateAuthenticationChange } from "types/authentication-types";
+import { URISRequestTypes } from "types/request-uri-change-password";
 import { LOGIN_URL, RECOVER_PASSWORD_SEND_CODE_URL } from "utils/urls";
 
 const RecoverPasswordSendCodeEmail = () => {
@@ -14,8 +15,9 @@ const RecoverPasswordSendCodeEmail = () => {
   const [sending, setSending] = useState(false);
   const [form, setForm] = useState<EmailRequestCode>({
     email: '',
-    type: 0
+    requestType: URISRequestTypes[0]
   });
+  const [selectedRequestTypeID, setSelectedRequestTypeID] = useState<number>(URISRequestTypes[0].id);
 
   function changeForm(value: any) {
     setForm((form) => ({ ...form, ...value }))
@@ -25,8 +27,14 @@ const RecoverPasswordSendCodeEmail = () => {
     event.preventDefault();
     try {
       setSending(true)
-      await requestCode(form)
+      let requestType = URISRequestTypes.find(item  => item.id === selectedRequestTypeID)
+      if (requestType === undefined) {
+        setSending(false)
+        return
+      }
+      await requestCode(requestType.requestCodeURI, form)
       form.state = StateAuthenticationChange.WAITINGCODE;
+      form.requestType = requestType
       dispatch(insertRequestCodeInfo(StateAuthenticationChange.INSERTINFO, form));
       nav(LOGIN_URL + RECOVER_PASSWORD_SEND_CODE_URL);
     }
@@ -41,7 +49,6 @@ const RecoverPasswordSendCodeEmail = () => {
     }
   }
   if (sending) return <PageMessage title="Enviando código para o E-mail" />
-
   return (
     <div className="content-login animate-down">
       <form id="form-send-email-forgot" onSubmit={submit}>
@@ -64,8 +71,14 @@ const RecoverPasswordSendCodeEmail = () => {
           <span>Tipo de usuário</span>
         </div>
         <div>
-          <select onChange={(e) => changeForm({ type: e.target.value })} >
-            <option value={0}>Funcionário</option>
+          <select onChange={(e) => setSelectedRequestTypeID(Number.parseInt(e.target.value))} >
+            {
+              URISRequestTypes.map(item => (
+                <option
+                key={item.id}
+                value={item.id}>{item.name}</option>
+              ))
+            }
           </select>
         </div>
         <div>

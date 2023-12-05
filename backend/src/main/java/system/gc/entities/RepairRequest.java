@@ -9,6 +9,12 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Entity
 @Getter
 @Setter
@@ -25,7 +31,7 @@ public class RepairRequest implements Serializable {
     @NotNull
     private Date date;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_typeProblem_id", referencedColumnName = "id")
     private TypeProblem typeProblem;
 
@@ -45,8 +51,7 @@ public class RepairRequest implements Serializable {
     @JoinColumn(name = "fk_order_service", referencedColumnName = "id")
     private OrderService orderService;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "fk_repair_request", referencedColumnName = "id")
+    @OneToMany(mappedBy = "repairRequest", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Item> items = new HashSet<>();
 
     @NotNull

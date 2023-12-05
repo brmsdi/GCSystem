@@ -6,6 +6,12 @@ import lombok.Setter;
 
 import java.util.Map;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 @Setter
 @Getter
 public class OpenAndProgressAndLateRepairRequest {

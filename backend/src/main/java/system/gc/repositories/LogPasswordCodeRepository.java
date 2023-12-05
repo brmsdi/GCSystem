@@ -6,6 +6,12 @@ import system.gc.entities.LogChangePassword;
 
 import java.util.Optional;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 public interface LogPasswordCodeRepository extends JpaRepository<LogChangePassword, Integer> {
     @Query("SELECT obj FROM LogChangePassword obj " +
             "JOIN FETCH obj.employee employee " +

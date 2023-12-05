@@ -8,17 +8,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 public class EmployeeUserDetails implements UserDetailsConvert, UserAuthenticated<Employee> {
     private final Employee userDetail;
 
-    public EmployeeUserDetails(Employee employeeDTOUser) {
-        this.userDetail = employeeDTOUser;
+    public EmployeeUserDetails(Employee employee) {
+        this.userDetail = employee;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + userDetail.getRole().getName().toUpperCase()));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + userDetail.getRole().getName()));
         return grantedAuthorities;
     }
 

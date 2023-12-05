@@ -22,14 +22,13 @@ import {
   selectStateModalOrderServiceRepairRequests,
 } from "store/RepairRequests/repair-requests.selector";
 import Swal from "sweetalert2";
-import { ModalStateInformations, StateFormEnum } from "types/action";
+import { ModalStateInformation, StateFormEnum } from "types/action";
 import { Employee } from "types/employee";
 import { OrderService } from "types/order-service";
 import { RepairRequest } from "types/repair-request";
 import { Status } from "types/status";
-import { formatDate } from "utils/text-format";
 import { isValidFieldText, isSelected, isEmpty } from "utils/verifications";
-
+import DatePicker from "react-datepicker";
 interface IProps {
   initForm: OrderService;
   stateForm: StateFormEnum;
@@ -47,10 +46,10 @@ const FormTemplate = (props: IProps) => {
   const selectedEmployees: Employee[] = useSelector(
     selectSelectedEmployeesOrderService
   );
-  const stateModalOrderServiceEmployees: ModalStateInformations = useSelector(
+  const stateModalOrderServiceEmployees: ModalStateInformation = useSelector(
     selectStateModalOrderServiceEmployees
   );
-  const stateModalOrderServiceRepairRequests: ModalStateInformations =
+  const stateModalOrderServiceRepairRequests: ModalStateInformation =
     useSelector(selectStateModalOrderServiceRepairRequests);
 
   function changeInput(value: any) {
@@ -81,8 +80,8 @@ const FormTemplate = (props: IProps) => {
   useEffect(() => {
     checkLegend(
       "fieldset-order-service",
-      isValidFieldText(form.generationDate) &&
-        isValidFieldText(form.reservedDate) &&
+      isValidFieldText(form.generationDate?.toString()) &&
+        isValidFieldText(form.reservedDate?.toString()) &&
         isSelected(form.status)
     );
 
@@ -203,50 +202,40 @@ const FormTemplate = (props: IProps) => {
           <div className="row-form-1">
             <div className="form-container f4">
               <label htmlFor="inputGenerationDate">Data</label>
-              <input
-                type="date"
-                id="inputGenerationDate"
-                name="generationDate"
-                value={
-                  form.generationDate.length > 0
-                    ? formatDate(form.generationDate)
-                    : form.generationDate
+              <DatePicker
+                selected={
+                  form.generationDate !== null
+                    ? new Date(form.generationDate)
+                    : null
                 }
-                onChange={(e) =>
-                  changeInput({ generationDate: e.target.value })
-                }
+                onChange={(date: Date) => changeInput({ generationDate: date })}
+                dateFormat={"dd/MM/yyyy"}
                 required
               />
             </div>
             <div className="form-container f4">
               <label htmlFor="inputReservedDate">Data reservada</label>
-              <input
-                type="date"
-                id="inputReservedDate"
-                name="reservedDate"
-                value={
-                  form.reservedDate.length > 0
-                    ? formatDate(form.reservedDate)
-                    : form.reservedDate
+              <DatePicker
+                selected={
+                  form.reservedDate !== null
+                    ? new Date(form.reservedDate)
+                    : null
                 }
-                onChange={(e) => changeInput({ reservedDate: e.target.value })}
+                onChange={(date: Date) => changeInput({ reservedDate: date })}
+                dateFormat={"dd/MM/yyyy"}
                 required
               />
             </div>
             <div className="form-container f4">
               <label htmlFor="inputCompletionDate">Data de finalização</label>
-              <input
-                type="date"
-                id="inputCompletionDate"
-                name="completionDate"
-                value={
-                  form.completionDate.length > 0
-                    ? formatDate(form.completionDate)
-                    : form.completionDate
+              <DatePicker
+                selected={
+                  form.completionDate !== null
+                    ? new Date(form.completionDate)
+                    : null
                 }
-                onChange={(e) =>
-                  changeInput({ completionDate: e.target.value })
-                }
+                onChange={(date: Date) => changeInput({ completionDate: date })}
+                dateFormat={"dd/MM/yyyy"}
               />
             </div>
             <div className="form-container f4">

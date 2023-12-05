@@ -20,6 +20,7 @@ const HomeView = () => {
         </div>
         <div>
           <p className="p-contact"><i className="bi bi-telephone">&nbsp;</i>Contato: 92 99107-1491</p>
+          <p className="p-contact"><i className="bi bi-envelope-at">&nbsp;</i>Email: srwisley.dev@gmail.com</p>
         </div>
         <div className="footer-home">
           <div className="footer-balloons">
@@ -32,7 +33,7 @@ const HomeView = () => {
             <Balloon
               id={"balloon-email"}
               title={"Email"}
-              link="mailto:srmarquesms@gmail.com"
+              link="mailto:srwisley.dev@gmail.com"
               icon="bi bi-envelope"
             />
             <Balloon

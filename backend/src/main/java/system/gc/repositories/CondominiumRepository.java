@@ -8,6 +8,12 @@ import system.gc.entities.Condominium;
 
 import java.util.List;
 
+/**
+ * @author Wisley Bruno Marques França
+ * @since 0.0.1
+ * @version 1.3
+ */
+
 public interface CondominiumRepository extends JpaRepository<Condominium, Integer> {
     @Query("SELECT condominium FROM Condominium condominium " +
             "JOIN FETCH condominium.status " +
@@ -18,4 +24,10 @@ public interface CondominiumRepository extends JpaRepository<Condominium, Intege
 
     @Query("SELECT condominium FROM Condominium condominium WHERE condominium.name LIKE :name")
     Page<Condominium> findAllByName(Pageable pageable, String name);
+
+    @Query("SELECT DISTINCT condominium FROM Condominium condominium " +
+            "JOIN FETCH condominium.contract contract " +
+            "JOIN FETCH contract.lessee lessee " +
+            "WHERE lessee.id = :idLessee")
+    List<Condominium> findAllForLessee(Integer idLessee);
 }

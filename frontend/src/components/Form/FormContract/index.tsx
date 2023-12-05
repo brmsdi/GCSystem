@@ -8,13 +8,16 @@ import { Condominium } from "types/condominium";
 import { Contract } from "types/contract";
 import { Lessee } from "types/lessee";
 import { Status } from "types/status";
-import { formatDate, formatLocalizationViewInformation } from "utils/text-format";
+import {
+  formatLocalizationViewInformation,
+} from "utils/text-format";
 import {
   isValidFieldCPF,
   isValidFieldDay,
   isValidFieldNumber,
   isValidFieldText,
 } from "utils/verifications";
+import DatePicker from "react-datepicker";
 
 interface IProps {
   initForm: Contract;
@@ -88,8 +91,8 @@ const FormTemplate = (props: IProps) => {
       isValidFieldNumber(form.contractValue) &&
         isValidFieldDay(form.monthlyPaymentDate) &&
         isValidFieldDay(form.monthlyDueDate) &&
-        isValidFieldText(form.contractDate) &&
-        isValidFieldText(form.contractExpirationDate) &&
+        isValidFieldText(form.contractDate?.toString()) &&
+        isValidFieldText(form.contractExpirationDate?.toString()) &&
         isValidFieldNumber(form.status.id)
     );
   }, [form, lessee]);
@@ -304,16 +307,13 @@ const FormTemplate = (props: IProps) => {
           </div>
           <div className="form-container f4">
             <label htmlFor="inputContractDate">Data do contrato</label>
-            <input
-              type="date"
+            <DatePicker
               id="inputContractDate"
-              name="contractDate"
-              value={
-                form.contractDate.length > 0
-                  ? formatDate(form.contractDate)
-                  : form.contractDate
+              selected={
+                form.contractDate !== null ? new Date(form.contractDate) : null
               }
-              onChange={(e) => changeInput({ contractDate: e.target.value })}
+              onChange={(date: Date) => changeInput({ contractDate: date })}
+              dateFormat={"dd/MM/yyyy"}
               required
             />
           </div>
@@ -323,18 +323,18 @@ const FormTemplate = (props: IProps) => {
             <label htmlFor="inputContractExpirationDate">
               Data de validade
             </label>
-            <input
-              type="date"
+
+            <DatePicker
               id="inputContractExpirationDate"
-              name="contractExpirationDate"
-              value={
-                form.contractExpirationDate.length > 0
-                  ? formatDate(form.contractExpirationDate)
-                  : form.contractExpirationDate
+              selected={
+                form.contractExpirationDate !== null
+                  ? new Date(form.contractExpirationDate)
+                  : null
               }
-              onChange={(e) =>
-                changeInput({ contractExpirationDate: e.target.value })
+              onChange={(date: Date) =>
+                changeInput({ contractExpirationDate: date })
               }
+              dateFormat={"dd/MM/yyyy"}
               required
             />
           </div>

@@ -12,8 +12,8 @@ export const isValidZipCode = (value: string) => {
     return (value.length === 8)
 }
 
-export const isValidFieldText = (value: string | undefined) => {
-    return (value !== undefined && value.length > 0)
+export const isValidFieldText = (value: string | undefined | null) => {
+    return (value !== undefined && value != null && value.length > 0)
 }
 
 export const isValidFieldNumber = (value: number | undefined) => {
@@ -32,7 +32,7 @@ export const isEmpty = (item: RepairRequest[] | Employee[]) => {
     return item.length === 0
 }
 
-export const repairRequestIsProgress = (status: Status) => {
+export const repairRequestIsProgressOrConcluded = (status: Status) => {
     //return props.initForm.status.name.toLocaleUpperCase() !== "EM ANDAMENTO";
-    return status.name.toLocaleUpperCase() !== "EM ANDAMENTO";
+    return status.name.toLocaleUpperCase() !== "EM ANDAMENTO" && status.name.toLocaleUpperCase() !== "CONCLUÍDO";
   }
