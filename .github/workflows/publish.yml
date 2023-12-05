@@ -7,7 +7,7 @@ name: Create and push image to Docker HUb
 
 on:
   push:
-    branches: [ "v1.3" ]
+    branches: [ "main" ]
 jobs:
   build:
    runs-on: ubuntu-latest
