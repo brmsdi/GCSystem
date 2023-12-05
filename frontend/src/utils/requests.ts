@@ -1,7 +1,7 @@
 
 export const API_VERSION = 'api/v1/';
 export const API_VERSION_WEB = API_VERSION + 'web/';
-export const REQUEST_BASE_URL = 'http://192.168.15.2:8080'
+export const REQUEST_BASE_URL = 'https://gcsystemws.onrender.com'
 export const REQUEST_BASE_URL_WITH_API_VERSION = REQUEST_BASE_URL + '/' + API_VERSION_WEB;
 
 export const PERMISSION_URL = 'permission'
