@@ -19,8 +19,8 @@ const Login = () => {
     dispatch(insertRequestCodeInfo(StateAuthenticationChange.INSERTINFO, {}))
   }, [dispatch])
   const [auth, setAuth] = useState<AuthCpfAndPassword>({
-    cpf: "",
-    password: "",
+    cpf: "12345678910",
+    password: "admin",
   })
   const [isLoading, setIsLoading] = useState(false);
 
