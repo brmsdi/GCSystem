@@ -38,6 +38,7 @@ Os dados do banco são atualizados a cada 30 minutos através de um micro servi�
 ##### Link do sistema web e dados para autenticação
 
 [Ir para o sistema WEB](https://systemgc.netlify.app/)
+
 [Código do aplicativo Android](https://github.com/brmsdi/GCSystemAndroid)
 
 | Cargo | Usuário | Senha |
