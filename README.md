@@ -38,6 +38,7 @@ Os dados do banco são atualizados a cada 30 minutos através de um micro servi�
 ##### Link do sistema web e dados para autenticação
 
 [Ir para o sistema WEB](https://systemgc.netlify.app/)
+[Código do aplicativo Android](https://github.com/brmsdi/GCSystemAndroid)
 
 | Cargo | Usuário | Senha |
 |-------|----------|----------|
@@ -45,18 +46,7 @@ Os dados do banco são atualizados a cada 30 minutos através de um micro servi�
 | Contador | 62578672380 | eliza123 |
 | Assistente administrativo | 12578678980 | amanda123 |
 
-
-#### 4. Caso de uso ciclo 01
-##### Abra a imagem em uma nova guia para melhor qualidade
-![Caso de uso](frontend/src/assets/img/DIAGRAMACASODEUSO.png)
-
-
-#### 5.	Diagrama de classes a nível de análise 
-##### Abra a imagem em uma nova guia para melhor qualidade
-![Digrama de classes](frontend/src/assets/img/Diagramadeclasses.png)
-
-
-#### 6.	Desenvolvimento
+#### 4.	Desenvolvimento
 1. Docker/docker compose
 2. No backend foi utilizada a linguagem de programação Java com JDK 17
 3. Framework Spring Security e JWT para realizar a autenticação de usuários
